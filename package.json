@@ -5,5 +5,8 @@
   "description": "$EDGE — prediction market aggregator (Polymarket + Kalshi)",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/og": "^0.6.4"
   }
 }
