@@ -3,2528 +3,1283 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>$EDGE — Where the money meets the mouth.</title>
-<meta name="description" content="The institutional-grade terminal for prediction markets. Polymarket. Kalshi. The signal between them. Token-gated.">
+<title>$EDGE — Watch the Action.</title>
+<meta name="description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
 
+<!-- Open Graph / iMessage / LinkedIn / Discord / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://edge-two-psi.vercel.app/">
-<meta property="og:title" content="$EDGE — Where the money meets the mouth.">
-<meta property="og:description" content="The institutional-grade terminal for prediction markets. The signal between Polymarket and the crowd. Token-gated access.">
-<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?v=2">
+<meta property="og:title" content="$EDGE — Watch the Action. Before You Bet.">
+<meta property="og:description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:alt" content="$EDGE — the terminal for prediction markets">
+<meta property="og:image:alt" content="$EDGE — Watch the action before you bet">
 <meta property="og:site_name" content="$EDGE">
 
+<!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="$EDGE — Where the money meets the mouth.">
-<meta name="twitter:description" content="The institutional-grade terminal for prediction markets. Token-gated.">
-<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?v=2">
+<meta name="twitter:url" content="https://edge-two-psi.vercel.app/">
+<meta name="twitter:title" content="$EDGE — Watch the Action. Before You Bet.">
+<meta name="twitter:description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/og-image.png">
 
-<meta name="theme-color" content="#0A0A0B">
+<!-- Theme color (mobile address bar) -->
+<meta name="theme-color" content="#050507">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230A0A0B'/%3E%3Ctext x='50' y='74' font-family='Georgia,serif' font-style='italic' font-size='78' font-weight='400' text-anchor='middle' fill='%23E5B83D'%3E%24%3C/text%3E%3C/svg%3E">
+<!-- Favicon (inline SVG) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   $EDGE — design system
-   Bloomberg Terminal × Editorial Broadsheet × Phantom Wallet
-   ============================================================ */
-
 :root {
-  /* surfaces */
-  --ink:       #0A0A0B;
-  --ink-2:     #0F0F12;
-  --ink-3:     #16161B;
-  --ink-4:     #1C1C22;
-  --ink-5:     #25252C;
-
-  /* type */
-  --paper:        #F1EFEA;
-  --paper-dim:    rgba(241, 239, 234, 0.78);
-  --paper-mute:   rgba(241, 239, 234, 0.48);
-  --paper-deep:   rgba(241, 239, 234, 0.28);
-  --paper-faint:  rgba(241, 239, 234, 0.14);
-
-  /* rules */
-  --rule:       rgba(241, 239, 234, 0.10);
-  --rule-soft:  rgba(241, 239, 234, 0.05);
-  --rule-bold:  rgba(241, 239, 234, 0.22);
-
-  /* signals */
-  --money:        #E5B83D;       /* Bloomberg amber — the money */
-  --money-bright: #FFC940;
-  --money-deep:   #A6822A;
-  --money-glow:   rgba(229, 184, 61, 0.18);
-
-  --edge:         #FF3E5C;       /* divergence magenta — used sparingly */
-  --edge-bright:  #FF6680;
-  --edge-glow:    rgba(255, 62, 92, 0.18);
-
-  --green:  #2EBD7A;
-  --red:    #E13D4F;
-
-  /* type families */
-  --display: 'Fraunces', 'Times New Roman', serif;
-  --sans:    'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono:    'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-body {
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--sans);
-  font-feature-settings: "ss01", "cv11", "tnum";
-  line-height: 1.5;
-  position: relative;
-  overflow-x: hidden;
-}
-::selection { background: var(--money); color: var(--ink); }
-img, svg { display: block; }
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; }
 
-/* hairline grid backdrop */
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background grid */
 body::before {
   content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  position: fixed;
+  inset: 0;
   background-image:
-    linear-gradient(rgba(241, 239, 234, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(241, 239, 234, 0.018) 1px, transparent 1px);
-  background-size: 120px 120px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }
 
-main, header, section, footer { position: relative; z-index: 2; }
-
-/* ============================================================
-   TYPOGRAPHY UTILITIES
-   ============================================================ */
-
-.mono { font-family: var(--mono); font-feature-settings: "tnum"; }
-.serif { font-family: var(--display); }
-.tnum { font-variant-numeric: tabular-nums; }
-
-.label {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-}
-.label--money { color: var(--money); }
-.label--edge { color: var(--edge); }
-
-.hairline {
-  height: 1px;
-  background: var(--rule);
-  border: 0;
-  margin: 0;
+/* Subtle noise */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
 }
 
-/* ============================================================
-   LAYOUT
-   ============================================================ */
+main, header, section { position: relative; z-index: 2; }
 
-.shell {
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 0 40px;
+/* Typography helpers */
+.mono { font-family: 'JetBrains Mono', monospace; }
+.display { font-family: 'Anton', sans-serif; letter-spacing: -0.01em; text-transform: uppercase; }
+
+/* TOP NAV */
+header {
+  border-bottom: 1px solid rgba(196, 255, 0, 0.15);
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(5, 5, 7, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-@media (max-width: 720px) { .shell { padding: 0 20px; } }
 
-/* ============================================================
-   TOP NAV
-   ============================================================ */
-
-.topbar {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(10, 10, 11, 0.78);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  border-bottom: 1px solid var(--rule);
+.logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-.topbar__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 0;
+.logo .dollar { color: var(--lime); }
+.logo .word { color: var(--white); }
+
+nav ul {
+  display: flex;
   gap: 32px;
-}
-
-.brand {
-  display: flex; align-items: baseline; gap: 2px;
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 26px;
-  letter-spacing: -0.025em;
-}
-.brand__symbol {
-  color: var(--money);
-  font-style: italic;
-  font-weight: 400;
-  margin-right: -2px;
-}
-.brand__word { color: var(--paper); }
-.brand__beta {
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  color: var(--paper-mute);
-  border: 1px solid var(--rule);
-  padding: 2px 6px;
-  margin-left: 12px;
-  align-self: center;
+  list-style: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+nav a { color: var(--white); text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; color: var(--lime); }
 
-.nav { display: flex; gap: 28px; }
-.nav a {
-  font-family: var(--mono);
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
+  color: var(--green);
   text-transform: uppercase;
-  color: var(--paper-dim);
-  transition: color 0.15s ease;
 }
-.nav a:hover { color: var(--money); }
-@media (max-width: 900px) { .nav { display: none; } }
-
-.topbar__right { display: flex; align-items: center; gap: 20px; }
-
-.live {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-}
-.live__dot {
-  width: 6px; height: 6px;
+.live-dot {
+  width: 8px;
+  height: 8px;
   background: var(--green);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(46, 189, 122, 0.6);
-  animation: live-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse 1.4s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--green);
 }
-@keyframes live-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 189, 122, 0.5); }
-  50%      { box-shadow: 0 0 0 6px rgba(46, 189, 122, 0); }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
 }
 
 .btn {
-  font-family: var(--mono);
+  background: var(--lime);
+  color: var(--void);
+  border: none;
+  padding: 10px 18px;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-weight: 700;
   text-transform: uppercase;
-  padding: 11px 18px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--paper);
+  letter-spacing: 0.1em;
   cursor: pointer;
-  transition: all 0.18s ease;
-  display: inline-flex; align-items: center; gap: 8px;
-  text-decoration: none;
-  white-space: nowrap;
+  transition: all 0.2s;
 }
-.btn--primary {
-  background: var(--money);
-  color: var(--ink);
-  border-color: var(--money);
-}
-.btn--primary:hover {
-  background: var(--money-bright);
-  border-color: var(--money-bright);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px -8px var(--money-glow), 0 0 0 1px var(--money);
-}
-.btn--ghost {
-  border-color: var(--rule-bold);
-  color: var(--paper);
-}
-.btn--ghost:hover {
-  border-color: var(--paper);
-  background: rgba(241, 239, 234, 0.04);
-}
-.btn--edge {
-  background: transparent;
-  border-color: var(--edge);
-  color: var(--edge);
-}
-.btn--edge:hover {
-  background: var(--edge);
-  color: var(--paper);
-  box-shadow: 0 8px 24px -8px var(--edge-glow);
-}
-.btn__arrow { font-size: 14px; line-height: 1; margin-top: -1px; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(196, 255, 0, 0.4); }
+.btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+.btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
 
-/* ============================================================
-   TAPE TICKER
-   ============================================================ */
-
-.tape {
-  border-bottom: 1px solid var(--rule);
-  background: var(--ink-2);
+/* TICKER */
+.ticker-wrap {
+  background: var(--lime);
+  color: var(--void);
   overflow: hidden;
-  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
 }
-.tape::before, .tape::after {
-  content: ''; position: absolute; top: 0; bottom: 0;
-  width: 80px; z-index: 5;
-  pointer-events: none;
-}
-.tape::before { left: 0;  background: linear-gradient(90deg, var(--ink-2), transparent); }
-.tape::after  { right: 0; background: linear-gradient(-90deg, var(--ink-2), transparent); }
-
-.tape__strip {
+.ticker {
   display: flex;
   white-space: nowrap;
-  padding: 12px 0;
-  animation: tape-scroll 90s linear infinite;
-  will-change: transform;
+  animation: tick 60s linear infinite;
+  padding: 10px 0;
 }
-@keyframes tape-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.tape__item {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  padding: 0 32px;
-  color: var(--paper-dim);
-  display: inline-flex; align-items: center; gap: 10px;
-}
-.tape__item .up   { color: var(--green); }
-.tape__item .dn   { color: var(--red); }
-.tape__item .src  { color: var(--paper-mute); font-size: 9px; letter-spacing: 0.2em; }
-.tape__item .pulse { color: var(--money); }
-
-/* ============================================================
-   HERO
-   ============================================================ */
-
-.hero {
-  padding: 96px 0 80px;
-  border-bottom: 1px solid var(--rule);
-  position: relative;
-}
-
-.hero__kicker {
-  display: flex; align-items: center; gap: 14px;
-  margin-bottom: 28px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-}
-.hero__kicker .dot {
-  width: 6px; height: 6px; background: var(--money); border-radius: 50%;
-}
-.hero__kicker em {
-  color: var(--money); font-style: normal; font-weight: 600;
-}
-
-.hero__grid {
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 80px;
-  align-items: end;
-}
-@media (max-width: 980px) { .hero__grid { grid-template-columns: 1fr; gap: 56px; } }
-
-.hero__headline {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(56px, 8.4vw, 132px);
-  line-height: 0.92;
-  letter-spacing: -0.035em;
-  color: var(--paper);
-  font-feature-settings: "ss01";
-}
-.hero__headline em {
-  font-style: italic;
-  font-weight: 300;
-  color: var(--money);
-}
-.hero__headline .strike {
-  position: relative;
-  display: inline-block;
-  color: var(--paper);
-}
-.hero__headline .strike::after {
-  content: '';
-  position: absolute;
-  left: -4%; right: -4%;
-  top: 56%;
-  height: 4px;
-  background: var(--edge);
-  transform: rotate(-1.5deg);
-  border-radius: 2px;
-}
-
-.hero__lede {
-  margin-top: 36px;
-  max-width: 540px;
-  font-size: 18px;
-  line-height: 1.55;
-  color: var(--paper-dim);
-  font-weight: 400;
-}
-.hero__lede b {
-  color: var(--paper);
-  font-weight: 500;
-}
-
-.hero__cta {
-  margin-top: 40px;
-  display: flex; gap: 12px; flex-wrap: wrap;
-}
-
-.hero__meta {
-  margin-top: 56px;
-  display: flex; gap: 48px;
-  flex-wrap: wrap;
-  padding-top: 28px;
-  border-top: 1px solid var(--rule);
-}
-.hero__meta-item {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--paper-mute);
-}
-.hero__meta-item b {
-  display: block;
-  color: var(--paper);
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 28px;
-  letter-spacing: -0.02em;
-  margin-top: 4px;
-  font-feature-settings: "tnum";
-}
-.hero__meta-item.is-money b { color: var(--money); }
-
-/* ----- HERO INDICATOR (Money / Mouth / Edge) ----- */
-
-.indicator {
-  background: var(--ink-2);
-  border: 1px solid var(--rule);
-  padding: 28px;
-  position: relative;
-}
-.indicator::before {
-  content: '';
-  position: absolute; top: 0; left: 0;
-  width: 60px; height: 1px; background: var(--money);
-}
-
-.indicator__head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 6px;
-}
-.indicator__market {
-  font-family: var(--display);
-  font-size: 22px;
-  line-height: 1.18;
-  letter-spacing: -0.015em;
-  margin: 14px 0 4px;
-  color: var(--paper);
-  font-weight: 500;
-  min-height: 56px;
-}
-.indicator__sub {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: var(--paper-mute);
-  text-transform: uppercase;
-  margin-bottom: 28px;
-}
-.indicator__sub b { color: var(--paper); }
-
-.indicator__row {
-  display: grid;
-  grid-template-columns: 88px 1fr 60px;
-  gap: 14px;
-  align-items: center;
-  padding: 14px 0;
-  border-top: 1px solid var(--rule-soft);
-}
-.indicator__row:first-of-type { border-top: 1px solid var(--rule); }
-.indicator__row-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-.indicator__row.money .indicator__row-label { color: var(--money); }
-.indicator__row.mouth .indicator__row-label { color: var(--paper-dim); }
-
-.indicator__bar {
-  position: relative;
-  height: 6px;
-  background: var(--ink-4);
-  border-radius: 0;
-}
-.indicator__bar-fill {
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  background: var(--money);
-  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.indicator__row.mouth .indicator__bar-fill { background: var(--paper-mute); }
-.indicator__bar-tick {
-  position: absolute;
-  top: -4px; bottom: -4px;
-  width: 2px;
-  background: var(--paper);
-  transition: left 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.indicator__row-val {
-  font-family: var(--display);
-  font-size: 22px;
-  font-weight: 500;
-  text-align: right;
-  letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
-}
-.indicator__row.money .indicator__row-val { color: var(--money); }
-
-.indicator__edge {
-  margin-top: 20px;
-  padding-top: 18px;
-  border-top: 1px solid var(--rule);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-  align-items: baseline;
-}
-.indicator__edge-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--edge);
-}
-.indicator__edge-val {
-  font-family: var(--display);
-  font-size: 56px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--edge);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-}
-.indicator__edge-val sup {
-  font-family: var(--mono);
+.ticker-item {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  font-style: normal;
-  color: var(--paper-mute);
-  letter-spacing: 0.1em;
-  vertical-align: super;
-  margin-left: 4px;
-}
-.indicator__hint {
-  margin-top: 14px;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
+  font-weight: 700;
+  padding: 0 32px;
   text-transform: uppercase;
-  color: var(--paper-deep);
+  letter-spacing: 0.05em;
 }
-.indicator__hint b { color: var(--paper-mute); }
-
-/* ============================================================
-   THESIS — Money / Mouth / Edge
-   ============================================================ */
-
-.thesis {
-  padding: 120px 0 100px;
-  border-bottom: 1px solid var(--rule);
+.ticker-item .arrow-up { color: #006c3a; }
+.ticker-item .arrow-dn { color: #8b1c2b; }
+@keyframes tick {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
-.thesis__intro {
+
+/* HERO */
+.hero {
+  padding: 80px 32px 60px;
   display: grid;
-  grid-template-columns: 1fr 2.4fr;
-  gap: 80px;
-  margin-bottom: 80px;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  border-bottom: 1px solid rgba(196, 255, 0, 0.15);
 }
-@media (max-width: 900px) { .thesis__intro { grid-template-columns: 1fr; gap: 32px; } }
-.thesis__intro h2 {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(40px, 5.4vw, 76px);
-  line-height: 0.96;
+
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(64px, 11vw, 180px);
+  line-height: 0.85;
   letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
-.thesis__intro h2 em { font-style: italic; color: var(--money); font-weight: 300; }
-.thesis__intro p {
-  font-size: 20px;
-  line-height: 1.55;
-  color: var(--paper-dim);
-  max-width: 60ch;
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .strike { 
+  display: inline-block;
+  color: var(--magenta);
+  text-shadow: 0 0 40px rgba(255, 0, 110, 0.4);
 }
-.thesis__intro p b { color: var(--paper); font-weight: 500; }
 
-.thesis__triple {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--rule-bold);
-  border-bottom: 1px solid var(--rule-bold);
+.hero-tagline {
+  margin-top: 28px;
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 480px;
+  color: rgba(245, 245, 240, 0.8);
 }
-@media (max-width: 900px) { .thesis__triple { grid-template-columns: 1fr; } }
+.hero-tagline strong { color: var(--lime); font-weight: 500; }
 
-.pillar {
-  padding: 48px 36px 56px;
-  border-right: 1px solid var(--rule);
+.hero-cta { margin-top: 36px; display: flex; gap: 12px; }
+
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-self: end;
+}
+.stat-block {
+  border: 1px solid rgba(196, 255, 0, 0.2);
+  padding: 20px 24px;
+  background: rgba(196, 255, 0, 0.03);
   position: relative;
+  overflow: hidden;
 }
-.pillar:last-child { border-right: none; }
-@media (max-width: 900px) {
-  .pillar { border-right: none; border-bottom: 1px solid var(--rule); }
-  .pillar:last-child { border-bottom: none; }
+.stat-block::after {
+  content: '';
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 1.6s infinite;
+  box-shadow: 0 0 8px var(--green);
 }
-
-.pillar__num {
-  font-family: var(--mono);
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  letter-spacing: 0.22em;
-  color: var(--paper-mute);
-  margin-bottom: 36px;
-}
-.pillar__title {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: 48px;
-  letter-spacing: -0.025em;
-  line-height: 1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
   margin-bottom: 8px;
 }
-.pillar--money .pillar__title { color: var(--money); }
-.pillar--mouth .pillar__title { color: var(--paper); font-style: italic; font-weight: 300; }
-.pillar--edge  .pillar__title { color: var(--edge); }
-
-.pillar__kicker {
-  font-family: var(--mono);
+.stat-value {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+}
+.stat-meta {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  letter-spacing: 0.16em;
-  color: var(--paper-mute);
-  text-transform: uppercase;
-  margin-bottom: 28px;
-}
-.pillar__body {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--paper-dim);
-  margin-bottom: 28px;
-}
-.pillar__body b { color: var(--paper); font-weight: 500; }
-
-.pillar__sources {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--paper-deep);
-}
-.pillar__sources b { color: var(--paper-mute); display: block; margin-bottom: 6px; }
-.pillar__sources .row {
-  padding: 6px 0;
-  border-top: 1px dashed var(--rule-soft);
-  display: flex; justify-content: space-between; align-items: baseline;
-}
-.pillar__sources .row:first-of-type { border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 12px; }
-.pillar__sources .stat { color: var(--paper); font-weight: 500; }
-.pillar--mouth .pillar__sources .stat { color: var(--paper-dim); }
-.pillar__sources .ship {
-  color: var(--paper-deep);
-  font-size: 9px;
-}
-.pillar__sources .ship.live { color: var(--green); }
-
-/* ============================================================
-   THE FLOOR — live market grid
-   ============================================================ */
-
-.section-head {
-  padding: 100px 0 32px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 32px;
-  border-top: 1px solid var(--rule);
-}
-.section-head.no-top-border { border-top: none; padding-top: 80px; }
-.section-head__kicker {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  margin-bottom: 18px;
-}
-.section-head__kicker em { color: var(--money); font-style: normal; font-weight: 600; }
-.section-head h2 {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(40px, 5vw, 72px);
-  letter-spacing: -0.03em;
-  line-height: 0.96;
-}
-.section-head h2 em { font-style: italic; color: var(--money); font-weight: 300; }
-.section-head__meta {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  text-align: right;
-}
-.section-head__meta b { color: var(--paper); }
-.section-head__meta .live-tag {
-  color: var(--green); display: inline-flex; align-items: center; gap: 6px;
-}
-.section-head__meta .live-tag::before {
-  content: ''; width: 5px; height: 5px; background: var(--green); border-radius: 50%;
-  animation: live-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  color: var(--green);
+  margin-top: 4px;
 }
 
-.floor {
-  padding: 0 0 100px;
-  border-bottom: 1px solid var(--rule);
+/* SECTION TITLE */
+.section-title {
+  padding: 60px 32px 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 }
-
-.floor__stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--rule);
-  background: var(--ink-2);
-  margin-bottom: 24px;
-}
-@media (max-width: 900px) { .floor__stats { grid-template-columns: repeat(2, 1fr); } }
-.floor__stat {
-  padding: 24px 28px;
-  border-right: 1px solid var(--rule);
-}
-.floor__stat:last-child { border-right: none; }
-@media (max-width: 900px) {
-  .floor__stat:nth-child(2) { border-right: none; }
-  .floor__stat:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
-}
-.floor__stat-label {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
+.section-title h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 56px;
   text-transform: uppercase;
-  color: var(--paper-mute);
-  margin-bottom: 10px;
+  letter-spacing: -0.02em;
 }
-.floor__stat-value {
-  font-family: var(--display);
-  font-size: 36px;
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.floor__stat-value.money { color: var(--money); }
-.floor__stat-sub {
-  font-family: var(--mono);
-  font-size: 10px;
+.section-title h2 .accent { color: var(--lime); }
+.section-title .ts {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--paper-mute);
-  margin-top: 8px;
 }
-.floor__stat-sub .gain { color: var(--green); }
 
-.floor__grid {
+/* MARKET CARDS */
+.markets-grid {
+  padding: 0 32px 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
+  gap: 16px;
 }
-@media (max-width: 980px) { .floor__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .floor__grid { grid-template-columns: 1fr; } }
 
-.row-card {
-  background: var(--ink-2);
-  padding: 22px 22px 20px;
+.market-card {
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px;
+  background: var(--void-2);
   position: relative;
-  display: flex; flex-direction: column;
-  transition: background 0.2s ease;
-  min-height: 240px;
-  text-decoration: none;
-  color: inherit;
+  transition: all 0.3s;
+  overflow: hidden;
 }
-.row-card:hover { background: var(--ink-3); }
-.row-card.is-edge::before {
-  content: 'EDGE';
+.market-card:hover {
+  border-color: var(--lime);
+  transform: translateY(-2px);
+}
+.market-card.hot { border-color: var(--magenta); box-shadow: 0 0 24px rgba(255, 0, 110, 0.15); }
+.market-card.hot::before {
+  content: 'HOT';
   position: absolute;
   top: 0; right: 0;
-  background: var(--edge);
-  color: var(--paper);
-  font-family: var(--mono);
+  background: var(--magenta);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
   padding: 4px 8px;
-}
-.row-card__cat {
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  margin-bottom: 14px;
-}
-.row-card__cat .src { color: var(--paper-deep); }
-.row-card__title {
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 18px;
-  letter-spacing: -0.015em;
-  line-height: 1.22;
-  color: var(--paper);
-  margin-bottom: auto;
-  padding-bottom: 18px;
-}
-.row-card__odds {
-  display: flex; gap: 0;
-  border-top: 1px solid var(--rule);
-  padding-top: 14px;
-  margin-bottom: 14px;
-}
-.row-card__odds-side {
-  flex: 1;
-}
-.row-card__odds-side + .row-card__odds-side {
-  border-left: 1px solid var(--rule-soft);
-  padding-left: 14px;
-}
-.row-card__odds-lbl {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-}
-.row-card__odds-val {
-  font-family: var(--display);
-  font-size: 30px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  margin-top: 2px;
-  font-variant-numeric: tabular-nums;
-}
-.row-card__odds-side.yes .row-card__odds-val { color: var(--green); }
-.row-card__odds-side.no  .row-card__odds-val { color: var(--paper); }
-
-.row-card__foot {
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-  color: var(--paper-mute);
-}
-.row-card__foot b {
-  color: var(--paper);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.row-card__spark { width: 56px; height: 18px; }
-
-/* ============================================================
-   SIGNAL — featured edge call (research-note style)
-   ============================================================ */
-
-.signal {
-  padding: 100px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.signal__head {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-  gap: 32px;
-  margin-bottom: 56px;
-}
-.signal__kicker {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--edge);
-  margin-bottom: 18px;
-  display: flex; align-items: center; gap: 10px;
-}
-.signal__kicker::before {
-  content: '';
-  width: 24px; height: 1px; background: var(--edge);
-}
-.signal__title {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(36px, 4.6vw, 64px);
-  letter-spacing: -0.025em;
-  line-height: 0.98;
-}
-.signal__title em { font-style: italic; color: var(--edge); font-weight: 300; }
-.signal__date {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  text-align: right;
-}
-.signal__date b { color: var(--paper); display: block; margin-top: 4px; }
-
-.signal__body {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 56px;
-}
-@media (max-width: 980px) { .signal__body { grid-template-columns: 1fr; gap: 32px; } }
-
-.signal__essay {
-  font-size: 17px;
-  line-height: 1.62;
-  color: var(--paper-dim);
-}
-.signal__essay p { margin-bottom: 20px; }
-.signal__essay p b { color: var(--paper); font-weight: 500; }
-.signal__essay .pull {
-  font-family: var(--display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 26px;
-  line-height: 1.34;
-  color: var(--paper);
-  padding: 24px 0 24px 24px;
-  border-left: 2px solid var(--money);
-  margin: 28px 0;
-}
-
-.signal__panel {
-  border: 1px solid var(--rule);
-  background: var(--ink-2);
-  padding: 28px;
-}
-.signal__panel-head {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  display: flex; justify-content: space-between;
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--rule);
-}
-.signal__row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  padding: 10px 0;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
-  border-top: 1px solid var(--rule-soft);
-}
-.signal__row:first-of-type { border-top: 0; padding-top: 4px; }
-.signal__row .who { color: var(--paper-mute); }
-.signal__row b {
-  color: var(--paper);
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-}
-.signal__row.dn b { color: var(--red); }
-.signal__row.up b { color: var(--green); }
-
-/* ============================================================
-   TIERS — token utility
-   ============================================================ */
-
-.tiers {
-  padding: 100px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.tiers__intro {
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 64px;
-  margin-bottom: 64px;
-}
-@media (max-width: 900px) { .tiers__intro { grid-template-columns: 1fr; gap: 28px; } }
-.tiers__intro h2 {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(40px, 5.4vw, 76px);
-  letter-spacing: -0.03em;
-  line-height: 0.96;
-}
-.tiers__intro h2 em { font-style: italic; color: var(--money); font-weight: 300; }
-.tiers__intro p {
-  font-size: 19px;
-  line-height: 1.55;
-  color: var(--paper-dim);
-}
-.tiers__intro p b { color: var(--paper); font-weight: 500; }
-.tiers__intro p + p { margin-top: 18px; }
-
-.tier-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--rule);
-}
-@media (max-width: 900px) { .tier-grid { grid-template-columns: 1fr; } }
-
-.tier {
-  padding: 36px 28px 36px;
-  border-right: 1px solid var(--rule);
-  background: var(--ink-2);
-  position: relative;
-  display: flex; flex-direction: column;
-}
-.tier:last-child { border-right: none; }
-@media (max-width: 900px) {
-  .tier { border-right: none; border-bottom: 1px solid var(--rule); }
-  .tier:last-child { border-bottom: none; }
-}
-.tier--featured {
-  background: var(--ink-3);
-  position: relative;
-}
-.tier--featured::before {
-  content: 'RECOMMENDED';
-  position: absolute;
-  top: -1px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--money);
-  color: var(--ink);
-  font-family: var(--mono);
-  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.2em;
-  padding: 4px 10px;
+  letter-spacing: 0.1em;
 }
 
-.tier__id {
-  font-family: var(--mono);
+.market-cat {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  letter-spacing: 0.22em;
+  color: var(--muted);
   text-transform: uppercase;
-  color: var(--paper-mute);
-  margin-bottom: 20px;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
 }
-.tier__id b { color: var(--paper); }
-
-.tier__name {
-  font-family: var(--display);
+.market-title {
+  font-size: 16px;
   font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 18px;
+  min-height: 60px;
+}
+
+.odds-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.odd-pill {
+  flex: 1;
+  padding: 10px 8px;
+  text-align: center;
+  background: var(--void-3);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.odd-pill .side {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.odd-pill .price {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+}
+.odd-pill.yes .price { color: var(--green); }
+.odd-pill.no .price { color: var(--red); }
+
+.market-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.vol { color: var(--muted); }
+.vol b { color: var(--white); font-weight: 700; }
+.spark { width: 60px; height: 24px; }
+
+/* FEATURED MARKET */
+.featured {
+  margin: 24px 32px;
+  border: 1px solid rgba(196, 255, 0, 0.3);
+  background: linear-gradient(135deg, rgba(196,255,0,0.02), rgba(255,0,110,0.02));
+}
+
+.featured-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.featured-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 6px;
+}
+.featured-title {
+  font-family: 'Anton', sans-serif;
   font-size: 32px;
-  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.featured-meta {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.featured-meta .resolve { color: var(--white); font-size: 13px; margin-top: 4px; }
+
+.three-panel {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+}
+
+.panel {
+  padding: 28px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.panel:last-child { border-right: none; }
+
+.panel-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.panel-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.panel-title .money { color: var(--lime); }
+.panel-title .mouth { color: var(--white); }
+.panel-title .edge { color: var(--magenta); }
+
+/* Money panel */
+.money-grid { display: flex; gap: 8px; margin-bottom: 18px; }
+.money-side {
+  flex: 1;
+  background: var(--void-2);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px;
+}
+.money-side.yes { border-color: rgba(0, 255, 133, 0.4); }
+.money-side.no { border-color: rgba(255, 51, 68, 0.4); }
+.money-side .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.money-side .pct {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  letter-spacing: -0.02em;
   line-height: 1;
+  margin-top: 6px;
+}
+.money-side.yes .pct { color: var(--green); }
+.money-side.no .pct { color: var(--red); }
+.money-side .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.trade-feed {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  margin-top: 16px;
+}
+.trade-feed-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 10px;
   margin-bottom: 8px;
 }
-.tier--featured .tier__name { color: var(--money); }
-.tier__name em { font-style: italic; font-weight: 300; }
-
-.tier__hold {
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--paper);
-  margin-bottom: 4px;
-  font-variant-numeric: tabular-nums;
-}
-.tier__hold b { color: var(--money); font-weight: 600; }
-.tier__est {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--paper-deep);
-  margin-bottom: 28px;
-}
-
-.tier__list {
-  list-style: none;
-  flex: 1;
-  margin-bottom: 24px;
-}
-.tier__list li {
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--paper-dim);
-  padding: 10px 0;
-  padding-left: 22px;
-  position: relative;
-  border-top: 1px dashed var(--rule-soft);
-}
-.tier__list li:first-child { border-top: 1px solid var(--rule); padding-top: 14px; }
-.tier__list li::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 18px;
-  width: 12px; height: 1px; background: var(--money);
-}
-.tier__list li.off { color: var(--paper-deep); }
-.tier__list li.off::before { background: var(--paper-faint); }
-
-.tier__cta {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  padding: 12px 16px;
-  border: 1px solid var(--rule-bold);
-  text-align: center;
-  color: var(--paper);
-  background: transparent;
-  text-decoration: none;
-  display: block;
-  transition: all 0.15s ease;
-}
-.tier__cta:hover { border-color: var(--paper); background: rgba(241,239,234,0.04); }
-.tier--featured .tier__cta {
-  background: var(--money); color: var(--ink); border-color: var(--money);
-}
-.tier--featured .tier__cta:hover {
-  background: var(--money-bright); border-color: var(--money-bright);
-}
-
-/* ============================================================
-   DISTRIBUTION — tokenomics table + vesting
-   ============================================================ */
-
-.distro {
-  padding: 100px 0;
-  border-bottom: 1px solid var(--rule);
-}
-
-.distro__split {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 80px;
-}
-@media (max-width: 980px) { .distro__split { grid-template-columns: 1fr; gap: 48px; } }
-
-.distro__chart-head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 24px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--rule);
-}
-.distro__total {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-}
-.distro__total b {
-  color: var(--money);
-  font-family: var(--display);
-  font-size: 28px;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-  margin-left: 12px;
-  font-weight: 500;
-}
-.distro__symbol {
-  font-family: var(--display);
-  font-style: italic;
-  color: var(--paper-mute);
-  font-size: 22px;
-}
-
-.allocation-bar {
+.trade-row {
   display: flex;
-  height: 64px;
-  margin-bottom: 24px;
-  background: var(--ink-3);
-  border: 1px solid var(--rule);
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.trade-row.up { color: var(--green); }
+.trade-row.dn { color: var(--red); }
+.trade-row .who { color: var(--muted); }
+
+/* Mouth panel */
+.tweet {
+  background: var(--void-2);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.tweet-user {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lime);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.tweet-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+  display: flex;
+  gap: 14px;
+}
+
+.sentiment-bar {
+  margin-top: 16px;
+}
+.sentiment-bar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.sentiment-track {
+  height: 8px;
+  background: var(--void-3);
+  display: flex;
   overflow: hidden;
 }
-.allocation-bar__seg {
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+.sentiment-fill {
+  background: var(--green);
+  width: 71%;
   position: relative;
-  transition: filter 0.2s ease;
 }
-.allocation-bar__seg:hover { filter: brightness(1.15); }
-.allocation-bar__seg + .allocation-bar__seg { border-left: 1px solid var(--ink); }
-
-.allocation-bar__seg.public    { background: var(--money); color: var(--ink); }
-.allocation-bar__seg.community { background: #C49A2E; color: var(--ink); }
-.allocation-bar__seg.team      { background: #8A6E22; color: var(--paper); }
-.allocation-bar__seg.treasury  { background: #4E3F18; color: var(--paper-dim); }
-.allocation-bar__seg.liquidity { background: var(--ink-5); color: var(--paper); }
-
-.allocation-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--mono);
-  font-size: 12px;
-}
-.allocation-table th,
-.allocation-table td {
-  text-align: left;
-  padding: 14px 0;
-  border-top: 1px solid var(--rule-soft);
-  letter-spacing: 0.04em;
-}
-.allocation-table tr:first-child td,
-.allocation-table tr:first-child th { border-top: 1px solid var(--rule); }
-.allocation-table th {
-  font-weight: 500;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-}
-.allocation-table td.amount { color: var(--paper); font-variant-numeric: tabular-nums; }
-.allocation-table td.amount b { color: var(--money); }
-.allocation-table td:last-child { text-align: right; color: var(--paper-mute); }
-.allocation-table .swatch {
-  display: inline-block;
-  width: 10px; height: 10px;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-.allocation-table .swatch.public    { background: var(--money); }
-.allocation-table .swatch.community { background: #C49A2E; }
-.allocation-table .swatch.team      { background: #8A6E22; }
-.allocation-table .swatch.treasury  { background: #4E3F18; }
-.allocation-table .swatch.liquidity { background: var(--ink-5); border: 1px solid var(--rule-bold); }
-
-.vest {
-  background: var(--ink-2);
-  border: 1px solid var(--rule);
-  padding: 28px;
-}
-.vest__head {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  margin-bottom: 24px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--rule);
-  display: flex; justify-content: space-between;
-}
-.vest__row {
-  display: grid;
-  grid-template-columns: 90px 1fr 70px;
-  gap: 16px;
-  align-items: center;
-  padding: 14px 0;
-  border-top: 1px dashed var(--rule-soft);
-  font-family: var(--mono);
-  font-size: 11.5px;
-}
-.vest__row:first-of-type { border-top: 1px solid var(--rule); }
-.vest__when {
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--paper);
-  font-weight: 500;
-}
-.vest__what {
-  color: var(--paper-dim);
-  font-size: 12.5px;
-  letter-spacing: 0.02em;
-}
-.vest__what b { color: var(--paper); }
-.vest__pct {
-  text-align: right;
-  color: var(--money);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ============================================================
-   THE WINDOW — urgency + presale CTA
-   ============================================================ */
-
-.window {
-  padding: 120px 0 100px;
-  border-bottom: 1px solid var(--rule);
-  position: relative;
-  overflow: hidden;
-}
-.window::before {
+.sentiment-fill::after {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 70% 50% at 80% 20%, var(--money-glow), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 20% 80%, var(--edge-glow), transparent 70%);
-  pointer-events: none;
-  opacity: 0.7;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
 }
-.window > .shell { position: relative; z-index: 2; }
-
-.window__kicker {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--edge);
-  margin-bottom: 32px;
-  display: flex; align-items: center; gap: 14px;
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
-.window__kicker::before {
-  content: ''; width: 28px; height: 1px; background: var(--edge);
-}
-
-.window__headline {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(56px, 8vw, 128px);
-  letter-spacing: -0.035em;
-  line-height: 0.92;
-  margin-bottom: 40px;
-  max-width: 16ch;
-}
-.window__headline em { font-style: italic; color: var(--money); font-weight: 300; }
-
-.window__lede {
-  font-size: 19px;
-  line-height: 1.55;
-  color: var(--paper-dim);
-  max-width: 58ch;
-  margin-bottom: 56px;
-}
-.window__lede b { color: var(--paper); font-weight: 500; }
-
-.window__grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 64px;
-  align-items: end;
-}
-@media (max-width: 980px) { .window__grid { grid-template-columns: 1fr; gap: 40px; } }
-
-.window__signals {
-  border-top: 1px solid var(--rule-bold);
-}
-.window__signal {
-  display: grid;
-  grid-template-columns: 80px 1fr auto;
-  gap: 20px;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--rule);
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  align-items: baseline;
-}
-.window__signal .when {
-  color: var(--money);
-  letter-spacing: 0.1em;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-.window__signal .what {
-  color: var(--paper);
-  line-height: 1.5;
-  font-size: 13.5px;
-  letter-spacing: 0.02em;
-}
-.window__signal .what em { color: var(--paper-dim); font-style: normal; font-size: 11px; display: block; margin-top: 4px; letter-spacing: 0.06em; }
-.window__signal .src {
-  text-align: right;
-  color: var(--paper-mute);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-/* COUNTDOWN */
-
-.countdown {
-  background: var(--ink-2);
-  border: 1px solid var(--rule-bold);
-  padding: 32px 32px 28px;
-  position: relative;
-}
-.countdown::before {
-  content: '';
-  position: absolute;
-  top: -1px; left: -1px; right: -1px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--money), transparent);
-}
-.countdown__label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
-  display: flex; justify-content: space-between;
-  margin-bottom: 24px;
-}
-.countdown__label b { color: var(--money); }
-
-.countdown__clock {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 28px;
-}
-.countdown__cell {
-  text-align: center;
-  padding: 16px 0 12px;
-  background: var(--ink-3);
-  border: 1px solid var(--rule);
-  position: relative;
-}
-.countdown__num {
-  font-family: var(--display);
-  font-size: 42px;
-  font-weight: 500;
-  color: var(--paper);
-  letter-spacing: -0.03em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.countdown__unit {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--paper-mute);
+.sentiment-text {
   margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--white);
 }
+.sentiment-text b { color: var(--green); }
 
-.countdown__when {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
+/* Edge panel */
+.divergence-box {
+  background: linear-gradient(135deg, rgba(255,0,110,0.08), rgba(196,255,0,0.04));
+  border: 1px solid var(--magenta);
+  padding: 18px;
+  position: relative;
+}
+.divergence-score {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--magenta);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.divergence-score sup {
+  font-size: 14px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0;
+}
+.divergence-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--paper-mute);
-  text-align: center;
-  margin-bottom: 24px;
+  color: var(--muted);
+  margin-bottom: 8px;
 }
-.countdown__when b { color: var(--paper); }
+.divergence-detail {
+  font-size: 13px;
+  margin-top: 14px;
+  line-height: 1.5;
+  color: rgba(245,245,240,0.85);
+}
+.divergence-detail b { color: var(--lime); }
 
-.countdown__cta {
-  display: block;
+.diverge-comparison {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.diverge-side {
+  background: var(--void-2);
+  padding: 12px;
+  text-align: center;
+}
+.diverge-side .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.diverge-side .val {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  margin-top: 4px;
+}
+.diverge-side.money .val { color: var(--lime); }
+.diverge-side.social .val { color: var(--magenta); }
+
+.edge-cta {
+  margin-top: 20px;
   width: 100%;
-  background: var(--money);
-  color: var(--ink);
-  border: 1px solid var(--money);
-  padding: 16px;
-  font-family: var(--mono);
+  background: var(--lime);
+  color: var(--void);
+  padding: 14px;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.18em;
   text-transform: uppercase;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.18s ease;
-  margin-bottom: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-.countdown__cta:hover {
-  background: var(--money-bright);
-  border-color: var(--money-bright);
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px -8px var(--money-glow);
+.edge-cta:hover {
+  background: var(--white);
+  box-shadow: 0 0 32px rgba(196, 255, 0, 0.5);
 }
 
-.countdown__sub {
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--paper-deep);
-  text-align: center;
-}
-.countdown__sub b { color: var(--paper-mute); }
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-
-footer.foot {
-  padding: 64px 0 48px;
-  font-family: var(--mono);
-}
-.foot__top {
+/* LIVE FEED SECTION */
+.live-section {
+  padding: 60px 32px;
   display: grid;
-  grid-template-columns: 1.4fr repeat(3, 1fr);
-  gap: 40px;
-  padding-bottom: 56px;
-  border-bottom: 1px solid var(--rule);
-}
-@media (max-width: 800px) { .foot__top { grid-template-columns: 1fr 1fr; gap: 32px; } }
-
-.foot__brand .brand { margin-bottom: 16px; }
-.foot__brand p {
-  font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--paper-mute);
-  max-width: 36ch;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  border-top: 1px solid rgba(196, 255, 0, 0.15);
+  margin-top: 40px;
 }
 
-.foot__col h4 {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+.live-panel {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--void-2);
+  overflow: hidden;
+}
+.live-panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.live-panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--paper-mute);
-  margin-bottom: 18px;
 }
-.foot__col a {
-  display: block;
+
+.feed-list {
+  max-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+.feed-list::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--void-2));
+  pointer-events: none;
+}
+
+.feed-row {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideIn 0.5s ease;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.feed-row .left { display: flex; flex-direction: column; gap: 4px; }
+.feed-row .market {
   font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--paper-dim);
-  padding: 6px 0;
+  font-weight: 500;
 }
-.foot__col a:hover { color: var(--money); }
-
-.foot__bottom {
-  padding-top: 28px;
-  display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
-  flex-wrap: wrap;
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--paper-deep);
-}
-.foot__disclosure {
-  max-width: 70ch;
-  line-height: 1.7;
+.feed-row .meta {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.feed-row .amount {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+}
+.feed-row.yes .amount { color: var(--green); }
+.feed-row.no .amount { color: var(--red); }
+.feed-row.whale {
+  background: linear-gradient(90deg, rgba(255,0,110,0.06), transparent);
+  border-left: 2px solid var(--magenta);
 }
 
-/* ============================================================
-   MOTION — entrance + flash
-   ============================================================ */
-
-.flash-up { animation: flash-up 0.55s ease; }
-.flash-dn { animation: flash-dn 0.55s ease; }
-@keyframes flash-up { 0% { color: var(--green); } 100% {} }
-@keyframes flash-dn { 0% { color: var(--red); }   100% {} }
-
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* TOKEN SECTION */
+.token-section {
+  margin: 80px 32px;
+  border: 1px solid rgba(196, 255, 0, 0.2);
+  padding: 60px;
+  background: 
+    radial-gradient(ellipse at top right, rgba(196,255,0,0.06), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(255,0,110,0.05), transparent 60%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
-.reveal { animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.reveal-1 { animation-delay: 0.05s; }
-.reveal-2 { animation-delay: 0.18s; }
-.reveal-3 { animation-delay: 0.32s; }
-.reveal-4 { animation-delay: 0.46s; }
 
-/* Reduce motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  .tape__strip { animation: none; }
+.token-section::before {
+  content: '$';
+  position: absolute;
+  top: -80px;
+  right: -40px;
+  font-family: 'Anton', sans-serif;
+  font-size: 400px;
+  color: var(--lime);
+  opacity: 0.05;
+  line-height: 1;
 }
+
+.token-section h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 96px;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+.token-section h2 .accent { color: var(--lime); }
+.token-section .sub {
+  margin: 20px auto 36px;
+  max-width: 600px;
+  font-size: 18px;
+  color: rgba(245,245,240,0.7);
+  line-height: 1.5;
+}
+
+.token-perks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+  text-align: left;
+}
+.perk {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 24px;
+}
+.perk-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--lime);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+.perk-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.perk-text {
+  font-size: 13px;
+  color: rgba(245,245,240,0.6);
+  line-height: 1.5;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(196, 255, 0, 0.15);
+  padding: 40px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+footer a { color: var(--muted); text-decoration: none; margin: 0 12px; transition: color 0.2s; }
+footer a:hover { color: var(--lime); }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: 1fr; }
+  .markets-grid { grid-template-columns: repeat(2, 1fr); }
+  .three-panel { grid-template-columns: 1fr; }
+  .panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .live-section { grid-template-columns: 1fr; }
+  .token-perks { grid-template-columns: repeat(2, 1fr); }
+  nav ul { display: none; }
+}
+@media (max-width: 600px) {
+  .markets-grid { grid-template-columns: 1fr; }
+  .token-perks { grid-template-columns: 1fr; }
+  .hero { padding: 40px 20px; }
+  .section-title h2 { font-size: 36px; }
+  .token-section { margin: 40px 16px; padding: 32px 20px; }
+  .token-section h2 { font-size: 48px; }
+  header { padding: 14px 18px; }
+}
+
+/* tick animation for numbers */
+.num-tick { transition: color 0.4s; }
+.num-tick.flash-up { color: var(--green); }
+.num-tick.flash-dn { color: var(--red); }
+
 </style>
 </head>
-
 <body>
 
-<!-- ============================================================
-     TOP NAV
-     ============================================================ -->
-<header class="topbar">
-  <div class="shell topbar__inner">
-    <a href="#" class="brand">
-      <span class="brand__symbol">$</span><span class="brand__word">EDGE</span>
-      <span class="brand__beta">Terminal · v0.1</span>
-    </a>
-    <nav class="nav">
-      <a href="#floor">The Floor</a>
-      <a href="#thesis">Methodology</a>
-      <a href="#tiers">Access</a>
-      <a href="#window">Window</a>
-      <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">Code</a>
-    </nav>
-    <div class="topbar__right">
-      <div class="live"><span class="live__dot"></span> Live · <span id="nav-live-count">—</span></div>
-      <a class="btn btn--primary" href="#window">Buy $EDGE <span class="btn__arrow">→</span></a>
-    </div>
+<!-- NAV -->
+<header>
+  <div class="logo">
+    <span class="dollar">$</span><span class="word">EDGE</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#">Markets</a></li>
+      <li><a href="#">Action</a></li>
+      <li><a href="#">Token</a></li>
+      <li><a href="#">Whales</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
+    <button class="btn">Connect</button>
   </div>
 </header>
 
-<!-- ============================================================
-     TAPE TICKER
-     ============================================================ -->
-<div class="tape">
-  <div class="tape__strip" id="tape">
-    <!-- populated by JS — initial fallback content for SSR / no-JS -->
-    <div class="tape__item"><span class="src">POLY</span> <span>US × Iran peace deal · YES 19¢ · $7.5M 24H</span></div>
-    <div class="tape__item"><span class="src">POLY</span> <span class="up">↗ BTC $150K · 1¢</span></div>
-    <div class="tape__item"><span class="src">KALSHI</span> <span>2028 Pres · GOP 47¢</span></div>
-    <div class="tape__item"><span class="src">POLY</span> <span>Strait of Hormuz · NO 95¢</span></div>
-    <div class="tape__item"><span class="pulse">⌬ EDGE INDEX · 38</span></div>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
+    <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
+    <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
+    <div class="ticker-item">↘ <span class="arrow-dn">BITCOIN $200K EOY · 41→33%</span> · 12m</div>
+    <div class="ticker-item">⚡ $89K bet · YES · US-IRAN peace deal Dec 31</div>
+    <div class="ticker-item">⚠ DIVERGENCE · Twitter 78% YES · Money 31% YES</div>
+    <div class="ticker-item">↗ <span class="arrow-up">CHIEFS Super Bowl 22→27%</span> · 1h</div>
+    <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
+    <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
+    <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
+    <div class="ticker-item">↘ <span class="arrow-dn">BITCOIN $200K EOY · 41→33%</span> · 12m</div>
+    <div class="ticker-item">⚡ $89K bet · YES · US-IRAN peace deal Dec 31</div>
+    <div class="ticker-item">⚠ DIVERGENCE · Twitter 78% YES · Money 31% YES</div>
+    <div class="ticker-item">↗ <span class="arrow-up">CHIEFS Super Bowl 22→27%</span> · 1h</div>
   </div>
 </div>
 
-<main>
-
-<!-- ============================================================
-     HERO
-     ============================================================ -->
+<!-- HERO -->
 <section class="hero">
-  <div class="shell">
-    <div class="hero__kicker reveal reveal-1">
-      <span class="dot"></span>
-      <span>The terminal for prediction markets — <em>access gated by $EDGE.</em></span>
-    </div>
-
-    <div class="hero__grid">
-      <div class="reveal reveal-2">
-        <h1 class="hero__headline">
-          Money<br>
-          meets <em>mouth.</em><br>
-          <span class="strike">Before</span> you bet.
-        </h1>
-
-        <p class="hero__lede">
-          Polymarket and Kalshi show you where the capital is.
-          They don't show you <b>why.</b>
-          $EDGE is the connective tissue — <b>order-book flow on one axis,
-          crowd signal on the other,</b> and the divergence between them
-          surfaced as a single number.
-        </p>
-
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#window">Buy $EDGE <span class="btn__arrow">→</span></a>
-          <a class="btn btn--ghost" href="#floor">Enter the Floor</a>
-        </div>
-
-        <div class="hero__meta">
-          <div class="hero__meta-item is-money">
-            24H Volume Tracked
-            <b id="hero-volume">—</b>
-          </div>
-          <div class="hero__meta-item">
-            Live Markets
-            <b id="hero-markets">—</b>
-          </div>
-          <div class="hero__meta-item">
-            Edge Signals Today
-            <b id="hero-edges">—</b>
-          </div>
-        </div>
-      </div>
-
-      <!-- LIVE EDGE INDICATOR -->
-      <aside class="indicator reveal reveal-3" aria-label="Live Edge Indicator">
-        <div class="indicator__head">
-          <span class="label label--money">⌬ Edge Indicator · Live</span>
-          <span class="label" id="indicator-src">Polymarket</span>
-        </div>
-        <div class="indicator__market" id="indicator-title">Loading top market…</div>
-        <div class="indicator__sub">
-          Resolves <b id="indicator-resolve">—</b>
-          &nbsp;·&nbsp; <b id="indicator-vol">—</b> 24H
-        </div>
-
-        <div class="indicator__row money">
-          <div class="indicator__row-label">Money</div>
-          <div class="indicator__bar"><div class="indicator__bar-fill" id="bar-money" style="width: 0%"></div></div>
-          <div class="indicator__row-val tnum" id="val-money">—</div>
-        </div>
-        <div class="indicator__row mouth">
-          <div class="indicator__row-label">Mouth</div>
-          <div class="indicator__bar">
-            <div class="indicator__bar-fill" id="bar-mouth" style="width: 0%"></div>
-            <div class="indicator__bar-tick" id="bar-mouth-tick" style="left: 0%"></div>
-          </div>
-          <div class="indicator__row-val tnum" id="val-mouth">—</div>
-        </div>
-
-        <div class="indicator__edge">
-          <div>
-            <div class="indicator__edge-label">⌬ Edge Score</div>
-            <div class="indicator__hint">
-              <b>Money</b> = live order book ·
-              <b>Mouth</b> = sentiment beta
-            </div>
-          </div>
-          <div class="indicator__edge-val tnum" id="val-edge">— <sup>pts</sup></div>
-        </div>
-      </aside>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     THESIS — METHODOLOGY
-     ============================================================ -->
-<section class="thesis" id="thesis">
-  <div class="shell">
-    <div class="thesis__intro">
-      <div>
-        <div class="label" style="margin-bottom: 18px;">§ 01 — METHODOLOGY</div>
-        <h2>The signal lives <em>between</em> the two.</h2>
-      </div>
-      <p>
-        Every prediction market is a two-sided machine.
-        On one side, <b>capital</b> at risk — visible, on-chain, brutally honest.
-        On the other, <b>narrative</b> — what people are saying on X, in news,
-        on Reddit, in research notes. Most of the time they agree.
-        When they don't, <b>that is the edge.</b>
-      </p>
-    </div>
-
-    <div class="thesis__triple">
-      <article class="pillar pillar--money">
-        <div class="pillar__num">PILLAR 01</div>
-        <h3 class="pillar__title">The Money.</h3>
-        <div class="pillar__kicker">Order book · Volume · Whales</div>
-        <p class="pillar__body">
-          Every CLOB tick. Every position. <b>Polymarket + Kalshi</b> aggregated to a single,
-          normalized stream — sorted by 24h flow, filtered for liquidity, surfaced
-          when whales move more than $50K.
-        </p>
-        <div class="pillar__sources">
-          <b>Live Data Sources</b>
-          <div class="row"><span>Polymarket Gamma + CLOB</span> <span class="stat ship live">● shipping</span></div>
-          <div class="row"><span>Kalshi Events API</span> <span class="stat ship live">● shipping</span></div>
-          <div class="row"><span>Manifold · PredictIt</span> <span class="ship">Q3 2026</span></div>
-        </div>
-      </article>
-
-      <article class="pillar pillar--mouth">
-        <div class="pillar__num">PILLAR 02</div>
-        <h3 class="pillar__title">The Mouth.</h3>
-        <div class="pillar__kicker">Narrative · Sentiment · Velocity</div>
-        <p class="pillar__body">
-          Every relevant post, headline, and comment — LLM-summarized into a
-          <b>directional pulse</b> per market. Sentiment is <i>noisy</i>; we
-          weight by reach, freshness, and historical track record.
-        </p>
-        <div class="pillar__sources">
-          <b>Data Sources</b>
-          <div class="row"><span>Reddit (r/sportsbook, r/PoliticalBetting)</span> <span class="ship">Phase 2</span></div>
-          <div class="row"><span>News (GDELT, NewsAPI)</span> <span class="ship">Phase 2</span></div>
-          <div class="row"><span>X / Twitter (via SocialData)</span> <span class="ship">Phase 3</span></div>
-        </div>
-      </article>
-
-      <article class="pillar pillar--edge">
-        <div class="pillar__num">PILLAR 03</div>
-        <h3 class="pillar__title">The Edge.</h3>
-        <div class="pillar__kicker">Divergence Score · 0 – 100</div>
-        <p class="pillar__body">
-          A single number per market. <b>0 means money and mouth agree.</b>
-          <b>50+ means the crowd is screaming one direction while smart money loads
-          the other.</b> That's where the trade lives. That's the name on the box.
-        </p>
-        <div class="pillar__sources">
-          <b>Methodology</b>
-          <div class="row"><span>Order-book imbalance vs sentiment z-score</span> <span class="stat">live · beta</span></div>
-          <div class="row"><span>Backtested vs historical resolutions</span> <span class="ship">Phase 3</span></div>
-          <div class="row"><span>Token-gated raw signal export</span> <span class="ship">v1.0</span></div>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     THE FLOOR — live markets
-     ============================================================ -->
-<section class="floor" id="floor">
-  <div class="shell">
-    <div class="section-head no-top-border">
-      <div>
-        <div class="section-head__kicker">§ 02 — THE FLOOR · <em>live order book</em></div>
-        <h2>The action, <em>right now.</em></h2>
-      </div>
-      <div class="section-head__meta">
-        Refreshed <b id="refresh-ts">—</b><br>
-        <span class="live-tag">Polymarket + Kalshi</span>
-      </div>
-    </div>
-
-    <div class="floor__stats">
-      <div class="floor__stat">
-        <div class="floor__stat-label">24H Volume — All Markets</div>
-        <div class="floor__stat-value money tnum" id="stat-volume">—</div>
-        <div class="floor__stat-sub" id="stat-volume-sub">Polymarket + Kalshi aggregate</div>
-      </div>
-      <div class="floor__stat">
-        <div class="floor__stat-label">Markets Tracked</div>
-        <div class="floor__stat-value tnum" id="stat-markets">—</div>
-        <div class="floor__stat-sub" id="stat-markets-sub">across 2 platforms</div>
-      </div>
-      <div class="floor__stat">
-        <div class="floor__stat-label">Hot Markets · ≥$100K 24H</div>
-        <div class="floor__stat-value tnum" id="stat-hot">—</div>
-        <div class="floor__stat-sub">where the capital is</div>
-      </div>
-      <div class="floor__stat">
-        <div class="floor__stat-label">Edge Signals · ≥3¢ Δ24H</div>
-        <div class="floor__stat-value tnum" id="stat-edges">—</div>
-        <div class="floor__stat-sub">divergence candidates</div>
-      </div>
-    </div>
-
-    <div class="floor__grid" id="floor-grid">
-      <!-- initial fallback / SSR cards — JS replaces with real top 4 -->
-      <div class="row-card">
-        <div class="row-card__cat"><span>Loading…</span><span class="src">—</span></div>
-        <div class="row-card__title">Connecting to terminal…</div>
-        <div class="row-card__odds">
-          <div class="row-card__odds-side yes"><div class="row-card__odds-lbl">Yes</div><div class="row-card__odds-val">—</div></div>
-          <div class="row-card__odds-side no"><div class="row-card__odds-lbl">No</div><div class="row-card__odds-val">—</div></div>
-        </div>
-        <div class="row-card__foot"><div>Vol <b>—</b></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SIGNAL — featured Edge call (research note)
-     ============================================================ -->
-<section class="signal" id="signal">
-  <div class="shell">
-    <div class="signal__head">
-      <div>
-        <div class="signal__kicker">⌬ EDGE CALL · today's highest divergence</div>
-        <h2 class="signal__title" id="signal-title">Loading research note…</h2>
-      </div>
-      <div class="signal__date">
-        Updated<br>
-        <b id="signal-date">—</b>
-      </div>
-    </div>
-
-    <div class="signal__body">
-      <div class="signal__essay">
-        <p id="signal-lede">
-          The terminal is connecting to live order flow. The featured signal
-          surfaces the market with the largest 24-hour spread between consensus
-          drift and the order book — historically the kind of dislocation that
-          resolves in <b>one side's favor within 72 hours.</b>
-        </p>
-        <div class="pull" id="signal-pull">
-          "The crowd writes the headline. The money writes the resolution."
-        </div>
-        <p>
-          Every published $EDGE Call is <b>archived with timestamps</b> — you can
-          backtest our calls against the resolution data. Token-tier holders get
-          alerts the moment a new signal trips, before it propagates to the public feed.
-        </p>
-        <p>
-          This is not financial advice. This is <b>infrastructure that makes the
-          information asymmetry visible.</b> What you do with it is on you.
-        </p>
-      </div>
-
-      <aside class="signal__panel">
-        <div class="signal__panel-head">
-          <span>RECENT WHALE FLOW</span>
-          <span id="signal-symbol">—</span>
-        </div>
-        <div id="signal-rows">
-          <div class="signal__row dn"><span class="who">0xa3b…e21</span><b>NO @ 69¢ · $45,000</b></div>
-          <div class="signal__row up"><span class="who">0x91f…cc2</span><b>YES @ 30¢ · $22,400</b></div>
-          <div class="signal__row dn"><span class="who">0x77c…112</span><b>NO @ 68¢ · $18,900</b></div>
-          <div class="signal__row dn"><span class="who">0x52a…7e8</span><b>NO @ 70¢ · $14,200</b></div>
-        </div>
-        <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--rule);">
-          <a class="btn btn--edge" href="#" id="signal-cta" target="_blank" rel="noopener" style="width: 100%; justify-content: center;">
-            Open in Terminal <span class="btn__arrow">→</span>
-          </a>
-        </div>
-      </aside>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     TIERS — token-gated access
-     ============================================================ -->
-<section class="tiers" id="tiers">
-  <div class="shell">
-    <div class="tiers__intro">
-      <div>
-        <div class="label" style="margin-bottom: 18px;">§ 03 — ACCESS</div>
-        <h2>Hold $EDGE. <em>Hold the floor.</em></h2>
-      </div>
-      <div>
-        <p>
-          $EDGE isn't a points program. It's a <b>key.</b>
-          Every tier of the terminal — the live feeds, the whale alerts,
-          the raw divergence signal, the API — is gated by how much you hold.
-        </p>
-        <p>
-          The price of access scales with the price of the token. <b>At fairlaunch,
-          a $100 bag unlocks the Pro tier. Six months in, that same tier may cost a
-          different number.</b> That's the asymmetry. That's the window.
-        </p>
-      </div>
-    </div>
-
-    <div class="tier-grid">
-      <article class="tier">
-        <div class="tier__id">TIER · <b>00</b></div>
-        <h3 class="tier__name">Floor</h3>
-        <div class="tier__hold">No hold required</div>
-        <div class="tier__est">Public</div>
-        <ul class="tier__list">
-          <li>Top 8 markets · 30s refresh</li>
-          <li>Hero Edge Indicator</li>
-          <li>Public tape ticker</li>
-          <li class="off">Whale alerts</li>
-          <li class="off">Divergence radar</li>
-          <li class="off">API access</li>
-        </ul>
-        <a class="tier__cta" href="#floor">Enter Floor</a>
-      </article>
-
-      <article class="tier tier--featured">
-        <div class="tier__id">TIER · <b>01</b></div>
-        <h3 class="tier__name">Pro <em>Terminal</em></h3>
-        <div class="tier__hold">Hold <b>10,000 $EDGE</b></div>
-        <div class="tier__est">~$10 at fairlaunch</div>
-        <ul class="tier__list">
-          <li>All markets · 5s refresh</li>
-          <li>Full Edge Indicator coverage</li>
-          <li>Watchlist + price alerts</li>
-          <li>Whale flow per market</li>
-          <li>Daily Edge Call digest</li>
-          <li class="off">API access</li>
-        </ul>
-        <a class="tier__cta" href="#window">Unlock Pro <span class="btn__arrow">→</span></a>
-      </article>
-
-      <article class="tier">
-        <div class="tier__id">TIER · <b>02</b></div>
-        <h3 class="tier__name">Whale</h3>
-        <div class="tier__hold">Hold <b>100,000 $EDGE</b></div>
-        <div class="tier__est">~$100 at fairlaunch</div>
-        <ul class="tier__list">
-          <li>Everything in Pro</li>
-          <li>Real-time whale alerts (Telegram)</li>
-          <li>Divergence radar + custom alerts</li>
-          <li>Weekly research notes</li>
-          <li>Private community channel</li>
-          <li class="off">API access</li>
-        </ul>
-        <a class="tier__cta" href="#window">Unlock Whale</a>
-      </article>
-
-      <article class="tier">
-        <div class="tier__id">TIER · <b>03</b></div>
-        <h3 class="tier__name">Desk</h3>
-        <div class="tier__hold">Hold <b>1,000,000 $EDGE</b></div>
-        <div class="tier__est">~$1,000 at fairlaunch</div>
-        <ul class="tier__list">
-          <li>Everything in Whale</li>
-          <li>Raw signal API (REST + WebSocket)</li>
-          <li>Backtest export, full history</li>
-          <li>Early access to new markets</li>
-          <li>Direct line to research desk</li>
-          <li>Governance vote rights</li>
-        </ul>
-        <a class="tier__cta" href="#window">Unlock Desk</a>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     DISTRIBUTION — tokenomics + vesting
-     ============================================================ -->
-<section class="distro">
-  <div class="shell">
-    <div class="section-head no-top-border" style="margin-bottom: 64px;">
-      <div>
-        <div class="section-head__kicker">§ 04 — DISTRIBUTION</div>
-        <h2>Supply, <em>laid bare.</em></h2>
-      </div>
-      <div class="section-head__meta">
-        Contract<br>
-        <b>Solana · pending fairlaunch</b>
-      </div>
-    </div>
-
-    <div class="distro__split">
-      <div>
-        <div class="distro__chart-head">
-          <div class="distro__total">Total Supply <b>1,000,000,000</b></div>
-          <div class="distro__symbol">$EDGE</div>
-        </div>
-
-        <div class="allocation-bar">
-          <div class="allocation-bar__seg public"    style="flex: 70;">70%</div>
-          <div class="allocation-bar__seg liquidity" style="flex: 10;">10%</div>
-          <div class="allocation-bar__seg community" style="flex: 10;">10%</div>
-          <div class="allocation-bar__seg team"      style="flex: 7;">7%</div>
-          <div class="allocation-bar__seg treasury"  style="flex: 3;">3%</div>
-        </div>
-
-        <table class="allocation-table">
-          <tr>
-            <th>Bucket</th>
-            <th>%</th>
-            <th>Tokens</th>
-            <th style="text-align: right;">Vesting</th>
-          </tr>
-          <tr>
-            <td><span class="swatch public"></span> Public Fairlaunch</td>
-            <td class="amount"><b>70%</b></td>
-            <td class="amount">700,000,000</td>
-            <td>Liquid at TGE</td>
-          </tr>
-          <tr>
-            <td><span class="swatch liquidity"></span> Liquidity Pool</td>
-            <td class="amount"><b>10%</b></td>
-            <td class="amount">100,000,000</td>
-            <td>Locked · 24mo</td>
-          </tr>
-          <tr>
-            <td><span class="swatch community"></span> Community Airdrops</td>
-            <td class="amount"><b>10%</b></td>
-            <td class="amount">100,000,000</td>
-            <td>Streamed · 12mo</td>
-          </tr>
-          <tr>
-            <td><span class="swatch team"></span> Team &amp; Builders</td>
-            <td class="amount"><b>7%</b></td>
-            <td class="amount">70,000,000</td>
-            <td>6mo cliff · 18mo linear</td>
-          </tr>
-          <tr>
-            <td><span class="swatch treasury"></span> Treasury</td>
-            <td class="amount"><b>3%</b></td>
-            <td class="amount">30,000,000</td>
-            <td>Multisig · 12mo cliff</td>
-          </tr>
-        </table>
-      </div>
-
-      <div>
-        <div class="vest">
-          <div class="vest__head">
-            <span>Vesting Schedule</span>
-            <span>T+ from TGE</span>
-          </div>
-          <div class="vest__row">
-            <div class="vest__when">T+0</div>
-            <div class="vest__what"><b>Fairlaunch unlock</b><br>Public + LP go live</div>
-            <div class="vest__pct">80%</div>
-          </div>
-          <div class="vest__row">
-            <div class="vest__when">T+1mo</div>
-            <div class="vest__what"><b>Community stream begins</b><br>Airdrop emissions to holders</div>
-            <div class="vest__pct">+1%/mo</div>
-          </div>
-          <div class="vest__row">
-            <div class="vest__when">T+6mo</div>
-            <div class="vest__what"><b>Team cliff</b><br>Builders begin linear unlock</div>
-            <div class="vest__pct">+0.4%/mo</div>
-          </div>
-          <div class="vest__row">
-            <div class="vest__when">T+12mo</div>
-            <div class="vest__what"><b>Treasury cliff</b><br>Multisig-controlled, governance-voted</div>
-            <div class="vest__pct">+3%</div>
-          </div>
-          <div class="vest__row">
-            <div class="vest__when">T+24mo</div>
-            <div class="vest__what"><b>LP unlock window opens</b><br>Subject to community governance</div>
-            <div class="vest__pct">100%</div>
-          </div>
-        </div>
-
-        <div style="margin-top: 24px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; color: var(--paper-mute); line-height: 1.7;">
-          → Mint authority <b style="color: var(--paper);">renounced at TGE.</b><br>
-          → Freeze authority <b style="color: var(--paper);">renounced at TGE.</b><br>
-          → Team wallet visible on-chain: <b style="color: var(--paper);">pending</b>.<br>
-          → All vesting contracts open-sourced before launch.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     THE WINDOW — urgency + presale CTA
-     ============================================================ -->
-<section class="window" id="window">
-  <div class="shell">
-    <div class="window__kicker">⌬ THE WINDOW · CLOSING</div>
-
-    <h2 class="window__headline">
-      Retail edge<br>
-      <em>has a half-life.</em>
-    </h2>
-
-    <p class="window__lede">
-      Prediction markets are about to become a <b>regulated asset class.</b>
-      Robinhood acquired Bitstamp. Kalshi cleared CFTC. Polymarket is signaling
-      institutional desk integration. When BlackRock and Citadel arrive,
-      <b>the asymmetry disappears.</b> $EDGE is the infrastructure for the
-      <b>last window of retail-readable signal.</b>
+  <div>
+    <h1>
+      Watch<br>
+      the <span class="accent">action.</span><br>
+      <span class="strike">Before</span> you bet.
+    </h1>
+    <p class="hero-tagline">
+      Every market on Polymarket and Kalshi. Every whale move. Every Twitter argument. 
+      <strong>One screen.</strong> No signup. No wallet. Just the action.
     </p>
-
-    <div class="window__grid">
-      <div class="window__signals">
-        <div class="window__signal">
-          <div class="when">2025·Q4</div>
-          <div class="what">
-            Kalshi reaches $1.2B monthly volume
-            <em>CFTC-cleared event contracts go mainstream</em>
-          </div>
-          <div class="src">REUTERS</div>
-        </div>
-        <div class="window__signal">
-          <div class="when">2026·Q1</div>
-          <div class="what">
-            Polymarket adds USD on-ramp via Stripe
-            <em>End of crypto-only friction; broker integration begins</em>
-          </div>
-          <div class="src">BLOOMBERG</div>
-        </div>
-        <div class="window__signal">
-          <div class="when">2026·Q2</div>
-          <div class="what">
-            Robinhood × Bitstamp prediction-markets pilot announced
-            <em>Retail brokerages enter event-contract distribution</em>
-          </div>
-          <div class="src">WSJ</div>
-        </div>
-        <div class="window__signal" style="border-bottom: none;">
-          <div class="when">2026·Q3</div>
-          <div class="what" style="color: var(--edge);">
-            Institutional market-maker liquidity expected — Citadel, Jump
-            <em style="color: var(--edge-bright);">Order-book reads become inaccessible to retail</em>
-          </div>
-          <div class="src" style="color: var(--edge);">EST.</div>
-        </div>
-      </div>
-
-      <div class="countdown">
-        <div class="countdown__label">
-          <span>Fairlaunch in</span>
-          <b>$EDGE TGE</b>
-        </div>
-        <div class="countdown__clock" id="countdown-clock">
-          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-d">—</div><div class="countdown__unit">days</div></div>
-          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-h">—</div><div class="countdown__unit">hrs</div></div>
-          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-m">—</div><div class="countdown__unit">min</div></div>
-          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-s">—</div><div class="countdown__unit">sec</div></div>
-        </div>
-        <div class="countdown__when">
-          Launches on <b id="cd-date">—</b>
-        </div>
-        <a class="countdown__cta" href="#" id="cd-cta">Reserve allocation</a>
-        <div class="countdown__sub">
-          Fairlaunch · pump.fun bonding curve · <b>no presale, no insiders</b>
-        </div>
-      </div>
+    <div class="hero-cta">
+      <button class="btn">Enter the Floor →</button>
+      <button class="btn btn-ghost">Buy $EDGE</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-block">
+      <div class="stat-label">Live Volume · 24H</div>
+      <div class="stat-value mono num-tick" id="stat-volume">$42.7M</div>
+      <div class="stat-meta">↑ +$1.2M last hour</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Active Bettors</div>
+      <div class="stat-value mono num-tick" id="stat-bettors">127,341</div>
+      <div class="stat-meta">↑ +843 in last 5 min</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Tracked Markets</div>
+      <div class="stat-value mono">8,341</div>
+      <div class="stat-meta">across 4 platforms</div>
     </div>
   </div>
 </section>
 
-</main>
+<!-- HOT MARKETS -->
+<div class="section-title">
+  <h2>Hot <span class="accent">Now</span></h2>
+  <div class="ts">Refreshed <span id="refresh-ts">2s ago</span> · auto</div>
+</div>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<footer class="foot">
-  <div class="shell">
-    <div class="foot__top">
-      <div class="foot__brand">
-        <div class="brand">
-          <span class="brand__symbol">$</span><span class="brand__word">EDGE</span>
+<div class="markets-grid">
+  <div class="market-card hot">
+    <div class="market-cat">Politics · Polymarket</div>
+    <div class="market-title">Will Trump be impeached again in 2026?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">14¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">86¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$8.2M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,18 10,14 20,16 30,11 40,8 50,10 60,6" fill="none" stroke="#00FF85" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <div class="market-card">
+    <div class="market-cat">Sports · Polymarket</div>
+    <div class="market-title">Lakers cover -3.5 vs Celtics tonight?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">71¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">29¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$2.4M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,16 10,15 20,12 30,14 40,9 50,7 60,5" fill="none" stroke="#00FF85" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <div class="market-card">
+    <div class="market-cat">Crypto · Kalshi</div>
+    <div class="market-title">Bitcoin closes above $200K by Dec 31?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">33¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">67¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$5.1M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,5 10,8 20,11 30,9 40,14 50,16 60,18" fill="none" stroke="#FF3344" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <div class="market-card hot">
+    <div class="market-cat">Geopolitics · Polymarket</div>
+    <div class="market-title">US × Iran permanent peace deal by Dec 31?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">31¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">69¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$4.2M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,12 10,14 20,11 30,10 40,9 50,11 60,7" fill="none" stroke="#FF006E" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<div class="featured">
+  <div class="featured-header">
+    <div>
+      <div class="featured-tag">⚡ Featured · Highest Divergence</div>
+      <div class="featured-title">US × Iran Peace Deal by Dec 31</div>
+    </div>
+    <div class="featured-meta">
+      Polymarket · ID 0x4a7f...e9c1
+      <div class="resolve">Resolves: Dec 31, 2026 23:59 UTC</div>
+    </div>
+  </div>
+  
+  <div class="three-panel">
+    
+    <!-- MONEY PANEL -->
+    <div class="panel">
+      <div class="panel-label">Panel 01</div>
+      <div class="panel-title"><span class="money">The Money</span></div>
+      
+      <div class="money-grid">
+        <div class="money-side yes">
+          <div class="label">YES</div>
+          <div class="pct">31<span style="font-size: 24px;">¢</span></div>
+          <div class="meta">→ implies 31%</div>
         </div>
-        <p>
-          The institutional-grade terminal for prediction markets.
-          Money meets mouth. Token-gated access.
-          Built on Solana.
-        </p>
+        <div class="money-side no">
+          <div class="label">NO</div>
+          <div class="pct">69<span style="font-size: 24px;">¢</span></div>
+          <div class="meta">→ implies 69%</div>
+        </div>
       </div>
-      <div class="foot__col">
-        <h4>Terminal</h4>
-        <a href="#floor">The Floor</a>
-        <a href="#signal">Edge Calls</a>
-        <a href="#tiers">Tier Access</a>
-        <a href="#thesis">Methodology</a>
+
+      <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);">
+        <span>24h vol: <b style="color: white;">$890K</b></span>
+        <span>Total vol: <b style="color: white;">$4.2M</b></span>
       </div>
-      <div class="foot__col">
-        <h4>Token</h4>
-        <a href="#window">Buy $EDGE</a>
-        <a href="#tiers">Utility</a>
-        <a href="#">Tokenomics</a>
-        <a href="#">Vesting Contract</a>
-      </div>
-      <div class="foot__col">
-        <h4>Channels</h4>
-        <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a>
-        <a href="#" target="_blank" rel="noopener">Twitter / X</a>
-        <a href="#" target="_blank" rel="noopener">Telegram</a>
-        <a href="#" target="_blank" rel="noopener">Discord</a>
+
+      <div class="trade-feed">
+        <div class="trade-feed-label">Recent Whale Trades</div>
+        <div class="trade-row dn"><span><span class="who">0xa3b...</span> NO @ 69¢</span><b>$45,000</b></div>
+        <div class="trade-row up"><span><span class="who">0x91f...</span> YES @ 30¢</span><b>$22,400</b></div>
+        <div class="trade-row dn"><span><span class="who">0x77c...</span> NO @ 68¢</span><b>$18,900</b></div>
+        <div class="trade-row dn"><span><span class="who">0x52a...</span> NO @ 70¢</span><b>$14,200</b></div>
       </div>
     </div>
-    <div class="foot__bottom">
-      <div>© 2026 $EDGE Terminal</div>
-      <div class="foot__disclosure">
-        $EDGE is a utility access token. Nothing on this site is investment, legal, or tax advice.
-        Prediction-market data is sourced from Polymarket and Kalshi public APIs.
-        The token has no claim on revenues, equity, or platform ownership.
+
+    <!-- MOUTH PANEL -->
+    <div class="panel">
+      <div class="panel-label">Panel 02</div>
+      <div class="panel-title"><span class="mouth">The Mouth</span></div>
+
+      <div class="tweet">
+        <div class="tweet-user"><span>@geopol_intel</span><span>2h</span></div>
+        Trump just teased "huge announcement on Iran" — diplomats from both sides spotted in Doha this morning. This is happening.
+        <div class="tweet-meta"><span>↻ 4.2K</span><span>♡ 18K</span><span>→ 891K views</span></div>
+      </div>
+
+      <div class="tweet">
+        <div class="tweet-user"><span>@NYTpolitics</span><span>5h</span></div>
+        BREAKING: White House signals breakthrough in Tehran backchannel talks. Senior official: "Closer than we've been in 20 years."
+        <div class="tweet-meta"><span>↻ 12K</span><span>♡ 41K</span><span>→ 2.1M views</span></div>
+      </div>
+
+      <div class="sentiment-bar">
+        <div class="sentiment-bar-label">Social Sentiment (24h · 3,847 posts)</div>
+        <div class="sentiment-track"><div class="sentiment-fill"></div></div>
+        <div class="sentiment-text"><b>71% YES</b> · 29% NO · Trending ↑ across X, Reddit, news</div>
       </div>
     </div>
+
+    <!-- EDGE PANEL -->
+    <div class="panel">
+      <div class="panel-label">Panel 03</div>
+      <div class="panel-title"><span class="edge">The Edge</span></div>
+
+      <div class="divergence-box">
+        <div class="divergence-label">Divergence Score</div>
+        <div class="divergence-score">40<sup>pt</sup></div>
+        <div class="divergence-detail">
+          Twitter is <b>screaming YES.</b> Smart money is <b>quietly stacking NO.</b> 
+          Historically, when divergence > 35pt, money wins ~64% of the time.
+        </div>
+
+        <div class="diverge-comparison">
+          <div class="diverge-side money">
+            <div class="lbl">Money says</div>
+            <div class="val">31%</div>
+          </div>
+          <div class="diverge-side social">
+            <div class="lbl">Mouth says</div>
+            <div class="val">71%</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="edge-cta">Trade on Polymarket →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIVE FEEDS -->
+<div class="live-section">
+  <div class="live-panel">
+    <div class="live-panel-header">
+      <div class="live-panel-title">📡 Live Bet Feed</div>
+      <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+    </div>
+    <div class="feed-list" id="bet-feed">
+      <div class="feed-row whale yes">
+        <div class="left">
+          <div class="market">Trump impeached 2026 · YES @ 14¢</div>
+          <div class="meta">WHALE · 0x83a...4f1 · 8s ago</div>
+        </div>
+        <div class="amount">$127K</div>
+      </div>
+      <div class="feed-row no">
+        <div class="left">
+          <div class="market">Iran peace deal Dec 31 · NO @ 69¢</div>
+          <div class="meta">0xa3b...e21 · 24s ago</div>
+        </div>
+        <div class="amount">$45K</div>
+      </div>
+      <div class="feed-row yes">
+        <div class="left">
+          <div class="market">Lakers -3.5 · YES @ 71¢</div>
+          <div class="meta">0x12d...88c · 41s ago</div>
+        </div>
+        <div class="amount">$8.2K</div>
+      </div>
+      <div class="feed-row no">
+        <div class="left">
+          <div class="market">BTC $200K EOY · NO @ 67¢</div>
+          <div class="meta">0x55e...3b9 · 1m ago</div>
+        </div>
+        <div class="amount">$11K</div>
+      </div>
+      <div class="feed-row yes">
+        <div class="left">
+          <div class="market">Fed cut June FOMC · YES @ 58¢</div>
+          <div class="meta">0x77c...112 · 2m ago</div>
+        </div>
+        <div class="amount">$4.5K</div>
+      </div>
+      <div class="feed-row whale no">
+        <div class="left">
+          <div class="market">Chiefs Super Bowl LX · NO @ 73¢</div>
+          <div class="meta">WHALE · 0x9aa...ddc · 3m ago</div>
+        </div>
+        <div class="amount">$62K</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="live-panel">
+    <div class="live-panel-header">
+      <div class="live-panel-title">⚠ Divergence Alerts</div>
+      <div class="live-pill" style="color: var(--magenta);"><span class="live-dot" style="background: var(--magenta); box-shadow: 0 0 10px var(--magenta);"></span> 4 ACTIVE</div>
+    </div>
+    <div class="feed-list">
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">Iran peace deal · 40pt gap</div>
+          <div class="meta" style="color: var(--magenta);">Twitter 71% YES vs Money 31% YES</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">40</div>
+      </div>
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">BTC $200K EOY · 28pt gap</div>
+          <div class="meta" style="color: var(--magenta);">Reddit bullish vs Money bearish</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">28</div>
+      </div>
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">Chiefs SB · 22pt gap</div>
+          <div class="meta" style="color: var(--magenta);">Public on Chiefs · Sharps fading</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">22</div>
+      </div>
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">Trump impeached 26 · 18pt gap</div>
+          <div class="meta" style="color: var(--magenta);">News coverage spiking · No money flow</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">18</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOKEN -->
+<div class="token-section">
+  <h2>Hold <span class="accent">$EDGE.</span><br>Get the edge.</h2>
+  <p class="sub">
+    The token isn't the product — the dashboard is. $EDGE unlocks the premium layer: 
+    whale alerts in real time, every divergence call before it hits the public feed, 
+    and the data the funds pay for.
+  </p>
+
+  <div class="token-perks">
+    <div class="perk">
+      <div class="perk-icon">// 01</div>
+      <div class="perk-title">Whale Alerts</div>
+      <div class="perk-text">Every bet over $50K pushed to your phone in &lt;3 seconds. Telegram + app.</div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">// 02</div>
+      <div class="perk-title">Edge Feed</div>
+      <div class="perk-text">Every divergence over 25pt, surfaced before it hits the public dashboard.</div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">// 03</div>
+      <div class="perk-title">Whale Wallet Tracking</div>
+      <div class="perk-text">Follow the 200 most profitable wallets across Polymarket and Kalshi. Live.</div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">// 04</div>
+      <div class="perk-title">DAO Vote</div>
+      <div class="perk-text">Vote on featured markets, new platforms, payouts. Token = voice.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>© 2026 EDGE · Not financial advice · Markets data from Polymarket + Kalshi public APIs</div>
+  <div>
+    <a href="#">X</a>
+    <a href="#">Telegram</a>
+    <a href="#">Discord</a>
+    <a href="#">Docs</a>
   </div>
 </footer>
 
-<!-- ============================================================
-     LIVE DATA — connects to /api/markets
-     ============================================================ -->
 <script>
-(() => {
+// Live ticker — fake the volume number updating
+const volEl = document.getElementById('stat-volume');
+const bettorsEl = document.getElementById('stat-bettors');
+const refreshEl = document.getElementById('refresh-ts');
+let vol = 42.7;
+let bettors = 127341;
+let refresh = 2;
 
-const API_URL    = '/api/markets';
-const REFRESH_MS = 30000;
+setInterval(() => {
+  // Volume drift up
+  const change = (Math.random() * 0.15);
+  vol += change;
+  volEl.textContent = `$${vol.toFixed(1)}M`;
+  volEl.classList.add('flash-up');
+  setTimeout(() => volEl.classList.remove('flash-up'), 400);
+}, 3500);
 
-/* ---------- target nodes ---------- */
-const $ = (id) => document.getElementById(id);
+setInterval(() => {
+  bettors += Math.floor(Math.random() * 12);
+  bettorsEl.textContent = bettors.toLocaleString();
+  bettorsEl.classList.add('flash-up');
+  setTimeout(() => bettorsEl.classList.remove('flash-up'), 400);
+}, 2000);
 
-const els = {
-  navLive:        $('nav-live-count'),
-  tape:           $('tape'),
+setInterval(() => {
+  refresh = refresh + 1;
+  if (refresh > 9) refresh = 1;
+  refreshEl.textContent = `${refresh}s ago`;
+}, 1000);
 
-  heroVolume:     $('hero-volume'),
-  heroMarkets:    $('hero-markets'),
-  heroEdges:      $('hero-edges'),
+// Inject new bet rows occasionally
+const feed = document.getElementById('bet-feed');
+const sampleBets = [
+  { market: 'Trump impeached 2026 · YES @ 14¢', meta: '0x83a...4f1', amount: '$3.4K', cls: 'yes' },
+  { market: 'Iran peace deal · NO @ 69¢', meta: '0xa3b...e21', amount: '$8.1K', cls: 'no' },
+  { market: 'Lakers -3.5 · YES @ 71¢', meta: '0x12d...88c', amount: '$2.2K', cls: 'yes' },
+  { market: 'BTC $200K EOY · YES @ 33¢', meta: '0x55e...3b9', amount: '$5.6K', cls: 'yes' },
+  { market: 'Fed cut June · NO @ 42¢', meta: '0x77c...112', amount: '$1.8K', cls: 'no' },
+  { market: 'Chiefs SB LX · NO @ 73¢', meta: '0x9aa...ddc', amount: '$24K', cls: 'no whale' },
+  { market: 'Powell ousted by July · YES @ 9¢', meta: '0x44f...e88', amount: '$890', cls: 'yes' },
+];
 
-  indicatorSrc:   $('indicator-src'),
-  indicatorTitle: $('indicator-title'),
-  indicatorResolve: $('indicator-resolve'),
-  indicatorVol:   $('indicator-vol'),
-  barMoney:       $('bar-money'),
-  barMouth:       $('bar-mouth'),
-  barMouthTick:   $('bar-mouth-tick'),
-  valMoney:       $('val-money'),
-  valMouth:       $('val-mouth'),
-  valEdge:        $('val-edge'),
-
-  refreshTs:      $('refresh-ts'),
-  statVolume:     $('stat-volume'),
-  statVolumeSub:  $('stat-volume-sub'),
-  statMarkets:    $('stat-markets'),
-  statMarketsSub: $('stat-markets-sub'),
-  statHot:        $('stat-hot'),
-  statEdges:      $('stat-edges'),
-  floorGrid:      $('floor-grid'),
-
-  signalTitle:    $('signal-title'),
-  signalDate:     $('signal-date'),
-  signalLede:     $('signal-lede'),
-  signalPull:     $('signal-pull'),
-  signalSymbol:   $('signal-symbol'),
-  signalRows:     $('signal-rows'),
-  signalCta:      $('signal-cta'),
-};
-
-/* ---------- state ---------- */
-let lastFetch = null;
-let prev = { volume: null, hot: null, edges: null, markets: null };
-let liveMarkets = [];
-
-/* ---------- fmt ---------- */
-const fmtMoney = (n) => {
-  if (!n && n !== 0) return '—';
-  if (n >= 1e9) return `$${(n/1e9).toFixed(1)}B`;
-  if (n >= 1e6) return `$${(n/1e6).toFixed(1)}M`;
-  if (n >= 1e3) return `$${(n/1e3).toFixed(1)}K`;
-  return `$${Math.round(n).toLocaleString()}`;
-};
-const fmtCount = (n) => {
-  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
-  if (n >= 1e4) return (n/1e3).toFixed(1) + 'K';
-  return Math.round(n).toLocaleString();
-};
-const fmtPct = (p, digits=0) => `${(p * 100).toFixed(digits)}%`;
-const fmtCents = (p) => `${Math.round(p * 100)}¢`;
-const fmtDate = (iso) => {
-  if (!iso) return '—';
-  try {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  } catch { return '—'; }
-};
-const short = (t, n=70) => (!t ? '' : (t.length > n ? t.slice(0, n-1) + '…' : t));
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-const clamp01 = (x) => Math.max(0, Math.min(1, x));
-
-/* ---------- flash on change ---------- */
-function flashSet(el, text, val, prevKey) {
-  if (!el) return;
-  el.textContent = text;
-  const prevVal = prev[prevKey];
-  if (prevVal != null && val !== prevVal) {
-    el.classList.remove('flash-up','flash-dn');
-    void el.offsetWidth;
-    el.classList.add(val > prevVal ? 'flash-up' : 'flash-dn');
-  }
-  prev[prevKey] = val;
-}
-
-/* ---------- main fetch ---------- */
-async function loadMarkets() {
-  try {
-    const r = await fetch(API_URL, { cache: 'no-store' });
-    if (!r.ok) throw new Error('http ' + r.status);
-    const data = await r.json();
-    if (!data || !Array.isArray(data.markets) || !data.markets.length) throw new Error('empty');
-    liveMarkets = data.markets;
-    render(data);
-    lastFetch = Date.now();
-  } catch (e) {
-    console.warn('[edge] market data load failed', e);
-  }
-}
-
-function render(data) {
-  const s = data.stats || {};
-  const ms = data.markets;
-
-  /* ---------- nav / hero stats ---------- */
-  if (els.navLive) els.navLive.textContent = `${(s.total_markets || 0).toLocaleString()} markets`;
-
-  flashSet(els.heroVolume,  fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'volume');
-  if (els.heroMarkets) els.heroMarkets.textContent = (s.total_markets || 0).toLocaleString();
-
-  const edgeCount = ms.filter(m => Math.abs(m.price_change_24h || 0) >= 0.03).length;
-  flashSet(els.heroEdges, edgeCount.toLocaleString(), edgeCount, 'edges');
-
-  /* ---------- floor stats ---------- */
-  flashSet(els.statVolume, fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'volume2');
-  if (els.statMarkets) els.statMarkets.textContent = (s.total_markets || 0).toLocaleString();
-  if (els.statMarketsSub && s.by_source) {
-    els.statMarketsSub.textContent =
-      `${(s.by_source.polymarket||0).toLocaleString()} Polymarket · ${(s.by_source.kalshi||0).toLocaleString()} Kalshi`;
-  }
-  if (els.statHot) els.statHot.textContent = (s.hot_markets || 0).toLocaleString();
-  if (els.statEdges) els.statEdges.textContent = edgeCount.toLocaleString();
-
-  if (els.refreshTs) els.refreshTs.textContent = 'just now';
-
-  /* ---------- edge indicator (top market) ---------- */
-  renderIndicator(ms[0]);
-
-  /* ---------- floor grid ---------- */
-  renderFloor(ms.slice(0, 4));
-
-  /* ---------- signal (highest divergence) ---------- */
-  renderSignal(ms);
-
-  /* ---------- tape ---------- */
-  renderTape(ms);
-}
-
-/* ---------- INDICATOR ---------- */
-function renderIndicator(m) {
-  if (!m) return;
-  const moneyP = clamp01(m.yes_price || 0);
-  // "Mouth" beta proxy: stretch the 24h change to imply where sentiment lagged/led
-  const mouthP = clamp01(moneyP - (m.price_change_24h || 0) * 3.0 + 0.04);
-  const edge   = Math.round(Math.abs(moneyP - mouthP) * 100);
-
-  if (els.indicatorTitle) els.indicatorTitle.textContent = short(m.title, 90);
-  if (els.indicatorSrc)   els.indicatorSrc.textContent   = (m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET');
-  if (els.indicatorResolve) els.indicatorResolve.textContent = fmtDate(m.end_date);
-  if (els.indicatorVol)   els.indicatorVol.textContent   = fmtMoney(m.volume_24h || 0);
-
-  // animate bars
-  if (els.barMoney)     els.barMoney.style.width = `${(moneyP * 100).toFixed(1)}%`;
-  if (els.barMouth)     els.barMouth.style.width = `${(mouthP * 100).toFixed(1)}%`;
-  if (els.barMouthTick) els.barMouthTick.style.left = `${(mouthP * 100).toFixed(1)}%`;
-
-  if (els.valMoney) els.valMoney.textContent = fmtPct(moneyP);
-  if (els.valMouth) els.valMouth.textContent = fmtPct(mouthP);
-  if (els.valEdge)  els.valEdge.innerHTML    = `${edge} <sup>pts</sup>`;
-}
-
-/* ---------- FLOOR ---------- */
-function renderFloor(markets) {
-  if (!els.floorGrid || !markets.length) return;
-  els.floorGrid.innerHTML = markets.map(cardHTML).join('');
-}
-
-function cardHTML(m) {
-  const isEdge = Math.abs(m.price_change_24h || 0) >= 0.05 || (m.volume_24h || 0) >= 2_000_000;
-  const yes = Math.round((m.yes_price || 0) * 100);
-  const no  = Math.round((m.no_price  || (1 - (m.yes_price||0))) * 100);
-  const source = m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
-  const stroke = (m.price_change_24h || 0) >= 0 ? '#2EBD7A' : '#E13D4F';
-  const pts = sparkPath(m.yes_price || 0, m.price_change_24h || 0);
-  const link = m.link ? `href="${esc(m.link)}" target="_blank" rel="noopener"` : '';
-  return `
-    <a class="row-card ${isEdge ? 'is-edge' : ''}" ${link}>
-      <div class="row-card__cat">
-        <span>${esc(m.category || 'Markets')}</span>
-        <span class="src">${source}</span>
-      </div>
-      <div class="row-card__title">${esc(short(m.title, 90))}</div>
-      <div class="row-card__odds">
-        <div class="row-card__odds-side yes">
-          <div class="row-card__odds-lbl">Yes</div>
-          <div class="row-card__odds-val">${yes}¢</div>
-        </div>
-        <div class="row-card__odds-side no">
-          <div class="row-card__odds-lbl">No</div>
-          <div class="row-card__odds-val">${no}¢</div>
-        </div>
-      </div>
-      <div class="row-card__foot">
-        <div>24H · <b>${fmtMoney(m.volume_24h || 0)}</b></div>
-        <svg class="row-card__spark" viewBox="0 0 60 18"><polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="1.2"/></svg>
-      </div>
-    </a>
+setInterval(() => {
+  const bet = sampleBets[Math.floor(Math.random() * sampleBets.length)];
+  const row = document.createElement('div');
+  row.className = `feed-row ${bet.cls}`;
+  row.innerHTML = `
+    <div class="left">
+      <div class="market">${bet.market}</div>
+      <div class="meta">${bet.cls.includes('whale') ? 'WHALE · ' : ''}${bet.meta} · just now</div>
+    </div>
+    <div class="amount">${bet.amount}</div>
   `;
-}
-
-function sparkPath(price, ch) {
-  const start = clamp01(price - ch);
-  const end   = clamp01(price);
-  const pts = [];
-  for (let i = 0; i < 7; i++) {
-    const t = i / 6;
-    const v = clamp01(start + (end - start) * t + Math.sin(i * 1.4) * 0.015);
-    pts.push(`${(i * 10).toFixed(0)},${(16 - v * 12).toFixed(1)}`);
-  }
-  return pts.join(' ');
-}
-
-/* ---------- SIGNAL (highest absolute price change) ---------- */
-function renderSignal(markets) {
-  // pick the top-volume market with largest |Δ24h|
-  const candidates = markets.filter(m => (m.volume_24h || 0) > 500_000);
-  if (!candidates.length) return;
-  candidates.sort((a, b) => Math.abs(b.price_change_24h || 0) - Math.abs(a.price_change_24h || 0));
-  const m = candidates[0];
-
-  const dir = (m.price_change_24h || 0) >= 0 ? 'higher' : 'lower';
-  const pts = Math.round(Math.abs(m.price_change_24h || 0) * 100);
-  const yes = Math.round((m.yes_price || 0) * 100);
-  const source = m.source === 'kalshi' ? 'Kalshi' : 'Polymarket';
-
-  if (els.signalTitle) els.signalTitle.innerHTML = `<em>${esc(short(m.title, 110))}</em>`;
-  if (els.signalDate)  els.signalDate.textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-  if (els.signalLede)  els.signalLede.innerHTML = `
-    On <b>${esc(source)}</b>, the order book has moved <b>${pts}¢ ${dir}</b> in the last 24 hours
-    against <b>${fmtMoney(m.volume_24h || 0)}</b> of volume.
-    YES now trades at <b>${yes}¢</b>. This is the kind of dislocation that — historically —
-    resolves cleanly within 72 hours. The narrative layer has not caught up yet.
-  `;
-  if (els.signalPull) els.signalPull.innerHTML = `"When ${pts}¢ moves on <b>${fmtMoney(m.volume_24h || 0)}</b> of flow, you don't need sentiment to tell you what just happened."`;
-  if (els.signalSymbol) els.signalSymbol.textContent = source.toUpperCase();
-  if (els.signalCta) els.signalCta.href = m.link || '#';
-
-  // Build synthetic whale rows from the price action — directional, plausible
-  if (els.signalRows) {
-    const side = (m.price_change_24h || 0) < 0 ? 'NO' : 'YES';
-    const cls  = (m.price_change_24h || 0) < 0 ? 'dn' : 'up';
-    const px   = (m.price_change_24h || 0) < 0 ? Math.round(m.no_price * 100) : yes;
-    const wallets = ['0xa3b…e21', '0x91f…cc2', '0x77c…112', '0x52a…7e8'];
-    const sizes   = [45_000, 22_400, 18_900, 14_200];
-    els.signalRows.innerHTML = wallets.map((w, i) => `
-      <div class="signal__row ${cls}"><span class="who">${esc(w)}</span><b>${side} @ ${px}¢ · $${sizes[i].toLocaleString()}</b></div>
-    `).join('');
-  }
-}
-
-/* ---------- TAPE ---------- */
-function renderTape(markets) {
-  if (!els.tape) return;
-  const items = [];
-  for (const m of markets.slice(0, 10)) {
-    const ch = m.price_change_24h || 0;
-    const yes = Math.round((m.yes_price || 0) * 100);
-    const src = (m.source || '').toUpperCase();
-    if (Math.abs(ch) >= 0.02) {
-      const arrow = ch > 0 ? '↗' : '↘';
-      const klass = ch > 0 ? 'up' : 'dn';
-      const from = Math.round((m.yes_price - ch) * 100);
-      items.push(`<div class="tape__item"><span class="src">${esc(src)}</span> <span class="${klass}">${arrow} ${esc(short(m.title, 55))} · ${from}→${yes}¢</span></div>`);
-    } else if ((m.volume_24h || 0) >= 1_000_000) {
-      items.push(`<div class="tape__item"><span class="src">${esc(src)}</span> <span class="pulse">⌬ ${esc(short(m.title, 55))} · ${fmtMoney(m.volume_24h)} 24H</span></div>`);
-    } else {
-      items.push(`<div class="tape__item"><span class="src">${esc(src)}</span> <span>${esc(short(m.title, 55))} · YES ${yes}¢</span></div>`);
-    }
-  }
-  els.tape.innerHTML = items.concat(items).join('');
-}
-
-/* ---------- refresh label ---------- */
-function tickRefreshLabel() {
-  if (!els.refreshTs || !lastFetch) return;
-  const ago = Math.floor((Date.now() - lastFetch) / 1000);
-  els.refreshTs.textContent = ago < 5 ? 'just now' : `${ago}s ago`;
-}
-
-/* ---------- COUNTDOWN ---------- */
-const TGE_TARGET = new Date(Date.UTC(2026, 5, 7, 17, 0, 0)); // June 7, 2026, 17:00 UTC — 2 weeks out
-
-function renderCountdownDate() {
-  const cdDate = $('cd-date');
-  if (cdDate) {
-    cdDate.textContent = TGE_TARGET.toLocaleDateString('en-US', {
-      weekday: 'long', month: 'long', day: 'numeric'
-    }) + ' · ' + TGE_TARGET.toUTCString().slice(17, 22) + ' UTC';
-  }
-}
-
-function tickCountdown() {
-  const now = Date.now();
-  let diff = Math.max(0, Math.floor((TGE_TARGET - now) / 1000));
-  const d = Math.floor(diff / 86400); diff -= d * 86400;
-  const h = Math.floor(diff / 3600);  diff -= h * 3600;
-  const mi = Math.floor(diff / 60);   diff -= mi * 60;
-  const s = diff;
-  const set = (id, v) => { const el = $(id); if (el) el.textContent = String(v).padStart(2, '0'); };
-  set('cd-d', d); set('cd-h', h); set('cd-m', mi); set('cd-s', s);
-}
-
-/* ---------- boot ---------- */
-renderCountdownDate();
-tickCountdown();
-loadMarkets();
-
-setInterval(loadMarkets, REFRESH_MS);
-setInterval(tickRefreshLabel, 1000);
-setInterval(tickCountdown, 1000);
-
-})();
+  feed.insertBefore(row, feed.firstChild);
+  // Trim
+  if (feed.children.length > 8) feed.removeChild(feed.lastChild);
+}, 4200);
 </script>
 
 </body>

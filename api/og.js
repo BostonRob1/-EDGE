@@ -24,10 +24,8 @@ export default async function handler() {
     money: "#E5B83D",
     green: "#2EBD7A",
     og: "#C4FF00",
-    a: "#E5B83D",
-    b: "#8B6BFF",
-    c: "#00FFC8",
-    d: "#FF6B1A",
+    glass: "#8B6BFF",
+    tape: "#00FFC8",
   };
 
   const swatch = (label, color) =>
@@ -120,11 +118,11 @@ export default async function handler() {
           lineHeight: 1,
         },
       },
-      e("div", { style: { color: C.paper, marginRight: "16px" } }, "Five"),
+      e("div", { style: { color: C.paper, marginRight: "16px" } }, "Three"),
       e(
         "div",
         { style: { color: C.money, fontStyle: "italic" } },
-        "brand directions.",
+        "finalists.",
       ),
     ),
     e(
@@ -140,23 +138,21 @@ export default async function handler() {
       },
       "One winner ships · Money meets mouth · Token-gated",
     ),
-    // 5 swatches
+    // 3 finalist swatches
     e(
       "div",
       {
         style: {
           display: "flex",
-          gap: "30px",
+          gap: "44px",
           marginTop: "auto",
           paddingTop: "32px",
           borderTop: `1px solid #1F1F26`,
         },
       },
       swatch("OG", C.og),
-      swatch("A · Onyx", C.a),
-      swatch("B · Glass", C.b),
-      swatch("C · Tape", C.c),
-      swatch("D · Flare", C.d),
+      swatch("Glass", C.glass),
+      swatch("Tape", C.tape),
     ),
     // bottom strip
     e(
