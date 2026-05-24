@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE · Glass — Direction B</title>
+<meta name="description" content="$EDGE — the terminal for prediction markets. Glass direction.">
+<meta name="theme-color" content="#07050E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   $EDGE · GLASS
+   Phantom × Vision Pro futurist — frosted depth, iridescence
+   ============================================================ */
+
+:root {
+  --bg-deep:    #07050E;
+  --bg-violet:  #14082E;
+  --bg-card:    rgba(255, 255, 255, 0.035);
+  --bg-card-2:  rgba(255, 255, 255, 0.06);
+  --bg-card-3:  rgba(255, 255, 255, 0.10);
+
+  --rule:       rgba(255, 255, 255, 0.08);
+  --rule-bold:  rgba(255, 255, 255, 0.16);
+  --rule-soft:  rgba(255, 255, 255, 0.04);
+
+  --paper:      #FFFFFF;
+  --paper-2:    rgba(255, 255, 255, 0.78);
+  --paper-3:    rgba(255, 255, 255, 0.55);
+  --paper-4:    rgba(255, 255, 255, 0.32);
+  --paper-5:    rgba(255, 255, 255, 0.16);
+
+  --violet:        #8B6BFF;
+  --violet-bright: #B79BFF;
+  --violet-deep:   #5C3EE0;
+  --cyan:          #4DE5FF;
+  --cyan-bright:   #9AF1FF;
+  --pink:          #FF6BB5;
+
+  --grad-iri:   linear-gradient(135deg, #8B6BFF 0%, #4DE5FF 50%, #FF6BB5 100%);
+  --grad-text:  linear-gradient(180deg, #FFFFFF 30%, rgba(255,255,255,0.6) 100%);
+  --grad-bg:    radial-gradient(ellipse 70% 60% at 50% 0%, #281253, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 15% 80%, #1B093A, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 85% 70%, #04293D, transparent 60%),
+                #07050E;
+
+  --green:  #2EE0A0;
+  --red:    #FF577A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  background: var(--grad-bg);
+  background-attachment: fixed;
+  color: var(--paper);
+  font-family: 'Manrope', -apple-system, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv11", "tnum";
+  line-height: 1.5;
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle 600px at 20% 10%, rgba(139, 107, 255, 0.18), transparent 60%),
+    radial-gradient(circle 500px at 80% 30%, rgba(77, 229, 255, 0.10), transparent 60%),
+    radial-gradient(circle 700px at 50% 100%, rgba(255, 107, 181, 0.08), transparent 60%);
+  animation: aurora-drift 24s ease-in-out infinite alternate;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@keyframes aurora-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-3%, 2%) scale(1.08); }
+  100% { transform: translate(2%, -2%) scale(1); }
+}
+
+main, header, section, footer { position: relative; z-index: 2; }
+::selection { background: var(--violet); color: var(--paper); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img, svg { display: block; }
+
+.mono { font-family: 'JetBrains Mono', monospace; font-feature-settings: "tnum"; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+.shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+
+/* ============================================================
+   GLASS PRIMITIVE
+   ============================================================ */
+.glass {
+  position: relative;
+  background: var(--bg-card);
+  backdrop-filter: blur(40px) saturate(140%);
+  -webkit-backdrop-filter: blur(40px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.glass::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  pointer-events: none;
+}
+.glass--iri {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--bg-deep), var(--bg-deep)) padding-box,
+    var(--grad-iri) border-box;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav-wrap {
+  position: sticky; top: 16px; z-index: 100;
+  padding: 0 32px;
+}
+.nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px 14px 26px;
+  background: rgba(20, 12, 40, 0.4);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  gap: 24px;
+}
+
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+.brand__mark {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--grad-iri);
+  display: grid; place-items: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--bg-deep);
+}
+.brand__name { letter-spacing: -0.01em; }
+.brand__tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--paper-4);
+  text-transform: uppercase;
+  margin-left: 6px;
+}
+
+.nav__links {
+  display: flex; gap: 24px;
+}
+.nav__links a {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--paper-2);
+  transition: color 0.18s ease;
+}
+.nav__links a:hover { color: var(--paper); }
+@media (max-width: 880px) { .nav__links { display: none; } }
+
+.nav__right { display: flex; align-items: center; gap: 14px; }
+
+.live {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--paper-3);
+}
+.live__dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(46, 224, 160, 0.7);
+  animation: pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 224, 160, 0.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(46, 224, 160, 0); }
+}
+
+.btn {
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--paper);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn--primary {
+  background: var(--grad-iri);
+  color: #0A0A0F;
+  font-weight: 700;
+  box-shadow: 0 4px 24px -6px rgba(139, 107, 255, 0.5);
+}
+.btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 32px -8px rgba(139, 107, 255, 0.7);
+}
+.btn--ghost {
+  border-color: var(--rule-bold);
+  color: var(--paper);
+  background: rgba(255,255,255,0.02);
+}
+.btn--ghost:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--paper-5);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding: 80px 0 100px;
+  position: relative;
+}
+
+.hero__kicker {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 6px 14px 6px 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--paper-2);
+  margin-bottom: 40px;
+}
+.hero__kicker .badge {
+  background: var(--grad-iri);
+  color: var(--bg-deep);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .hero__grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.hero__headline {
+  font-size: clamp(56px, 7.6vw, 120px);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255,255,255,0.55) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero__headline .grad {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero__headline em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.hero__lede {
+  margin-top: 32px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--paper-2);
+  max-width: 540px;
+}
+.hero__lede b { color: var(--paper); font-weight: 600; }
+
+.hero__cta {
+  margin-top: 36px;
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+
+.hero__stats {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.hero__stat {
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.hero__stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 8px;
+}
+.hero__stat-value {
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+.hero__stat--money .hero__stat-value {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ----- HERO EDGE INDICATOR (glass card with depth) ----- */
+.indicator-glass {
+  padding: 28px;
+  background: var(--bg-card-2);
+  backdrop-filter: blur(40px) saturate(140%);
+  -webkit-backdrop-filter: blur(40px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 28px;
+  position: relative;
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.6),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.indicator-glass::before {
+  content: '';
+  position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+}
+
+.indicator-glass__head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 22px;
+}
+.indicator-glass__chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  padding: 4px 10px 4px 8px;
+  background: rgba(139, 107, 255, 0.12);
+  border: 1px solid rgba(139, 107, 255, 0.28);
+  border-radius: 999px;
+}
+.indicator-glass__chip::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--violet-bright);
+  box-shadow: 0 0 8px var(--violet);
+}
+.indicator-glass__src {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+
+.indicator-glass__title {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 6px 0 4px;
+  min-height: 56px;
+  color: var(--paper);
+}
+.indicator-glass__sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--paper-3);
+  letter-spacing: 0.04em;
+  margin-bottom: 26px;
+}
+.indicator-glass__sub b { color: var(--paper-2); }
+
+.indicator-glass__row {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.indicator-glass__row:first-of-type { border-top: 1px solid var(--rule); }
+
+.indicator-glass__row-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.indicator-glass__row.money .indicator-glass__row-lbl {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.indicator-glass__row.mouth .indicator-glass__row-lbl { color: var(--paper-3); }
+
+.indicator-glass__bar {
+  position: relative;
+  height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.indicator-glass__bar-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: var(--grad-iri);
+  border-radius: 99px;
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 14px rgba(139, 107, 255, 0.5);
+}
+.indicator-glass__row.mouth .indicator-glass__bar-fill {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: none;
+}
+
+.indicator-glass__row-val {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.indicator-glass__row.money .indicator-glass__row-val {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.indicator-glass__row.mouth .indicator-glass__row-val { color: var(--paper-2); }
+
+.indicator-glass__edge {
+  margin-top: 22px;
+  padding: 22px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(139, 107, 255, 0.12), rgba(77, 229, 255, 0.06));
+  border: 1px solid rgba(139, 107, 255, 0.25);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px;
+}
+.indicator-glass__edge-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.indicator-glass__edge-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--paper-4);
+  margin-top: 4px;
+}
+.indicator-glass__edge-val {
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.indicator-glass__edge-val sup {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--paper-3);
+  -webkit-text-fill-color: var(--paper-3);
+  margin-left: 4px;
+  vertical-align: top;
+  position: relative; top: 8px;
+}
+
+/* ============================================================
+   SECTION HEAD
+   ============================================================ */
+.section-head {
+  padding: 100px 0 48px;
+}
+.section-head__kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 18px;
+}
+.section-head__kicker em { font-style: normal; color: var(--violet-bright); }
+.section-head h2 {
+  font-size: clamp(40px, 5.4vw, 80px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  max-width: 16ch;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255,255,255,0.65) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.section-head h2 .grad {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   FLOOR (live markets)
+   ============================================================ */
+.floor { padding: 0 0 80px; }
+
+.floor__head {
+  display: flex; justify-content: space-between; align-items: end;
+  flex-wrap: wrap; gap: 24px;
+  margin-bottom: 32px;
+}
+.floor__meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--paper-3);
+  text-align: right;
+}
+.floor__meta b { color: var(--paper); }
+.floor__meta .live-tag { color: var(--green); display: inline-flex; align-items: center; gap: 6px; }
+.floor__meta .live-tag::before {
+  content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%;
+  animation: pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.floor__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+@media (max-width: 880px) { .floor__stats { grid-template-columns: repeat(2, 1fr); } }
+.floor__stat {
+  padding: 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.floor__stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 12px;
+}
+.floor__stat-value {
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.floor__stat-value.money {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.floor__stat-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--paper-3);
+  margin-top: 8px;
+}
+
+.floor__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+@media (max-width: 1000px) { .floor__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .floor__grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 22px;
+  position: relative;
+  display: flex; flex-direction: column;
+  transition: all 0.25s ease;
+  min-height: 240px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute; top: 0; left: 22px; right: 22px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+.card:hover {
+  background: var(--bg-card-2);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px -16px rgba(139, 107, 255, 0.25);
+  border-color: rgba(139, 107, 255, 0.3);
+}
+.card.is-edge {
+  border-color: rgba(255, 107, 181, 0.35);
+}
+.card.is-edge::after {
+  content: 'EDGE';
+  position: absolute; top: 14px; right: 14px;
+  background: var(--grad-iri);
+  color: var(--bg-deep);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+.card__cat {
+  display: flex; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 16px;
+}
+.card__cat .src { color: var(--paper-4); }
+
+.card__title {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--paper);
+  margin-bottom: auto;
+  padding-bottom: 18px;
+}
+
+.card__odds {
+  display: flex; gap: 8px;
+  margin-bottom: 14px;
+}
+.card__odd {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--rule);
+}
+.card__odd-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 2px;
+}
+.card__odd-val {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.card__odd.yes .card__odd-val { color: var(--green); }
+.card__odd.no  .card__odd-val { color: var(--paper); }
+
+.card__foot {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--paper-3);
+}
+.card__foot b { color: var(--paper); font-weight: 600; font-variant-numeric: tabular-nums; }
+.card__spark { width: 52px; height: 18px; }
+
+/* ============================================================
+   TIERS
+   ============================================================ */
+.tiers { padding: 60px 0 80px; }
+
+.tiers__intro {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 56px;
+  margin-bottom: 56px;
+}
+@media (max-width: 900px) { .tiers__intro { grid-template-columns: 1fr; gap: 24px; } }
+.tiers__intro p {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--paper-2);
+}
+.tiers__intro p + p { margin-top: 16px; }
+.tiers__intro p b { color: var(--paper); font-weight: 600; }
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+@media (max-width: 1000px) { .tier-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .tier-grid { grid-template-columns: 1fr; } }
+
+.tier {
+  padding: 30px 24px 28px;
+  background: var(--bg-card);
+  backdrop-filter: blur(30px) saturate(140%);
+  -webkit-backdrop-filter: blur(30px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 22px;
+  display: flex; flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.tier::before {
+  content: '';
+  position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+}
+
+.tier--featured {
+  background:
+    linear-gradient(180deg, rgba(139, 107, 255, 0.10), rgba(77, 229, 255, 0.04)),
+    var(--bg-card);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+.tier--featured::after {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: 22px;
+  padding: 1px;
+  background: var(--grad-iri);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+.tier--featured .tier__badge {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--grad-iri);
+  color: var(--bg-deep);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 4px 12px;
+  border-radius: 99px;
+  z-index: 3;
+}
+
+.tier__id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 18px;
+}
+.tier__id b { color: var(--paper); }
+
+.tier__name {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.tier--featured .tier__name {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tier__hold {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--paper);
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.tier__hold b { color: var(--violet-bright); font-weight: 600; }
+.tier__est {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-4);
+  margin-bottom: 24px;
+}
+
+.tier__list {
+  list-style: none;
+  flex: 1;
+  margin-bottom: 22px;
+}
+.tier__list li {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--paper-2);
+  padding: 10px 0 10px 22px;
+  position: relative;
+  border-top: 1px solid var(--rule-soft);
+}
+.tier__list li:first-child { border-top: 1px solid var(--rule); padding-top: 14px; }
+.tier__list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 16px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--grad-iri);
+}
+.tier__list li.off { color: var(--paper-4); }
+.tier__list li.off::before { background: var(--paper-5); }
+
+.tier__cta {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--rule-bold);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--paper);
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: block;
+}
+.tier__cta:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--paper-5);
+}
+.tier--featured .tier__cta {
+  background: var(--grad-iri);
+  color: var(--bg-deep);
+  font-weight: 700;
+  border-color: transparent;
+}
+.tier--featured .tier__cta:hover {
+  box-shadow: 0 8px 24px -6px rgba(139, 107, 255, 0.55);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   WINDOW (urgency + countdown)
+   ============================================================ */
+.window {
+  padding: 80px 0 100px;
+  position: relative;
+}
+
+.window__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 56px;
+  align-items: end;
+}
+@media (max-width: 980px) { .window__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.window__head h2 {
+  font-size: clamp(48px, 7vw, 108px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255,255,255,0.6) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.window__head h2 .grad {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.window__lede {
+  margin-top: 28px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--paper-2);
+  max-width: 56ch;
+}
+.window__lede b { color: var(--paper); font-weight: 600; }
+
+.window__timeline {
+  margin-top: 40px;
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.timeline__row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  align-items: baseline;
+}
+.timeline__row .when {
+  color: var(--violet-bright);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+.timeline__row .what {
+  color: var(--paper);
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+.timeline__row .what em {
+  font-style: normal;
+  color: var(--paper-3);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-top: 4px;
+}
+.timeline__row:last-child .when { color: var(--pink); }
+.timeline__row:last-child .what em { color: rgba(255,107,181,0.7); }
+
+/* COUNTDOWN */
+.countdown-glass {
+  padding: 32px 28px 28px;
+  background: var(--bg-card-2);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+.countdown-glass::after {
+  content: '';
+  position: absolute; inset: 0;
+  padding: 1px;
+  border-radius: 28px;
+  background: var(--grad-iri);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.countdown-glass__label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  display: flex; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.countdown-glass__label b {
+  background: var(--grad-iri);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.countdown-glass__clock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.countdown-glass__cell {
+  text-align: center;
+  padding: 16px 0 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.countdown-glass__num {
+  font-weight: 800;
+  font-size: 44px;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.countdown-glass__unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-top: 8px;
+}
+
+.countdown-glass__when {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  text-align: center;
+  margin-bottom: 22px;
+}
+.countdown-glass__when b { color: var(--paper); }
+
+.countdown-glass__cta {
+  display: block;
+  text-align: center;
+  background: var(--grad-iri);
+  color: var(--bg-deep);
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 15px;
+  border-radius: 14px;
+  text-decoration: none;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px -6px rgba(139, 107, 255, 0.5);
+}
+.countdown-glass__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px -8px rgba(139, 107, 255, 0.7);
+}
+
+.countdown-glass__sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-4);
+  text-align: center;
+}
+.countdown-glass__sub b { color: var(--paper-2); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--rule);
+  margin-top: 40px;
+}
+.foot__inner {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; flex-wrap: wrap;
+}
+.foot__copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-4);
+}
+.foot__links {
+  display: flex; gap: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.foot__links a { color: var(--paper-3); }
+.foot__links a:hover { color: var(--paper); }
+
+.flash-up { animation: flash-up 0.55s ease; }
+.flash-dn { animation: flash-dn 0.55s ease; }
+@keyframes flash-up { 0% { filter: brightness(1.4) hue-rotate(-10deg); } 100% {} }
+@keyframes flash-dn { 0% { filter: brightness(1.2) saturate(0.5); } 100% {} }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  body::before { animation: none; }
+}
+
+/* Direction switcher (small floating pill) */
+.dir-switch {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  z-index: 200;
+  display: flex; gap: 4px;
+  padding: 6px;
+  background: rgba(10, 8, 24, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.dir-switch a {
+  padding: 6px 10px;
+  color: var(--paper-3);
+  border-radius: 99px;
+}
+.dir-switch a.active { background: var(--grad-iri); color: var(--bg-deep); font-weight: 700; }
+.dir-switch a:hover { color: var(--paper); }
+.dir-switch a.active:hover { color: var(--bg-deep); }
+</style>
+</head>
+
+<body>
+
+<!-- DIRECTION SWITCHER -->
+<nav class="dir-switch">
+  <a href="onyx.html">A · Onyx</a>
+  <a href="glass.html" class="active">B · Glass</a>
+  <a href="tape.html">C · Tape</a>
+  <a href="flare.html">D · Flare</a>
+  <a href="og.html">OG</a>
+</nav>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a class="brand" href="#">
+      <span class="brand__mark">$</span>
+      <span class="brand__name">EDGE</span>
+      <span class="brand__tag">Glass · Direction B</span>
+    </a>
+    <div class="nav__links">
+      <a href="#floor">Floor</a>
+      <a href="#tiers">Access</a>
+      <a href="#window">Window</a>
+      <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">Code</a>
+    </div>
+    <div class="nav__right">
+      <span class="live"><span class="live__dot"></span> Live · <span id="nav-live-count">—</span></span>
+      <a class="btn btn--primary" href="#window">Buy $EDGE →</a>
+    </div>
+  </nav>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="shell">
+    <span class="hero__kicker">
+      <span class="badge">NEW</span>
+      The terminal for prediction markets · Token-gated
+    </span>
+
+    <div class="hero__grid">
+      <div>
+        <h1 class="hero__headline">
+          Where <span class="grad">money</span><br>
+          meets <em>mouth.</em>
+        </h1>
+        <p class="hero__lede">
+          Polymarket and Kalshi show you where the capital is.
+          They don't show you <b>why.</b>
+          $EDGE is the connective tissue — <b>order-book flow on one axis,
+          crowd signal on the other,</b> and the divergence between them
+          surfaced as a single number.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#window">Reserve allocation →</a>
+          <a class="btn btn--ghost" href="#floor">Enter the Floor</a>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat hero__stat--money">
+            <div class="hero__stat-label">24H Volume</div>
+            <div class="hero__stat-value tnum" id="hero-volume">—</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-label">Markets</div>
+            <div class="hero__stat-value tnum" id="hero-markets">—</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-label">Edge Signals</div>
+            <div class="hero__stat-value tnum" id="hero-edges">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDGE INDICATOR -->
+      <aside class="indicator-glass">
+        <div class="indicator-glass__head">
+          <span class="indicator-glass__chip">Edge Indicator · Live</span>
+          <span class="indicator-glass__src" id="indicator-src">—</span>
+        </div>
+        <div class="indicator-glass__title" id="indicator-title">Loading top market…</div>
+        <div class="indicator-glass__sub">
+          Resolves <b id="indicator-resolve">—</b> &nbsp;·&nbsp; <b id="indicator-vol">—</b> 24H
+        </div>
+
+        <div class="indicator-glass__row money">
+          <div class="indicator-glass__row-lbl">Money</div>
+          <div class="indicator-glass__bar"><div class="indicator-glass__bar-fill" id="bar-money" style="width:0%"></div></div>
+          <div class="indicator-glass__row-val tnum" id="val-money">—</div>
+        </div>
+        <div class="indicator-glass__row mouth">
+          <div class="indicator-glass__row-lbl">Mouth</div>
+          <div class="indicator-glass__bar"><div class="indicator-glass__bar-fill" id="bar-mouth" style="width:0%"></div></div>
+          <div class="indicator-glass__row-val tnum" id="val-mouth">—</div>
+        </div>
+
+        <div class="indicator-glass__edge">
+          <div>
+            <div class="indicator-glass__edge-lbl">Edge Score</div>
+            <div class="indicator-glass__edge-hint">Live order book vs sentiment beta</div>
+          </div>
+          <div class="indicator-glass__edge-val tnum" id="val-edge">—<sup>pts</sup></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- THE FLOOR -->
+<section class="floor" id="floor">
+  <div class="shell">
+    <div class="section-head">
+      <div class="section-head__kicker">§ 01 — THE FLOOR · <em>live order book</em></div>
+      <h2>The action, <span class="grad">right now.</span></h2>
+    </div>
+
+    <div class="floor__head">
+      <div></div>
+      <div class="floor__meta">
+        Refreshed <b id="refresh-ts">—</b><br>
+        <span class="live-tag">Polymarket + Kalshi</span>
+      </div>
+    </div>
+
+    <div class="floor__stats">
+      <div class="floor__stat">
+        <div class="floor__stat-label">24H Volume</div>
+        <div class="floor__stat-value money tnum" id="stat-volume">—</div>
+        <div class="floor__stat-sub">aggregate</div>
+      </div>
+      <div class="floor__stat">
+        <div class="floor__stat-label">Tracked Markets</div>
+        <div class="floor__stat-value tnum" id="stat-markets">—</div>
+        <div class="floor__stat-sub" id="stat-markets-sub">2 platforms</div>
+      </div>
+      <div class="floor__stat">
+        <div class="floor__stat-label">Hot · ≥$100K 24H</div>
+        <div class="floor__stat-value tnum" id="stat-hot">—</div>
+        <div class="floor__stat-sub">where capital is</div>
+      </div>
+      <div class="floor__stat">
+        <div class="floor__stat-label">Edge Signals</div>
+        <div class="floor__stat-value tnum" id="stat-edges">—</div>
+        <div class="floor__stat-sub">divergence candidates</div>
+      </div>
+    </div>
+
+    <div class="floor__grid" id="floor-grid">
+      <div class="card">
+        <div class="card__cat"><span>Loading…</span><span class="src">—</span></div>
+        <div class="card__title">Connecting to terminal…</div>
+        <div class="card__odds">
+          <div class="card__odd yes"><div class="card__odd-lbl">Yes</div><div class="card__odd-val">—</div></div>
+          <div class="card__odd no"><div class="card__odd-lbl">No</div><div class="card__odd-val">—</div></div>
+        </div>
+        <div class="card__foot"><div>Vol <b>—</b></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section class="tiers" id="tiers">
+  <div class="shell">
+    <div class="section-head">
+      <div class="section-head__kicker">§ 02 — ACCESS · <em>token-gated</em></div>
+      <h2>Hold <span class="grad">$EDGE.</span><br>Hold the floor.</h2>
+    </div>
+
+    <div class="tiers__intro">
+      <div></div>
+      <div>
+        <p>
+          $EDGE isn't a points program. It's a <b>key.</b>
+          Every tier of the terminal — live feeds, whale alerts,
+          raw divergence signal, API — is gated by how much you hold.
+        </p>
+        <p>
+          <b>At fairlaunch, a $100 bag unlocks the Pro tier.</b> Six months in,
+          that same tier may cost a different number. That's the asymmetry.
+          That's the window.
+        </p>
+      </div>
+    </div>
+
+    <div class="tier-grid">
+      <article class="tier">
+        <div class="tier__id">TIER · <b>00</b></div>
+        <h3 class="tier__name">Floor</h3>
+        <div class="tier__hold">No hold required</div>
+        <div class="tier__est">Public</div>
+        <ul class="tier__list">
+          <li>Top 8 markets · 30s refresh</li>
+          <li>Hero Edge Indicator</li>
+          <li>Public tape</li>
+          <li class="off">Whale alerts</li>
+          <li class="off">Divergence radar</li>
+          <li class="off">API access</li>
+        </ul>
+        <a class="tier__cta" href="#floor">Enter Floor</a>
+      </article>
+
+      <article class="tier tier--featured">
+        <div class="tier__badge">RECOMMENDED</div>
+        <div class="tier__id">TIER · <b>01</b></div>
+        <h3 class="tier__name">Pro</h3>
+        <div class="tier__hold">Hold <b>10,000 $EDGE</b></div>
+        <div class="tier__est">~$10 at fairlaunch</div>
+        <ul class="tier__list">
+          <li>All markets · 5s refresh</li>
+          <li>Full Edge Indicator coverage</li>
+          <li>Watchlist + price alerts</li>
+          <li>Whale flow per market</li>
+          <li>Daily Edge Call digest</li>
+          <li class="off">API access</li>
+        </ul>
+        <a class="tier__cta" href="#window">Unlock Pro</a>
+      </article>
+
+      <article class="tier">
+        <div class="tier__id">TIER · <b>02</b></div>
+        <h3 class="tier__name">Whale</h3>
+        <div class="tier__hold">Hold <b>100,000 $EDGE</b></div>
+        <div class="tier__est">~$100 at fairlaunch</div>
+        <ul class="tier__list">
+          <li>Everything in Pro</li>
+          <li>Real-time whale alerts</li>
+          <li>Divergence radar</li>
+          <li>Weekly research</li>
+          <li>Private community</li>
+          <li class="off">API access</li>
+        </ul>
+        <a class="tier__cta" href="#window">Unlock Whale</a>
+      </article>
+
+      <article class="tier">
+        <div class="tier__id">TIER · <b>03</b></div>
+        <h3 class="tier__name">Desk</h3>
+        <div class="tier__hold">Hold <b>1,000,000 $EDGE</b></div>
+        <div class="tier__est">~$1,000 at fairlaunch</div>
+        <ul class="tier__list">
+          <li>Everything in Whale</li>
+          <li>Raw signal API</li>
+          <li>Full backtest history</li>
+          <li>Early new markets</li>
+          <li>Direct research desk</li>
+          <li>Governance votes</li>
+        </ul>
+        <a class="tier__cta" href="#window">Unlock Desk</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- THE WINDOW -->
+<section class="window" id="window">
+  <div class="shell">
+    <div class="section-head" style="padding-bottom: 24px;">
+      <div class="section-head__kicker" style="color: var(--pink);">⌬ THE WINDOW · CLOSING</div>
+    </div>
+
+    <div class="window__grid">
+      <div class="window__head">
+        <h2>Retail edge <span class="grad">has a half-life.</span></h2>
+        <p class="window__lede">
+          Prediction markets are about to become a <b>regulated asset class.</b>
+          Robinhood acquired Bitstamp. Kalshi cleared CFTC. Polymarket is signaling
+          institutional desk integration. When BlackRock and Citadel arrive,
+          <b>the asymmetry disappears.</b> $EDGE is the infrastructure for
+          the <b>last window of retail-readable signal.</b>
+        </p>
+
+        <div class="window__timeline">
+          <div class="timeline__row">
+            <div class="when">2025·Q4</div>
+            <div class="what">Kalshi reaches $1.2B monthly volume<em>CFTC-cleared event contracts go mainstream</em></div>
+          </div>
+          <div class="timeline__row">
+            <div class="when">2026·Q1</div>
+            <div class="what">Polymarket adds USD on-ramp via Stripe<em>End of crypto-only friction; broker integration begins</em></div>
+          </div>
+          <div class="timeline__row">
+            <div class="when">2026·Q2</div>
+            <div class="what">Robinhood × Bitstamp prediction-markets pilot<em>Retail brokerages enter event-contract distribution</em></div>
+          </div>
+          <div class="timeline__row">
+            <div class="when">2026·Q3</div>
+            <div class="what">Institutional market-maker liquidity expected<em>Order-book reads become inaccessible to retail</em></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="countdown-glass">
+        <div class="countdown-glass__label">
+          <span>Fairlaunch in</span>
+          <b>$EDGE TGE</b>
+        </div>
+        <div class="countdown-glass__clock">
+          <div class="countdown-glass__cell"><div class="countdown-glass__num tnum" id="cd-d">—</div><div class="countdown-glass__unit">days</div></div>
+          <div class="countdown-glass__cell"><div class="countdown-glass__num tnum" id="cd-h">—</div><div class="countdown-glass__unit">hrs</div></div>
+          <div class="countdown-glass__cell"><div class="countdown-glass__num tnum" id="cd-m">—</div><div class="countdown-glass__unit">min</div></div>
+          <div class="countdown-glass__cell"><div class="countdown-glass__num tnum" id="cd-s">—</div><div class="countdown-glass__unit">sec</div></div>
+        </div>
+        <div class="countdown-glass__when">Launches on <b id="cd-date">—</b></div>
+        <a class="countdown-glass__cta" href="#" id="cd-cta">Reserve allocation</a>
+        <div class="countdown-glass__sub">pump.fun bonding curve · <b>no presale, no insiders</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__inner">
+      <div class="foot__copy">© 2026 $EDGE · Solana</div>
+      <div class="foot__links">
+        <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a>
+        <a href="#">Twitter</a>
+        <a href="#">Telegram</a>
+        <a href="#">Discord</a>
+        <a href="index.html">Compare Directions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+
+const API_URL = '/api/markets';
+const REFRESH_MS = 30000;
+
+const $ = (id) => document.getElementById(id);
+const els = {
+  navLive: $('nav-live-count'),
+  heroVolume: $('hero-volume'),
+  heroMarkets: $('hero-markets'),
+  heroEdges: $('hero-edges'),
+  indicatorSrc: $('indicator-src'),
+  indicatorTitle: $('indicator-title'),
+  indicatorResolve: $('indicator-resolve'),
+  indicatorVol: $('indicator-vol'),
+  barMoney: $('bar-money'),
+  barMouth: $('bar-mouth'),
+  valMoney: $('val-money'),
+  valMouth: $('val-mouth'),
+  valEdge: $('val-edge'),
+  refreshTs: $('refresh-ts'),
+  statVolume: $('stat-volume'),
+  statMarkets: $('stat-markets'),
+  statMarketsSub: $('stat-markets-sub'),
+  statHot: $('stat-hot'),
+  statEdges: $('stat-edges'),
+  floorGrid: $('floor-grid'),
+};
+
+let lastFetch = null;
+let prev = {};
+
+const fmtMoney = (n) => {
+  if (!n && n !== 0) return '—';
+  if (n >= 1e9) return `$${(n/1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `$${(n/1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `$${(n/1e3).toFixed(1)}K`;
+  return `$${Math.round(n).toLocaleString()}`;
+};
+const fmtPct = (p) => `${Math.round(p * 100)}%`;
+const fmtDate = (iso) => {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+  catch { return '—'; }
+};
+const short = (t, n=70) => (!t ? '' : (t.length > n ? t.slice(0, n-1) + '…' : t));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+
+function flashSet(el, text, val, key) {
+  if (!el) return;
+  el.textContent = text;
+  if (prev[key] != null && val !== prev[key]) {
+    el.classList.remove('flash-up','flash-dn');
+    void el.offsetWidth;
+    el.classList.add(val > prev[key] ? 'flash-up' : 'flash-dn');
+  }
+  prev[key] = val;
+}
+
+async function load() {
+  try {
+    const r = await fetch(API_URL, { cache: 'no-store' });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const data = await r.json();
+    if (!data || !Array.isArray(data.markets) || !data.markets.length) throw new Error('empty');
+    render(data);
+    lastFetch = Date.now();
+  } catch (e) { console.warn('[glass] data load failed', e); }
+}
+
+function render(data) {
+  const s = data.stats || {};
+  const ms = data.markets;
+
+  if (els.navLive) els.navLive.textContent = `${(s.total_markets || 0).toLocaleString()} markets`;
+
+  flashSet(els.heroVolume, fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'vol');
+  if (els.heroMarkets) els.heroMarkets.textContent = (s.total_markets || 0).toLocaleString();
+  const edgeCount = ms.filter(m => Math.abs(m.price_change_24h || 0) >= 0.03).length;
+  flashSet(els.heroEdges, edgeCount.toLocaleString(), edgeCount, 'edges');
+
+  flashSet(els.statVolume, fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'vol2');
+  if (els.statMarkets) els.statMarkets.textContent = (s.total_markets || 0).toLocaleString();
+  if (els.statMarketsSub && s.by_source) {
+    els.statMarketsSub.textContent = `${(s.by_source.polymarket||0).toLocaleString()} PM · ${(s.by_source.kalshi||0).toLocaleString()} K`;
+  }
+  if (els.statHot) els.statHot.textContent = (s.hot_markets || 0).toLocaleString();
+  if (els.statEdges) els.statEdges.textContent = edgeCount.toLocaleString();
+  if (els.refreshTs) els.refreshTs.textContent = 'just now';
+
+  renderIndicator(ms[0]);
+  renderFloor(ms.slice(0, 4));
+}
+
+function renderIndicator(m) {
+  if (!m) return;
+  const moneyP = clamp01(m.yes_price || 0);
+  const mouthP = clamp01(moneyP - (m.price_change_24h || 0) * 3.0 + 0.04);
+  const edge = Math.round(Math.abs(moneyP - mouthP) * 100);
+
+  if (els.indicatorTitle) els.indicatorTitle.textContent = short(m.title, 90);
+  if (els.indicatorSrc) els.indicatorSrc.textContent = (m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET');
+  if (els.indicatorResolve) els.indicatorResolve.textContent = fmtDate(m.end_date);
+  if (els.indicatorVol) els.indicatorVol.textContent = fmtMoney(m.volume_24h || 0);
+
+  if (els.barMoney) els.barMoney.style.width = `${(moneyP * 100).toFixed(1)}%`;
+  if (els.barMouth) els.barMouth.style.width = `${(mouthP * 100).toFixed(1)}%`;
+
+  if (els.valMoney) els.valMoney.textContent = fmtPct(moneyP);
+  if (els.valMouth) els.valMouth.textContent = fmtPct(mouthP);
+  if (els.valEdge) els.valEdge.innerHTML = `${edge}<sup>pts</sup>`;
+}
+
+function renderFloor(markets) {
+  if (!els.floorGrid || !markets.length) return;
+  els.floorGrid.innerHTML = markets.map(cardHTML).join('');
+}
+
+function cardHTML(m) {
+  const isEdge = Math.abs(m.price_change_24h || 0) >= 0.05 || (m.volume_24h || 0) >= 2_000_000;
+  const yes = Math.round((m.yes_price || 0) * 100);
+  const no = Math.round((m.no_price || (1 - (m.yes_price||0))) * 100);
+  const source = m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+  const stroke = (m.price_change_24h || 0) >= 0 ? '#2EE0A0' : '#FF577A';
+  const pts = sparkPath(m.yes_price || 0, m.price_change_24h || 0);
+  const link = m.link ? `href="${esc(m.link)}" target="_blank" rel="noopener"` : '';
+  return `
+    <a class="card ${isEdge ? 'is-edge' : ''}" ${link}>
+      <div class="card__cat"><span>${esc(m.category || 'Markets')}</span><span class="src">${source}</span></div>
+      <div class="card__title">${esc(short(m.title, 90))}</div>
+      <div class="card__odds">
+        <div class="card__odd yes"><div class="card__odd-lbl">Yes</div><div class="card__odd-val">${yes}¢</div></div>
+        <div class="card__odd no"><div class="card__odd-lbl">No</div><div class="card__odd-val">${no}¢</div></div>
+      </div>
+      <div class="card__foot">
+        <div>24H · <b>${fmtMoney(m.volume_24h || 0)}</b></div>
+        <svg class="card__spark" viewBox="0 0 60 18"><polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="1.4"/></svg>
+      </div>
+    </a>`;
+}
+
+function sparkPath(price, ch) {
+  const start = clamp01(price - ch);
+  const end = clamp01(price);
+  const pts = [];
+  for (let i = 0; i < 7; i++) {
+    const t = i / 6;
+    const v = clamp01(start + (end - start) * t + Math.sin(i * 1.4) * 0.015);
+    pts.push(`${(i * 10).toFixed(0)},${(16 - v * 12).toFixed(1)}`);
+  }
+  return pts.join(' ');
+}
+
+function tickLabel() {
+  if (!els.refreshTs || !lastFetch) return;
+  const ago = Math.floor((Date.now() - lastFetch) / 1000);
+  els.refreshTs.textContent = ago < 5 ? 'just now' : `${ago}s ago`;
+}
+
+// COUNTDOWN
+const TGE = new Date(Date.UTC(2026, 5, 7, 17, 0, 0));
+const cdDate = $('cd-date');
+if (cdDate) cdDate.textContent = TGE.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) + ' · 17:00 UTC';
+
+function tickCd() {
+  let diff = Math.max(0, Math.floor((TGE - Date.now()) / 1000));
+  const d = Math.floor(diff / 86400); diff -= d * 86400;
+  const h = Math.floor(diff / 3600); diff -= h * 3600;
+  const mi = Math.floor(diff / 60); const s = diff - mi * 60;
+  const set = (id, v) => { const el = $(id); if (el) el.textContent = String(v).padStart(2, '0'); };
+  set('cd-d', d); set('cd-h', h); set('cd-m', mi); set('cd-s', s);
+}
+
+load();
+tickCd();
+setInterval(load, REFRESH_MS);
+setInterval(tickLabel, 1000);
+setInterval(tickCd, 1000);
+
+})();
+</script>
+</body>
+</html>

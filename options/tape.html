@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE · Tape — Direction C</title>
+<meta name="description" content="$EDGE — the terminal for prediction markets. Tape direction.">
+<meta name="theme-color" content="#000000">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   $EDGE · TAPE
+   Brutalist mono — pure black + pure white + cyan signal
+   ============================================================ */
+
+:root {
+  --bg:       #000000;
+  --bg-2:     #050505;
+  --bg-3:     #0B0B0B;
+
+  --paper:    #FFFFFF;
+  --paper-2:  #B8B8B8;
+  --paper-3:  #6E6E6E;
+  --paper-4:  #444444;
+  --paper-5:  #222222;
+
+  --rule:     #1F1F1F;
+  --rule-2:   #2E2E2E;
+
+  --cyan:     #00FFC8;
+  --cyan-2:   #1FE0B0;
+  --cyan-3:   #007050;
+
+  --hot:      #FF2D55;
+
+  --mono:     'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
+  --display:  'Space Mono', 'IBM Plex Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--bg);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.55;
+  position: relative;
+  overflow-x: hidden;
+}
+::selection { background: var(--cyan); color: var(--bg); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img, svg { display: block; }
+
+/* sharp 1px grid — brutalist */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+main, header, section, footer { position: relative; z-index: 2; }
+
+/* Direction switcher */
+.dir-switch {
+  position: fixed;
+  bottom: 16px; right: 16px;
+  z-index: 200;
+  display: flex; gap: 0;
+  background: var(--bg);
+  border: 1px solid var(--paper);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.dir-switch a {
+  padding: 8px 12px;
+  color: var(--paper-2);
+  border-right: 1px solid var(--rule);
+}
+.dir-switch a:last-child { border-right: none; }
+.dir-switch a.active { background: var(--cyan); color: var(--bg); font-weight: 700; }
+.dir-switch a:hover { color: var(--paper); }
+.dir-switch a.active:hover { color: var(--bg); }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+@media (max-width: 720px) { .shell { padding: 0 16px; } }
+
+/* ASCII rule */
+.ascii-rule {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--paper-3);
+  padding: 24px 0;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ascii-rule::before {
+  content: '== EDGE ===========================================================================================================================================================================================================================================================';
+  letter-spacing: 0.1em;
+}
+.ascii-rule.dash::before {
+  content: '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------';
+}
+.ascii-rule.hash::before {
+  content: '################################################################################################################################################################################################################################################################';
+  color: var(--paper-4);
+}
+
+/* ============================================================
+   TOP TAPE NAV (a literal tape strip)
+   ============================================================ */
+.tape-nav {
+  border-bottom: 1px solid var(--paper);
+  background: var(--bg);
+  position: sticky; top: 0; z-index: 100;
+}
+.tape-nav__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.brand {
+  display: flex; align-items: baseline; gap: 4px;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.brand::before {
+  content: '$';
+  color: var(--cyan);
+  font-weight: 700;
+}
+.brand__tag {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--paper-3);
+  margin-left: 12px;
+}
+
+.tape-nav__center {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--paper-2);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tape-nav__center .key { color: var(--cyan); }
+.tape-nav__center .sep { color: var(--paper-4); padding: 0 14px; }
+@media (max-width: 880px) { .tape-nav__center { display: none; } }
+
+.tape-nav__right { display: flex; align-items: center; gap: 16px; }
+.live {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+}
+.live::before {
+  content: '●';
+  color: var(--cyan);
+  margin-right: 6px;
+  font-size: 8px;
+  animation: blink 1.4s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0.3; } }
+
+.btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border: 1px solid var(--paper);
+  background: var(--paper);
+  color: var(--bg);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--bg);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--paper);
+}
+.btn--ghost:hover {
+  background: var(--paper);
+  color: var(--bg);
+}
+.btn--cyan {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--bg);
+}
+.btn--cyan:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+
+/* ============================================================
+   SCROLLING TAPE STRIP
+   ============================================================ */
+.tape-strip {
+  background: var(--paper);
+  color: var(--bg);
+  overflow: hidden;
+  border-bottom: 1px solid var(--bg);
+  position: relative;
+}
+.tape-strip__track {
+  display: flex;
+  white-space: nowrap;
+  padding: 8px 0;
+  animation: tape-scroll 80s linear infinite;
+  will-change: transform;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+@keyframes tape-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.tape-strip__item {
+  padding: 0 32px;
+  text-transform: uppercase;
+}
+.tape-strip__item .up { color: #008060; }
+.tape-strip__item .dn { color: #B0001E; }
+.tape-strip__item .pulse { background: var(--bg); color: var(--cyan); padding: 2px 6px; }
+
+/* ============================================================
+   HERO — brutalist headline
+   ============================================================ */
+.hero {
+  padding: 80px 0 100px;
+  border-bottom: 1px solid var(--paper);
+}
+
+.hero__kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero__kicker::before {
+  content: '>>';
+  color: var(--cyan);
+  font-weight: 700;
+}
+.hero__kicker em { color: var(--cyan); font-style: normal; }
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+@media (max-width: 980px) { .hero__grid { grid-template-columns: 1fr; gap: 48px; } }
+
+.hero__headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(48px, 7vw, 116px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+.hero__headline .cyan { color: var(--cyan); }
+.hero__headline .strike {
+  text-decoration: line-through;
+  text-decoration-color: var(--cyan);
+  text-decoration-thickness: 5px;
+  color: var(--paper-3);
+}
+.hero__headline .underline {
+  border-bottom: 4px solid var(--cyan);
+}
+
+.hero__lede {
+  margin-top: 32px;
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--paper-2);
+  max-width: 56ch;
+}
+.hero__lede b { color: var(--paper); font-weight: 500; }
+.hero__lede .cyan { color: var(--cyan); }
+
+.hero__cta {
+  margin-top: 36px;
+  display: flex; gap: 0; flex-wrap: wrap;
+}
+.hero__cta .btn { margin-right: -1px; }
+
+.hero__stats {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--paper);
+}
+.hero__stat {
+  padding: 20px 24px;
+  border-right: 1px solid var(--paper);
+}
+.hero__stat:last-child { border-right: none; }
+.hero__stat-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 8px;
+}
+.hero__stat-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.hero__stat-value.cyan { color: var(--cyan); }
+
+/* HERO INDICATOR — ASCII gauge */
+.gauge {
+  border: 1px solid var(--paper);
+  padding: 0;
+}
+
+.gauge__head {
+  border-bottom: 1px solid var(--paper);
+  padding: 14px 18px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.gauge__head .name { color: var(--cyan); font-weight: 700; }
+.gauge__head .src { color: var(--paper-2); }
+
+.gauge__body { padding: 22px 18px 18px; }
+
+.gauge__title {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  min-height: 56px;
+  margin-bottom: 4px;
+}
+.gauge__sub {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--paper-3);
+  margin-bottom: 24px;
+}
+.gauge__sub b { color: var(--paper-2); }
+
+.gauge__row {
+  display: grid;
+  grid-template-columns: 80px 1fr 70px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+.gauge__row:first-of-type { border-top: 1px solid var(--rule-2); }
+
+.gauge__row-lbl {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.gauge__row.money .gauge__row-lbl { color: var(--cyan); }
+.gauge__row.mouth .gauge__row-lbl { color: var(--paper-2); }
+
+.gauge__bar {
+  height: 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--rule-2);
+  position: relative;
+  overflow: hidden;
+  font-family: var(--mono);
+  font-size: 9px;
+  display: flex; align-items: center;
+}
+.gauge__bar-blocks {
+  height: 100%;
+  background: var(--cyan);
+  transition: width 0.7s steps(20);
+}
+.gauge__row.mouth .gauge__bar-blocks { background: var(--paper); }
+
+.gauge__row-val {
+  text-align: right;
+  font-weight: 700;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.gauge__row.money .gauge__row-val { color: var(--cyan); }
+.gauge__row.mouth .gauge__row-val { color: var(--paper); }
+
+.gauge__edge {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--cyan);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg);
+}
+.gauge__edge-lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  font-weight: 700;
+}
+.gauge__edge-hint {
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--paper-3);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.gauge__edge-val {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+}
+.gauge__edge-val sup {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--paper-3);
+  margin-left: 4px;
+  position: relative;
+  top: -22px;
+}
+
+/* ============================================================
+   SECTION HEAD
+   ============================================================ */
+.section-head {
+  padding: 80px 0 32px;
+}
+.section-head__kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  margin-bottom: 18px;
+}
+.section-head__kicker .cyan { color: var(--cyan); }
+.section-head__kicker .num { color: var(--paper-3); }
+.section-head h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(36px, 5.5vw, 80px);
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+  text-transform: uppercase;
+  max-width: 18ch;
+}
+.section-head h2 .cyan { color: var(--cyan); }
+
+/* ============================================================
+   FLOOR
+   ============================================================ */
+.floor {
+  padding: 0 0 80px;
+  border-bottom: 1px solid var(--paper);
+}
+
+.floor__meta-row {
+  display: flex; justify-content: space-between; align-items: end;
+  flex-wrap: wrap; gap: 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--paper-3);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.floor__meta-row b { color: var(--paper); }
+
+.floor__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--paper);
+  margin-bottom: 0;
+}
+@media (max-width: 880px) { .floor__stats { grid-template-columns: repeat(2, 1fr); } }
+.floor__stat {
+  padding: 24px 22px;
+  border-right: 1px solid var(--paper);
+}
+.floor__stat:last-child { border-right: none; }
+@media (max-width: 880px) {
+  .floor__stat:nth-child(2n) { border-right: none; }
+  .floor__stat:nth-child(-n+2) { border-bottom: 1px solid var(--paper); }
+}
+.floor__stat-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 10px;
+}
+.floor__stat-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.floor__stat-value.cyan { color: var(--cyan); }
+.floor__stat-sub {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--paper-3);
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.floor__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-left: 1px solid var(--paper);
+  border-right: 1px solid var(--paper);
+  border-bottom: 1px solid var(--paper);
+}
+@media (max-width: 1000px) { .floor__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .floor__grid { grid-template-columns: 1fr; } }
+
+.row-card {
+  border-right: 1px solid var(--paper);
+  border-top: 0;
+  padding: 22px 22px 20px;
+  display: flex; flex-direction: column;
+  background: var(--bg);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: background 0.1s;
+  min-height: 220px;
+}
+.row-card:last-child { border-right: none; }
+@media (max-width: 1000px) {
+  .row-card:nth-child(2n) { border-right: none; }
+  .row-card:nth-child(-n+2) { border-bottom: 1px solid var(--paper); }
+}
+@media (max-width: 600px) {
+  .row-card { border-right: none; border-bottom: 1px solid var(--paper); }
+  .row-card:last-child { border-bottom: none; }
+}
+.row-card:hover { background: var(--bg-2); }
+.row-card.is-edge::after {
+  content: '[ EDGE ]';
+  position: absolute; top: 8px; right: 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+}
+
+.row-card__cat {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 14px;
+}
+
+.row-card__title {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+  margin-bottom: auto;
+  padding-bottom: 18px;
+}
+
+.row-card__odds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule-2);
+  margin-bottom: 14px;
+}
+.row-card__odd {
+  padding: 10px 0;
+  border-right: 1px solid var(--rule-2);
+}
+.row-card__odd:last-child { border-right: none; padding-left: 14px; }
+.row-card__odd-lbl {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.row-card__odd-val {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: -0.025em;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.row-card__odd.yes .row-card__odd-val { color: var(--cyan); }
+.row-card__odd.no .row-card__odd-val { color: var(--paper); }
+
+.row-card__foot {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--paper-3);
+  text-transform: uppercase;
+}
+.row-card__foot b { color: var(--paper); font-weight: 700; font-variant-numeric: tabular-nums; }
+.row-card__spark { width: 50px; height: 16px; }
+
+/* ============================================================
+   TIERS
+   ============================================================ */
+.tiers {
+  padding: 0 0 80px;
+  border-bottom: 1px solid var(--paper);
+}
+
+.tiers__intro {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 56px;
+  margin-bottom: 56px;
+}
+@media (max-width: 900px) { .tiers__intro { grid-template-columns: 1fr; gap: 24px; } }
+.tiers__intro p {
+  font-family: var(--mono);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--paper-2);
+}
+.tiers__intro p + p { margin-top: 14px; }
+.tiers__intro p b { color: var(--paper); font-weight: 500; }
+.tiers__intro p .cyan { color: var(--cyan); }
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--paper);
+}
+@media (max-width: 1000px) { .tier-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .tier-grid { grid-template-columns: 1fr; } }
+
+.tier {
+  padding: 28px 22px;
+  border-right: 1px solid var(--paper);
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.tier:last-child { border-right: none; }
+@media (max-width: 1000px) {
+  .tier:nth-child(2n) { border-right: none; }
+  .tier:nth-child(-n+2) { border-bottom: 1px solid var(--paper); }
+}
+
+.tier--featured {
+  background: var(--cyan);
+  color: var(--bg);
+}
+.tier--featured::before {
+  content: '[ RECOMMENDED ]';
+  position: absolute;
+  top: 8px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--bg);
+}
+
+.tier__id {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 20px;
+}
+.tier__id b { color: var(--paper); }
+.tier--featured .tier__id { color: rgba(0,0,0,0.5); }
+.tier--featured .tier__id b { color: var(--bg); }
+
+.tier__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.tier__hold {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.tier__hold b { color: var(--cyan); font-weight: 700; }
+.tier--featured .tier__hold { color: var(--bg); }
+.tier--featured .tier__hold b { color: var(--bg); text-decoration: underline; }
+
+.tier__est {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 24px;
+}
+.tier--featured .tier__est { color: rgba(0,0,0,0.6); }
+
+.tier__list {
+  list-style: none;
+  flex: 1;
+  margin-bottom: 24px;
+}
+.tier__list li {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--paper-2);
+  padding: 9px 0 9px 20px;
+  position: relative;
+  border-top: 1px solid var(--rule);
+}
+.tier__list li:first-child { border-top: 1px solid var(--rule-2); padding-top: 12px; }
+.tier__list li::before {
+  content: '++';
+  position: absolute;
+  left: 0; top: 9px;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.tier__list li.off { color: var(--paper-4); }
+.tier__list li.off::before { content: '--'; color: var(--paper-4); }
+.tier--featured .tier__list li { color: var(--bg); border-color: rgba(0,0,0,0.15); }
+.tier--featured .tier__list li::before { color: var(--bg); }
+.tier--featured .tier__list li.off { color: rgba(0,0,0,0.4); }
+.tier--featured .tier__list li.off::before { color: rgba(0,0,0,0.4); }
+
+.tier__cta {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  border: 1px solid var(--paper);
+  background: var(--bg);
+  color: var(--paper);
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+.tier__cta:hover { background: var(--paper); color: var(--bg); }
+.tier--featured .tier__cta {
+  background: var(--bg);
+  color: var(--cyan);
+  border-color: var(--bg);
+}
+.tier--featured .tier__cta:hover {
+  background: var(--paper);
+  color: var(--bg);
+  border-color: var(--paper);
+}
+
+/* ============================================================
+   WINDOW
+   ============================================================ */
+.window {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--paper);
+  position: relative;
+}
+
+.window__head h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(48px, 7vw, 108px);
+  letter-spacing: -0.05em;
+  line-height: 0.94;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.window__head h2 .cyan { color: var(--cyan); }
+
+.window__lede {
+  font-family: var(--mono);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--paper-2);
+  max-width: 60ch;
+  margin-bottom: 48px;
+}
+.window__lede b { color: var(--paper); font-weight: 500; }
+.window__lede .cyan { color: var(--cyan); }
+.window__lede .hot { color: var(--hot); }
+
+.window__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: end;
+}
+@media (max-width: 980px) { .window__grid { grid-template-columns: 1fr; gap: 40px; } }
+
+.window__timeline {
+  border: 1px solid var(--paper);
+}
+.timeline__row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 18px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  align-items: baseline;
+}
+.timeline__row:last-child { border-bottom: none; background: var(--cyan); color: var(--bg); }
+.timeline__row .when {
+  color: var(--cyan);
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.timeline__row:last-child .when { color: var(--bg); font-weight: 700; }
+.timeline__row .what {
+  color: var(--paper);
+  line-height: 1.5;
+  font-size: 13px;
+}
+.timeline__row:last-child .what { color: var(--bg); font-weight: 500; }
+.timeline__row .what em {
+  font-style: normal;
+  color: var(--paper-3);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  display: block;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.timeline__row:last-child .what em { color: rgba(0,0,0,0.7); }
+
+/* COUNTDOWN */
+.countdown {
+  border: 1px solid var(--paper);
+  background: var(--bg);
+}
+.countdown__label {
+  border-bottom: 1px solid var(--paper);
+  padding: 14px 18px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  display: flex; justify-content: space-between;
+}
+.countdown__label b { color: var(--cyan); font-weight: 700; }
+
+.countdown__clock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--paper);
+}
+.countdown__cell {
+  padding: 22px 0 16px;
+  text-align: center;
+  border-right: 1px solid var(--rule-2);
+}
+.countdown__cell:last-child { border-right: none; }
+.countdown__num {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 48px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+.countdown__unit {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-top: 10px;
+}
+
+.countdown__when {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--paper);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.countdown__when b { color: var(--paper); }
+
+.countdown__cta {
+  display: block;
+  text-align: center;
+  background: var(--cyan);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 18px;
+  text-decoration: none;
+  transition: all 0.1s ease;
+  border-bottom: 1px solid var(--paper);
+}
+.countdown__cta:hover {
+  background: var(--paper);
+  color: var(--bg);
+}
+
+.countdown__sub {
+  padding: 12px 18px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.countdown__sub b { color: var(--paper-2); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot { padding: 56px 0 32px; }
+.foot__inner {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.foot__links { display: flex; gap: 22px; }
+.foot__links a { color: var(--paper-2); }
+.foot__links a:hover { color: var(--cyan); }
+
+.flash-up { animation: flash-up 0.5s steps(2); }
+.flash-dn { animation: flash-dn 0.5s steps(2); }
+@keyframes flash-up { 0% { color: var(--cyan); } 100% {} }
+@keyframes flash-dn { 0% { color: var(--hot); } 100% {} }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- DIRECTION SWITCHER -->
+<nav class="dir-switch">
+  <a href="onyx.html">A · Onyx</a>
+  <a href="glass.html">B · Glass</a>
+  <a href="tape.html" class="active">C · Tape</a>
+  <a href="flare.html">D · Flare</a>
+  <a href="og.html">OG</a>
+</nav>
+
+<!-- NAV -->
+<header class="tape-nav">
+  <div class="shell">
+    <div class="tape-nav__inner">
+      <a class="brand" href="#">
+        EDGE
+        <span class="brand__tag">tape · v0.1</span>
+      </a>
+      <div class="tape-nav__center">
+        <span class="key">// TERMINAL</span>
+        <span class="sep">/</span>
+        <span>POLYMARKET</span>
+        <span class="sep">/</span>
+        <span>KALSHI</span>
+        <span class="sep">/</span>
+        <span class="key">// SIGNAL</span>
+        <span class="sep">/</span>
+        <span>SOLANA</span>
+      </div>
+      <div class="tape-nav__right">
+        <span class="live">Live · <span id="nav-live-count">—</span></span>
+        <a class="btn btn--cyan" href="#window">Buy $EDGE</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TAPE STRIP -->
+<div class="tape-strip">
+  <div class="tape-strip__track" id="tape">
+    <div class="tape-strip__item">// LOADING ORDER FLOW</div>
+    <div class="tape-strip__item"><span class="pulse">$EDGE</span> &nbsp; PRE-LAUNCH</div>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="shell">
+    <div class="hero__kicker">
+      The terminal for prediction markets · <em>token-gated access</em>
+    </div>
+
+    <div class="hero__grid">
+      <div>
+        <h1 class="hero__headline">
+          MONEY<br>
+          <span class="cyan">MEETS</span><br>
+          MOUTH<span class="cyan">.</span>
+        </h1>
+
+        <p class="hero__lede">
+          // Polymarket and Kalshi show you where the capital is. <b>They don't show you why.</b><br>
+          // $EDGE is the connective tissue — <span class="cyan">order-book flow on one axis, crowd signal on the other</span>, and the divergence between them surfaced as a single number.
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn btn--cyan" href="#window">Reserve allocation →</a>
+          <a class="btn btn--ghost" href="#floor">Enter the Floor</a>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <div class="hero__stat-label">24H Volume</div>
+            <div class="hero__stat-value cyan tnum" id="hero-volume">—</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-label">Markets</div>
+            <div class="hero__stat-value tnum" id="hero-markets">—</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-label">Edge Signals</div>
+            <div class="hero__stat-value tnum" id="hero-edges">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASCII GAUGE INDICATOR -->
+      <aside class="gauge">
+        <div class="gauge__head">
+          <span class="name">// EDGE GAUGE · LIVE</span>
+          <span class="src" id="indicator-src">—</span>
+        </div>
+        <div class="gauge__body">
+          <div class="gauge__title" id="indicator-title">Loading top market…</div>
+          <div class="gauge__sub">
+            RESOLVES <b id="indicator-resolve">—</b> · <b id="indicator-vol">—</b> 24H
+          </div>
+
+          <div class="gauge__row money">
+            <div class="gauge__row-lbl">// MONEY</div>
+            <div class="gauge__bar"><div class="gauge__bar-blocks" id="bar-money" style="width:0%"></div></div>
+            <div class="gauge__row-val tnum" id="val-money">—</div>
+          </div>
+          <div class="gauge__row mouth">
+            <div class="gauge__row-lbl">// MOUTH</div>
+            <div class="gauge__bar"><div class="gauge__bar-blocks" id="bar-mouth" style="width:0%"></div></div>
+            <div class="gauge__row-val tnum" id="val-mouth">—</div>
+          </div>
+
+          <div class="gauge__edge">
+            <div>
+              <div class="gauge__edge-lbl">[ EDGE SCORE ]</div>
+              <div class="gauge__edge-hint">order book Δ sentiment beta</div>
+            </div>
+            <div class="gauge__edge-val tnum" id="val-edge">—<sup>pts</sup></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- FLOOR -->
+<section id="floor" class="floor">
+  <div class="shell">
+    <div class="section-head">
+      <div class="section-head__kicker"><span class="num">§ 01</span> // THE FLOOR · <span class="cyan">live order book</span></div>
+      <h2>THE ACTION,<br><span class="cyan">RIGHT NOW.</span></h2>
+    </div>
+
+    <div class="floor__meta-row">
+      <div>// MARKETS TRACKED · POLYMARKET + KALSHI</div>
+      <div>REFRESHED <b id="refresh-ts">—</b> · LIVE</div>
+    </div>
+
+    <div class="floor__stats">
+      <div class="floor__stat">
+        <div class="floor__stat-label">// 24H VOLUME</div>
+        <div class="floor__stat-value cyan tnum" id="stat-volume">—</div>
+        <div class="floor__stat-sub">aggregate</div>
+      </div>
+      <div class="floor__stat">
+        <div class="floor__stat-label">// MARKETS</div>
+        <div class="floor__stat-value tnum" id="stat-markets">—</div>
+        <div class="floor__stat-sub" id="stat-markets-sub">2 platforms</div>
+      </div>
+      <div class="floor__stat">
+        <div class="floor__stat-label">// HOT (≥$100K)</div>
+        <div class="floor__stat-value tnum" id="stat-hot">—</div>
+        <div class="floor__stat-sub">where capital is</div>
+      </div>
+      <div class="floor__stat">
+        <div class="floor__stat-label">// EDGE SIGNALS</div>
+        <div class="floor__stat-value tnum" id="stat-edges">—</div>
+        <div class="floor__stat-sub">divergence</div>
+      </div>
+    </div>
+
+    <div class="floor__grid" id="floor-grid">
+      <div class="row-card">
+        <div class="row-card__cat"><span>// LOADING</span><span>—</span></div>
+        <div class="row-card__title">// connecting to terminal…</div>
+        <div class="row-card__odds">
+          <div class="row-card__odd yes"><div class="row-card__odd-lbl">// YES</div><div class="row-card__odd-val">—</div></div>
+          <div class="row-card__odd no"><div class="row-card__odd-lbl">// NO</div><div class="row-card__odd-val">—</div></div>
+        </div>
+        <div class="row-card__foot"><div>24H · <b>—</b></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section id="tiers" class="tiers">
+  <div class="shell">
+    <div class="section-head">
+      <div class="section-head__kicker"><span class="num">§ 02</span> // ACCESS · <span class="cyan">token-gated</span></div>
+      <h2>HOLD <span class="cyan">$EDGE.</span><br>HOLD THE FLOOR.</h2>
+    </div>
+
+    <div class="tiers__intro">
+      <div></div>
+      <div>
+        <p>
+          // $EDGE isn't a points program. <b>It's a key.</b>
+          Every tier of the terminal — the live feeds, the whale alerts,
+          the raw divergence signal, the API — is <span class="cyan">gated by how much you hold.</span>
+        </p>
+        <p>
+          // <b>At fairlaunch, a $100 bag unlocks the Pro tier.</b>
+          Six months in, that same tier may cost a different number.
+          <span class="cyan">That's the asymmetry. That's the window.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="tier-grid">
+      <article class="tier">
+        <div class="tier__id">TIER <b>00</b></div>
+        <h3 class="tier__name">FLOOR</h3>
+        <div class="tier__hold">No hold required</div>
+        <div class="tier__est">// public</div>
+        <ul class="tier__list">
+          <li>Top 8 markets · 30s refresh</li>
+          <li>Hero Edge Indicator</li>
+          <li>Public tape</li>
+          <li class="off">Whale alerts</li>
+          <li class="off">Divergence radar</li>
+          <li class="off">API access</li>
+        </ul>
+        <a class="tier__cta" href="#floor">Enter Floor</a>
+      </article>
+
+      <article class="tier tier--featured">
+        <div class="tier__id">TIER <b>01</b></div>
+        <h3 class="tier__name">PRO</h3>
+        <div class="tier__hold">Hold <b>10,000 $EDGE</b></div>
+        <div class="tier__est">~$10 @ fairlaunch</div>
+        <ul class="tier__list">
+          <li>All markets · 5s refresh</li>
+          <li>Full Edge Indicator</li>
+          <li>Watchlist + alerts</li>
+          <li>Whale flow per market</li>
+          <li>Daily Edge digest</li>
+          <li class="off">API access</li>
+        </ul>
+        <a class="tier__cta" href="#window">Unlock Pro</a>
+      </article>
+
+      <article class="tier">
+        <div class="tier__id">TIER <b>02</b></div>
+        <h3 class="tier__name">WHALE</h3>
+        <div class="tier__hold">Hold <b>100,000 $EDGE</b></div>
+        <div class="tier__est">~$100 @ fairlaunch</div>
+        <ul class="tier__list">
+          <li>Everything in Pro</li>
+          <li>Telegram whale alerts</li>
+          <li>Divergence radar</li>
+          <li>Weekly research</li>
+          <li>Private channel</li>
+          <li class="off">API access</li>
+        </ul>
+        <a class="tier__cta" href="#window">Unlock Whale</a>
+      </article>
+
+      <article class="tier">
+        <div class="tier__id">TIER <b>03</b></div>
+        <h3 class="tier__name">DESK</h3>
+        <div class="tier__hold">Hold <b>1,000,000 $EDGE</b></div>
+        <div class="tier__est">~$1,000 @ fairlaunch</div>
+        <ul class="tier__list">
+          <li>Everything in Whale</li>
+          <li>Raw signal API</li>
+          <li>Full backtest history</li>
+          <li>Early new markets</li>
+          <li>Direct desk line</li>
+          <li>Governance votes</li>
+        </ul>
+        <a class="tier__cta" href="#window">Unlock Desk</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- WINDOW -->
+<section id="window" class="window">
+  <div class="shell">
+    <div class="section-head">
+      <div class="section-head__kicker" style="color: var(--cyan);"><span class="num">§ 03</span> // THE WINDOW · CLOSING</div>
+    </div>
+
+    <div class="window__head">
+      <h2>RETAIL EDGE<br><span class="cyan">HAS A HALF-LIFE.</span></h2>
+      <p class="window__lede">
+        // Prediction markets are about to become <b>a regulated asset class.</b><br>
+        // Robinhood acquired Bitstamp. Kalshi cleared CFTC. Polymarket is signaling institutional desk integration.<br>
+        // When BlackRock and Citadel arrive, <span class="hot">the asymmetry disappears.</span><br>
+        // $EDGE is the infrastructure for <span class="cyan">the last window of retail-readable signal.</span>
+      </p>
+    </div>
+
+    <div class="window__grid">
+      <div class="window__timeline">
+        <div class="timeline__row">
+          <div class="when">2025·Q4</div>
+          <div class="what">Kalshi reaches $1.2B monthly volume<em>CFTC-cleared event contracts go mainstream</em></div>
+        </div>
+        <div class="timeline__row">
+          <div class="when">2026·Q1</div>
+          <div class="what">Polymarket adds USD on-ramp via Stripe<em>End of crypto-only friction</em></div>
+        </div>
+        <div class="timeline__row">
+          <div class="when">2026·Q2</div>
+          <div class="what">Robinhood × Bitstamp prediction-markets pilot<em>Retail brokerages enter distribution</em></div>
+        </div>
+        <div class="timeline__row">
+          <div class="when">2026·Q3</div>
+          <div class="what">Institutional market-maker liquidity<em>Order-book reads become inaccessible to retail</em></div>
+        </div>
+      </div>
+
+      <div class="countdown">
+        <div class="countdown__label">
+          <span>// Fairlaunch in</span>
+          <b>$EDGE TGE</b>
+        </div>
+        <div class="countdown__clock">
+          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-d">—</div><div class="countdown__unit">days</div></div>
+          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-h">—</div><div class="countdown__unit">hrs</div></div>
+          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-m">—</div><div class="countdown__unit">min</div></div>
+          <div class="countdown__cell"><div class="countdown__num tnum" id="cd-s">—</div><div class="countdown__unit">sec</div></div>
+        </div>
+        <div class="countdown__when">// launches <b id="cd-date">—</b></div>
+        <a class="countdown__cta" href="#" id="cd-cta">[ Reserve allocation ]</a>
+        <div class="countdown__sub">pump.fun bonding curve · <b>no presale, no insiders</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__inner">
+      <div>// © 2026 $EDGE · Solana</div>
+      <div class="foot__links">
+        <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a>
+        <a href="#">Twitter</a>
+        <a href="#">Telegram</a>
+        <a href="#">Discord</a>
+        <a href="index.html">// compare directions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+
+const API_URL = '/api/markets';
+const REFRESH_MS = 30000;
+
+const $ = (id) => document.getElementById(id);
+const els = {
+  navLive: $('nav-live-count'),
+  tape: $('tape'),
+  heroVolume: $('hero-volume'),
+  heroMarkets: $('hero-markets'),
+  heroEdges: $('hero-edges'),
+  indicatorSrc: $('indicator-src'),
+  indicatorTitle: $('indicator-title'),
+  indicatorResolve: $('indicator-resolve'),
+  indicatorVol: $('indicator-vol'),
+  barMoney: $('bar-money'),
+  barMouth: $('bar-mouth'),
+  valMoney: $('val-money'),
+  valMouth: $('val-mouth'),
+  valEdge: $('val-edge'),
+  refreshTs: $('refresh-ts'),
+  statVolume: $('stat-volume'),
+  statMarkets: $('stat-markets'),
+  statMarketsSub: $('stat-markets-sub'),
+  statHot: $('stat-hot'),
+  statEdges: $('stat-edges'),
+  floorGrid: $('floor-grid'),
+};
+
+let lastFetch = null;
+let prev = {};
+
+const fmtMoney = (n) => {
+  if (!n && n !== 0) return '—';
+  if (n >= 1e9) return `$${(n/1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `$${(n/1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `$${(n/1e3).toFixed(1)}K`;
+  return `$${Math.round(n).toLocaleString()}`;
+};
+const fmtPct = (p) => `${Math.round(p * 100)}%`;
+const fmtDate = (iso) => {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase(); }
+  catch { return '—'; }
+};
+const short = (t, n=70) => (!t ? '' : (t.length > n ? t.slice(0, n-1) + '…' : t));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+
+function flashSet(el, text, val, key) {
+  if (!el) return;
+  el.textContent = text;
+  if (prev[key] != null && val !== prev[key]) {
+    el.classList.remove('flash-up','flash-dn');
+    void el.offsetWidth;
+    el.classList.add(val > prev[key] ? 'flash-up' : 'flash-dn');
+  }
+  prev[key] = val;
+}
+
+async function load() {
+  try {
+    const r = await fetch(API_URL, { cache: 'no-store' });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const data = await r.json();
+    if (!data || !Array.isArray(data.markets) || !data.markets.length) throw new Error('empty');
+    render(data);
+    lastFetch = Date.now();
+  } catch (e) { console.warn('[tape] load failed', e); }
+}
+
+function render(data) {
+  const s = data.stats || {};
+  const ms = data.markets;
+
+  if (els.navLive) els.navLive.textContent = `${(s.total_markets || 0).toLocaleString()} mkts`;
+
+  flashSet(els.heroVolume, fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'vol');
+  if (els.heroMarkets) els.heroMarkets.textContent = (s.total_markets || 0).toLocaleString();
+  const edgeCount = ms.filter(m => Math.abs(m.price_change_24h || 0) >= 0.03).length;
+  flashSet(els.heroEdges, edgeCount.toLocaleString(), edgeCount, 'edges');
+
+  flashSet(els.statVolume, fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'vol2');
+  if (els.statMarkets) els.statMarkets.textContent = (s.total_markets || 0).toLocaleString();
+  if (els.statMarketsSub && s.by_source) {
+    els.statMarketsSub.textContent = `${(s.by_source.polymarket||0).toLocaleString()} pm · ${(s.by_source.kalshi||0).toLocaleString()} k`;
+  }
+  if (els.statHot) els.statHot.textContent = (s.hot_markets || 0).toLocaleString();
+  if (els.statEdges) els.statEdges.textContent = edgeCount.toLocaleString();
+  if (els.refreshTs) els.refreshTs.textContent = 'JUST NOW';
+
+  renderIndicator(ms[0]);
+  renderFloor(ms.slice(0, 4));
+  renderTape(ms);
+}
+
+function renderIndicator(m) {
+  if (!m) return;
+  const moneyP = clamp01(m.yes_price || 0);
+  const mouthP = clamp01(moneyP - (m.price_change_24h || 0) * 3.0 + 0.04);
+  const edge = Math.round(Math.abs(moneyP - mouthP) * 100);
+
+  if (els.indicatorTitle) els.indicatorTitle.textContent = short(m.title, 90);
+  if (els.indicatorSrc) els.indicatorSrc.textContent = (m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET');
+  if (els.indicatorResolve) els.indicatorResolve.textContent = fmtDate(m.end_date);
+  if (els.indicatorVol) els.indicatorVol.textContent = fmtMoney(m.volume_24h || 0);
+
+  if (els.barMoney) els.barMoney.style.width = `${(moneyP * 100).toFixed(1)}%`;
+  if (els.barMouth) els.barMouth.style.width = `${(mouthP * 100).toFixed(1)}%`;
+
+  if (els.valMoney) els.valMoney.textContent = fmtPct(moneyP);
+  if (els.valMouth) els.valMouth.textContent = fmtPct(mouthP);
+  if (els.valEdge) els.valEdge.innerHTML = `${edge}<sup>pts</sup>`;
+}
+
+function renderFloor(markets) {
+  if (!els.floorGrid || !markets.length) return;
+  els.floorGrid.innerHTML = markets.map(cardHTML).join('');
+}
+
+function cardHTML(m) {
+  const isEdge = Math.abs(m.price_change_24h || 0) >= 0.05 || (m.volume_24h || 0) >= 2_000_000;
+  const yes = Math.round((m.yes_price || 0) * 100);
+  const no = Math.round((m.no_price || (1 - (m.yes_price||0))) * 100);
+  const source = m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+  const stroke = (m.price_change_24h || 0) >= 0 ? '#00FFC8' : '#FF2D55';
+  const pts = sparkPath(m.yes_price || 0, m.price_change_24h || 0);
+  const link = m.link ? `href="${esc(m.link)}" target="_blank" rel="noopener"` : '';
+  return `
+    <a class="row-card ${isEdge ? 'is-edge' : ''}" ${link}>
+      <div class="row-card__cat"><span>// ${esc(m.category || 'Markets').toUpperCase()}</span><span>${source}</span></div>
+      <div class="row-card__title">${esc(short(m.title, 80))}</div>
+      <div class="row-card__odds">
+        <div class="row-card__odd yes"><div class="row-card__odd-lbl">// YES</div><div class="row-card__odd-val">${yes}¢</div></div>
+        <div class="row-card__odd no"><div class="row-card__odd-lbl">// NO</div><div class="row-card__odd-val">${no}¢</div></div>
+      </div>
+      <div class="row-card__foot">
+        <div>24H · <b>${fmtMoney(m.volume_24h || 0)}</b></div>
+        <svg class="row-card__spark" viewBox="0 0 60 18"><polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="1.4"/></svg>
+      </div>
+    </a>`;
+}
+
+function sparkPath(price, ch) {
+  const start = clamp01(price - ch);
+  const end = clamp01(price);
+  const pts = [];
+  for (let i = 0; i < 7; i++) {
+    const t = i / 6;
+    const v = clamp01(start + (end - start) * t + Math.sin(i * 1.4) * 0.015);
+    pts.push(`${(i * 10).toFixed(0)},${(16 - v * 12).toFixed(1)}`);
+  }
+  return pts.join(' ');
+}
+
+function renderTape(markets) {
+  if (!els.tape) return;
+  const items = [];
+  for (const m of markets.slice(0, 10)) {
+    const ch = m.price_change_24h || 0;
+    const yes = Math.round((m.yes_price || 0) * 100);
+    const src = (m.source || '').toUpperCase();
+    if (Math.abs(ch) >= 0.02) {
+      const arrow = ch > 0 ? '▲' : '▼';
+      const klass = ch > 0 ? 'up' : 'dn';
+      const from = Math.round((m.yes_price - ch) * 100);
+      items.push(`<div class="tape-strip__item">${src} // <span class="${klass}">${arrow} ${esc(short(m.title, 50)).toUpperCase()} ${from}→${yes}¢</span></div>`);
+    } else if ((m.volume_24h || 0) >= 1_000_000) {
+      items.push(`<div class="tape-strip__item">${src} // <span class="pulse">[ ${esc(short(m.title, 50)).toUpperCase()} ${fmtMoney(m.volume_24h)} 24H ]</span></div>`);
+    } else {
+      items.push(`<div class="tape-strip__item">${src} // ${esc(short(m.title, 50)).toUpperCase()} · YES ${yes}¢</div>`);
+    }
+  }
+  els.tape.innerHTML = items.concat(items).join('');
+}
+
+function tickLabel() {
+  if (!els.refreshTs || !lastFetch) return;
+  const ago = Math.floor((Date.now() - lastFetch) / 1000);
+  els.refreshTs.textContent = (ago < 5 ? 'JUST NOW' : `${ago}S AGO`);
+}
+
+// COUNTDOWN
+const TGE = new Date(Date.UTC(2026, 5, 7, 17, 0, 0));
+const cdDate = $('cd-date');
+if (cdDate) cdDate.textContent = TGE.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase() + ' · 17:00 UTC';
+
+function tickCd() {
+  let diff = Math.max(0, Math.floor((TGE - Date.now()) / 1000));
+  const d = Math.floor(diff / 86400); diff -= d * 86400;
+  const h = Math.floor(diff / 3600); diff -= h * 3600;
+  const mi = Math.floor(diff / 60); const s = diff - mi * 60;
+  const set = (id, v) => { const el = $(id); if (el) el.textContent = String(v).padStart(2, '0'); };
+  set('cd-d', d); set('cd-h', h); set('cd-m', mi); set('cd-s', s);
+}
+
+load();
+tickCd();
+setInterval(load, REFRESH_MS);
+setInterval(tickLabel, 1000);
+setInterval(tickCd, 1000);
+
+})();
+</script>
+</body>
+</html>

@@ -1547,10 +1547,42 @@ footer.foot {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   .tape__strip { animation: none; }
 }
+
+/* Direction switcher (fixed bottom-right) */
+.dir-switch {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  z-index: 200;
+  display: flex; gap: 0;
+  background: var(--ink);
+  border: 1px solid var(--rule-bold);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.dir-switch a {
+  padding: 8px 12px;
+  color: var(--paper-mute);
+  border-right: 1px solid var(--rule);
+}
+.dir-switch a:last-child { border-right: none; }
+.dir-switch a.active { background: var(--money); color: var(--ink); font-weight: 700; }
+.dir-switch a:hover { color: var(--paper); }
+.dir-switch a.active:hover { color: var(--ink); }
 </style>
 </head>
 
 <body>
+
+<!-- DIRECTION SWITCHER -->
+<nav class="dir-switch">
+  <a href="onyx.html" class="active">A · Onyx</a>
+  <a href="glass.html">B · Glass</a>
+  <a href="tape.html">C · Tape</a>
+  <a href="flare.html">D · Flare</a>
+  <a href="og.html">OG</a>
+</nav>
 
 <!-- ============================================================
      TOP NAV

@@ -1,0 +1,9 @@
+{
+  "name": "edge",
+  "private": true,
+  "version": "0.1.0",
+  "description": "$EDGE — prediction market aggregator (Polymarket + Kalshi)",
+  "engines": {
+    "node": ">=18"
+  }
+}

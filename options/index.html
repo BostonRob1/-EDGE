@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE — 4 Brand Directions</title>
+<meta name="description" content="Choose the brand direction for $EDGE — the terminal for prediction markets.">
+<meta name="theme-color" content="#0E0E12">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #0C0C10;
+  --bg-2:      #14141A;
+  --bg-3:      #1B1B22;
+  --rule:      rgba(255, 255, 255, 0.08);
+  --rule-bold: rgba(255, 255, 255, 0.18);
+  --paper:     #F4F1EA;
+  --paper-2:   rgba(244, 241, 234, 0.72);
+  --paper-3:   rgba(244, 241, 234, 0.42);
+  --paper-4:   rgba(244, 241, 234, 0.22);
+  --accent:    #FFC940;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  background: var(--bg);
+  color: var(--paper);
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+::selection { background: var(--accent); color: var(--bg); }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 80%);
+}
+
+main, header, footer { position: relative; z-index: 2; }
+
+.shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+.serif { font-family: 'Fraunces', serif; }
+
+/* ============================================================
+   TOP STRIP
+   ============================================================ */
+header.top {
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 0;
+  position: sticky; top: 0;
+  background: rgba(12, 12, 16, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 50;
+}
+header.top .shell {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.brand {
+  display: flex; align-items: baseline; gap: 12px;
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.brand .sym {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 400;
+}
+.brand .tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--paper-3);
+  text-transform: uppercase;
+  border: 1px solid var(--rule);
+  padding: 3px 8px;
+}
+.top__right {
+  display: flex; align-items: center; gap: 24px;
+}
+.top__right a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--paper-2);
+  text-transform: uppercase;
+}
+.top__right a:hover { color: var(--accent); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding: 100px 0 60px;
+  border-bottom: 1px solid var(--rule);
+}
+.hero__kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 14px;
+}
+.hero__kicker::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+.hero__kicker em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(48px, 7vw, 108px);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  max-width: 16ch;
+}
+.hero h1 em { font-style: italic; color: var(--accent); font-weight: 300; }
+
+.hero__lede {
+  margin-top: 32px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--paper-2);
+  max-width: 60ch;
+}
+.hero__lede b { color: var(--paper); font-weight: 500; }
+
+.hero__meta {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  display: flex; gap: 56px; flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--paper-3);
+}
+.hero__meta b {
+  display: block;
+  color: var(--paper);
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.015em;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   DIRECTION CARDS
+   ============================================================ */
+.directions {
+  padding: 80px 0 60px;
+}
+
+.dir-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+@media (max-width: 900px) { .dir-grid { grid-template-columns: 1fr; } }
+
+.dir-card {
+  background: var(--bg-2);
+  padding: 48px 36px 36px;
+  position: relative;
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  min-height: 520px;
+  transition: background 0.25s ease;
+  overflow: hidden;
+}
+.dir-card:hover { background: var(--bg-3); }
+
+.dir-card__num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 18px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.dir-card__num .arrow {
+  font-size: 18px;
+  color: var(--paper-3);
+  transition: all 0.2s;
+}
+.dir-card:hover .arrow { color: var(--accent); transform: translateX(4px); }
+
+.dir-card__name {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(40px, 5vw, 64px);
+  letter-spacing: -0.025em;
+  line-height: 0.96;
+  margin-bottom: 6px;
+  color: var(--paper);
+}
+.dir-card__name em { font-style: italic; font-weight: 300; }
+
+.dir-card__tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 24px;
+}
+
+.dir-card__body {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--paper-2);
+  max-width: 42ch;
+  margin-bottom: auto;
+  padding-bottom: 24px;
+}
+.dir-card__body b { color: var(--paper); font-weight: 500; }
+
+.dir-card__system {
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--paper-3);
+}
+.dir-card__system-block b {
+  color: var(--paper);
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+}
+.dir-card__system-block .label {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-4);
+  margin-bottom: 6px;
+}
+
+.dir-card__swatches {
+  display: flex;
+  gap: 6px;
+  margin-top: 24px;
+}
+.dir-card__swatch {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--rule);
+}
+
+.dir-card__sample {
+  margin-top: 24px;
+  padding: 14px 16px;
+  border-radius: 0;
+}
+.dir-card__sample .sample-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.dir-card__sample .sample-headline {
+  font-size: 26px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* ----- per-direction visual signatures ----- */
+
+/* A — Onyx */
+.dir-card--a .dir-card__name { color: #F1EFEA; }
+.dir-card--a .dir-card__name em { color: #E5B83D; }
+.dir-card--a .dir-card__sample {
+  background: #0A0A0B;
+  border: 1px solid rgba(241, 239, 234, 0.08);
+}
+.dir-card--a .dir-card__sample .sample-label { color: #E5B83D; }
+.dir-card--a .dir-card__sample .sample-headline {
+  font-family: 'Fraunces', serif;
+  color: #F1EFEA;
+  font-weight: 400;
+}
+.dir-card--a .dir-card__sample .sample-headline em {
+  font-style: italic;
+  color: #E5B83D;
+  font-weight: 300;
+}
+
+/* B — Glass */
+.dir-card--b .dir-card__name {
+  background: linear-gradient(135deg, #8B6BFF 0%, #4DE5FF 50%, #FF6BB5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dir-card--b .dir-card__sample {
+  background:
+    radial-gradient(ellipse at top left, rgba(139,107,255,0.35), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(77,229,255,0.25), transparent 60%),
+    #07050E;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  backdrop-filter: blur(20px);
+}
+.dir-card--b .dir-card__sample .sample-label {
+  background: linear-gradient(135deg, #8B6BFF, #4DE5FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dir-card--b .dir-card__sample .sample-headline {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.03em;
+}
+.dir-card--b .dir-card__sample .sample-headline em {
+  font-style: italic;
+  background: linear-gradient(135deg, #8B6BFF, #4DE5FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* C — Tape */
+.dir-card--c .dir-card__name {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+}
+.dir-card--c .dir-card__name em {
+  font-style: normal;
+  color: #00FFC8;
+}
+.dir-card--c .dir-card__sample {
+  background: #000000;
+  border: 1px solid #FFFFFF;
+}
+.dir-card--c .dir-card__sample .sample-label { color: #00FFC8; }
+.dir-card--c .dir-card__sample .sample-headline {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+.dir-card--c .dir-card__sample .sample-headline em {
+  font-style: normal;
+  color: #00FFC8;
+}
+
+/* D — Flare */
+.dir-card--d .dir-card__name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-style: italic;
+  color: #FFF6E0;
+}
+.dir-card--d .dir-card__name em {
+  font-style: italic;
+  color: #FF6B1A;
+  font-weight: 700;
+}
+.dir-card--d .dir-card__sample {
+  background:
+    radial-gradient(ellipse at top right, rgba(255,107,26,0.18), transparent 60%),
+    #160A0E;
+  border: 1px solid rgba(255,246,224,0.12);
+  border-top: 2px solid #FF6B1A;
+}
+.dir-card--d .dir-card__sample .sample-label { color: #FF6B1A; }
+.dir-card--d .dir-card__sample .sample-headline {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  color: #FFF6E0;
+  letter-spacing: -0.025em;
+}
+.dir-card--d .dir-card__sample .sample-headline em {
+  font-style: italic;
+  color: #FF6B1A;
+  font-weight: 700;
+}
+
+/* ============================================================
+   COMPARE STRIP
+   ============================================================ */
+.compare {
+  padding: 40px 0 60px;
+}
+.compare__title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-bottom: 28px;
+}
+.compare__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.compare__table th,
+.compare__table td {
+  text-align: left;
+  padding: 14px 16px;
+  border-top: 1px solid var(--rule);
+}
+.compare__table tr:first-child th,
+.compare__table tr:first-child td {
+  border-top: 1px solid var(--rule-bold);
+}
+.compare__table tr:last-child td {
+  border-bottom: 1px solid var(--rule-bold);
+}
+.compare__table th {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.compare__table th:first-child,
+.compare__table td:first-child {
+  color: var(--paper);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.compare__table td { color: var(--paper-2); }
+.compare__table .dot { display: inline-block; width: 10px; height: 10px; vertical-align: middle; margin-right: 8px; }
+.compare__table .dot.a { background: #E5B83D; }
+.compare__table .dot.b { background: linear-gradient(135deg, #8B6BFF, #4DE5FF); }
+.compare__table .dot.c { background: #00FFC8; }
+.compare__table .dot.d { background: #FF6B1A; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--rule);
+}
+.foot__inner {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px; flex-wrap: wrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.foot__links { display: flex; gap: 22px; }
+.foot__links a { color: var(--paper-2); }
+.foot__links a:hover { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+  <div class="shell">
+    <a class="brand" href="#">
+      <span><span class="sym">$</span>EDGE</span>
+      <span class="tag">4 brand directions</span>
+    </a>
+    <div class="top__right">
+      <a href="../">← Live site</a>
+      <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="shell">
+    <div class="hero__kicker">
+      Internal review · pick the direction · <em>not for public release</em>
+    </div>
+    <h1>
+      Five <em>brand directions.</em><br>
+      One winner ships.
+    </h1>
+    <p class="hero__lede">
+      Same product, same live data, same content scaffolding —
+      <b>five entirely different design languages</b> (the OG cyberpunk vibe
+      that's currently live, plus four new alternatives).
+      Each one is a real, working page. Click in, scroll the whole thing,
+      see how it feels. Switch between them with the pill in the bottom-right
+      of any page. <b>Decide which one carries the brand.</b>
+    </p>
+    <div class="hero__meta">
+      <div>
+        Live data feed
+        <b>Polymarket + Kalshi · /api/markets</b>
+      </div>
+      <div>
+        Fairlaunch target
+        <b id="cd-display">June 7, 2026</b>
+      </div>
+      <div>
+        Repo
+        <b>github.com/BostonRob1/-EDGE</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="directions">
+  <div class="shell">
+
+    <!-- OG · CURRENTLY LIVE (wide hero card before the 2x2 grid) -->
+    <a class="dir-card dir-card--og" href="og.html" style="
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 40px 36px;
+      background: #050507;
+      border: 1px solid rgba(196,255,0,0.2);
+      margin-bottom: 24px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    ">
+      <div>
+        <div class="dir-card__num" style="margin-bottom: 14px;">
+          <span style="color: #C4FF00;">CURRENTLY LIVE · <b style="color: #C4FF00;">edge-two-psi.vercel.app</b></span>
+          <span class="arrow">→</span>
+        </div>
+        <h2 class="dir-card__name" style="
+          font-family: 'Anton', 'Fraunces', sans-serif;
+          font-weight: 900;
+          font-size: clamp(56px, 6vw, 88px);
+          text-transform: uppercase;
+          letter-spacing: -0.025em;
+          color: #F5F5F0;
+          line-height: 0.92;
+          margin-bottom: 10px;
+        ">
+          <span style="color:#C4FF00;">$</span>EDGE <span style="color:#FF006E;">/OG</span>
+        </h2>
+        <div class="dir-card__tag" style="color: rgba(245,245,240,0.55);">Cyberpunk Terminal · The original design</div>
+        <p class="dir-card__body" style="color: rgba(245,245,240,0.75); margin-top: 18px;">
+          <b style="color: #F5F5F0;">The starting point.</b> Lime acid green + hot magenta + ink black + brutalist Anton display.
+          High-energy cyberpunk terminal feel. This is what's deployed at <b style="color:#C4FF00;">edge-two-psi.vercel.app</b> today —
+          included here so the team can compare against the four new directions.
+        </p>
+      </div>
+      <div>
+        <div class="dir-card__swatches" style="margin-top: 0;">
+          <div class="dir-card__swatch" style="background:#050507"></div>
+          <div class="dir-card__swatch" style="background:#C4FF00"></div>
+          <div class="dir-card__swatch" style="background:#FF006E"></div>
+          <div class="dir-card__swatch" style="background:#F5F5F0"></div>
+        </div>
+        <div class="dir-card__system" style="margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(245,245,240,0.08);">
+          <div class="dir-card__system-block">
+            <div class="label">Typography</div>
+            <div>Display · <b>Anton</b></div>
+            <div>Body · <b>DM Sans</b></div>
+            <div>Data · <b>JetBrains Mono</b></div>
+          </div>
+          <div class="dir-card__system-block">
+            <div class="label">Feels like</div>
+            <div>· Cyberpunk terminal</div>
+            <div>· Polymarket native</div>
+            <div>· Mr. Robot UI</div>
+          </div>
+        </div>
+        <div class="dir-card__sample" style="
+          margin-top: 22px;
+          background: #050507;
+          border: 1px solid rgba(196,255,0,0.2);
+        ">
+          <div class="sample-label" style="color: #C4FF00;">⚡ WHALE BET · $127K ON NO</div>
+          <div class="sample-headline" style="
+            font-family: 'Anton', sans-serif;
+            font-weight: 900;
+            color: #F5F5F0;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+          ">WATCH THE <span style="color:#C4FF00;">ACTION.</span></div>
+        </div>
+      </div>
+    </a>
+
+    <div class="dir-grid">
+
+      <!-- DIRECTION A — ONYX -->
+      <a class="dir-card dir-card--a" href="onyx.html">
+        <div class="dir-card__num">
+          <span>Direction · <b style="color:var(--paper);">A</b></span>
+          <span class="arrow">→</span>
+        </div>
+        <h2 class="dir-card__name">Onyx<em>.</em></h2>
+        <div class="dir-card__tag">Bloomberg Terminal × FT Broadsheet</div>
+        <p class="dir-card__body">
+          <b>Editorial luxury.</b> Ink black + newsprint cream + Bloomberg amber.
+          Serif headlines, hairline rules, tabular figures.
+          The aesthetic of <b>quiet money.</b> Reads like a hedge-fund research note.
+        </p>
+        <div class="dir-card__swatches">
+          <div class="dir-card__swatch" style="background:#0A0A0B"></div>
+          <div class="dir-card__swatch" style="background:#F1EFEA"></div>
+          <div class="dir-card__swatch" style="background:#E5B83D"></div>
+          <div class="dir-card__swatch" style="background:#FF3E5C"></div>
+        </div>
+        <div class="dir-card__system">
+          <div class="dir-card__system-block">
+            <div class="label">Typography</div>
+            <div>Display · <b>Fraunces</b></div>
+            <div>Body · <b>Inter Tight</b></div>
+            <div>Data · <b>JetBrains Mono</b></div>
+          </div>
+          <div class="dir-card__system-block">
+            <div class="label">Feels like</div>
+            <div>· Bloomberg Terminal</div>
+            <div>· The Economist</div>
+            <div>· Stripe Atlas</div>
+          </div>
+        </div>
+        <div class="dir-card__sample">
+          <div class="sample-label">⌬ EDGE INDICATOR · LIVE</div>
+          <div class="sample-headline">Money meets <em>mouth.</em></div>
+        </div>
+      </a>
+
+      <!-- DIRECTION B — GLASS -->
+      <a class="dir-card dir-card--b" href="glass.html">
+        <div class="dir-card__num">
+          <span>Direction · <b style="color:var(--paper);">B</b></span>
+          <span class="arrow">→</span>
+        </div>
+        <h2 class="dir-card__name">Glass.</h2>
+        <div class="dir-card__tag">Phantom × Vision Pro · Crypto-Native Futurist</div>
+        <p class="dir-card__body">
+          <b>Dimensional, prismatic, modern.</b> Frosted glass panels float over
+          violet + cyan aurora. Iridescent gradient borders, soft depth,
+          variable-weight sans. The aesthetic of <b>where crypto goes next.</b>
+        </p>
+        <div class="dir-card__swatches">
+          <div class="dir-card__swatch" style="background:#07050E"></div>
+          <div class="dir-card__swatch" style="background:linear-gradient(135deg,#8B6BFF,#4DE5FF,#FF6BB5)"></div>
+          <div class="dir-card__swatch" style="background:#FFFFFF"></div>
+          <div class="dir-card__swatch" style="background:#2EE0A0"></div>
+        </div>
+        <div class="dir-card__system">
+          <div class="dir-card__system-block">
+            <div class="label">Typography</div>
+            <div>Display · <b>Manrope 800</b></div>
+            <div>Body · <b>Manrope</b></div>
+            <div>Data · <b>JetBrains Mono</b></div>
+          </div>
+          <div class="dir-card__system-block">
+            <div class="label">Feels like</div>
+            <div>· Phantom Wallet</div>
+            <div>· Apple Vision Pro UI</div>
+            <div>· Linea / Aave v3</div>
+          </div>
+        </div>
+        <div class="dir-card__sample">
+          <div class="sample-label">EDGE INDICATOR · LIVE</div>
+          <div class="sample-headline">Where money meets <em>mouth.</em></div>
+        </div>
+      </a>
+
+      <!-- DIRECTION C — TAPE -->
+      <a class="dir-card dir-card--c" href="tape.html">
+        <div class="dir-card__num">
+          <span>Direction · <b style="color:var(--paper);">C</b></span>
+          <span class="arrow">→</span>
+        </div>
+        <h2 class="dir-card__name">TAPE<em>.</em></h2>
+        <div class="dir-card__tag">Brutalist Mono · Underground Tech</div>
+        <p class="dir-card__body">
+          <b>Stark, brutalist, cult.</b> Pure black + pure white + one cyan signal.
+          100% monospace. Hard grid. ASCII rules. The aesthetic of <b>the underground tech
+          zine that institutional traders read in private.</b>
+        </p>
+        <div class="dir-card__swatches">
+          <div class="dir-card__swatch" style="background:#000000"></div>
+          <div class="dir-card__swatch" style="background:#FFFFFF"></div>
+          <div class="dir-card__swatch" style="background:#00FFC8"></div>
+          <div class="dir-card__swatch" style="background:#FF2D55"></div>
+        </div>
+        <div class="dir-card__system">
+          <div class="dir-card__system-block">
+            <div class="label">Typography</div>
+            <div>Display · <b>Space Mono 700</b></div>
+            <div>Body · <b>IBM Plex Mono</b></div>
+            <div>Data · <b>IBM Plex Mono</b></div>
+          </div>
+          <div class="dir-card__system-block">
+            <div class="label">Feels like</div>
+            <div>· Are.na</div>
+            <div>· Berghain identity</div>
+            <div>· Cabinet Type</div>
+          </div>
+        </div>
+        <div class="dir-card__sample">
+          <div class="sample-label">// EDGE GAUGE · LIVE</div>
+          <div class="sample-headline">MONEY <em>MEETS</em> MOUTH<em>.</em></div>
+        </div>
+      </a>
+
+      <!-- DIRECTION D — FLARE -->
+      <a class="dir-card dir-card--d" href="flare.html">
+        <div class="dir-card__num">
+          <span>Direction · <b style="color:var(--paper);">D</b></span>
+          <span class="arrow">→</span>
+        </div>
+        <h2 class="dir-card__name">Flare<em>.</em></h2>
+        <div class="dir-card__tag">Trading-Floor Maximalism · Jane Street Energy</div>
+        <p class="dir-card__body">
+          <b>Hot, kinetic, decisive.</b> Deep oxblood + molten amber + parchment cream.
+          Heavy data viz, multi-row ticker ribbons, big italic serifs.
+          The aesthetic of <b>a 1980s trading pit gone digital.</b>
+        </p>
+        <div class="dir-card__swatches">
+          <div class="dir-card__swatch" style="background:#160A0E"></div>
+          <div class="dir-card__swatch" style="background:#FF6B1A"></div>
+          <div class="dir-card__swatch" style="background:#FFF6E0"></div>
+          <div class="dir-card__swatch" style="background:#C9A04E"></div>
+        </div>
+        <div class="dir-card__system">
+          <div class="dir-card__system-block">
+            <div class="label">Typography</div>
+            <div>Display · <b>Playfair Display 900</b></div>
+            <div>Body · <b>Spectral</b></div>
+            <div>Data · <b>JetBrains Mono</b></div>
+          </div>
+          <div class="dir-card__system-block">
+            <div class="label">Feels like</div>
+            <div>· Goldman Marquee</div>
+            <div>· Jane Street</div>
+            <div>· 1980s NYSE floor</div>
+          </div>
+        </div>
+        <div class="dir-card__sample">
+          <div class="sample-label">EDGE DESK · LIVE</div>
+          <div class="sample-headline">Money meets <em>mouth.</em></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="compare">
+  <div class="shell">
+    <div class="compare__title">▣ Side by side</div>
+    <table class="compare__table">
+      <tr>
+        <th>Vector</th>
+        <th><span class="dot" style="background:#C4FF00;"></span>OG</th>
+        <th><span class="dot a"></span>A · Onyx</th>
+        <th><span class="dot b"></span>B · Glass</th>
+        <th><span class="dot c"></span>C · Tape</th>
+        <th><span class="dot d"></span>D · Flare</th>
+      </tr>
+      <tr>
+        <td>Mood</td>
+        <td>Cyberpunk pulse</td>
+        <td>Quiet luxury</td>
+        <td>Futurist optimism</td>
+        <td>Cult / underground</td>
+        <td>Hot / kinetic</td>
+      </tr>
+      <tr>
+        <td>Reads as</td>
+        <td>Polymarket-native</td>
+        <td>Hedge fund</td>
+        <td>Crypto-native</td>
+        <td>Underground zine</td>
+        <td>Trading floor</td>
+      </tr>
+      <tr>
+        <td>Audience pull</td>
+        <td>Crypto degens</td>
+        <td>Institutional</td>
+        <td>Solana degens</td>
+        <td>Founder cult</td>
+        <td>Retail traders</td>
+      </tr>
+      <tr>
+        <td>Display type</td>
+        <td>Anton (sans)</td>
+        <td>Fraunces serif</td>
+        <td>Manrope sans</td>
+        <td>Space Mono</td>
+        <td>Playfair italic</td>
+      </tr>
+      <tr>
+        <td>Accent</td>
+        <td>Acid lime + magenta</td>
+        <td>Bloomberg amber</td>
+        <td>Iridescent gradient</td>
+        <td>Electric cyan</td>
+        <td>Molten orange</td>
+      </tr>
+      <tr>
+        <td>Token signal</td>
+        <td>Hype / community</td>
+        <td>Premium / earned</td>
+        <td>Access / membership</td>
+        <td>Status / signal</td>
+        <td>Energy / urgency</td>
+      </tr>
+      <tr>
+        <td>Risk</td>
+        <td>Reads as shitcoin</td>
+        <td>Too understated</td>
+        <td>Too generic-crypto</td>
+        <td>Too niche</td>
+        <td>Too maximalist</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__inner">
+      <div>© 2026 $EDGE · Internal preview</div>
+      <div class="foot__links">
+        <a href="og.html">OG</a>
+        <a href="onyx.html">A · Onyx</a>
+        <a href="glass.html">B · Glass</a>
+        <a href="tape.html">C · Tape</a>
+        <a href="flare.html">D · Flare</a>
+        <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Set the fairlaunch date in the meta line dynamically
+const TGE = new Date(Date.UTC(2026, 5, 7, 17, 0, 0));
+const cdDisplay = document.getElementById('cd-display');
+if (cdDisplay) {
+  cdDisplay.textContent = TGE.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+</script>
+
+</body>
+</html>

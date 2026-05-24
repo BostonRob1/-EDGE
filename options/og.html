@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE — Watch the Action.</title>
+<meta name="description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
+
+<!-- Open Graph / iMessage / LinkedIn / Discord / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/">
+<meta property="og:title" content="$EDGE — Watch the Action. Before You Bet.">
+<meta property="og:description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="$EDGE — Watch the action before you bet">
+<meta property="og:site_name" content="$EDGE">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://edge-two-psi.vercel.app/">
+<meta name="twitter:title" content="$EDGE — Watch the Action. Before You Bet.">
+<meta name="twitter:description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/og-image.png">
+
+<!-- Theme color (mobile address bar) -->
+<meta name="theme-color" content="#050507">
+
+<!-- Favicon (inline SVG) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+/* Subtle noise */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+main, header, section { position: relative; z-index: 2; }
+
+/* Typography helpers */
+.mono { font-family: 'JetBrains Mono', monospace; }
+.display { font-family: 'Anton', sans-serif; letter-spacing: -0.01em; text-transform: uppercase; }
+
+/* TOP NAV */
+header {
+  border-bottom: 1px solid rgba(196, 255, 0, 0.15);
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(5, 5, 7, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.logo .dollar { color: var(--lime); }
+.logo .word { color: var(--white); }
+
+nav ul {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+nav a { color: var(--white); text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
+nav a:hover { opacity: 1; color: var(--lime); }
+
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--green);
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.btn {
+  background: var(--lime);
+  color: var(--void);
+  border: none;
+  padding: 10px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(196, 255, 0, 0.4); }
+.btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+.btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
+
+/* TICKER */
+.ticker-wrap {
+  background: var(--lime);
+  color: var(--void);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.ticker {
+  display: flex;
+  white-space: nowrap;
+  animation: tick 60s linear infinite;
+  padding: 10px 0;
+}
+.ticker-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0 32px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ticker-item .arrow-up { color: #006c3a; }
+.ticker-item .arrow-dn { color: #8b1c2b; }
+@keyframes tick {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* HERO */
+.hero {
+  padding: 80px 32px 60px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  border-bottom: 1px solid rgba(196, 255, 0, 0.15);
+}
+
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(64px, 11vw, 180px);
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .strike { 
+  display: inline-block;
+  color: var(--magenta);
+  text-shadow: 0 0 40px rgba(255, 0, 110, 0.4);
+}
+
+.hero-tagline {
+  margin-top: 28px;
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 480px;
+  color: rgba(245, 245, 240, 0.8);
+}
+.hero-tagline strong { color: var(--lime); font-weight: 500; }
+
+.hero-cta { margin-top: 36px; display: flex; gap: 12px; }
+
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-self: end;
+}
+.stat-block {
+  border: 1px solid rgba(196, 255, 0, 0.2);
+  padding: 20px 24px;
+  background: rgba(196, 255, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+.stat-block::after {
+  content: '';
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 8px; height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 1.6s infinite;
+  box-shadow: 0 0 8px var(--green);
+}
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+}
+.stat-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  margin-top: 4px;
+}
+
+/* SECTION TITLE */
+.section-title {
+  padding: 60px 32px 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.section-title h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 56px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+.section-title h2 .accent { color: var(--lime); }
+.section-title .ts {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* MARKET CARDS */
+.markets-grid {
+  padding: 0 32px 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.market-card {
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px;
+  background: var(--void-2);
+  position: relative;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+.market-card:hover {
+  border-color: var(--lime);
+  transform: translateY(-2px);
+}
+.market-card.hot { border-color: var(--magenta); box-shadow: 0 0 24px rgba(255, 0, 110, 0.15); }
+.market-card.hot::before {
+  content: 'HOT';
+  position: absolute;
+  top: 0; right: 0;
+  background: var(--magenta);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 4px 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.market-cat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.market-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 18px;
+  min-height: 60px;
+}
+
+.odds-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.odd-pill {
+  flex: 1;
+  padding: 10px 8px;
+  text-align: center;
+  background: var(--void-3);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.odd-pill .side {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.odd-pill .price {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+}
+.odd-pill.yes .price { color: var(--green); }
+.odd-pill.no .price { color: var(--red); }
+
+.market-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.vol { color: var(--muted); }
+.vol b { color: var(--white); font-weight: 700; }
+.spark { width: 60px; height: 24px; }
+
+/* FEATURED MARKET */
+.featured {
+  margin: 24px 32px;
+  border: 1px solid rgba(196, 255, 0, 0.3);
+  background: linear-gradient(135deg, rgba(196,255,0,0.02), rgba(255,0,110,0.02));
+}
+
+.featured-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.featured-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 6px;
+}
+.featured-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.featured-meta {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.featured-meta .resolve { color: var(--white); font-size: 13px; margin-top: 4px; }
+
+.three-panel {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+}
+
+.panel {
+  padding: 28px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.panel:last-child { border-right: none; }
+
+.panel-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.panel-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.panel-title .money { color: var(--lime); }
+.panel-title .mouth { color: var(--white); }
+.panel-title .edge { color: var(--magenta); }
+
+/* Money panel */
+.money-grid { display: flex; gap: 8px; margin-bottom: 18px; }
+.money-side {
+  flex: 1;
+  background: var(--void-2);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px;
+}
+.money-side.yes { border-color: rgba(0, 255, 133, 0.4); }
+.money-side.no { border-color: rgba(255, 51, 68, 0.4); }
+.money-side .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.money-side .pct {
+  font-family: 'Anton', sans-serif;
+  font-size: 42px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-top: 6px;
+}
+.money-side.yes .pct { color: var(--green); }
+.money-side.no .pct { color: var(--red); }
+.money-side .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.trade-feed {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  margin-top: 16px;
+}
+.trade-feed-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+.trade-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.trade-row.up { color: var(--green); }
+.trade-row.dn { color: var(--red); }
+.trade-row .who { color: var(--muted); }
+
+/* Mouth panel */
+.tweet {
+  background: var(--void-2);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.tweet-user {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lime);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+.tweet-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+  display: flex;
+  gap: 14px;
+}
+
+.sentiment-bar {
+  margin-top: 16px;
+}
+.sentiment-bar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.sentiment-track {
+  height: 8px;
+  background: var(--void-3);
+  display: flex;
+  overflow: hidden;
+}
+.sentiment-fill {
+  background: var(--green);
+  width: 71%;
+  position: relative;
+}
+.sentiment-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+.sentiment-text {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--white);
+}
+.sentiment-text b { color: var(--green); }
+
+/* Edge panel */
+.divergence-box {
+  background: linear-gradient(135deg, rgba(255,0,110,0.08), rgba(196,255,0,0.04));
+  border: 1px solid var(--magenta);
+  padding: 18px;
+  position: relative;
+}
+.divergence-score {
+  font-family: 'Anton', sans-serif;
+  font-size: 64px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--magenta);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.divergence-score sup {
+  font-size: 14px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0;
+}
+.divergence-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.divergence-detail {
+  font-size: 13px;
+  margin-top: 14px;
+  line-height: 1.5;
+  color: rgba(245,245,240,0.85);
+}
+.divergence-detail b { color: var(--lime); }
+
+.diverge-comparison {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.diverge-side {
+  background: var(--void-2);
+  padding: 12px;
+  text-align: center;
+}
+.diverge-side .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.diverge-side .val {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  margin-top: 4px;
+}
+.diverge-side.money .val { color: var(--lime); }
+.diverge-side.social .val { color: var(--magenta); }
+
+.edge-cta {
+  margin-top: 20px;
+  width: 100%;
+  background: var(--lime);
+  color: var(--void);
+  padding: 14px;
+  border: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.edge-cta:hover {
+  background: var(--white);
+  box-shadow: 0 0 32px rgba(196, 255, 0, 0.5);
+}
+
+/* LIVE FEED SECTION */
+.live-section {
+  padding: 60px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  border-top: 1px solid rgba(196, 255, 0, 0.15);
+  margin-top: 40px;
+}
+
+.live-panel {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--void-2);
+  overflow: hidden;
+}
+.live-panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.live-panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.feed-list {
+  max-height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+.feed-list::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--void-2));
+  pointer-events: none;
+}
+
+.feed-row {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideIn 0.5s ease;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.feed-row .left { display: flex; flex-direction: column; gap: 4px; }
+.feed-row .market {
+  font-size: 13px;
+  font-weight: 500;
+}
+.feed-row .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+.feed-row .amount {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+}
+.feed-row.yes .amount { color: var(--green); }
+.feed-row.no .amount { color: var(--red); }
+.feed-row.whale {
+  background: linear-gradient(90deg, rgba(255,0,110,0.06), transparent);
+  border-left: 2px solid var(--magenta);
+}
+
+/* TOKEN SECTION */
+.token-section {
+  margin: 80px 32px;
+  border: 1px solid rgba(196, 255, 0, 0.2);
+  padding: 60px;
+  background: 
+    radial-gradient(ellipse at top right, rgba(196,255,0,0.06), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(255,0,110,0.05), transparent 60%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.token-section::before {
+  content: '$';
+  position: absolute;
+  top: -80px;
+  right: -40px;
+  font-family: 'Anton', sans-serif;
+  font-size: 400px;
+  color: var(--lime);
+  opacity: 0.05;
+  line-height: 1;
+}
+
+.token-section h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 96px;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+.token-section h2 .accent { color: var(--lime); }
+.token-section .sub {
+  margin: 20px auto 36px;
+  max-width: 600px;
+  font-size: 18px;
+  color: rgba(245,245,240,0.7);
+  line-height: 1.5;
+}
+
+.token-perks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+  text-align: left;
+}
+.perk {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 24px;
+}
+.perk-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--lime);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+.perk-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.perk-text {
+  font-size: 13px;
+  color: rgba(245,245,240,0.6);
+  line-height: 1.5;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(196, 255, 0, 0.15);
+  padding: 40px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+footer a { color: var(--muted); text-decoration: none; margin: 0 12px; transition: color 0.2s; }
+footer a:hover { color: var(--lime); }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: 1fr; }
+  .markets-grid { grid-template-columns: repeat(2, 1fr); }
+  .three-panel { grid-template-columns: 1fr; }
+  .panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .live-section { grid-template-columns: 1fr; }
+  .token-perks { grid-template-columns: repeat(2, 1fr); }
+  nav ul { display: none; }
+}
+@media (max-width: 600px) {
+  .markets-grid { grid-template-columns: 1fr; }
+  .token-perks { grid-template-columns: 1fr; }
+  .hero { padding: 40px 20px; }
+  .section-title h2 { font-size: 36px; }
+  .token-section { margin: 40px 16px; padding: 32px 20px; }
+  .token-section h2 { font-size: 48px; }
+  header { padding: 14px 18px; }
+}
+
+/* tick animation for numbers */
+.num-tick { transition: color 0.4s; }
+.num-tick.flash-up { color: var(--green); }
+.num-tick.flash-dn { color: var(--red); }
+
+</style>
+</head>
+<body>
+
+<!-- DIRECTION SWITCHER (added for /options/ review) -->
+<style>
+.dir-switch{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;gap:0;background:#050507;border:1px solid #C4FF00;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.dir-switch a{padding:8px 12px;color:rgba(245,245,240,.7);border-right:1px solid rgba(196,255,0,.2);text-decoration:none}
+.dir-switch a:last-child{border-right:none}
+.dir-switch a.active{background:#C4FF00;color:#050507;font-weight:700}
+.dir-switch a:hover{color:#C4FF00}
+.dir-switch a.active:hover{color:#050507}
+</style>
+<nav class="dir-switch">
+  <a href="onyx.html">A · Onyx</a>
+  <a href="glass.html">B · Glass</a>
+  <a href="tape.html">C · Tape</a>
+  <a href="flare.html">D · Flare</a>
+  <a href="og.html" class="active">OG</a>
+</nav>
+
+<!-- NAV -->
+<header>
+  <div class="logo">
+    <span class="dollar">$</span><span class="word">EDGE</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#">Markets</a></li>
+      <li><a href="#">Action</a></li>
+      <li><a href="#">Token</a></li>
+      <li><a href="#">Whales</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
+    <button class="btn">Connect</button>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
+    <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
+    <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
+    <div class="ticker-item">↘ <span class="arrow-dn">BITCOIN $200K EOY · 41→33%</span> · 12m</div>
+    <div class="ticker-item">⚡ $89K bet · YES · US-IRAN peace deal Dec 31</div>
+    <div class="ticker-item">⚠ DIVERGENCE · Twitter 78% YES · Money 31% YES</div>
+    <div class="ticker-item">↗ <span class="arrow-up">CHIEFS Super Bowl 22→27%</span> · 1h</div>
+    <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
+    <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
+    <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
+    <div class="ticker-item">↘ <span class="arrow-dn">BITCOIN $200K EOY · 41→33%</span> · 12m</div>
+    <div class="ticker-item">⚡ $89K bet · YES · US-IRAN peace deal Dec 31</div>
+    <div class="ticker-item">⚠ DIVERGENCE · Twitter 78% YES · Money 31% YES</div>
+    <div class="ticker-item">↗ <span class="arrow-up">CHIEFS Super Bowl 22→27%</span> · 1h</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1>
+      Watch<br>
+      the <span class="accent">action.</span><br>
+      <span class="strike">Before</span> you bet.
+    </h1>
+    <p class="hero-tagline">
+      Every market on Polymarket and Kalshi. Every whale move. Every Twitter argument. 
+      <strong>One screen.</strong> No signup. No wallet. Just the action.
+    </p>
+    <div class="hero-cta">
+      <button class="btn">Enter the Floor →</button>
+      <button class="btn btn-ghost">Buy $EDGE</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-block">
+      <div class="stat-label">Live Volume · 24H</div>
+      <div class="stat-value mono num-tick" id="stat-volume">$42.7M</div>
+      <div class="stat-meta">↑ +$1.2M last hour</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Active Bettors</div>
+      <div class="stat-value mono num-tick" id="stat-bettors">127,341</div>
+      <div class="stat-meta">↑ +843 in last 5 min</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-label">Tracked Markets</div>
+      <div class="stat-value mono">8,341</div>
+      <div class="stat-meta">across 4 platforms</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOT MARKETS -->
+<div class="section-title">
+  <h2>Hot <span class="accent">Now</span></h2>
+  <div class="ts">Refreshed <span id="refresh-ts">2s ago</span> · auto</div>
+</div>
+
+<div class="markets-grid">
+  <div class="market-card hot">
+    <div class="market-cat">Politics · Polymarket</div>
+    <div class="market-title">Will Trump be impeached again in 2026?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">14¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">86¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$8.2M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,18 10,14 20,16 30,11 40,8 50,10 60,6" fill="none" stroke="#00FF85" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <div class="market-card">
+    <div class="market-cat">Sports · Polymarket</div>
+    <div class="market-title">Lakers cover -3.5 vs Celtics tonight?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">71¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">29¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$2.4M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,16 10,15 20,12 30,14 40,9 50,7 60,5" fill="none" stroke="#00FF85" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <div class="market-card">
+    <div class="market-cat">Crypto · Kalshi</div>
+    <div class="market-title">Bitcoin closes above $200K by Dec 31?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">33¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">67¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$5.1M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,5 10,8 20,11 30,9 40,14 50,16 60,18" fill="none" stroke="#FF3344" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+
+  <div class="market-card hot">
+    <div class="market-cat">Geopolitics · Polymarket</div>
+    <div class="market-title">US × Iran permanent peace deal by Dec 31?</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">31¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">69¢</div></div>
+    </div>
+    <div class="market-footer">
+      <div class="vol">Vol <b>$4.2M</b></div>
+      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,12 10,14 20,11 30,10 40,9 50,11 60,7" fill="none" stroke="#FF006E" stroke-width="1.5"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<div class="featured">
+  <div class="featured-header">
+    <div>
+      <div class="featured-tag">⚡ Featured · Highest Divergence</div>
+      <div class="featured-title">US × Iran Peace Deal by Dec 31</div>
+    </div>
+    <div class="featured-meta">
+      Polymarket · ID 0x4a7f...e9c1
+      <div class="resolve">Resolves: Dec 31, 2026 23:59 UTC</div>
+    </div>
+  </div>
+  
+  <div class="three-panel">
+    
+    <!-- MONEY PANEL -->
+    <div class="panel">
+      <div class="panel-label">Panel 01</div>
+      <div class="panel-title"><span class="money">The Money</span></div>
+      
+      <div class="money-grid">
+        <div class="money-side yes">
+          <div class="label">YES</div>
+          <div class="pct">31<span style="font-size: 24px;">¢</span></div>
+          <div class="meta">→ implies 31%</div>
+        </div>
+        <div class="money-side no">
+          <div class="label">NO</div>
+          <div class="pct">69<span style="font-size: 24px;">¢</span></div>
+          <div class="meta">→ implies 69%</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);">
+        <span>24h vol: <b style="color: white;">$890K</b></span>
+        <span>Total vol: <b style="color: white;">$4.2M</b></span>
+      </div>
+
+      <div class="trade-feed">
+        <div class="trade-feed-label">Recent Whale Trades</div>
+        <div class="trade-row dn"><span><span class="who">0xa3b...</span> NO @ 69¢</span><b>$45,000</b></div>
+        <div class="trade-row up"><span><span class="who">0x91f...</span> YES @ 30¢</span><b>$22,400</b></div>
+        <div class="trade-row dn"><span><span class="who">0x77c...</span> NO @ 68¢</span><b>$18,900</b></div>
+        <div class="trade-row dn"><span><span class="who">0x52a...</span> NO @ 70¢</span><b>$14,200</b></div>
+      </div>
+    </div>
+
+    <!-- MOUTH PANEL -->
+    <div class="panel">
+      <div class="panel-label">Panel 02</div>
+      <div class="panel-title"><span class="mouth">The Mouth</span></div>
+
+      <div class="tweet">
+        <div class="tweet-user"><span>@geopol_intel</span><span>2h</span></div>
+        Trump just teased "huge announcement on Iran" — diplomats from both sides spotted in Doha this morning. This is happening.
+        <div class="tweet-meta"><span>↻ 4.2K</span><span>♡ 18K</span><span>→ 891K views</span></div>
+      </div>
+
+      <div class="tweet">
+        <div class="tweet-user"><span>@NYTpolitics</span><span>5h</span></div>
+        BREAKING: White House signals breakthrough in Tehran backchannel talks. Senior official: "Closer than we've been in 20 years."
+        <div class="tweet-meta"><span>↻ 12K</span><span>♡ 41K</span><span>→ 2.1M views</span></div>
+      </div>
+
+      <div class="sentiment-bar">
+        <div class="sentiment-bar-label">Social Sentiment (24h · 3,847 posts)</div>
+        <div class="sentiment-track"><div class="sentiment-fill"></div></div>
+        <div class="sentiment-text"><b>71% YES</b> · 29% NO · Trending ↑ across X, Reddit, news</div>
+      </div>
+    </div>
+
+    <!-- EDGE PANEL -->
+    <div class="panel">
+      <div class="panel-label">Panel 03</div>
+      <div class="panel-title"><span class="edge">The Edge</span></div>
+
+      <div class="divergence-box">
+        <div class="divergence-label">Divergence Score</div>
+        <div class="divergence-score">40<sup>pt</sup></div>
+        <div class="divergence-detail">
+          Twitter is <b>screaming YES.</b> Smart money is <b>quietly stacking NO.</b> 
+          Historically, when divergence > 35pt, money wins ~64% of the time.
+        </div>
+
+        <div class="diverge-comparison">
+          <div class="diverge-side money">
+            <div class="lbl">Money says</div>
+            <div class="val">31%</div>
+          </div>
+          <div class="diverge-side social">
+            <div class="lbl">Mouth says</div>
+            <div class="val">71%</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="edge-cta">Trade on Polymarket →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIVE FEEDS -->
+<div class="live-section">
+  <div class="live-panel">
+    <div class="live-panel-header">
+      <div class="live-panel-title">📡 Live Bet Feed</div>
+      <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+    </div>
+    <div class="feed-list" id="bet-feed">
+      <div class="feed-row whale yes">
+        <div class="left">
+          <div class="market">Trump impeached 2026 · YES @ 14¢</div>
+          <div class="meta">WHALE · 0x83a...4f1 · 8s ago</div>
+        </div>
+        <div class="amount">$127K</div>
+      </div>
+      <div class="feed-row no">
+        <div class="left">
+          <div class="market">Iran peace deal Dec 31 · NO @ 69¢</div>
+          <div class="meta">0xa3b...e21 · 24s ago</div>
+        </div>
+        <div class="amount">$45K</div>
+      </div>
+      <div class="feed-row yes">
+        <div class="left">
+          <div class="market">Lakers -3.5 · YES @ 71¢</div>
+          <div class="meta">0x12d...88c · 41s ago</div>
+        </div>
+        <div class="amount">$8.2K</div>
+      </div>
+      <div class="feed-row no">
+        <div class="left">
+          <div class="market">BTC $200K EOY · NO @ 67¢</div>
+          <div class="meta">0x55e...3b9 · 1m ago</div>
+        </div>
+        <div class="amount">$11K</div>
+      </div>
+      <div class="feed-row yes">
+        <div class="left">
+          <div class="market">Fed cut June FOMC · YES @ 58¢</div>
+          <div class="meta">0x77c...112 · 2m ago</div>
+        </div>
+        <div class="amount">$4.5K</div>
+      </div>
+      <div class="feed-row whale no">
+        <div class="left">
+          <div class="market">Chiefs Super Bowl LX · NO @ 73¢</div>
+          <div class="meta">WHALE · 0x9aa...ddc · 3m ago</div>
+        </div>
+        <div class="amount">$62K</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="live-panel">
+    <div class="live-panel-header">
+      <div class="live-panel-title">⚠ Divergence Alerts</div>
+      <div class="live-pill" style="color: var(--magenta);"><span class="live-dot" style="background: var(--magenta); box-shadow: 0 0 10px var(--magenta);"></span> 4 ACTIVE</div>
+    </div>
+    <div class="feed-list">
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">Iran peace deal · 40pt gap</div>
+          <div class="meta" style="color: var(--magenta);">Twitter 71% YES vs Money 31% YES</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">40</div>
+      </div>
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">BTC $200K EOY · 28pt gap</div>
+          <div class="meta" style="color: var(--magenta);">Reddit bullish vs Money bearish</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">28</div>
+      </div>
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">Chiefs SB · 22pt gap</div>
+          <div class="meta" style="color: var(--magenta);">Public on Chiefs · Sharps fading</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">22</div>
+      </div>
+      <div class="feed-row" style="border-left: 2px solid var(--magenta);">
+        <div class="left">
+          <div class="market">Trump impeached 26 · 18pt gap</div>
+          <div class="meta" style="color: var(--magenta);">News coverage spiking · No money flow</div>
+        </div>
+        <div class="amount" style="color: var(--magenta);">18</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOKEN -->
+<div class="token-section">
+  <h2>Hold <span class="accent">$EDGE.</span><br>Get the edge.</h2>
+  <p class="sub">
+    The token isn't the product — the dashboard is. $EDGE unlocks the premium layer: 
+    whale alerts in real time, every divergence call before it hits the public feed, 
+    and the data the funds pay for.
+  </p>
+
+  <div class="token-perks">
+    <div class="perk">
+      <div class="perk-icon">// 01</div>
+      <div class="perk-title">Whale Alerts</div>
+      <div class="perk-text">Every bet over $50K pushed to your phone in &lt;3 seconds. Telegram + app.</div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">// 02</div>
+      <div class="perk-title">Edge Feed</div>
+      <div class="perk-text">Every divergence over 25pt, surfaced before it hits the public dashboard.</div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">// 03</div>
+      <div class="perk-title">Whale Wallet Tracking</div>
+      <div class="perk-text">Follow the 200 most profitable wallets across Polymarket and Kalshi. Live.</div>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">// 04</div>
+      <div class="perk-title">DAO Vote</div>
+      <div class="perk-text">Vote on featured markets, new platforms, payouts. Token = voice.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>© 2026 EDGE · Not financial advice · Markets data from Polymarket + Kalshi public APIs</div>
+  <div>
+    <a href="#">X</a>
+    <a href="#">Telegram</a>
+    <a href="#">Discord</a>
+    <a href="#">Docs</a>
+  </div>
+</footer>
+
+<script>
+// Live ticker — fake the volume number updating
+const volEl = document.getElementById('stat-volume');
+const bettorsEl = document.getElementById('stat-bettors');
+const refreshEl = document.getElementById('refresh-ts');
+let vol = 42.7;
+let bettors = 127341;
+let refresh = 2;
+
+setInterval(() => {
+  // Volume drift up
+  const change = (Math.random() * 0.15);
+  vol += change;
+  volEl.textContent = `$${vol.toFixed(1)}M`;
+  volEl.classList.add('flash-up');
+  setTimeout(() => volEl.classList.remove('flash-up'), 400);
+}, 3500);
+
+setInterval(() => {
+  bettors += Math.floor(Math.random() * 12);
+  bettorsEl.textContent = bettors.toLocaleString();
+  bettorsEl.classList.add('flash-up');
+  setTimeout(() => bettorsEl.classList.remove('flash-up'), 400);
+}, 2000);
+
+setInterval(() => {
+  refresh = refresh + 1;
+  if (refresh > 9) refresh = 1;
+  refreshEl.textContent = `${refresh}s ago`;
+}, 1000);
+
+// Inject new bet rows occasionally
+const feed = document.getElementById('bet-feed');
+const sampleBets = [
+  { market: 'Trump impeached 2026 · YES @ 14¢', meta: '0x83a...4f1', amount: '$3.4K', cls: 'yes' },
+  { market: 'Iran peace deal · NO @ 69¢', meta: '0xa3b...e21', amount: '$8.1K', cls: 'no' },
+  { market: 'Lakers -3.5 · YES @ 71¢', meta: '0x12d...88c', amount: '$2.2K', cls: 'yes' },
+  { market: 'BTC $200K EOY · YES @ 33¢', meta: '0x55e...3b9', amount: '$5.6K', cls: 'yes' },
+  { market: 'Fed cut June · NO @ 42¢', meta: '0x77c...112', amount: '$1.8K', cls: 'no' },
+  { market: 'Chiefs SB LX · NO @ 73¢', meta: '0x9aa...ddc', amount: '$24K', cls: 'no whale' },
+  { market: 'Powell ousted by July · YES @ 9¢', meta: '0x44f...e88', amount: '$890', cls: 'yes' },
+];
+
+setInterval(() => {
+  const bet = sampleBets[Math.floor(Math.random() * sampleBets.length)];
+  const row = document.createElement('div');
+  row.className = `feed-row ${bet.cls}`;
+  row.innerHTML = `
+    <div class="left">
+      <div class="market">${bet.market}</div>
+      <div class="meta">${bet.cls.includes('whale') ? 'WHALE · ' : ''}${bet.meta} · just now</div>
+    </div>
+    <div class="amount">${bet.amount}</div>
+  `;
+  feed.insertBefore(row, feed.firstChild);
+  // Trim
+  if (feed.children.length > 8) feed.removeChild(feed.lastChild);
+}, 4200);
+</script>
+
+</body>
+</html>
