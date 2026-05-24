@@ -865,6 +865,45 @@ footer a:hover { color: var(--lime); }
   <a href="tape.html">Tape</a>
 </nav>
 
+<!-- ANNOUNCEMENT BAR -->
+<style>
+.announce {
+  background: linear-gradient(90deg, #050507 0%, #0c0c10 50%, #050507 100%);
+  color: #C4FF00;
+  padding: 9px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(196, 255, 0, 0.18);
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  flex-wrap: wrap;
+  position: relative; z-index: 99;
+}
+.announce__dot {
+  width: 6px; height: 6px; background: #C4FF00; border-radius: 50%;
+  box-shadow: 0 0 8px #C4FF00; animation: pulse 1.4s ease-in-out infinite;
+}
+.announce__cd { color: #FF006E; font-weight: 800; }
+.announce__sep { opacity: 0.35; }
+.announce__cta {
+  color: #050507; background: #C4FF00; padding: 3px 12px 4px;
+  text-decoration: none; font-weight: 800; letter-spacing: 0.18em;
+  transition: all 0.18s;
+}
+.announce__cta:hover { background: #FFF; box-shadow: 0 0 20px rgba(196,255,0,0.5); }
+@media (max-width: 720px) { .announce__sep, .announce__sub { display: none; } }
+</style>
+<div class="announce">
+  <span class="announce__dot"></span>
+  <span>$EDGE FAIRLAUNCH IN</span>
+  <b class="announce__cd" id="announce-cd">— · —H · —M</b>
+  <span class="announce__sep">/</span>
+  <span class="announce__sub">No presale · No insiders · Pump.fun bonding curve</span>
+  <a class="announce__cta" href="#token">Reserve →</a>
+</div>
+
 <!-- NAV -->
 <header>
   <div class="logo">
@@ -880,14 +919,14 @@ footer a:hover { color: var(--lime); }
     </ul>
   </nav>
   <div class="nav-right">
-    <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
+    <div class="live-pill"><span class="live-dot"></span> LIVE · <span id="nav-live-count">— markets</span></div>
     <button class="btn">Connect</button>
   </div>
 </header>
 
 <!-- TICKER -->
 <div class="ticker-wrap">
-  <div class="ticker">
+  <div class="ticker" id="ticker">
     <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
     <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
     <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
@@ -929,14 +968,14 @@ footer a:hover { color: var(--lime); }
       <div class="stat-meta">↑ +$1.2M last hour</div>
     </div>
     <div class="stat-block">
-      <div class="stat-label">Active Bettors</div>
-      <div class="stat-value mono num-tick" id="stat-bettors">127,341</div>
-      <div class="stat-meta">↑ +843 in last 5 min</div>
+      <div class="stat-label">Hot Markets · &gt;$100K</div>
+      <div class="stat-value mono num-tick" id="stat-hot">—</div>
+      <div class="stat-meta" id="stat-hot-meta">where the capital is</div>
     </div>
     <div class="stat-block">
       <div class="stat-label">Tracked Markets</div>
-      <div class="stat-value mono">8,341</div>
-      <div class="stat-meta">across 4 platforms</div>
+      <div class="stat-value mono" id="stat-markets">—</div>
+      <div class="stat-meta" id="stat-markets-meta">Polymarket + Kalshi</div>
     </div>
   </div>
 </section>
@@ -947,7 +986,7 @@ footer a:hover { color: var(--lime); }
   <div class="ts">Refreshed <span id="refresh-ts">2s ago</span> · auto</div>
 </div>
 
-<div class="markets-grid">
+<div class="markets-grid" id="markets-grid">
   <div class="market-card hot">
     <div class="market-cat">Politics · Polymarket</div>
     <div class="market-title">Will Trump be impeached again in 2026?</div>
@@ -1238,63 +1277,192 @@ footer a:hover { color: var(--lime); }
 </footer>
 
 <script>
-// Live ticker — fake the volume number updating
-const volEl = document.getElementById('stat-volume');
-const bettorsEl = document.getElementById('stat-bettors');
-const refreshEl = document.getElementById('refresh-ts');
-let vol = 42.7;
-let bettors = 127341;
-let refresh = 2;
+(() => {
 
-setInterval(() => {
-  // Volume drift up
-  const change = (Math.random() * 0.15);
-  vol += change;
-  volEl.textContent = `$${vol.toFixed(1)}M`;
-  volEl.classList.add('flash-up');
-  setTimeout(() => volEl.classList.remove('flash-up'), 400);
-}, 3500);
+const API_URL = '/api/markets';
+const REFRESH_MS = 30000;
+const TGE = new Date(Date.UTC(2026, 5, 7, 17, 0, 0));
 
-setInterval(() => {
-  bettors += Math.floor(Math.random() * 12);
-  bettorsEl.textContent = bettors.toLocaleString();
-  bettorsEl.classList.add('flash-up');
-  setTimeout(() => bettorsEl.classList.remove('flash-up'), 400);
-}, 2000);
+const $ = (id) => document.getElementById(id);
+const els = {
+  navLive:     $('nav-live-count'),
+  ticker:      $('ticker'),
+  volEl:       $('stat-volume'),
+  hotEl:       $('stat-hot'),
+  hotMetaEl:   $('stat-hot-meta'),
+  marketsEl:   $('stat-markets'),
+  marketsMeta: $('stat-markets-meta'),
+  refreshEl:   $('refresh-ts'),
+  gridEl:      $('markets-grid'),
+  feedEl:      $('bet-feed'),
+  announceCd:  $('announce-cd'),
+};
 
-setInterval(() => {
-  refresh = refresh + 1;
-  if (refresh > 9) refresh = 1;
-  refreshEl.textContent = `${refresh}s ago`;
-}, 1000);
+let lastFetch = null;
+let prev = {};
+let liveMarkets = [];
 
-// Inject new bet rows occasionally
-const feed = document.getElementById('bet-feed');
-const sampleBets = [
-  { market: 'Trump impeached 2026 · YES @ 14¢', meta: '0x83a...4f1', amount: '$3.4K', cls: 'yes' },
-  { market: 'Iran peace deal · NO @ 69¢', meta: '0xa3b...e21', amount: '$8.1K', cls: 'no' },
-  { market: 'Lakers -3.5 · YES @ 71¢', meta: '0x12d...88c', amount: '$2.2K', cls: 'yes' },
-  { market: 'BTC $200K EOY · YES @ 33¢', meta: '0x55e...3b9', amount: '$5.6K', cls: 'yes' },
-  { market: 'Fed cut June · NO @ 42¢', meta: '0x77c...112', amount: '$1.8K', cls: 'no' },
-  { market: 'Chiefs SB LX · NO @ 73¢', meta: '0x9aa...ddc', amount: '$24K', cls: 'no whale' },
-  { market: 'Powell ousted by July · YES @ 9¢', meta: '0x44f...e88', amount: '$890', cls: 'yes' },
-];
+const fmtMoney = (n) => {
+  if (!n && n !== 0) return '—';
+  if (n >= 1e9) return `$${(n/1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `$${(n/1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `$${(n/1e3).toFixed(1)}K`;
+  return `$${Math.round(n).toLocaleString()}`;
+};
+const fmtCount = (n) => {
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e4) return (n/1e3).toFixed(1) + 'K';
+  return Math.round(n).toLocaleString();
+};
+const short = (t, n=60) => (!t ? '' : (t.length > n ? t.slice(0, n-1) + '…' : t));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
 
-setInterval(() => {
-  const bet = sampleBets[Math.floor(Math.random() * sampleBets.length)];
+function flashSet(el, text, val, key) {
+  if (!el) return;
+  el.textContent = text;
+  if (prev[key] != null && val !== prev[key]) {
+    el.classList.remove('flash-up','flash-dn');
+    void el.offsetWidth;
+    el.classList.add(val > prev[key] ? 'flash-up' : 'flash-dn');
+  }
+  prev[key] = val;
+}
+
+async function load() {
+  try {
+    const r = await fetch(API_URL, { cache: 'no-store' });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const data = await r.json();
+    if (!data || !Array.isArray(data.markets) || !data.markets.length) throw new Error('empty');
+    liveMarkets = data.markets;
+    render(data);
+    lastFetch = Date.now();
+  } catch (e) { console.warn('[og] market data load failed', e); }
+}
+
+function render(data) {
+  const s = data.stats || {};
+  const ms = data.markets;
+  if (els.navLive) els.navLive.textContent = `${(s.total_markets || 0).toLocaleString()} markets`;
+  flashSet(els.volEl, fmtMoney(s.total_volume_24h || 0), s.total_volume_24h || 0, 'vol');
+  flashSet(els.hotEl, fmtCount(s.hot_markets || 0), s.hot_markets || 0, 'hot');
+  if (els.marketsEl) els.marketsEl.textContent = fmtCount(s.total_markets || 0);
+  if (els.marketsMeta && s.by_source) {
+    els.marketsMeta.textContent = `${(s.by_source.polymarket||0).toLocaleString()} Polymarket · ${(s.by_source.kalshi||0).toLocaleString()} Kalshi`;
+  }
+  renderMarkets(ms.slice(0, 4));
+  renderTicker(ms);
+}
+
+function renderMarkets(markets) {
+  if (!els.gridEl || !markets.length) return;
+  els.gridEl.innerHTML = markets.map(cardHTML).join('');
+}
+
+function cardHTML(m) {
+  const isHot = m.volume_24h >= 1_000_000 || Math.abs(m.price_change_24h || 0) >= 0.05;
+  const yes = Math.round((m.yes_price || 0) * 100);
+  const no  = Math.round((m.no_price || (1 - (m.yes_price||0))) * 100);
+  const source = m.source === 'kalshi' ? 'Kalshi' : 'Polymarket';
+  const stroke = (m.price_change_24h || 0) >= 0 ? '#00FF85' : '#FF3344';
+  const pts = sparkPoints(m.yes_price || 0, m.price_change_24h || 0);
+  const link = m.link ? `href="${esc(m.link)}" target="_blank" rel="noopener"` : '';
+  return `
+    <a class="market-card ${isHot ? 'hot' : ''}" ${link} style="text-decoration:none;color:inherit;display:block">
+      <div class="market-cat">${esc(m.category || 'Markets')} · ${source}</div>
+      <div class="market-title">${esc(short(m.title, 90))}</div>
+      <div class="odds-row">
+        <div class="odd-pill yes"><div class="side">Yes</div><div class="price">${yes}¢</div></div>
+        <div class="odd-pill no"><div class="side">No</div><div class="price">${no}¢</div></div>
+      </div>
+      <div class="market-footer">
+        <div class="vol">Vol <b>${fmtMoney(m.volume_24h || 0)}</b></div>
+        <svg class="spark" viewBox="0 0 60 24"><polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="1.5"/></svg>
+      </div>
+    </a>`;
+}
+
+function sparkPoints(price, ch) {
+  const start = clamp01(price - (ch || 0));
+  const end = clamp01(price);
+  const out = [];
+  for (let i = 0; i < 7; i++) {
+    const t = i / 6;
+    const v = clamp01(start + (end - start) * t + Math.sin(i * 1.7) * 0.02);
+    out.push(`${i * 10},${(22 - v * 18).toFixed(1)}`);
+  }
+  return out.join(' ');
+}
+
+function renderTicker(markets) {
+  if (!els.ticker || !markets.length) return;
+  const items = [];
+  for (const m of markets.slice(0, 8)) {
+    const yes = Math.round((m.yes_price || 0) * 100);
+    const ch = m.price_change_24h || 0;
+    const src = (m.source || '').toUpperCase();
+    if (Math.abs(ch) >= 0.02) {
+      const from = Math.round((m.yes_price - ch) * 100);
+      const arrow = ch > 0 ? '↗' : '↘';
+      const klass = ch > 0 ? 'arrow-up' : 'arrow-dn';
+      items.push(`<div class="ticker-item">${arrow} <span class="${klass}">${esc(short(m.title, 50))} ${from}→${yes}%</span> · ${src}</div>`);
+    } else if ((m.volume_24h || 0) >= 500_000) {
+      items.push(`<div class="ticker-item">⚡ ${esc(short(m.title, 50))} · ${fmtMoney(m.volume_24h)} 24H · ${src}</div>`);
+    } else {
+      items.push(`<div class="ticker-item">→ ${esc(short(m.title, 50))} · YES ${yes}¢ · ${src}</div>`);
+    }
+  }
+  els.ticker.innerHTML = items.concat(items).join('');
+}
+
+function rollFeed() {
+  if (!els.feedEl || !liveMarkets.length) return;
+  const m = liveMarkets[Math.floor(Math.random() * Math.min(liveMarkets.length, 10))];
+  const sideYes = Math.random() < (m.yes_price || 0.5);
+  const cents = Math.round((sideYes ? m.yes_price : m.no_price) * 100);
+  const isWhale = Math.random() < 0.18;
+  const amt = isWhale
+    ? `$${Math.floor(20 + Math.random() * 180)}K`
+    : `$${(Math.floor(0.5 + Math.random() * 95) / 10).toFixed(1)}K`;
+  const wallet = m.source === 'polymarket'
+    ? '0x' + Math.random().toString(16).slice(2, 5) + '...' + Math.random().toString(16).slice(2, 5)
+    : 'kalshi:' + Math.random().toString(36).slice(2, 7);
   const row = document.createElement('div');
-  row.className = `feed-row ${bet.cls}`;
+  row.className = `feed-row ${isWhale ? 'whale ' : ''}${sideYes ? 'yes' : 'no'}`;
   row.innerHTML = `
     <div class="left">
-      <div class="market">${bet.market}</div>
-      <div class="meta">${bet.cls.includes('whale') ? 'WHALE · ' : ''}${bet.meta} · just now</div>
+      <div class="market">${esc(short(m.title, 60))} · ${sideYes ? 'YES' : 'NO'} @ ${cents}¢</div>
+      <div class="meta">${isWhale ? 'WHALE · ' : ''}${esc(wallet)} · just now</div>
     </div>
-    <div class="amount">${bet.amount}</div>
-  `;
-  feed.insertBefore(row, feed.firstChild);
-  // Trim
-  if (feed.children.length > 8) feed.removeChild(feed.lastChild);
-}, 4200);
+    <div class="amount">${amt}</div>`;
+  els.feedEl.insertBefore(row, els.feedEl.firstChild);
+  if (els.feedEl.children.length > 8) els.feedEl.removeChild(els.feedEl.lastChild);
+}
+
+function tickRefreshLabel() {
+  if (!els.refreshEl || !lastFetch) return;
+  const ago = Math.floor((Date.now() - lastFetch) / 1000);
+  els.refreshEl.textContent = ago < 5 ? 'just now' : `${ago}s ago`;
+}
+
+function tickCountdown() {
+  if (!els.announceCd) return;
+  let diff = Math.max(0, Math.floor((TGE - Date.now()) / 1000));
+  const d = Math.floor(diff / 86400); diff -= d * 86400;
+  const h = Math.floor(diff / 3600); diff -= h * 3600;
+  const mi = Math.floor(diff / 60);
+  els.announceCd.textContent = `${d}D · ${String(h).padStart(2,'0')}H · ${String(mi).padStart(2,'0')}M`;
+}
+
+load();
+tickCountdown();
+setInterval(load, REFRESH_MS);
+setInterval(tickRefreshLabel, 1000);
+setInterval(tickCountdown, 1000);
+setInterval(rollFeed, 4200);
+
+})();
 </script>
 
 </body>

@@ -67,12 +67,14 @@ body {
 }
 body::before {
   content: '';
-  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  position: fixed; inset: -10%; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(circle 600px at 20% 10%, rgba(139, 107, 255, 0.18), transparent 60%),
-    radial-gradient(circle 500px at 80% 30%, rgba(77, 229, 255, 0.10), transparent 60%),
-    radial-gradient(circle 700px at 50% 100%, rgba(255, 107, 181, 0.08), transparent 60%);
-  animation: aurora-drift 24s ease-in-out infinite alternate;
+    radial-gradient(circle 700px at 18% 8%, rgba(139, 107, 255, 0.28), transparent 60%),
+    radial-gradient(circle 600px at 82% 25%, rgba(77, 229, 255, 0.18), transparent 60%),
+    radial-gradient(circle 800px at 50% 100%, rgba(255, 107, 181, 0.14), transparent 60%),
+    radial-gradient(circle 500px at 90% 80%, rgba(139, 107, 255, 0.10), transparent 60%);
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+  filter: blur(20px);
 }
 body::after {
   content: '';
@@ -80,9 +82,31 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 @keyframes aurora-drift {
-  0%   { transform: translate(0, 0) scale(1); }
-  50%  { transform: translate(-3%, 2%) scale(1.08); }
-  100% { transform: translate(2%, -2%) scale(1); }
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33%  { transform: translate(-4%, 3%) scale(1.12) rotate(2deg); }
+  66%  { transform: translate(3%, -2%) scale(1.08) rotate(-1deg); }
+  100% { transform: translate(-2%, 4%) scale(1.14) rotate(1deg); }
+}
+
+/* Iridescent shimmer — used on wordmark, edge score, headline accents */
+@keyframes iri-shimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.iri-shimmer {
+  background: linear-gradient(
+    90deg,
+    #8B6BFF 0%,
+    #4DE5FF 25%,
+    #FF6BB5 50%,
+    #4DE5FF 75%,
+    #8B6BFF 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: iri-shimmer 6s linear infinite;
 }
 
 main, header, section, footer { position: relative; z-index: 2; }
@@ -165,10 +189,13 @@ img, svg { display: block; }
   width: 28px; height: 28px;
   border-radius: 8px;
   background: var(--grad-iri);
+  background-size: 200% 100%;
+  animation: iri-shimmer 6s linear infinite;
   display: grid; place-items: center;
   font-weight: 800;
   font-size: 14px;
   color: var(--bg-deep);
+  box-shadow: 0 4px 16px -4px rgba(139, 107, 255, 0.6);
 }
 .brand__name { letter-spacing: -0.01em; }
 .brand__tag {
@@ -301,10 +328,19 @@ img, svg { display: block; }
   -webkit-text-fill-color: transparent;
 }
 .hero__headline .grad {
-  background: var(--grad-iri);
+  background: linear-gradient(
+    90deg,
+    #8B6BFF 0%,
+    #4DE5FF 25%,
+    #FF6BB5 50%,
+    #4DE5FF 75%,
+    #8B6BFF 100%
+  );
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: iri-shimmer 8s linear infinite;
 }
 .hero__headline em {
   font-style: italic;
@@ -523,10 +559,19 @@ img, svg { display: block; }
   line-height: 1;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
-  background: var(--grad-iri);
+  background: linear-gradient(
+    90deg,
+    #8B6BFF 0%,
+    #4DE5FF 25%,
+    #FF6BB5 50%,
+    #4DE5FF 75%,
+    #8B6BFF 100%
+  );
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: iri-shimmer 4s linear infinite;
 }
 .indicator-glass__edge-val sup {
   font-size: 12px;
@@ -668,11 +713,23 @@ img, svg { display: block; }
   position: absolute; top: 0; left: 22px; right: 22px; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
 }
+.card {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.35s ease;
+}
 .card:hover {
   background: var(--bg-card-2);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 50px -16px rgba(139, 107, 255, 0.25);
-  border-color: rgba(139, 107, 255, 0.3);
+  transform: perspective(1200px) translateY(-6px) rotateX(2deg) scale(1.015);
+  box-shadow: 0 28px 60px -16px rgba(139, 107, 255, 0.35),
+              0 0 0 1px rgba(139, 107, 255, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 107, 255, 0.5);
+}
+.card:hover::before {
+  background: linear-gradient(90deg, transparent, rgba(139, 107, 255, 0.6), transparent);
 }
 .card.is-edge {
   border-color: rgba(255, 107, 181, 0.35);
@@ -1436,6 +1493,213 @@ img, svg { display: block; }
         </ul>
         <a class="tier__cta" href="#window">Unlock Desk</a>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- TOKENOMICS TEASER -->
+<style>
+.distro-glass {
+  padding: 60px 0 80px;
+}
+.distro-glass__panel {
+  background: var(--bg-card-2);
+  backdrop-filter: blur(40px) saturate(140%);
+  -webkit-backdrop-filter: blur(40px) saturate(140%);
+  border-radius: 28px;
+  padding: 44px 36px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+.distro-glass__panel::after {
+  content: '';
+  position: absolute; inset: 0;
+  padding: 1px;
+  border-radius: 28px;
+  background: var(--grad-iri);
+  background-size: 200% 100%;
+  animation: iri-shimmer 10s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+.distro-glass__head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+}
+.distro-glass__title {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255,255,255,0.6) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.distro-glass__title em {
+  font-style: italic;
+  font-weight: 500;
+}
+.distro-glass__supply {
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+}
+.distro-glass__supply b {
+  display: block;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+  background: var(--grad-iri);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: iri-shimmer 6s linear infinite;
+}
+
+.alloc-bar {
+  display: flex;
+  height: 56px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+}
+.alloc-bar__seg {
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transition: filter 0.2s;
+}
+.alloc-bar__seg:hover { filter: brightness(1.2); }
+.alloc-bar__seg.public    { background: linear-gradient(135deg, #8B6BFF, #5C3EE0); color: #FFF; }
+.alloc-bar__seg.liquidity { background: linear-gradient(135deg, #4DE5FF, #1AB6D6); color: #07050E; }
+.alloc-bar__seg.community { background: linear-gradient(135deg, #FF6BB5, #D43D8C); color: #FFF; }
+.alloc-bar__seg.team      { background: #3A2566; color: var(--paper-2); }
+.alloc-bar__seg.treasury  { background: #1F1838; color: var(--paper-3); }
+
+.alloc-rows {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+@media (max-width: 880px) { .alloc-rows { grid-template-columns: repeat(2, 1fr); } }
+.alloc-row {
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+}
+.alloc-row__dot {
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+.alloc-row__pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+}
+.alloc-row__name {
+  font-size: 12.5px;
+  color: var(--paper-2);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.alloc-row__sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper-4);
+  margin-top: 6px;
+}
+.alloc-row.public    .alloc-row__dot { background: #8B6BFF; }
+.alloc-row.liquidity .alloc-row__dot { background: #4DE5FF; }
+.alloc-row.community .alloc-row__dot { background: #FF6BB5; }
+.alloc-row.team      .alloc-row__dot { background: #3A2566; }
+.alloc-row.treasury  .alloc-row__dot { background: #1F1838; border: 1px solid var(--rule-bold); }
+</style>
+<section class="distro-glass">
+  <div class="shell">
+    <div class="distro-glass__panel">
+      <div class="distro-glass__head">
+        <div>
+          <div class="section-head__kicker" style="padding: 0;">§ 03 — DISTRIBUTION · <em>supply laid bare</em></div>
+          <h2 class="distro-glass__title">Supply, <em>liquid first.</em></h2>
+        </div>
+        <div class="distro-glass__supply">
+          Total supply
+          <b>1,000,000,000</b>
+          $EDGE · Solana
+        </div>
+      </div>
+
+      <div class="alloc-bar" aria-label="Token allocation">
+        <div class="alloc-bar__seg public"    style="flex: 70;">PUBLIC 70%</div>
+        <div class="alloc-bar__seg liquidity" style="flex: 10;">LP 10%</div>
+        <div class="alloc-bar__seg community" style="flex: 10;">REWARDS 10%</div>
+        <div class="alloc-bar__seg team"      style="flex: 7;">TEAM 7%</div>
+        <div class="alloc-bar__seg treasury"  style="flex: 3;">TRES 3%</div>
+      </div>
+
+      <div class="alloc-rows">
+        <div class="alloc-row public">
+          <div class="alloc-row__dot"></div>
+          <div class="alloc-row__pct">70%</div>
+          <div class="alloc-row__name">Public fairlaunch</div>
+          <div class="alloc-row__sub">Liquid at TGE</div>
+        </div>
+        <div class="alloc-row liquidity">
+          <div class="alloc-row__dot"></div>
+          <div class="alloc-row__pct">10%</div>
+          <div class="alloc-row__name">Liquidity pool</div>
+          <div class="alloc-row__sub">Locked · 24mo</div>
+        </div>
+        <div class="alloc-row community">
+          <div class="alloc-row__dot"></div>
+          <div class="alloc-row__pct">10%</div>
+          <div class="alloc-row__name">Community airdrops</div>
+          <div class="alloc-row__sub">Streamed · 12mo</div>
+        </div>
+        <div class="alloc-row team">
+          <div class="alloc-row__dot"></div>
+          <div class="alloc-row__pct">7%</div>
+          <div class="alloc-row__name">Team &amp; builders</div>
+          <div class="alloc-row__sub">6mo cliff · 18mo linear</div>
+        </div>
+        <div class="alloc-row treasury">
+          <div class="alloc-row__dot"></div>
+          <div class="alloc-row__pct">3%</div>
+          <div class="alloc-row__name">Treasury</div>
+          <div class="alloc-row__sub">Multisig · 12mo cliff</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--rule); display: flex; gap: 32px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper-3);">
+        <span>→ Mint authority <b style="color: var(--paper);">renounced</b> at TGE</span>
+        <span>→ Freeze authority <b style="color: var(--paper);">renounced</b> at TGE</span>
+        <span>→ Vesting <b style="color: var(--paper);">open-sourced</b> pre-launch</span>
+      </div>
     </div>
   </div>
 </section>

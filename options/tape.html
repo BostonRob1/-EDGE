@@ -314,6 +314,64 @@ main, header, section, footer { position: relative; z-index: 2; }
   border-bottom: 4px solid var(--cyan);
 }
 
+/* Teletype animation on the headline */
+.tt-line {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: tt-type 0.9s steps(15, end) both;
+  border-right: 4px solid transparent;
+}
+.tt-line:nth-child(1) { animation-delay: 0.0s; }
+.tt-line:nth-child(2) { animation-delay: 0.7s; }
+.tt-line:nth-child(3) {
+  animation-delay: 1.4s;
+  animation: tt-type 0.9s steps(8, end) both, tt-cursor 0.7s steps(2) infinite 2.3s;
+  animation-fill-mode: both;
+  border-right-color: var(--cyan);
+  display: inline-block;
+}
+@keyframes tt-type {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@keyframes tt-cursor {
+  50% { border-right-color: transparent; }
+}
+
+/* Version stamp — small metadata strip per section */
+.vstamp {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 5px 12px;
+  border: 1px solid var(--rule-2);
+  background: var(--bg);
+  margin-bottom: 22px;
+}
+.vstamp b { color: var(--cyan); font-weight: 700; }
+.vstamp .sep { color: var(--paper-4); }
+
+/* ASCII bar chart — used in gauge */
+.ascii-chart {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: var(--paper-2);
+  padding: 14px 18px;
+  border-top: 1px solid var(--rule-2);
+  white-space: pre;
+}
+.ascii-chart .lbl { color: var(--paper-3); }
+.ascii-chart .bar { color: var(--cyan); }
+.ascii-chart .bar-mute { color: var(--paper-4); }
+
 .hero__lede {
   margin-top: 32px;
   font-family: var(--mono);
@@ -1084,6 +1142,15 @@ main, header, section, footer { position: relative; z-index: 2; }
 <!-- HERO -->
 <section class="hero">
   <div class="shell">
+    <div class="vstamp">
+      <span>// v0.1.3</span>
+      <span class="sep">/</span>
+      <span><b>ALPHA ACCESS</b></span>
+      <span class="sep">/</span>
+      <span>2026.05.24</span>
+      <span class="sep">/</span>
+      <span>BUILD bc3059b</span>
+    </div>
     <div class="hero__kicker">
       The terminal for prediction markets · <em>token-gated access</em>
     </div>
@@ -1091,9 +1158,9 @@ main, header, section, footer { position: relative; z-index: 2; }
     <div class="hero__grid">
       <div>
         <h1 class="hero__headline">
-          MONEY<br>
-          <span class="cyan">MEETS</span><br>
-          MOUTH<span class="cyan">.</span>
+          <span class="tt-line">MONEY</span>
+          <span class="tt-line"><span class="cyan">MEETS</span></span>
+          <span class="tt-line">MOUTH<span class="cyan">.</span></span>
         </h1>
 
         <p class="hero__lede">
@@ -1153,6 +1220,9 @@ main, header, section, footer { position: relative; z-index: 2; }
             <div class="gauge__edge-val tnum" id="val-edge">—<sup>pts</sup></div>
           </div>
         </div>
+        <pre class="ascii-chart" id="ascii-chart"><span class="lbl">     POLY  </span><span class="bar">██████████████████████████░░░░░░░░░░</span>  <span class="bar">—</span>
+<span class="lbl">   KALSHI  </span><span class="bar">█████████░░░░░░░░░░░░░░░░░░░░░░░░░░</span>  <span class="bar">—</span>
+<span class="lbl">      Δ 24H </span><span class="bar-mute">▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░░</span>  <span class="bar">—</span></pre>
       </aside>
     </div>
   </div>
@@ -1162,6 +1232,13 @@ main, header, section, footer { position: relative; z-index: 2; }
 <section id="floor" class="floor">
   <div class="shell">
     <div class="section-head">
+      <div class="vstamp" style="margin-bottom: 18px;">
+        <span>// FLOOR</span>
+        <span class="sep">/</span>
+        <span><b>STREAMING</b></span>
+        <span class="sep">/</span>
+        <span>30s REFRESH</span>
+      </div>
       <div class="section-head__kicker"><span class="num">§ 01</span> // THE FLOOR · <span class="cyan">live order book</span></div>
       <h2>THE ACTION,<br><span class="cyan">RIGHT NOW.</span></h2>
     </div>
@@ -1212,6 +1289,13 @@ main, header, section, footer { position: relative; z-index: 2; }
 <section id="tiers" class="tiers">
   <div class="shell">
     <div class="section-head">
+      <div class="vstamp" style="margin-bottom: 18px;">
+        <span>// ACCESS</span>
+        <span class="sep">/</span>
+        <span><b>4 TIERS</b></span>
+        <span class="sep">/</span>
+        <span>TOKEN-GATED</span>
+      </div>
       <div class="section-head__kicker"><span class="num">§ 02</span> // ACCESS · <span class="cyan">token-gated</span></div>
       <h2>HOLD <span class="cyan">$EDGE.</span><br>HOLD THE FLOOR.</h2>
     </div>
@@ -1250,7 +1334,7 @@ main, header, section, footer { position: relative; z-index: 2; }
       </article>
 
       <article class="tier tier--featured">
-        <div class="tier__id">TIER <b>01</b></div>
+        <div class="tier__id">TIER <b>01</b> · ALPHA</div>
         <h3 class="tier__name">PRO</h3>
         <div class="tier__hold">Hold <b>10,000 $EDGE</b></div>
         <div class="tier__est">~$10 @ fairlaunch</div>
@@ -1304,6 +1388,13 @@ main, header, section, footer { position: relative; z-index: 2; }
 <section id="window" class="window">
   <div class="shell">
     <div class="section-head">
+      <div class="vstamp" style="margin-bottom: 18px; border-color: var(--cyan); color: var(--cyan);">
+        <span>// WINDOW</span>
+        <span class="sep" style="color: var(--paper-4);">/</span>
+        <span><b style="color: var(--paper);">CLOSING</b></span>
+        <span class="sep" style="color: var(--paper-4);">/</span>
+        <span>TGE 2026.06.07</span>
+      </div>
       <div class="section-head__kicker" style="color: var(--cyan);"><span class="num">§ 03</span> // THE WINDOW · CLOSING</div>
     </div>
 
@@ -1469,6 +1560,28 @@ function render(data) {
   renderIndicator(ms[0]);
   renderFloor(ms.slice(0, 4));
   renderTape(ms);
+  renderAsciiChart(s);
+}
+
+function asciiBar(pct, width=34) {
+  pct = Math.max(0, Math.min(100, pct));
+  const filled = Math.round((pct / 100) * width);
+  return '█'.repeat(filled) + '░'.repeat(width - filled);
+}
+
+function renderAsciiChart(s) {
+  const el = document.getElementById('ascii-chart');
+  if (!el || !s.by_source) return;
+  const poly = s.by_source.polymarket || 0;
+  const kalshi = s.by_source.kalshi || 0;
+  const total = poly + kalshi || 1;
+  const polyPct = (poly / total) * 100;
+  const kalshiPct = (kalshi / total) * 100;
+  const hotPct = total ? Math.min(100, ((s.hot_markets || 0) / total) * 100) : 0;
+  el.innerHTML =
+    `<span class="lbl">    POLY  </span><span class="bar">${asciiBar(polyPct)}</span>  <span class="bar">${poly.toString().padStart(3)}</span>\n` +
+    `<span class="lbl">  KALSHI  </span><span class="bar">${asciiBar(kalshiPct)}</span>  <span class="bar">${kalshi.toString().padStart(3)}</span>\n` +
+    `<span class="lbl">  HOT 24H </span><span class="bar-mute">${asciiBar(hotPct)}</span>  <span class="bar">${(s.hot_markets || 0).toString().padStart(3)}</span>`;
 }
 
 function renderIndicator(m) {
