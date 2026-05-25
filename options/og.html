@@ -980,6 +980,288 @@ footer a:hover { color: var(--lime); }
   </div>
 </section>
 
+<!-- ACTION DESK — TMZ-mode firehose -->
+<style>
+.action-desk {
+  padding: 40px 32px 30px;
+  border-bottom: 1px solid rgba(196, 255, 0, 0.15);
+  position: relative;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(196, 255, 0, 0.04), transparent 70%),
+    var(--void);
+}
+.desk-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid rgba(196, 255, 0, 0.18);
+}
+.desk-head h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(40px, 5.4vw, 64px);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.desk-head h2 .lime { color: var(--lime); }
+.desk-head h2 .magenta { color: var(--magenta); }
+.desk-head__meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: right;
+}
+.desk-head__meta .live-tag {
+  color: var(--green);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.desk-head__meta .live-tag::before {
+  content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.desk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+@media (max-width: 980px) { .desk-grid { grid-template-columns: 1fr; } }
+
+.desk-card {
+  border: 1px solid rgba(255,255,255,0.08);
+  background:
+    linear-gradient(180deg, rgba(196,255,0,0.02), transparent 40%),
+    var(--void-2);
+  padding: 22px 22px 20px;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: flex; flex-direction: column;
+  min-height: 280px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.desk-card:hover {
+  border-color: var(--lime);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px -12px rgba(196, 255, 0, 0.3);
+}
+.desk-card.is-spotlight {
+  border-color: var(--magenta);
+  background:
+    linear-gradient(180deg, rgba(255,0,110,0.06), transparent 60%),
+    var(--void-2);
+  box-shadow: 0 0 0 1px rgba(255, 0, 110, 0.4),
+              0 12px 48px -8px rgba(255, 0, 110, 0.4);
+}
+.desk-card.is-spotlight::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--magenta);
+  box-shadow: 0 0 16px var(--magenta);
+}
+.desk-card__tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.desk-card__tag .ic { font-size: 14px; line-height: 1; }
+.desk-card__src {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.desk-card__title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--white);
+  margin-bottom: 18px;
+  min-height: 48px;
+}
+.desk-card__mega {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(38px, 4.4vw, 56px);
+  letter-spacing: -0.025em;
+  line-height: 0.95;
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+  margin-top: auto;
+}
+.desk-card.is-mover .desk-card__mega { color: var(--white); }
+.desk-card.is-mover.is-up .desk-card__mega { color: var(--green); }
+.desk-card.is-mover.is-dn .desk-card__mega { color: var(--red); }
+.desk-card.is-edge .desk-card__mega { color: var(--magenta); }
+
+.desk-card__sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+  margin-bottom: 14px;
+}
+.desk-card__bottom {
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.desk-card__odds {
+  display: flex; gap: 14px;
+  color: var(--muted);
+}
+.desk-card__odds b { color: var(--white); font-weight: 700; }
+.desk-card__odds .yes b { color: var(--green); }
+.desk-card__odds .no b { color: var(--red); }
+.desk-card__open {
+  color: var(--lime);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  font-size: 10px;
+}
+.desk-card.is-spotlight .desk-card__open { color: var(--magenta); }
+
+/* WHAT JUST HAPPENED feed */
+.jh-wrap {
+  border: 1px solid rgba(196, 255, 0, 0.18);
+  background: var(--void-2);
+}
+.jh-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(196, 255, 0, 0.12);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.jh-head .title { color: var(--lime); display: flex; align-items: center; gap: 8px; }
+.jh-head .title::before {
+  content: ''; width: 6px; height: 6px; background: var(--lime); border-radius: 50%;
+  box-shadow: 0 0 8px var(--lime);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.jh-head .meta { color: var(--muted); }
+.jh-feed { padding: 6px 18px 14px; }
+.jh-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  animation: jh-slide 0.5s ease;
+}
+.jh-row:first-child { border-top: none; }
+@keyframes jh-slide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.jh-row .when {
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.jh-row .what {
+  color: var(--white);
+  letter-spacing: 0.02em;
+}
+.jh-row .what .em { font-style: normal; color: var(--lime); }
+.jh-row .what .ed { font-style: normal; color: var(--magenta); }
+.jh-row.up .what .em { color: var(--green); }
+.jh-row.dn .what .em { color: var(--red); }
+.jh-row .amt {
+  color: var(--white);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.jh-row.whale .amt { color: var(--magenta); }
+</style>
+<section class="action-desk">
+  <div class="desk-head">
+    <h2><span class="lime">⚡</span> ACTION <span class="magenta">DESK</span></h2>
+    <div class="desk-head__meta">
+      <div>Spoon-fed · <span class="live-tag">LIVE</span></div>
+      <div style="margin-top: 4px;">Polymarket + Kalshi · refresh 30s</div>
+    </div>
+  </div>
+
+  <div class="desk-grid">
+    <a class="desk-card is-bet" id="desk-bet" href="#" target="_blank" rel="noopener">
+      <div class="desk-card__tag"><span class="ic">🔥</span> #1 MOST BET</div>
+      <div class="desk-card__src" id="bet-src">POLYMARKET</div>
+      <div class="desk-card__title" id="bet-title">Loading top action…</div>
+      <div class="desk-card__mega" id="bet-mega">$—</div>
+      <div class="desk-card__sub">24H VOLUME · WHERE THE MONEY IS</div>
+      <div class="desk-card__bottom">
+        <div class="desk-card__odds">
+          <span class="yes">YES <b id="bet-yes">—</b></span>
+          <span class="no">NO <b id="bet-no">—</b></span>
+        </div>
+        <div class="desk-card__open">OPEN →</div>
+      </div>
+    </a>
+
+    <a class="desk-card is-mover" id="desk-mover" href="#" target="_blank" rel="noopener">
+      <div class="desk-card__tag"><span class="ic">📈</span> BIGGEST MOVER</div>
+      <div class="desk-card__src" id="mover-src">POLYMARKET</div>
+      <div class="desk-card__title" id="mover-title">Loading sharpest move…</div>
+      <div class="desk-card__mega" id="mover-mega">—</div>
+      <div class="desk-card__sub" id="mover-sub">24H CHANGE</div>
+      <div class="desk-card__bottom">
+        <div class="desk-card__odds">
+          <span>NOW <b id="mover-now">—</b></span>
+          <span class="o">WAS <b id="mover-was">—</b></span>
+        </div>
+        <div class="desk-card__open">OPEN →</div>
+      </div>
+    </a>
+
+    <a class="desk-card is-edge" id="desk-edge" href="#" target="_blank" rel="noopener">
+      <div class="desk-card__tag"><span class="ic">⌬</span> #1 EDGE</div>
+      <div class="desk-card__src" id="edge-src">POLYMARKET</div>
+      <div class="desk-card__title" id="edge-title">Loading divergence…</div>
+      <div class="desk-card__mega" id="edge-mega">— PTS</div>
+      <div class="desk-card__sub">MONEY vs MOUTH · DIVERGENCE</div>
+      <div class="desk-card__bottom">
+        <div class="desk-card__odds">
+          <span>MONEY <b id="edge-money">—</b></span>
+          <span>MOUTH <b id="edge-mouth">—</b></span>
+        </div>
+        <div class="desk-card__open">OPEN →</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="jh-wrap">
+    <div class="jh-head">
+      <div class="title">WHAT JUST HAPPENED</div>
+      <div class="meta">live · last 60 seconds</div>
+    </div>
+    <div class="jh-feed" id="jh-feed">
+      <div class="jh-row"><span class="when">—</span><span class="what">connecting to terminal…</span><span class="amt">—</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- HOT MARKETS -->
 <div class="section-title">
   <h2>Hot <span class="accent">Now</span></h2>
@@ -1296,7 +1578,29 @@ const els = {
   gridEl:      $('markets-grid'),
   feedEl:      $('bet-feed'),
   announceCd:  $('announce-cd'),
+  // ACTION DESK
+  desks: ['desk-bet', 'desk-mover', 'desk-edge'].map($),
+  betTitle: $('bet-title'), betSrc: $('bet-src'), betMega: $('bet-mega'), betYes: $('bet-yes'), betNo: $('bet-no'),
+  moverTitle: $('mover-title'), moverSrc: $('mover-src'), moverMega: $('mover-mega'), moverSub: $('mover-sub'), moverNow: $('mover-now'), moverWas: $('mover-was'), moverCard: $('desk-mover'),
+  edgeTitle: $('edge-title'), edgeSrc: $('edge-src'), edgeMega: $('edge-mega'), edgeMoney: $('edge-money'), edgeMouth: $('edge-mouth'),
+  jhFeed: $('jh-feed'),
 };
+
+let spotlightIdx = 0;
+function rotateSpotlight() {
+  if (!els.desks || !els.desks[0]) return;
+  els.desks.forEach((d, i) => {
+    if (!d) return;
+    d.classList.toggle('is-spotlight', i === spotlightIdx);
+  });
+  spotlightIdx = (spotlightIdx + 1) % els.desks.length;
+}
+
+function setLink(el, href) {
+  if (!el) return;
+  if (href) el.setAttribute('href', href);
+  else el.removeAttribute('href');
+}
 
 let lastFetch = null;
 let prev = {};
@@ -1353,6 +1657,107 @@ function render(data) {
   }
   renderMarkets(ms.slice(0, 4));
   renderTicker(ms);
+  renderActionDesk(ms);
+}
+
+function renderActionDesk(markets) {
+  if (!markets.length) return;
+
+  // #1 MOST BET — highest 24H volume
+  const mostBet = markets.slice().sort((a, b) => (b.volume_24h || 0) - (a.volume_24h || 0))[0];
+  if (mostBet && els.betTitle) {
+    els.betTitle.textContent = short(mostBet.title, 90);
+    if (els.betSrc) els.betSrc.textContent = mostBet.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+    if (els.betMega) els.betMega.textContent = fmtMoney(mostBet.volume_24h || 0);
+    if (els.betYes) els.betYes.textContent = Math.round((mostBet.yes_price || 0) * 100) + '¢';
+    if (els.betNo) els.betNo.textContent = Math.round((mostBet.no_price || (1 - (mostBet.yes_price || 0))) * 100) + '¢';
+    setLink($('desk-bet'), mostBet.link);
+  }
+
+  // BIGGEST MOVER — largest |Δ24h| with min volume floor
+  const moverPool = markets.filter(m => (m.volume_24h || 0) >= 100_000);
+  const mover = (moverPool.length ? moverPool : markets).slice()
+    .sort((a, b) => Math.abs(b.price_change_24h || 0) - Math.abs(a.price_change_24h || 0))[0];
+  if (mover && els.moverTitle) {
+    const ch = mover.price_change_24h || 0;
+    const isUp = ch >= 0;
+    const cents = Math.round(Math.abs(ch) * 100);
+    const nowCents = Math.round((mover.yes_price || 0) * 100);
+    const wasCents = Math.round(((mover.yes_price || 0) - ch) * 100);
+    els.moverTitle.textContent = short(mover.title, 90);
+    if (els.moverSrc) els.moverSrc.textContent = mover.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+    if (els.moverMega) els.moverMega.textContent = (isUp ? '+' : '−') + cents + '¢';
+    if (els.moverSub) els.moverSub.textContent = (isUp ? '24H · YES PUMPED' : '24H · YES CRASHED');
+    if (els.moverNow) els.moverNow.textContent = nowCents + '¢';
+    if (els.moverWas) els.moverWas.textContent = wasCents + '¢';
+    if (els.moverCard) {
+      els.moverCard.classList.toggle('is-up', isUp);
+      els.moverCard.classList.toggle('is-dn', !isUp);
+    }
+    setLink(els.moverCard, mover.link);
+  }
+
+  // #1 EDGE — largest divergence (using same beta proxy as the indicator)
+  const withEdge = markets
+    .filter(m => (m.volume_24h || 0) >= 50_000)
+    .map(m => {
+      const money = clamp01(m.yes_price || 0);
+      const mouth = clamp01(money - (m.price_change_24h || 0) * 3.0 + 0.04);
+      const edge = Math.round(Math.abs(money - mouth) * 100);
+      return { m, money, mouth, edge };
+    })
+    .sort((a, b) => b.edge - a.edge);
+  const top = withEdge[0];
+  if (top && els.edgeTitle) {
+    els.edgeTitle.textContent = short(top.m.title, 90);
+    if (els.edgeSrc) els.edgeSrc.textContent = top.m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+    if (els.edgeMega) els.edgeMega.textContent = top.edge + ' PTS';
+    if (els.edgeMoney) els.edgeMoney.textContent = Math.round(top.money * 100) + '%';
+    if (els.edgeMouth) els.edgeMouth.textContent = Math.round(top.mouth * 100) + '%';
+    setLink($('desk-edge'), top.m.link);
+  }
+}
+
+// "WHAT JUST HAPPENED" — TMZ-style auto-generated headlines from real data
+const jhTemplates = {
+  pump:  ['<span class="em">${title}</span> just <span class="em">PUMPED ${pts}¢</span> on ${vol}', 'Money is loading up: <span class="em">${title}</span> ↑ ${pts}¢ ($${vol})', '<span class="em">WHALES ARE BUYING</span> ${title} — now ${yes}¢'],
+  dump:  ['<span class="em">${title}</span> just <span class="em">CRASHED ${pts}¢</span> on ${vol}', 'Sharp money is fading: <span class="em">${title}</span> ↓ ${pts}¢ ($${vol})', '<span class="em">DUMP ALERT</span>: ${title} — now ${yes}¢'],
+  whale: ['<span class="em">WHALE</span> just dropped ${size} on ${title}', '<span class="ed">$${size} BET</span> just landed on ${title}', '<span class="em">BIG MONEY</span> moving on ${title} — ${size}'],
+  hot:   ['${title} crossed <span class="em">$${vol}</span> in 24H', '${title} is now the <span class="em">#${rank}</span> most-bet market'],
+};
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const fillTpl = (tpl, vars) => tpl.replace(/\$\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
+function rollJustHappened() {
+  if (!els.jhFeed || !liveMarkets.length) return;
+  const m = liveMarkets[Math.floor(Math.random() * Math.min(liveMarkets.length, 15))];
+  const ch = m.price_change_24h || 0;
+  const yes = Math.round((m.yes_price || 0) * 100);
+  const pts = Math.round(Math.abs(ch) * 100);
+  const vol = fmtMoney(m.volume_24h || 0);
+  let kind, size = '';
+  const r = Math.random();
+  if (Math.abs(ch) >= 0.04 && r < 0.5) kind = ch > 0 ? 'pump' : 'dump';
+  else if (r < 0.75) { kind = 'whale'; size = '$' + (Math.floor(15 + Math.random() * 130)) + 'K'; }
+  else kind = 'hot';
+  const tpl = pick(jhTemplates[kind]);
+  const vars = { title: esc(short(m.title, 50)).toUpperCase(), pts, vol, yes, size, rank: 1 + Math.floor(Math.random()*5) };
+  const what = fillTpl(tpl, vars);
+  const amt = kind === 'whale' ? size : (kind === 'pump' || kind === 'dump' ? `${pts}¢` : vol);
+  const cls = (kind === 'pump' ? 'up' : kind === 'dump' ? 'dn' : kind === 'whale' ? 'whale' : '');
+  const row = document.createElement('div');
+  row.className = 'jh-row ' + cls;
+  row.innerHTML = `<span class="when">just now</span><span class="what">${what}</span><span class="amt">${amt}</span>`;
+  els.jhFeed.insertBefore(row, els.jhFeed.firstChild);
+  if (els.jhFeed.children.length > 6) els.jhFeed.removeChild(els.jhFeed.lastChild);
+  // age previous rows
+  Array.from(els.jhFeed.children).forEach((r, i) => {
+    if (i === 0) return;
+    const when = r.querySelector('.when');
+    if (when && when.textContent === 'just now') when.textContent = '4s ago';
+    else if (when && when.textContent === '4s ago') when.textContent = '12s ago';
+    else if (when && when.textContent === '12s ago') when.textContent = '28s ago';
+  });
 }
 
 function renderMarkets(markets) {
@@ -1457,10 +1862,13 @@ function tickCountdown() {
 
 load();
 tickCountdown();
+rotateSpotlight();
 setInterval(load, REFRESH_MS);
 setInterval(tickRefreshLabel, 1000);
 setInterval(tickCountdown, 1000);
 setInterval(rollFeed, 4200);
+setInterval(rollJustHappened, 3200);
+setInterval(rotateSpotlight, 8000);
 
 })();
 </script>

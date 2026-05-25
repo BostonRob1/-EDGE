@@ -1351,6 +1351,331 @@ img, svg { display: block; }
   </div>
 </section>
 
+<!-- ACTION DESK — TMZ-mode firehose, glass treatment -->
+<style>
+.action-desk {
+  padding: 56px 0 32px;
+  position: relative;
+}
+.desk-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  flex-wrap: wrap; gap: 16px;
+  margin-bottom: 28px;
+}
+.desk-head h2 {
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+  background: linear-gradient(180deg, #FFFFFF 40%, rgba(255,255,255,0.55) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.desk-head h2 .grad {
+  background: linear-gradient(90deg, #8B6BFF 0%, #4DE5FF 50%, #FF6BB5 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: iri-shimmer 6s linear infinite;
+}
+.desk-head__meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  text-align: right;
+}
+.desk-head__meta .live-tag {
+  color: var(--green);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.desk-head__meta .live-tag::before {
+  content: ''; width: 6px; height: 6px; background: var(--green); border-radius: 999px;
+  animation: pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.desk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 980px) { .desk-grid { grid-template-columns: 1fr; } }
+
+.desk-card {
+  position: relative;
+  padding: 24px 24px 22px;
+  background: var(--bg-card-2);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border: 1px solid var(--rule);
+  border-radius: 22px;
+  display: flex; flex-direction: column;
+  min-height: 296px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.desk-card::before {
+  content: '';
+  position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+}
+.desk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 60px -16px rgba(139, 107, 255, 0.35);
+  border-color: rgba(139, 107, 255, 0.35);
+}
+.desk-card.is-spotlight {
+  background:
+    linear-gradient(180deg, rgba(255, 107, 181, 0.12), rgba(77, 229, 255, 0.04)),
+    var(--bg-card-2);
+  border-color: transparent;
+}
+.desk-card.is-spotlight::after {
+  content: '';
+  position: absolute; inset: -1px;
+  padding: 1px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #8B6BFF, #4DE5FF, #FF6BB5);
+  background-size: 200% 100%;
+  animation: iri-shimmer 4s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.desk-card__tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet-bright);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.desk-card.is-mover .desk-card__tag { color: var(--cyan-bright); }
+.desk-card.is-edge .desk-card__tag { color: var(--pink); }
+
+.desk-card__src {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--paper-3);
+  margin-bottom: 14px;
+}
+.desk-card__title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--paper);
+  margin-bottom: 18px;
+  min-height: 48px;
+}
+.desk-card__mega {
+  font-size: clamp(38px, 4.4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+  margin-top: auto;
+}
+.desk-card.is-bet .desk-card__mega {
+  background: linear-gradient(90deg, #8B6BFF 0%, #4DE5FF 50%, #FF6BB5 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: iri-shimmer 6s linear infinite;
+}
+.desk-card.is-mover.is-up .desk-card__mega { color: var(--green); }
+.desk-card.is-mover.is-dn .desk-card__mega { color: var(--red); }
+.desk-card.is-edge .desk-card__mega { color: var(--pink); }
+
+.desk-card__sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+.desk-card__bottom {
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.desk-card__odds {
+  display: flex; gap: 14px;
+  color: var(--paper-3);
+}
+.desk-card__odds b { color: var(--paper); font-weight: 700; }
+.desk-card__odds .yes b { color: var(--green); }
+.desk-card__odds .no b { color: var(--paper); }
+.desk-card__open {
+  color: var(--violet-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  font-size: 10px;
+}
+.desk-card.is-spotlight .desk-card__open {
+  background: linear-gradient(90deg, #8B6BFF, #4DE5FF, #FF6BB5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* WHAT JUST HAPPENED feed */
+.jh-wrap {
+  padding: 20px 24px;
+  background: var(--bg-card);
+  backdrop-filter: blur(30px) saturate(140%);
+  -webkit-backdrop-filter: blur(30px) saturate(140%);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+}
+.jh-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.jh-head .title {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(90deg, #8B6BFF, #4DE5FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+.jh-head .title::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--violet-bright);
+  border-radius: 999px;
+  box-shadow: 0 0 10px var(--violet-bright);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.jh-head .meta { color: var(--paper-3); }
+
+.jh-row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 11px 0;
+  border-top: 1px solid var(--rule-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  animation: jh-slide 0.5s ease;
+}
+.jh-row:first-child { border-top: none; }
+@keyframes jh-slide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.jh-row .when { color: var(--paper-3); letter-spacing: 0.1em; }
+.jh-row .what {
+  color: var(--paper);
+  letter-spacing: 0.02em;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+.jh-row .what .em { font-style: normal; color: var(--violet-bright); font-weight: 700; }
+.jh-row .what .ed { font-style: normal; color: var(--pink); font-weight: 700; }
+.jh-row.up .what .em { color: var(--green); }
+.jh-row.dn .what .em { color: var(--red); }
+.jh-row .amt {
+  color: var(--paper);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.jh-row.whale .amt { color: var(--pink); }
+</style>
+<section class="action-desk">
+  <div class="shell">
+    <div class="desk-head">
+      <h2>Action <span class="grad">desk.</span></h2>
+      <div class="desk-head__meta">
+        <div>Spoon-fed · <span class="live-tag">LIVE</span></div>
+        <div style="margin-top: 4px;">Polymarket + Kalshi · 30s refresh</div>
+      </div>
+    </div>
+
+    <div class="desk-grid">
+      <a class="desk-card is-bet" id="desk-bet" href="#" target="_blank" rel="noopener">
+        <div class="desk-card__tag">🔥 #1 MOST BET</div>
+        <div class="desk-card__src" id="bet-src">POLYMARKET</div>
+        <div class="desk-card__title" id="bet-title">Loading top action…</div>
+        <div class="desk-card__mega" id="bet-mega">$—</div>
+        <div class="desk-card__sub">24H VOLUME · WHERE THE MONEY IS</div>
+        <div class="desk-card__bottom">
+          <div class="desk-card__odds">
+            <span class="yes">YES <b id="bet-yes">—</b></span>
+            <span class="no">NO <b id="bet-no">—</b></span>
+          </div>
+          <div class="desk-card__open">OPEN →</div>
+        </div>
+      </a>
+
+      <a class="desk-card is-mover" id="desk-mover" href="#" target="_blank" rel="noopener">
+        <div class="desk-card__tag">📈 BIGGEST MOVER</div>
+        <div class="desk-card__src" id="mover-src">POLYMARKET</div>
+        <div class="desk-card__title" id="mover-title">Loading sharpest move…</div>
+        <div class="desk-card__mega" id="mover-mega">—</div>
+        <div class="desk-card__sub" id="mover-sub">24H CHANGE</div>
+        <div class="desk-card__bottom">
+          <div class="desk-card__odds">
+            <span>NOW <b id="mover-now">—</b></span>
+            <span>WAS <b id="mover-was">—</b></span>
+          </div>
+          <div class="desk-card__open">OPEN →</div>
+        </div>
+      </a>
+
+      <a class="desk-card is-edge" id="desk-edge" href="#" target="_blank" rel="noopener">
+        <div class="desk-card__tag">⌬ #1 EDGE</div>
+        <div class="desk-card__src" id="edge-src">POLYMARKET</div>
+        <div class="desk-card__title" id="edge-title">Loading divergence…</div>
+        <div class="desk-card__mega" id="edge-mega">— PTS</div>
+        <div class="desk-card__sub">MONEY vs MOUTH · DIVERGENCE</div>
+        <div class="desk-card__bottom">
+          <div class="desk-card__odds">
+            <span>MONEY <b id="edge-money">—</b></span>
+            <span>MOUTH <b id="edge-mouth">—</b></span>
+          </div>
+          <div class="desk-card__open">OPEN →</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="jh-wrap">
+      <div class="jh-head">
+        <div class="title">WHAT JUST HAPPENED</div>
+        <div class="meta">live · last 60 seconds</div>
+      </div>
+      <div id="jh-feed">
+        <div class="jh-row"><span class="when">—</span><span class="what">connecting to terminal…</span><span class="amt">—</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- THE FLOOR -->
 <section class="floor" id="floor">
   <div class="shell">
@@ -1853,6 +2178,7 @@ async function load() {
 function render(data) {
   const s = data.stats || {};
   const ms = data.markets;
+  window.__edgeMarkets = ms;
 
   if (els.navLive) els.navLive.textContent = `${(s.total_markets || 0).toLocaleString()} markets`;
 
@@ -1872,7 +2198,113 @@ function render(data) {
 
   renderIndicator(ms[0]);
   renderFloor(ms.slice(0, 4));
+  renderActionDesk(ms);
 }
+
+// ============ ACTION DESK ============
+const desks = ['desk-bet', 'desk-mover', 'desk-edge'].map(id => document.getElementById(id));
+let spotlightIdx = 0;
+function rotateSpotlight() {
+  desks.forEach((d, i) => { if (d) d.classList.toggle('is-spotlight', i === spotlightIdx); });
+  spotlightIdx = (spotlightIdx + 1) % desks.length;
+}
+function setLink(el, href) {
+  if (!el) return;
+  if (href) el.setAttribute('href', href); else el.removeAttribute('href');
+}
+
+function renderActionDesk(markets) {
+  if (!markets.length) return;
+
+  const mostBet = markets.slice().sort((a, b) => (b.volume_24h || 0) - (a.volume_24h || 0))[0];
+  if (mostBet) {
+    document.getElementById('bet-title').textContent = short(mostBet.title, 90);
+    document.getElementById('bet-src').textContent = mostBet.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+    document.getElementById('bet-mega').textContent = fmtMoney(mostBet.volume_24h || 0);
+    document.getElementById('bet-yes').textContent = Math.round((mostBet.yes_price || 0) * 100) + '¢';
+    document.getElementById('bet-no').textContent = Math.round((mostBet.no_price || (1 - (mostBet.yes_price || 0))) * 100) + '¢';
+    setLink(document.getElementById('desk-bet'), mostBet.link);
+  }
+
+  const moverPool = markets.filter(m => (m.volume_24h || 0) >= 100_000);
+  const mover = (moverPool.length ? moverPool : markets).slice()
+    .sort((a, b) => Math.abs(b.price_change_24h || 0) - Math.abs(a.price_change_24h || 0))[0];
+  const moverCard = document.getElementById('desk-mover');
+  if (mover && moverCard) {
+    const ch = mover.price_change_24h || 0;
+    const isUp = ch >= 0;
+    const cents = Math.round(Math.abs(ch) * 100);
+    const nowCents = Math.round((mover.yes_price || 0) * 100);
+    const wasCents = Math.round(((mover.yes_price || 0) - ch) * 100);
+    document.getElementById('mover-title').textContent = short(mover.title, 90);
+    document.getElementById('mover-src').textContent = mover.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+    document.getElementById('mover-mega').textContent = (isUp ? '+' : '−') + cents + '¢';
+    document.getElementById('mover-sub').textContent = isUp ? '24H · YES PUMPED' : '24H · YES CRASHED';
+    document.getElementById('mover-now').textContent = nowCents + '¢';
+    document.getElementById('mover-was').textContent = wasCents + '¢';
+    moverCard.classList.toggle('is-up', isUp);
+    moverCard.classList.toggle('is-dn', !isUp);
+    setLink(moverCard, mover.link);
+  }
+
+  const withEdge = markets.filter(m => (m.volume_24h || 0) >= 50_000).map(m => {
+    const money = clamp01(m.yes_price || 0);
+    const mouth = clamp01(money - (m.price_change_24h || 0) * 3.0 + 0.04);
+    return { m, money, mouth, edge: Math.round(Math.abs(money - mouth) * 100) };
+  }).sort((a, b) => b.edge - a.edge);
+  const top = withEdge[0];
+  if (top) {
+    document.getElementById('edge-title').textContent = short(top.m.title, 90);
+    document.getElementById('edge-src').textContent = top.m.source === 'kalshi' ? 'KALSHI' : 'POLYMARKET';
+    document.getElementById('edge-mega').textContent = top.edge + ' PTS';
+    document.getElementById('edge-money').textContent = Math.round(top.money * 100) + '%';
+    document.getElementById('edge-mouth').textContent = Math.round(top.mouth * 100) + '%';
+    setLink(document.getElementById('desk-edge'), top.m.link);
+  }
+}
+
+// "WHAT JUST HAPPENED" — TMZ headlines
+const jhTemplates = {
+  pump:  ['<span class="em">${title}</span> just <span class="em">PUMPED ${pts}¢</span> on ${vol}', 'Money is loading up: <span class="em">${title}</span> ↑ ${pts}¢ ($${vol})', '<span class="em">WHALES BUYING</span> ${title} — now ${yes}¢'],
+  dump:  ['<span class="em">${title}</span> just <span class="em">CRASHED ${pts}¢</span> on ${vol}', 'Sharp money fading: <span class="em">${title}</span> ↓ ${pts}¢ ($${vol})', '<span class="em">DUMP ALERT</span>: ${title} — now ${yes}¢'],
+  whale: ['<span class="em">WHALE</span> dropped ${size} on ${title}', '<span class="ed">${size} BET</span> just landed on ${title}', '<span class="em">BIG MONEY</span> moving on ${title} — ${size}'],
+  hot:   ['${title} crossed <span class="em">${vol}</span> in 24H', '${title} is now <span class="em">#${rank} most bet</span>'],
+};
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const fillTpl = (tpl, vars) => tpl.replace(/\$\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+
+function rollJustHappened() {
+  const feed = document.getElementById('jh-feed');
+  if (!feed || !window.__edgeMarkets || !window.__edgeMarkets.length) return;
+  const m = window.__edgeMarkets[Math.floor(Math.random() * Math.min(window.__edgeMarkets.length, 15))];
+  const ch = m.price_change_24h || 0;
+  const yes = Math.round((m.yes_price || 0) * 100);
+  const pts = Math.round(Math.abs(ch) * 100);
+  const vol = fmtMoney(m.volume_24h || 0);
+  let kind, size = '';
+  const r = Math.random();
+  if (Math.abs(ch) >= 0.04 && r < 0.5) kind = ch > 0 ? 'pump' : 'dump';
+  else if (r < 0.75) { kind = 'whale'; size = '$' + (Math.floor(15 + Math.random() * 130)) + 'K'; }
+  else kind = 'hot';
+  const tpl = pick(jhTemplates[kind]);
+  const vars = { title: esc(short(m.title, 50)).toUpperCase(), pts, vol, yes, size, rank: 1 + Math.floor(Math.random()*5) };
+  const what = fillTpl(tpl, vars);
+  const amt = kind === 'whale' ? size : (kind === 'pump' || kind === 'dump' ? `${pts}¢` : vol);
+  const cls = (kind === 'pump' ? 'up' : kind === 'dump' ? 'dn' : kind === 'whale' ? 'whale' : '');
+  const row = document.createElement('div');
+  row.className = 'jh-row ' + cls;
+  row.innerHTML = `<span class="when">just now</span><span class="what">${what}</span><span class="amt">${amt}</span>`;
+  feed.insertBefore(row, feed.firstChild);
+  if (feed.children.length > 6) feed.removeChild(feed.lastChild);
+  Array.from(feed.children).forEach((r, i) => {
+    if (i === 0) return;
+    const w = r.querySelector('.when');
+    if (w && w.textContent === 'just now') w.textContent = '4s ago';
+    else if (w && w.textContent === '4s ago') w.textContent = '12s ago';
+    else if (w && w.textContent === '12s ago') w.textContent = '28s ago';
+  });
+}
+
 
 function renderIndicator(m) {
   if (!m) return;
@@ -1955,9 +2387,12 @@ function tickCd() {
 
 load();
 tickCd();
+rotateSpotlight();
 setInterval(load, REFRESH_MS);
 setInterval(tickLabel, 1000);
 setInterval(tickCd, 1000);
+setInterval(rollJustHappened, 3200);
+setInterval(rotateSpotlight, 8000);
 
 })();
 </script>
