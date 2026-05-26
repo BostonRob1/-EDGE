@@ -1,0 +1,103 @@
+<svg viewBox="0 0 1500 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE X banner">
+  <title>$EDGE — Watch the action. Before you bet.</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#050507" stop-opacity="0.0"/>
+      <stop offset="55%" stop-color="#050507" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#050507" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1500" height="500" fill="#050507"/>
+  <rect width="1500" height="500" fill="url(#grid)"/>
+
+  <!-- Faint cell highlights -->
+  <rect x="60" y="40" width="380" height="220" fill="#0C0C10" opacity="0.6"/>
+  <rect x="60" y="280" width="180" height="80" fill="#0C0C10" opacity="0.6"/>
+
+  <!-- Eyebrow -->
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="60" y="64" font-size="13" fill="#C4FF00" letter-spacing="0.32em">01 / PREDICTION-MARKET TERMINAL</text>
+  </g>
+
+  <!-- Big headline -->
+  <g font-family="Anton, Impact, sans-serif" font-size="120" letter-spacing="-2" fill="#F5F5F0">
+    <text x="60" y="190">WATCH THE ACTION.</text>
+    <text x="60" y="310">BEFORE YOU <tspan fill="#C4FF00">BET</tspan>.</text>
+  </g>
+
+  <!-- Sub -->
+  <g font-family="DM Sans, system-ui, sans-serif" font-size="20" fill="#F5F5F0" opacity="0.78">
+    <text x="60" y="360">Polymarket + Kalshi + whales + sentiment <tspan fill="#FF006E">divergence</tspan> &#8212; one screen.</text>
+  </g>
+
+  <!-- Right column: mini terminal panel -->
+  <g transform="translate(980 60)">
+    <rect width="460" height="320" fill="#0C0C10" stroke="rgba(196,255,0,0.2)" stroke-width="1"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.2em">
+      <text x="16" y="24">LIVE / DIVERGENCE</text>
+      <text x="444" y="24" text-anchor="end" fill="#00FF85">+0.72</text>
+    </g>
+    <line x1="0" y1="36" x2="460" y2="36" stroke="rgba(245,245,240,0.08)"/>
+
+    <!-- Row 1 -->
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#F5F5F0">
+      <text x="16" y="74">POLY:TRUMP-2028</text>
+      <text x="444" y="74" text-anchor="end" fill="#C4FF00">0.51</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.18em">
+      <text x="16" y="92">VOL 24H $2.4M</text>
+      <text x="444" y="92" text-anchor="end" fill="#00FF85">+18.4%</text>
+    </g>
+    <line x1="0" y1="108" x2="460" y2="108" stroke="rgba(245,245,240,0.08)"/>
+
+    <!-- Row 2 -->
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#F5F5F0">
+      <text x="16" y="146">KALSHI:FED-CUT-DEC</text>
+      <text x="444" y="146" text-anchor="end" fill="#C4FF00">0.34</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.18em">
+      <text x="16" y="164">VOL 24H $812K</text>
+      <text x="444" y="164" text-anchor="end" fill="#FF3344">-6.1%</text>
+    </g>
+    <line x1="0" y1="180" x2="460" y2="180" stroke="rgba(245,245,240,0.08)"/>
+
+    <!-- Row 3 -->
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#F5F5F0">
+      <text x="16" y="218">WHALE 0xA3F2</text>
+      <text x="444" y="218" text-anchor="end" fill="#C4FF00">$640K IN</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.18em">
+      <text x="16" y="236">18 MIN AGO</text>
+      <text x="444" y="236" text-anchor="end">TRUMP-POWELL</text>
+    </g>
+    <line x1="0" y1="252" x2="460" y2="252" stroke="rgba(245,245,240,0.08)"/>
+
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="290">MONEY SAYS YES.</text>
+      <text x="16" y="306" fill="#FF006E">MOUTH SAYS NO.</text>
+      <text x="444" y="306" text-anchor="end" fill="#C4FF00">&#8594; EDGE</text>
+    </g>
+  </g>
+
+  <!-- Big mark on right -->
+  <g opacity="0.18">
+    <path d="M1180 100 L1380 230 L1180 360" fill="none" stroke="#C4FF00" stroke-width="44" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+
+  <rect width="1500" height="500" fill="url(#vignette)"/>
+
+  <!-- Ticker bottom -->
+  <rect x="0" y="460" width="1500" height="40" fill="#0C0C10"/>
+  <line x1="0" y1="460" x2="1500" y2="460" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="486">POLY:0xA3F2 +18.4%   &#183;   KALSHI TRUMP-2028 0.42 &#8594; 0.51   &#183;   DIVERGENCE 0.72   &#183;   WHALE IN $640K   &#183;   MOUTH -41% SENT   &#183;   EDGE 0.19</text>
+    <text x="1480" y="486" text-anchor="end" fill="#C4FF00">$EDGE / LIVE</text>
+  </g>
+</svg>

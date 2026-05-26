@@ -1,0 +1,12 @@
+<svg viewBox="0 0 480 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE horizontal lockup">
+  <title>$EDGE</title>
+  <style>
+    .dollar { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #C4FF00; letter-spacing: -0.02em; }
+    .word   { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #F5F5F0; letter-spacing: -0.02em; }
+  </style>
+  <g transform="translate(0 16)">
+    <path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+  <text x="86" y="80" class="dollar">$</text>
+  <text x="142" y="80" class="word">EDGE</text>
+</svg>

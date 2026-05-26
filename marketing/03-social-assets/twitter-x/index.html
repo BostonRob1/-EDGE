@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Social / X (Twitter)</title>
+<link rel="icon" type="image/svg+xml" href="../../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800;
+    --orange: #FF7A00; --red: #FF3344; --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1480px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { padding: 16px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; display:grid; gap: 24px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 110px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 720px; opacity: .85; }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(28px, 4vw, 48px); letter-spacing:-.02em; text-transform: uppercase; }
+
+  .asset-frame { background-image: linear-gradient(45deg, #0C0C10 25%, transparent 25%), linear-gradient(-45deg, #0C0C10 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #0C0C10 75%), linear-gradient(-45deg, transparent 75%, #0C0C10 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #08080A; padding: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .asset-frame .size { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.22em; text-transform: uppercase; }
+  .asset-frame img { display: block; max-width: 100%; height: auto; }
+  .pfp-square { width: 400px; height: 400px; max-width: 100%; }
+  .pfp-circle { width: 400px; height: 400px; max-width: 100%; border-radius: 50%; overflow: hidden; }
+  .banner { width: 100%; max-width: 1500px; aspect-ratio: 1500 / 500; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  .copy-card { background: var(--void-2); border: 1px solid var(--border); padding: 28px; }
+  .copy-card h3 { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .copy-card .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: var(--lime); text-transform: uppercase; margin-bottom: 14px; }
+  .copy-card pre { font-family:'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; background: var(--void); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; word-break: break-word; color: var(--white); margin-top: 12px; }
+  .copy-card .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-top: 12px; }
+
+  .thread { display: grid; gap: 12px; }
+  .tweet { background: var(--void-2); border: 1px solid var(--border); padding: 22px; display: grid; grid-template-columns: 56px 1fr; gap: 16px; }
+  .tweet .avatar { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; background: #000; }
+  .tweet .avatar img { width: 100%; height: 100%; display: block; }
+  .tweet .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-bottom: 8px; display:flex; gap: 16px; align-items: baseline; }
+  .tweet .meta .num { color: var(--lime); }
+  .tweet .body { font-size: 15px; line-height: 1.55; white-space: pre-wrap; }
+
+  .steps { counter-reset: step; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; align-items: baseline; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: 0; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.22em; }
+  .step .body { font-size: 15px; line-height: 1.55; }
+  .step code { font-family:'JetBrains Mono', monospace; font-size: 12px; background: var(--void-3); padding: 2px 8px; border: 1px solid var(--border); }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="top">
+  <a class="brand" href="../../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Social</a> / X (Twitter)</div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">03.01 / Social Asset Pack &#183; X (Twitter)</div>
+    <h1>X / <span class="accent">Twitter.</span></h1>
+    <p class="lede">Flagship public surface. 400&times;400 PFP, 1500&times;500 banner, 160-char bio, 6-tweet pinned thread. Voice: degen-confident, data-grounded. Mute everything else.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Profile Picture</h2><div class="sec-num">03.01.01 &#183; 400&times;400 &#183; circle-clipped</div></div>
+    <div class="two-col">
+      <div class="asset-frame">
+        <img src="pfp.svg" class="pfp-square" alt="PFP at native 400&times;400" />
+        <div class="size">400 &times; 400 &#183; SVG (square source)</div>
+      </div>
+      <div class="asset-frame">
+        <div class="pfp-circle"><img src="pfp.svg" style="width:100%;height:100%;display:block" alt="PFP circle-clipped preview" /></div>
+        <div class="size">400 &times; 400 &#183; circle-clipped (as X renders it)</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Header</h2><div class="sec-num">03.01.02 &#183; 1500&times;500</div></div>
+    <div class="asset-frame">
+      <img src="banner.svg" class="banner" alt="X header at native 1500&times;500" />
+      <div class="size">1500 &times; 500 &#183; SVG</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Bio Copy</h2><div class="sec-num">03.01.03 &#183; 160 char max</div></div>
+    <div class="two-col">
+      <div class="copy-card">
+        <div class="tag">Primary &#183; 160 char</div>
+        <h3>Bio</h3>
+        <pre>The terminal for prediction markets. Money (whales) &#183; Mouth (sentiment) &#183; Edge (the gap). Polymarket + Kalshi + Twitter in one screen.</pre>
+        <div class="meta">Display: $EDGE &#183; Handle: @edgeterminal &#183; URL: edge-two-psi.vercel.app</div>
+      </div>
+      <div class="copy-card">
+        <div class="tag">Alt &#183; punchier</div>
+        <h3>Bio &#183; v2</h3>
+        <pre>Watch the action. Before you bet. Polymarket + Kalshi + whales + sentiment divergence, one screen.</pre>
+        <div class="meta">Use when launching feature drops or campaign weeks.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned Thread &#183; 6 tweets</h2><div class="sec-num">03.01.04</div></div>
+    <div class="thread">
+      <div class="tweet"><div class="avatar"><img src="pfp.svg" alt=""/></div><div><div class="meta"><span class="num">01 / 06</span><span>HOOK</span></div><div class="body">$EDGE is the terminal for prediction markets.
+
+Money. Mouth. Edge.
+
+Polymarket and Kalshi tell you where the money is.
+Twitter tells you what the mouth is saying.
+$EDGE shows you the gap between them.
+
+That gap is where you bet.
+
+edge-two-psi.vercel.app</div></div></div>
+
+      <div class="tweet"><div class="avatar"><img src="pfp.svg" alt=""/></div><div><div class="meta"><span class="num">02 / 06</span><span>PILLAR 1+2</span></div><div class="body">The five pillars:
+
+1. Every Polymarket + Kalshi market in one grid. Sortable, filterable, live.
+2. Whale tracker. The same $40K wallet that hit Trump-Powell in 18 minutes? You see them next time, in real time.
+
+(3, 4, 5 below)</div></div></div>
+
+      <div class="tweet"><div class="avatar"><img src="pfp.svg" alt=""/></div><div><div class="meta"><span class="num">03 / 06</span><span>PILLARS 3+4+5</span></div><div class="body">3. Sentiment radar. We score X chatter against on-chain flow.
+4. Picker algorithm with a public track record. No vibes, just hit-rate.
+5. A feed built around the action &#8212; not your group chat.
+
+One screen. No tabs. No tab-hopping.</div></div></div>
+
+      <div class="tweet"><div class="avatar"><img src="pfp.svg" alt=""/></div><div><div class="meta"><span class="num">04 / 06</span><span>DIVERGENCE DEMO</span></div><div class="body">Today's reading:
+
+POLY  TRUMP-2028     0.51
+KALSHI TRUMP-2028     0.42
+DIVERGENCE          +0.09
+
+Mouth on X: -41% sentiment toward Trump in last 6h.
+Money flowing IN: $640K whale 18 min ago.
+
+Mouth says no. Money says yes.
+That's the edge.</div></div></div>
+
+      <div class="tweet"><div class="avatar"><img src="pfp.svg" alt=""/></div><div><div class="meta"><span class="num">05 / 06</span><span>WHY EARLY</span></div><div class="body">Prediction markets are the closest thing to a truth machine the internet has built.
+
+In 2024 they out-called every pollster.
+In 2026 the volume is 10x what it was.
+In 2028 they're the source.
+
+We're building the Bloomberg for that world. Get in before it's obvious.</div></div></div>
+
+      <div class="tweet"><div class="avatar"><img src="pfp.svg" alt=""/></div><div><div class="meta"><span class="num">06 / 06</span><span>TOKEN + CTA</span></div><div class="body">$EDGE is launching on @pumpdotfun (Solana).
+
+Holders get:
+&#8226; terminal access tiers
+&#8226; whale-alert webhooks
+&#8226; divergence push notifications
+&#8226; gated rooms with the founders
+
+Follow. Mute everything else.
+
+Site: edge-two-psi.vercel.app
+CA: drops at launch.</div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Setup Notes</h2><div class="sec-num">03.01.05</div></div>
+    <div class="steps">
+      <div class="step"><div class="body">Upload <code>pfp.svg</code> &#8212; X requires a raster file, so export the SVG to a 400&times;400 PNG first (use any browser screenshot or rasterize via inline SVG render). The square SVG is designed circle-safe: the chevron and corner tag sit inside a 178px safe radius.</div></div>
+      <div class="step"><div class="body">Upload <code>banner.svg</code> exported at 1500&times;500 PNG. The top ~60px and bottom ~80px can be clipped on mobile / desktop edge cases; the headline + ticker are designed to survive both.</div></div>
+      <div class="step"><div class="body">Set bio from <code>bio.md</code> (primary). Add website <code>edge-two-psi.vercel.app</code>. Display name: <code>$EDGE</code>. Handle: <code>@edgeterminal</code>.</div></div>
+      <div class="step"><div class="body">Post the 6 tweets in <code>pinned.md</code> as a thread. Pin tweet #1. Wait 30 min, then quote-pin tweet #4 with that day's actual divergence reading.</div></div>
+      <div class="step"><div class="body">Turn on <code>highlights</code> tab and add the pinned thread + the launch announcement once it ships.</div></div>
+      <div class="step"><div class="body">Profile color (X Premium): set to lime <code>#C4FF00</code>. If the surface looks too aggressive, fall back to <code>#FFB800</code> (amber) &#8212; never default blue.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE &#183; SOCIAL / X &#183; v1.0</div>
+    <div><a href="../index.html">&larr; Social Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

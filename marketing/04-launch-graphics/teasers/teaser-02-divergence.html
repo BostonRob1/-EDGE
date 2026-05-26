@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Teaser 02 · Divergence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7)}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  /* header strip */
+  .hdr{position:absolute;top:0;left:0;right:0;padding:32px 56px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+  .hdr .left{display:flex;align-items:center;gap:14px}
+  .hdr svg.mark{width:30px;height:30px}
+  .hdr .name{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:-.02em}
+  .hdr .name span{color:var(--lime)}
+  .hdr .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+  .hdr .right .live{color:var(--lime);display:inline-flex;align-items:center;gap:8px;margin-right:12px}
+  .hdr .right .live::before{content:'';width:8px;height:8px;background:var(--lime);border-radius:50%;animation:blink 1.4s infinite}
+  @keyframes blink{0%,55%{opacity:1}60%,100%{opacity:.2}}
+
+  /* eyebrow + market label */
+  .meta-row{position:absolute;top:120px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:flex-end}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase}
+  .market{font-family:'Anton',sans-serif;font-size:36px;letter-spacing:-.01em;text-transform:uppercase;margin-top:8px;line-height:1}
+  .market .qual{color:var(--muted);font-size:18px}
+  .market-meta{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;line-height:1.8}
+
+  /* chart wrapper */
+  .chart-wrap{position:absolute;top:240px;left:56px;right:56px;height:520px;border:1px solid var(--border);background:var(--void-2);padding:24px 28px 36px}
+
+  .chart-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .legend{display:flex;gap:22px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .legend .key{display:flex;align-items:center;gap:8px}
+  .legend .swatch{width:14px;height:3px;display:inline-block}
+  .legend .money .swatch{background:var(--lime)}
+  .legend .mouth .swatch{background:var(--white)}
+  .legend .diverge .swatch{background:var(--magenta)}
+  .chart-hdr .right{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+
+  /* gap value display */
+  .gap-box{position:absolute;top:300px;right:80px;border:1px solid var(--magenta);background:rgba(255,0,110,.07);padding:14px 18px;text-align:right;z-index:5}
+  .gap-box .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--magenta);text-transform:uppercase;margin-bottom:4px}
+  .gap-box .val{font-family:'Anton',sans-serif;font-size:54px;color:var(--magenta);line-height:.9;letter-spacing:-.02em}
+
+  /* caption block */
+  .caption{position:absolute;left:56px;right:56px;bottom:120px}
+  .cap-eye{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;margin-bottom:14px}
+  .cap-text{font-family:'Anton',sans-serif;font-size:52px;line-height:1.02;letter-spacing:-.02em;text-transform:uppercase}
+  .cap-text .accent{color:var(--lime)}
+  .cap-text .div{color:var(--magenta)}
+
+  .footer-rail{position:absolute;bottom:40px;left:56px;right:56px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;padding-top:18px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · IG / X square</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="left">
+      <svg class="mark" viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="name">$<span>EDGE</span></span>
+    </div>
+    <div class="right">
+      <span class="live">LIVE</span>SAMPLE · DIVERGENCE · 01
+    </div>
+  </div>
+
+  <div class="meta-row">
+    <div>
+      <div class="eyebrow">/ DIVERGENCE READOUT /</div>
+      <div class="market">TRUMP · 2028 NOMINEE <span class="qual">— GOP</span></div>
+    </div>
+    <div class="market-meta">
+      <div>POLY · 0xA3F2…91DC</div>
+      <div>WINDOW · 72H</div>
+      <div>SAMPLES · 18,412</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-hdr">
+      <div class="legend">
+        <div class="key money"><span class="swatch"></span>MONEY · PRICE</div>
+        <div class="key mouth"><span class="swatch"></span>MOUTH · SENTIMENT</div>
+        <div class="key diverge"><span class="swatch"></span>EDGE · GAP</div>
+      </div>
+      <div class="right">% PROB · 0 → 100</div>
+    </div>
+
+    <svg viewBox="0 0 980 440" style="width:100%;height:430px;display:block">
+      <!-- grid -->
+      <g stroke="rgba(245,245,240,0.06)" stroke-width="1">
+        <line x1="0" y1="60" x2="980" y2="60"/>
+        <line x1="0" y1="140" x2="980" y2="140"/>
+        <line x1="0" y1="220" x2="980" y2="220"/>
+        <line x1="0" y1="300" x2="980" y2="300"/>
+        <line x1="0" y1="380" x2="980" y2="380"/>
+        <line x1="140" y1="0" x2="140" y2="440"/>
+        <line x1="280" y1="0" x2="280" y2="440"/>
+        <line x1="420" y1="0" x2="420" y2="440"/>
+        <line x1="560" y1="0" x2="560" y2="440"/>
+        <line x1="700" y1="0" x2="700" y2="440"/>
+        <line x1="840" y1="0" x2="840" y2="440"/>
+      </g>
+
+      <!-- y axis labels -->
+      <g font-family="JetBrains Mono" font-size="10" fill="#6B6B73" letter-spacing="1">
+        <text x="6" y="64">80</text>
+        <text x="6" y="144">65</text>
+        <text x="6" y="224">50</text>
+        <text x="6" y="304">35</text>
+        <text x="6" y="384">20</text>
+      </g>
+
+      <!-- divergence shaded area between money and mouth -->
+      <path d="M40 280 L100 268 L160 252 L220 232 L280 210 L340 188 L400 162 L460 140 L520 118 L580 100 L640 88 L700 78 L760 70 L820 64 L880 58 L940 54 L940 200 L880 220 L820 244 L760 268 L700 290 L640 310 L580 326 L520 338 L460 346 L400 348 L340 344 L280 336 L220 322 L160 306 L100 292 L40 280 Z"
+            fill="rgba(255,0,110,0.10)" stroke="none"/>
+
+      <!-- mouth line (sentiment going down) -->
+      <path d="M40 200 L100 220 L160 244 L220 268 L280 290 L340 310 L400 326 L460 338 L520 346 L580 348 L640 344 L700 336 L760 322 L820 306 L880 292 L940 280"
+            stroke="#F5F5F0" stroke-width="2.5" fill="none"/>
+
+      <!-- money line (price going up) -->
+      <path d="M40 280 L100 268 L160 252 L220 232 L280 210 L340 188 L400 162 L460 140 L520 118 L580 100 L640 88 L700 78 L760 70 L820 64 L880 58 L940 54"
+            stroke="#C4FF00" stroke-width="3" fill="none"/>
+
+      <!-- final dots -->
+      <circle cx="940" cy="54" r="6" fill="#C4FF00"/>
+      <circle cx="940" cy="280" r="6" fill="#F5F5F0"/>
+
+      <!-- divergence connector at end -->
+      <line x1="940" y1="54" x2="940" y2="280" stroke="#FF006E" stroke-width="2" stroke-dasharray="3 3"/>
+
+      <!-- annotation arrows -->
+      <g font-family="JetBrains Mono" font-size="10" fill="#C4FF00" letter-spacing="1">
+        <text x="700" y="42">MONEY · +28%</text>
+      </g>
+      <g font-family="JetBrains Mono" font-size="10" fill="#F5F5F0" letter-spacing="1">
+        <text x="700" y="304">MOUTH · -22%</text>
+      </g>
+
+      <!-- x axis labels -->
+      <g font-family="JetBrains Mono" font-size="10" fill="#6B6B73" letter-spacing="1">
+        <text x="40" y="430">72H</text>
+        <text x="200" y="430">60H</text>
+        <text x="360" y="430">48H</text>
+        <text x="520" y="430">36H</text>
+        <text x="680" y="430">24H</text>
+        <text x="840" y="430">12H</text>
+        <text x="920" y="430">NOW</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="gap-box">
+    <div class="lbl">EDGE</div>
+    <div class="val">0.72</div>
+  </div>
+
+  <div class="caption">
+    <div class="cap-eye">/ THE THESIS /</div>
+    <div class="cap-text">
+      WHEN <span class="accent">MONEY</span> AND <span class="accent">MOUTH</span> DISAGREE —<br>
+      THAT'S WHERE THE <span class="div">EDGE</span> LIVES.
+    </div>
+  </div>
+
+  <div class="footer-rail">
+    <div>$EDGE · WATCH THE ACTION. BEFORE YOU BET.</div>
+    <div>EDGE-TWO-PSI.VERCEL.APP</div>
+  </div>
+</div>
+</body>
+</html>

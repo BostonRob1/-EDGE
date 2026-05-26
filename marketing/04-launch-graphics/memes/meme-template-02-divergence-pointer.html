@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Meme 02 · Divergence Pointer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:48px 56px}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  .hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:12px}
+  .mark svg{width:26px;height:26px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+
+  .title{margin-top:24px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.35em;color:var(--lime);text-transform:uppercase;margin-bottom:10px}
+  h1{font-family:'Anton',sans-serif;font-size:96px;line-height:.9;letter-spacing:-.025em;text-transform:uppercase}
+  h1 .em{color:var(--magenta)}
+  .sub{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+
+  /* chart with pointer */
+  .chart-wrap{margin-top:28px;border:1px solid var(--border);background:var(--void-2);padding:24px;position:relative;height:560px}
+  .chart-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:14px;display:flex;justify-content:space-between}
+  .chart-title .l{color:var(--lime)}
+
+  .pointer{position:absolute;right:48px;top:130px;display:flex;align-items:center;gap:10px;z-index:5}
+  .pointer .arrow{font-family:'Anton',sans-serif;font-size:120px;line-height:1;color:var(--magenta);transform:rotate(-15deg)}
+  .pointer .note{background:var(--void);border:1px solid var(--magenta);padding:14px 18px;max-width:280px;font-family:'Anton',sans-serif;font-size:28px;line-height:1;letter-spacing:-.01em;text-transform:uppercase;color:var(--white)}
+  .pointer .note .em{color:var(--magenta)}
+  .pointer .note .sub{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-top:6px;font-weight:400}
+
+  /* caption slots — fill on each post */
+  .slots{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  .slot{border:1px solid var(--border);background:var(--void-2);padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--white);letter-spacing:.1em;text-transform:uppercase}
+  .slot .k{color:var(--muted);font-size:10px;letter-spacing:.3em;display:block;margin-bottom:6px}
+  .slot .v{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.01em;line-height:1;color:var(--white);text-transform:uppercase}
+  .slot .v.lime{color:var(--lime)}
+  .slot .v.mag{color:var(--magenta)}
+  .slot .placeholder{color:var(--muted);border-bottom:1px dashed var(--muted);padding:0 6px;display:inline-block;min-width:120px}
+
+  .footer{position:absolute;bottom:34px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid var(--border)}
+  .footer .cap{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+  .footer .cap .lime{color:var(--lime)}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · Meme template 02</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="meta">MEME · 02 · DIVERGENCE POINTER</div>
+  </div>
+
+  <div class="title">
+    <div class="eyebrow">/ POINT AT THE GAP /</div>
+    <h1>RIGHT THERE.<br><span class="em">SEE IT?</span></h1>
+    <div class="sub">// PLACEHOLDER CHART · SUBSTITUTE WITH YOUR MARKET-OF-THE-DAY</div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="chart-title">
+      <span class="l">▸ ___MARKET___ · MONEY VS MOUTH · 72H</span>
+      <span>FILL IN MARKET</span>
+    </div>
+    <svg viewBox="0 0 920 460" style="width:100%;height:100%;display:block">
+      <g stroke="rgba(245,245,240,0.06)">
+        <line x1="0" y1="80" x2="920" y2="80"/>
+        <line x1="0" y1="180" x2="920" y2="180"/>
+        <line x1="0" y1="280" x2="920" y2="280"/>
+        <line x1="0" y1="380" x2="920" y2="380"/>
+      </g>
+
+      <!-- divergence shaded zone -->
+      <path d="M40 280 L120 268 L200 250 L280 226 L360 200 L440 172 L520 148 L600 126 L680 110 L760 96 L840 84 L880 78 L880 220 L840 240 L760 270 L680 296 L600 318 L520 336 L440 348 L360 356 L280 354 L200 344 L120 326 L40 308 Z"
+            fill="rgba(255,0,110,0.10)"/>
+
+      <!-- mouth (down) -->
+      <path d="M40 200 L120 224 L200 256 L280 286 L360 314 L440 336 L520 350 L600 358 L680 358 L760 348 L840 332 L880 320"
+            stroke="#F5F5F0" stroke-width="2.5" fill="none"/>
+      <!-- money (up) -->
+      <path d="M40 280 L120 268 L200 250 L280 226 L360 200 L440 172 L520 148 L600 126 L680 110 L760 96 L840 84 L880 78"
+            stroke="#C4FF00" stroke-width="3" fill="none"/>
+
+      <circle cx="880" cy="78" r="5" fill="#C4FF00"/>
+      <circle cx="880" cy="320" r="5" fill="#F5F5F0"/>
+      <line x1="880" y1="78" x2="880" y2="320" stroke="#FF006E" stroke-width="2" stroke-dasharray="3 3"/>
+
+      <!-- labels -->
+      <g font-family="JetBrains Mono" font-size="11" letter-spacing="1">
+        <text x="40" y="66" fill="#C4FF00">MONEY · 80%</text>
+        <text x="40" y="402" fill="#F5F5F0">MOUTH · 22%</text>
+      </g>
+      <g font-family="JetBrains Mono" font-size="10" fill="#6B6B73" letter-spacing="1">
+        <text x="40" y="450">-72H</text>
+        <text x="430" y="450">-36H</text>
+        <text x="864" y="450">NOW</text>
+      </g>
+    </svg>
+
+    <div class="pointer">
+      <div class="note">
+        <span>RIGHT</span>
+        <br><span class="em">THERE.</span>
+        <span class="sub">EDGE · 0.72</span>
+      </div>
+      <div class="arrow">←</div>
+    </div>
+  </div>
+
+  <div class="slots">
+    <div class="slot">
+      <span class="k">/ MARKET</span>
+      <span class="v"><span class="placeholder">____________</span></span>
+    </div>
+    <div class="slot">
+      <span class="k">/ EDGE SCORE</span>
+      <span class="v mag">0.<span class="placeholder">__</span></span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="cap">TAG IT. POST IT. <span class="lime">CALL IT.</span></div>
+    <div class="right">
+      <div>$EDGE · EDGE-TWO-PSI.VERCEL.APP</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

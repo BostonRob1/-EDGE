@@ -1,0 +1,43 @@
+<svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE feed tile 3 of 3 — EDGE">
+  <title>$EDGE — Edge</title>
+  <defs>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#C4FF00" stroke-width="0.6" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="#050507"/>
+  <rect width="1080" height="1080" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="22" fill="#C4FF00" letter-spacing="0.32em">
+    <text x="72" y="100">03 / 03</text>
+  </g>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="22" fill="#6B6B73" letter-spacing="0.32em">
+    <text x="1008" y="100" text-anchor="end">THE GAP</text>
+  </g>
+  <line x1="72" y1="130" x2="1008" y2="130" stroke="rgba(196,255,0,0.2)"/>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="380" letter-spacing="-8" fill="#C4FF00">
+    <text x="540" y="540" text-anchor="middle">EDGE</text>
+  </g>
+
+  <g transform="translate(72 660)">
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="22" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="0" y="0">MOUTH SAYS NO. MONEY SAYS YES.</text>
+    </g>
+    <g font-family="Anton, Impact, sans-serif" font-size="120" letter-spacing="-2" fill="#F5F5F0">
+      <text x="0" y="120">DIVERGENCE</text>
+      <text x="0" y="240" fill="#FF006E">+0.72</text>
+    </g>
+  </g>
+
+  <rect x="72" y="958" width="936" height="2" fill="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="20" fill="#6B6B73" letter-spacing="0.3em">
+    <text x="72" y="1010">EDGE-TWO-PSI.VERCEL.APP</text>
+    <text x="1008" y="1010" text-anchor="end" fill="#C4FF00">@EDGETERMINAL</text>
+  </g>
+  <rect width="1080" height="1080" fill="url(#vignette)"/>
+</svg>

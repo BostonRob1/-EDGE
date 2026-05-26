@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Paid Media</title>
+<link rel="icon" type="image/svg+xml" href="../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void:#050507; --void-2:#0c0c10; --void-3:#141418; --void-4:#1c1c22;
+    --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --amber:#FFB800; --red:#FF3344;
+    --white:#F5F5F0; --muted:#6B6B73;
+    --border: rgba(245,245,240,.08); --border-bright: rgba(196,255,0,.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--void);color:var(--white);font-family:'DM Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--lime);color:var(--void)}
+  a{color:var(--white);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+
+  .grain{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>")}
+
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);background:rgba(5,5,7,.85);border-bottom:1px solid var(--border-bright);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:28px;height:28px}
+  .brand .name{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .brand .name span{color:var(--lime)}
+  .crumbs{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .crumbs a{color:var(--muted)} .crumbs a:hover{color:var(--lime)}
+
+  main{max-width:1280px;margin:0 auto;padding:64px 32px 120px;position:relative;z-index:2}
+  .hero{display:grid;gap:28px;padding:24px 0 64px;border-bottom:1px solid var(--border);margin-bottom:48px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase}
+  h1{font-family:'Anton',sans-serif;font-size:clamp(56px,10vw,128px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase}
+  h1 .accent{color:var(--lime)}
+  .lede{font-size:19px;line-height:1.55;max-width:720px;opacity:.85}
+
+  section{padding:56px 0;border-bottom:1px solid var(--border)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em}
+  h2{font-family:'Anton',sans-serif;font-size:clamp(34px,5vw,56px);letter-spacing:-.02em;text-transform:uppercase}
+
+  /* X promoted post mockup */
+  .ad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+  .ad{background:var(--void-2);padding:24px;display:flex;flex-direction:column;gap:14px;min-height:360px}
+  .ad .head{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .ad .head .channel{color:var(--lime)}
+  .ad .preview{background:var(--void);border:1px solid var(--border);padding:18px;flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:200px}
+  .ad .copy{font-size:14px;line-height:1.45}
+  .ad .headline{font-family:'Anton',sans-serif;font-size:28px;letter-spacing:-.01em;text-transform:uppercase;line-height:1.05}
+  .ad .cta{display:inline-block;margin-top:14px;padding:10px 16px;background:var(--lime);color:var(--void);font-family:'Anton',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.02em;border:0}
+  .ad .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;display:flex;justify-content:space-between}
+
+  .ad-x .header-bar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .ad-x .avatar{width:36px;height:36px;background:var(--void);border:1px solid var(--border-bright);display:flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden}
+  .ad-x .avatar svg{width:22px;height:22px}
+  .ad-x .who{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700}
+  .ad-x .handle{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+  .ad-x .body{font-size:14.5px;line-height:1.45;margin:8px 0 12px}
+  .ad-x .img-block{background:var(--void-3);border:1px solid var(--border);padding:18px;display:flex;flex-direction:column;gap:6px;font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:-.01em}
+  .ad-x .img-block .h{font-size:22px}
+  .ad-x .img-block .accent{color:var(--lime)}
+  .ad-x .img-block .sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted)}
+  .ad-x .promoted{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--muted);margin-top:10px}
+
+  /* Display ads */
+  .display{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+  .banner{background:var(--void-2);border:1px solid var(--border);padding:14px;display:flex;flex-direction:column;gap:10px}
+  .banner .frame{background:var(--void);border:1px solid var(--border);padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:120px}
+  .banner .frame.sq{aspect-ratio:1/1}
+  .banner .frame.lb{aspect-ratio:728/90;min-height:90px}
+  .banner .frame.rect{aspect-ratio:300/250}
+  .banner .frame .h{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:-.01em;line-height:1}
+  .banner .frame .accent{color:var(--lime)}
+  .banner .frame .sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted)}
+  .banner .frame .cta{align-self:flex-start;padding:6px 10px;background:var(--lime);color:var(--void);font-family:'Anton',sans-serif;font-size:12px;text-transform:uppercase}
+  .banner .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+
+  /* Brief table */
+  .brief{display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid var(--border)}
+  .brief .k{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:var(--void-2);border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+  .brief .v{padding:14px 20px;background:var(--void-2);border-bottom:1px solid var(--border);font-size:14.5px;line-height:1.5}
+
+  .footer{padding-top:48px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer a{color:var(--muted)} .footer a:hover{color:var(--lime)}
+
+  @media (max-width:720px){
+    main{padding:36px 20px 80px}
+    .brief{grid-template-columns:1fr}
+    .brief .k{border-right:0}
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Paid Media</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">08 / Paid Media</div>
+    <h1>Spend on <span class="accent">attention.</span></h1>
+    <p class="lede">Promoted-post creative, display ads, YouTube pre-roll, and the influencer-brief playbook. Templates ready when the budget turns on. Default channel: X promoted posts (where the trader audience lives) — Google display is a Tier-2 add-on for retargeting.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>X Promoted Post Creative</h2><div class="sec-num">08.01 · 6 variants</div></div>
+    <div class="ad-grid">
+
+      <div class="ad ad-x">
+        <div class="head"><span class="channel">X · PROMOTED</span><span>·</span><span>Variant A · Data hook</span></div>
+        <div class="preview">
+          <div class="header-bar">
+            <div class="avatar"><svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg></div>
+            <div><div class="who">$EDGE</div><div class="handle">@edgeterminal · Promoted</div></div>
+          </div>
+          <div class="body">$2.4M just moved on Trump-Powell prediction markets in 18 minutes. The crowd was screaming the opposite. The edge is where money and mouth disagree. We built the terminal that surfaces it.</div>
+          <div class="img-block">
+            <div class="sub">DIVERGENCE · LIVE</div>
+            <div class="h"><span class="accent">MONEY</span> ↑ 18.4% / 24H</div>
+            <div class="h"><span style="color:var(--magenta)">MOUTH</span> ↓ 32.1% / 24H</div>
+            <div class="sub">EDGE 0.72</div>
+          </div>
+          <div class="promoted">edgeterminal.xyz · Open Terminal</div>
+        </div>
+      </div>
+
+      <div class="ad ad-x">
+        <div class="head"><span class="channel">X · PROMOTED</span><span>·</span><span>Variant B · Curiosity hook</span></div>
+        <div class="preview">
+          <div class="header-bar">
+            <div class="avatar"><svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg></div>
+            <div><div class="who">$EDGE</div><div class="handle">@edgeterminal · Promoted</div></div>
+          </div>
+          <div class="body">Polymarket and Kalshi show you where the money is. They don't show you why. We do. Free. No signup.</div>
+          <div class="img-block">
+            <div class="sub">$EDGE · TERMINAL</div>
+            <div class="h">MONEY <span class="accent">·</span> MOUTH <span class="accent">·</span> EDGE</div>
+            <div class="sub">POLYMARKET + KALSHI + SENTIMENT · ONE SCREEN</div>
+          </div>
+          <div class="promoted">edgeterminal.xyz · Open Terminal</div>
+        </div>
+      </div>
+
+      <div class="ad ad-x">
+        <div class="head"><span class="channel">X · PROMOTED</span><span>·</span><span>Variant C · Whale flex</span></div>
+        <div class="preview">
+          <div class="header-bar">
+            <div class="avatar"><svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg></div>
+            <div><div class="who">$EDGE</div><div class="handle">@edgeterminal · Promoted</div></div>
+          </div>
+          <div class="body">The 50 biggest wallets on Polymarket account for 41% of the volume. We track every one of them in real time. Their next move is your next move.</div>
+          <div class="img-block">
+            <div class="sub">WHALES · LIVE</div>
+            <div class="h">$2.4M <span class="accent">→</span> TRUMP-2028</div>
+            <div class="h">$890K <span class="accent">→</span> FED-PIVOT</div>
+            <div class="h">$1.2M <span class="accent">→</span> CPI-JUNE</div>
+            <div class="sub">WALLET 0xA3F2 · 18 MIN AGO</div>
+          </div>
+          <div class="promoted">edgeterminal.xyz · See the Firehose</div>
+        </div>
+      </div>
+
+      <div class="ad ad-x">
+        <div class="head"><span class="channel">X · PROMOTED</span><span>·</span><span>Variant D · Pre-launch FOMO</span></div>
+        <div class="preview">
+          <div class="header-bar">
+            <div class="avatar"><svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg></div>
+            <div><div class="who">$EDGE</div><div class="handle">@edgeterminal · Promoted</div></div>
+          </div>
+          <div class="body">$EDGE token drops in 14 days on pump.fun. Holders unlock whale alerts, the divergence radar, and the raw API. First 1,000 wallets get priority access. Waitlist closes 48h before launch.</div>
+          <div class="img-block">
+            <div class="sub">T-MINUS</div>
+            <div class="h" style="font-size:42px"><span class="accent">14D · JUN 09</span></div>
+            <div class="sub">$EDGE · PUMP.FUN · FAIR LAUNCH</div>
+          </div>
+          <div class="promoted">edgeterminal.xyz · Join Waitlist</div>
+        </div>
+      </div>
+
+      <div class="ad ad-x">
+        <div class="head"><span class="channel">X · PROMOTED</span><span>·</span><span>Variant E · Product demo</span></div>
+        <div class="preview">
+          <div class="header-bar">
+            <div class="avatar"><svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg></div>
+            <div><div class="who">$EDGE</div><div class="handle">@edgeterminal · Promoted</div></div>
+          </div>
+          <div class="body">Built the terminal we wished existed. Polymarket + Kalshi + whale tracking + sentiment divergence — all in one screen. Free. No signup. 30-second walkthrough ↓</div>
+          <div class="img-block">
+            <div class="sub">VIDEO · 0:30</div>
+            <div class="h">WATCH THE <span class="accent">ACTION</span></div>
+            <div class="h">BEFORE YOU BET</div>
+            <div class="sub">SCREEN-RECORDED PRODUCT DEMO</div>
+          </div>
+          <div class="promoted">edgeterminal.xyz · Open Terminal</div>
+        </div>
+      </div>
+
+      <div class="ad ad-x">
+        <div class="head"><span class="channel">X · PROMOTED</span><span>·</span><span>Variant F · Track record</span></div>
+        <div class="preview">
+          <div class="header-bar">
+            <div class="avatar"><svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg></div>
+            <div><div class="who">$EDGE</div><div class="handle">@edgeterminal · Promoted</div></div>
+          </div>
+          <div class="body">Last 30 days: our divergence radar flagged 18 markets. 14 reverted toward the money side within 72 hours. That's the edge — proven, public, no editing.</div>
+          <div class="img-block">
+            <div class="sub">TRACK RECORD · 30D</div>
+            <div class="h"><span class="accent">14 / 18</span> CALLS HIT</div>
+            <div class="h">+ 23.4% AVG ROI</div>
+            <div class="sub">PUBLIC LEDGER · NO EDITS</div>
+          </div>
+          <div class="promoted">edgeterminal.xyz · See the Ledger</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Display Ad Variants</h2><div class="sec-num">08.02 · Standard IAB Sizes</div></div>
+    <div class="display">
+
+      <div class="banner">
+        <div class="frame sq">
+          <div>
+            <div class="sub">$EDGE · TERMINAL</div>
+            <div class="h">MONEY · <span class="accent">MOUTH</span> · EDGE</div>
+          </div>
+          <div>
+            <div class="sub" style="margin-bottom:6px">FREE · NO SIGNUP</div>
+            <div class="cta">OPEN →</div>
+          </div>
+        </div>
+        <div class="meta"><span>SQUARE · 250×250</span><span>STATIC</span></div>
+      </div>
+
+      <div class="banner">
+        <div class="frame rect">
+          <div>
+            <div class="sub">PREDICTION MARKETS · LIVE</div>
+            <div class="h">WATCH THE <span class="accent">ACTION</span></div>
+            <div class="h">BEFORE YOU BET</div>
+          </div>
+          <div>
+            <div class="cta">$EDGE →</div>
+          </div>
+        </div>
+        <div class="meta"><span>MED RECT · 300×250</span><span>STATIC</span></div>
+      </div>
+
+      <div class="banner">
+        <div class="frame lb">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+            <div>
+              <div class="sub">$EDGE · POLYMARKET + KALSHI</div>
+              <div class="h">WATCH THE <span class="accent">ACTION</span></div>
+            </div>
+            <div class="cta">OPEN →</div>
+          </div>
+        </div>
+        <div class="meta"><span>LEADERBOARD · 728×90</span><span>STATIC</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Influencer Brief</h2><div class="sec-num">08.03 · KOL Brief Template</div></div>
+    <div class="brief">
+      <div class="k">Project</div><div class="v">$EDGE — terminal for prediction markets (Polymarket + Kalshi + whale tracking + sentiment divergence)</div>
+      <div class="k">Audience target</div><div class="v">Prediction-market degens · Solana-native traders · crypto-finance generalists with $5K+ account size</div>
+      <div class="k">Format</div><div class="v">60-second screen-record + voice-over · OR · still graphic + thread of 4 tweets</div>
+      <div class="k">Key message</div><div class="v">"$EDGE shows you where the money is, what the mouth is saying, and the gap between them — in real time, in one screen."</div>
+      <div class="k">Hard CTAs</div><div class="v">1) edgeterminal.xyz (open terminal) · 2) pump.fun link for $EDGE token (if post-launch)</div>
+      <div class="k">Must include</div><div class="v">Disclosure: "I hold $EDGE" (if true) OR "paid partnership w/ $EDGE" (if comped) · timestamp · the divergence-score demo</div>
+      <div class="k">Must NOT include</div><div class="v">Price predictions · "guaranteed returns" · rocket emojis · "to the moon" · #ad if a paid partnership label is already on the post · misrepresenting $EDGE as a betting platform (it's a terminal — bets are placed on Polymarket/Kalshi via our affiliate links)</div>
+      <div class="k">Compensation</div><div class="v">Tier-S: USD + token (vested 6mo linear) · Tier-A: token only (vested 6mo) · Tier-B: token + revenue share on referred bets</div>
+      <div class="k">Approval</div><div class="v">Send draft to cashbridgehomes@gmail.com before posting — 24h review SLA</div>
+      <div class="k">Tracking</div><div class="v">Use referral link partnership.edgeterminal.xyz/yourname (auto-generated) · Tagged with UTM source/medium</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>YouTube Pre-Roll</h2><div class="sec-num">08.04 · 15s + 30s Skippable</div></div>
+    <div class="brief">
+      <div class="k">15s — Hard Hook</div><div class="v"><strong>0-2s:</strong> "WHALES JUST MOVED $2.4M ON TRUMP-2028." (Bloomberg-style ticker animates across).<br><strong>2-5s:</strong> "YOU MISSED IT BECAUSE YOU WERE WATCHING THE PRICE." (Cut to product screen)<br><strong>5-12s:</strong> Product demo — divergence radar, whale firehose, sentiment overlay. (Voiceover: "$EDGE shows you the money, the mouth, and the gap between them.")<br><strong>12-15s:</strong> Logo + "edgeterminal.xyz · free · no signup."</div>
+      <div class="k">30s — Soft Hook</div><div class="v"><strong>0-3s:</strong> Robert on camera: "We built the terminal we wished existed."<br><strong>3-15s:</strong> Voiceover over screen-record: Money/Mouth/Edge framing.<br><strong>15-25s:</strong> Track record proof: "14 of last 18 divergence calls hit. Public ledger, no edits."<br><strong>25-30s:</strong> Token CTA (if post-launch) OR waitlist CTA · logo</div>
+      <div class="k">Subtitles</div><div class="v">Always burn in. ~80% of pre-roll watch time is muted.</div>
+      <div class="k">Frame</div><div class="v">16:9 (desktop YouTube) · Render 9:16 derivative for YouTube Shorts</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Spend Plan — Suggested</h2><div class="sec-num">08.05 · First 90 Days</div></div>
+    <div class="brief">
+      <div class="k">Month 1 (T-30 → T-0)</div><div class="v">$5-15K · X promoted posts only · target prediction-market + Solana-native lookalikes · CPM target $8-15 · primary CTA: waitlist signup</div>
+      <div class="k">Month 2 (T+0 → T+30)</div><div class="v">$15-30K · X promoted (60%) + YouTube pre-roll on crypto/finance channels (30%) + KOL paid posts (10%) · CPA target $4-8 per wallet connect</div>
+      <div class="k">Month 3 (T+30 → T+60)</div><div class="v">$10-25K · Retargeting via X custom audiences + Google display · primary CTA: token utility tier unlock</div>
+      <div class="k">Kill criteria</div><div class="v">Pause any variant under 1.2% CTR or above $20 CPA after 48 hours. Scale winners by 2x daily until CPA breaks. Don't keep losers alive past the 48h checkpoint.</div>
+      <div class="k">Attribution</div><div class="v">UTM tags + Plausible/PostHog · do not rely on platform-reported conversions alone · cross-reference against waitlist signups in raw DB</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · PAID MEDIA · v1.0</div>
+    <div><a href="../00-master/index.html">← Back to Marketing OS</a></div>
+  </footer>
+</main>
+</body>
+</html>

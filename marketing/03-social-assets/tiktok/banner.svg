@@ -1,0 +1,64 @@
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE TikTok video cover (9:16) — used as in-feed cover image and pinned video poster">
+  <title>$EDGE TikTok cover</title>
+  <defs>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#C4FF00" stroke-width="0.6" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="#050507"/>
+  <rect width="1080" height="1920" fill="url(#grid)"/>
+
+  <!-- top label -->
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="26" fill="#C4FF00" letter-spacing="0.32em">
+    <text x="72" y="120">EP / 01</text>
+  </g>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="26" fill="#6B6B73" letter-spacing="0.32em">
+    <text x="1008" y="120" text-anchor="end">$EDGE</text>
+  </g>
+  <line x1="72" y1="160" x2="1008" y2="160" stroke="rgba(196,255,0,0.2)"/>
+
+  <!-- giant headline -->
+  <g font-family="Anton, Impact, sans-serif" font-size="220" letter-spacing="-4" fill="#F5F5F0">
+    <text x="72" y="500">WHAT THE</text>
+    <text x="72" y="720">WHALES</text>
+    <text x="72" y="940">JUST DID</text>
+    <text x="72" y="1160">ON POLY.</text>
+  </g>
+
+  <!-- mini terminal panel -->
+  <g transform="translate(72 1280)">
+    <rect width="936" height="380" fill="#0C0C10" stroke="rgba(196,255,0,0.2)" stroke-width="1"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="24" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="30" y="56">LIVE WHALE TAPE</text>
+    </g>
+    <line x1="0" y1="80" x2="936" y2="80" stroke="rgba(245,245,240,0.08)"/>
+
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="28" fill="#F5F5F0">
+      <text x="30" y="140">0xA3F2&#8230;</text>
+      <text x="906" y="140" text-anchor="end" fill="#C4FF00">+$640K</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="22" fill="#6B6B73" letter-spacing="0.18em">
+      <text x="30" y="180">TRUMP-2028 / 18M AGO</text>
+    </g>
+    <line x1="0" y1="220" x2="936" y2="220" stroke="rgba(245,245,240,0.08)"/>
+
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="28" fill="#F5F5F0">
+      <text x="30" y="280">0x9DE1&#8230;</text>
+      <text x="906" y="280" text-anchor="end" fill="#C4FF00">+$210K</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="22" fill="#6B6B73" letter-spacing="0.18em">
+      <text x="30" y="320">FED-CUT-DEC / 42M AGO</text>
+    </g>
+  </g>
+
+  <!-- CTA -->
+  <g font-family="Anton, Impact, sans-serif" font-size="86" letter-spacing="-2" fill="#C4FF00">
+    <text x="540" y="1820" text-anchor="middle">FOLLOW $EDGE.</text>
+  </g>
+
+  <rect width="1080" height="1920" fill="url(#vignette)"/>
+</svg>

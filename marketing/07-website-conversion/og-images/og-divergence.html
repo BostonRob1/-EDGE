@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>OG · $EDGE Divergence · 1200×630</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85;
+    --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background:
+    linear-gradient(45deg, #1a1a1f 25%, transparent 25%),
+    linear-gradient(-45deg, #1a1a1f 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1a1f 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1a1f 75%);
+    background-size: 24px 24px;
+    background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    background-color: #0a0a0e;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--white); font-variant-numeric: tabular-nums;
+  }
+  .og {
+    width: 1200px; height: 630px;
+    background: var(--void);
+    position: relative; overflow: hidden;
+    display: grid; grid-template-rows: 64px 1fr 88px;
+  }
+  .grain { position: absolute; inset: 0; pointer-events: none; opacity: .04; z-index: 5;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 0 36px; border-bottom: 1px solid var(--border-bright); }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: -.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+  .crumbs b { color: var(--magenta); }
+
+  .body { padding: 36px 56px 24px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 36px; align-items: center; }
+  .left { display: flex; flex-direction: column; gap: 18px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: var(--lime); }
+  h1 { font-family: 'Anton', sans-serif; font-size: 96px; line-height: .9; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  h1 .mag { color: var(--magenta); }
+  .lede { font-size: 18px; line-height: 1.4; color: var(--white); opacity: .8; max-width: 460px; }
+
+  .chart { background: var(--void-2); border: 1px solid var(--border); height: 360px; position: relative; padding: 16px; display: flex; flex-direction: column; }
+  .chart .head { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .chart .head .tag b { color: var(--white); }
+  .chart .head .mag b { color: var(--magenta); }
+  .chart svg { flex: 1; width: 100%; height: 100%; }
+
+  .bottom-bar { background: var(--void-2); border-top: 1px solid var(--border-bright); display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; }
+  .bottom-bar .stat { background: var(--void-2); padding: 16px 22px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid var(--border); }
+  .bottom-bar .stat:last-child { border-right: 0; }
+  .bottom-bar .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; color: var(--muted); text-transform: uppercase; }
+  .bottom-bar .v { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; color: var(--white); }
+  .bottom-bar .v.lime { color: var(--lime); }
+  .bottom-bar .v.mag { color: var(--magenta); }
+</style>
+</head>
+<body>
+<div class="og">
+  <div class="grain"></div>
+  <div class="top">
+    <div class="brand">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="name">$<span>EDGE</span></span>
+    </div>
+    <div class="crumbs">04 · <b>DIVERGENCE RADAR</b></div>
+  </div>
+
+  <div class="body">
+    <div class="left">
+      <div class="eyebrow">Money vs. Mouth · The Gap is the Edge</div>
+      <h1>The Edge<br><span class="mag">—</span> Visualized.</h1>
+      <p class="lede">Polymarket says one thing. Kalshi says another. The spread is the alpha. We surface it the second it opens.</p>
+    </div>
+
+    <div class="chart">
+      <div class="head">
+        <span class="tag">TRUMP × FED · 30D</span>
+        <span class="tag">POLY <b style="color:#C4FF00">62.4%</b> · KAL <b>58.1%</b></span>
+        <span class="tag mag">DIVERGENCE <b>+4.3pp</b></span>
+      </div>
+      <svg viewBox="0 0 600 280" preserveAspectRatio="none">
+        <g stroke="rgba(245,245,240,0.05)" stroke-width="1">
+          <line x1="0" y1="70" x2="600" y2="70"/>
+          <line x1="0" y1="140" x2="600" y2="140"/>
+          <line x1="0" y1="210" x2="600" y2="210"/>
+        </g>
+        <path d="M 0 160 L 50 148 L 100 156 L 150 138 L 200 124 L 250 132 L 300 118 L 350 104 L 400 96 L 450 88 L 500 90 L 550 76 L 600 64
+                L 600 100 L 550 116 L 500 128 L 450 140 L 400 148 L 350 156 L 300 170 L 250 178 L 200 168 L 150 182 L 100 194 L 50 186 L 0 198 Z"
+              fill="rgba(255,0,110,0.1)"/>
+        <path d="M 0 160 L 50 148 L 100 156 L 150 138 L 200 124 L 250 132 L 300 118 L 350 104 L 400 96 L 450 88 L 500 90 L 550 76 L 600 64"
+              fill="none" stroke="#C4FF00" stroke-width="2.5"/>
+        <path d="M 0 198 L 50 186 L 100 194 L 150 182 L 200 168 L 250 178 L 300 170 L 350 156 L 400 148 L 450 140 L 500 128 L 550 116 L 600 100"
+              fill="none" stroke="#F5F5F0" stroke-width="2" opacity=".8"/>
+        <circle cx="550" cy="76" r="5" fill="#C4FF00"/>
+        <circle cx="550" cy="116" r="5" fill="#F5F5F0"/>
+        <line x1="550" y1="76" x2="550" y2="116" stroke="#FF006E" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <text x="560" y="100" fill="#FF006E" font-family="JetBrains Mono" font-size="14" font-weight="700">+5.2pp</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="stat"><div class="k">24h Volume</div><div class="v lime">$1.42M</div></div>
+    <div class="stat"><div class="k">Edge Score</div><div class="v lime">+18.4</div></div>
+    <div class="stat"><div class="k">Whale Inflow</div><div class="v">$324K</div></div>
+    <div class="stat"><div class="k">Divergence</div><div class="v mag">CRITICAL</div></div>
+  </div>
+</div>
+</body>
+</html>

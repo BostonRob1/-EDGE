@@ -1,0 +1,7 @@
+<svg viewBox="0 0 360 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE wordmark mono">
+  <title>$EDGE</title>
+  <style>
+    .word { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #F5F5F0; letter-spacing: -0.02em; }
+  </style>
+  <text x="0" y="72" class="word">$EDGE</text>
+</svg>

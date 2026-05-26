@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Social / Telegram</title>
+<link rel="icon" type="image/svg+xml" href="../../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --void:#050507; --void-2:#0C0C10; --void-3:#141418; --void-4:#1C1C22; --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --amber:#FFB800; --red:#FF3344; --white:#F5F5F0; --muted:#6B6B73; --border:rgba(245,245,240,0.08); --border-bright:rgba(196,255,0,0.2); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+  main { max-width: 1280px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+  .hero { padding: 16px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; display:grid; gap: 24px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 110px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 720px; opacity: .85; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(28px, 4vw, 48px); letter-spacing:-.02em; text-transform: uppercase; }
+  .asset-frame { background-image: linear-gradient(45deg, #0C0C10 25%, transparent 25%), linear-gradient(-45deg, #0C0C10 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #0C0C10 75%), linear-gradient(-45deg, transparent 75%, #0C0C10 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #08080A; padding: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .asset-frame .size { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.22em; text-transform: uppercase; }
+  .asset-frame img { display: block; max-width: 100%; height: auto; }
+  .pfp-square { width: 320px; height: 320px; }
+  .pfp-circle { width: 320px; height: 320px; border-radius: 50%; overflow: hidden; }
+  .banner { width: 100%; max-width: 1280px; aspect-ratio: 4 / 1; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  .copy-card { background: var(--void-2); border: 1px solid var(--border); padding: 28px; }
+  .copy-card h3 { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .copy-card .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: var(--lime); text-transform: uppercase; margin-bottom: 14px; }
+  .copy-card pre { font-family:'JetBrains Mono', monospace; font-size: 12px; line-height: 1.65; background: var(--void); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; word-break: break-word; color: var(--white); margin-top: 12px; overflow-x: auto; }
+  .copy-card .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-top: 12px; }
+  .steps { counter-reset: step; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: 0; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.22em; }
+  .step .body { font-size: 15px; line-height: 1.55; }
+  .step code { font-family:'JetBrains Mono', monospace; font-size: 12px; background: var(--void-3); padding: 2px 8px; border: 1px solid var(--border); }
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="top">
+  <a class="brand" href="../../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Social</a> / Telegram</div>
+</header>
+<main>
+  <div class="hero">
+    <div class="eyebrow">03.03 / Social Asset Pack &#183; Telegram</div>
+    <h1>Telegram. <span class="accent">Signal pipe.</span></h1>
+    <p class="lede">Two surfaces: <code>@edgeterminal</code> (broadcast channel, signals only) and <code>@edgelounge</code> (community group). 512&times;512 circle logo, no native banner (we ship a header card for cross-posting).</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Channel Logo</h2><div class="sec-num">03.03.01 &#183; 512&times;512 &#183; circle-clipped</div></div>
+    <div class="two-col">
+      <div class="asset-frame">
+        <img src="pfp.svg" class="pfp-square" alt="Logo source"/>
+        <div class="size">512 &times; 512 &#183; SVG (square)</div>
+      </div>
+      <div class="asset-frame">
+        <div class="pfp-circle"><img src="pfp.svg" style="width:100%;height:100%;display:block"/></div>
+        <div class="size">512 &times; 512 &#183; circle (as Telegram renders)</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Header Card (for cross-posts &amp; channel previews)</h2><div class="sec-num">03.03.02 &#183; 1280&times;320</div></div>
+    <div class="asset-frame">
+      <img src="banner.svg" class="banner" alt="Telegram header card"/>
+      <div class="size">1280 &times; 320 &#183; SVG &#183; Telegram has no native banner; use this for invite-link cards and Twitter/X previews of the channel.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Identity</h2><div class="sec-num">03.03.03</div></div>
+    <div class="two-col">
+      <div class="copy-card">
+        <div class="tag">Channel &#183; broadcast</div>
+        <h3>@edgeterminal</h3>
+        <pre>$EDGE &#8212; the terminal for prediction markets. Polymarket + Kalshi + whales + sentiment divergence in one screen. Watch the action. Before you bet. Site: edge-two-psi.vercel.app</pre>
+        <div class="meta">t.me/edgeterminal &#183; 2&#8211;4 posts/day max</div>
+      </div>
+      <div class="copy-card">
+        <div class="tag">Group &#183; community</div>
+        <h3>@edgelounge</h3>
+        <pre>Community room for the $EDGE terminal. Bring receipts. No DM scams &#8212; we never DM about wallets. Founders: @robert + @tye. Channel: @edgeterminal.</pre>
+        <div class="meta">t.me/edgelounge</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned &#183; Channel</h2><div class="sec-num">03.03.04</div></div>
+    <div class="copy-card">
+      <div class="tag">@edgeterminal &#183; pin</div>
+      <h3>Channel introduction</h3>
+      <pre>$EDGE TERMINAL &#8212; official channel.
+
+This is broadcast-only. Real-time signals:
+&#8226; whale moves on Polymarket + Kalshi (&#8805;$25K)
+&#8226; divergence alerts (money vs mouth &#8805;0.15)
+&#8226; picker algo calls (with track record)
+&#8226; product drops + token updates
+
+Community chat: @edgelounge
+Site: https://edge-two-psi.vercel.app/
+Token: $EDGE on Solana &#8212; pump.fun launch.
+
+Founders: @robert + @tye
+We never DM you about wallets, claims, or airdrops. Anyone who does is impersonating us.</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned &#183; Group</h2><div class="sec-num">03.03.05</div></div>
+    <div class="copy-card">
+      <div class="tag">@edgelounge &#183; pin</div>
+      <h3>Group welcome + rules</h3>
+      <pre>Welcome to $EDGE LOUNGE.
+
+This is the community room for the $EDGE terminal.
+
+GROUND RULES
+&#8226; Bring receipts: market IDs, links, on-chain hashes. Not vibes.
+&#8226; No off-topic shilling. We're a prediction-market room.
+&#8226; No DM scams. We never DM you about wallets.
+&#8226; Disagree with the data, not the person.
+&#8226; Decided markets get marked RESOLVED with the outcome.
+
+CHANNELS YOU SHOULD JOIN
+&#8226; @edgeterminal &#8212; broadcast channel (signals only)
+&#8226; @edgelounge &#8212; this room
+
+LINKS
+Site: https://edge-two-psi.vercel.app/
+X: @edgeterminal
+Discord: discord.gg/edge
+
+We're early. Build with us.
+&#8212; @robert + @tye</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Signal Post Template</h2><div class="sec-num">03.03.06</div></div>
+    <div class="copy-card">
+      <div class="tag">channel signal &#183; reusable</div>
+      <h3>[SIGNAL] template</h3>
+      <pre>[SIGNAL] &#8212; {MARKET}
+
+POLY    {pct}
+KALSHI  {pct}
+DIVERGENCE  {delta}
+
+WHALE  {wallet 0xABCD} &#8594; {amount} {direction}  {time}
+MOUTH  {sentiment %} on {platform}  {timeframe}
+
+Read: edge-two-psi.vercel.app/m/{slug}</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Setup Notes</h2><div class="sec-num">03.03.07</div></div>
+    <div class="steps">
+      <div class="step"><div class="body">Create channel <code>@edgeterminal</code> (public). Upload <code>pfp.svg</code> exported to 512&times;512 PNG. Set description from <code>bio.md</code>. Discussion group: link <code>@edgelounge</code>.</div></div>
+      <div class="step"><div class="body">Create group <code>@edgelounge</code> (public). Same logo. Enable slow mode (15s) and require account age &#8805;7 days to post. Auto-delete service messages.</div></div>
+      <div class="step"><div class="body">Install antispam bot (e.g. <code>@combot</code> or <code>@shieldy_bot</code>) to filter join-spam. Add a CAPTCHA welcome.</div></div>
+      <div class="step"><div class="body">Pin the channel intro in <code>@edgeterminal</code>. Pin the group rules in <code>@edgelounge</code>.</div></div>
+      <div class="step"><div class="body">Cross-post channel signals to X via Zapier/Make: catch new channel message &#8594; format &#8594; post to X. Keep both formats native.</div></div>
+      <div class="step"><div class="body">Reserve impostor handles: <code>@edgeterminal_official</code>, <code>@edge_terminal</code>, <code>@edgeterminalbot</code>. Park them with a single message: "Official: @edgeterminal".</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE &#183; SOCIAL / TELEGRAM &#183; v1.0</div>
+    <div><a href="../index.html">&larr; Social Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

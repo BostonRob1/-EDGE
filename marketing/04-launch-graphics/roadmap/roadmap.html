@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1920px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:80px 64px 96px;display:flex;flex-direction:column}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  .hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:14px}
+  .mark svg{width:32px;height:32px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:30px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .badge{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;padding:8px 12px;border:1px solid var(--lime);background:rgba(196,255,0,.05)}
+
+  .title{margin-top:24px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.4em;color:var(--lime);text-transform:uppercase;margin-bottom:14px}
+  h1{font-family:'Anton',sans-serif;font-size:160px;line-height:.88;letter-spacing:-.025em;text-transform:uppercase}
+  h1 .em{color:var(--lime)}
+  .lede{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;line-height:1.6;max-width:760px}
+
+  /* timeline */
+  .timeline{margin-top:36px;position:relative;flex:1}
+  /* vertical spine */
+  .timeline::before{content:'';position:absolute;left:36px;top:14px;bottom:14px;width:1px;background:var(--border-bright)}
+
+  .phase{position:relative;padding-left:96px;margin-bottom:32px}
+  .phase:last-child{margin-bottom:0}
+
+  /* diamond marker */
+  .marker{position:absolute;left:36px;top:18px;transform:translateX(-50%) rotate(45deg);width:22px;height:22px;background:var(--void);border:2px solid var(--lime);z-index:2}
+  .phase.now .marker{background:var(--lime);box-shadow:0 0 18px rgba(196,255,0,.5)}
+  .phase.future .marker{border-color:var(--muted)}
+  /* timestamp pill */
+  .stamp{position:absolute;left:36px;top:54px;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:var(--void);padding:0 6px;line-height:1;width:60px;text-align:center}
+
+  .phead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:14px;flex-wrap:wrap}
+  .pnum{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.35em;color:var(--lime);text-transform:uppercase}
+  .phase.future .pnum{color:var(--muted)}
+  .pwhen{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.25em;color:var(--white);text-transform:uppercase;margin-left:auto}
+  .ptitle{font-family:'Anton',sans-serif;font-size:54px;letter-spacing:-.025em;line-height:.95;text-transform:uppercase;color:var(--white);margin-bottom:10px}
+  .phase.future .ptitle{color:var(--muted)}
+  .pbody{padding:18px 22px;background:var(--void-2);border:1px solid var(--border)}
+  .phase.now .pbody{border-color:var(--border-bright);background:rgba(196,255,0,.04)}
+
+  .deliverables{display:flex;flex-direction:column;gap:8px}
+  .dv{display:flex;align-items:flex-start;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--white);letter-spacing:.08em;text-transform:uppercase;line-height:1.4}
+  .dv .check{flex:0 0 10px;width:10px;height:10px;margin-top:2px}
+  .phase.now .dv .check{background:var(--lime)}
+  .phase.next .dv .check{background:var(--lime);opacity:.6}
+  .phase.future .dv .check{background:var(--muted);opacity:.6}
+  .dv .ln{flex:1}
+  .dv .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+
+  .footer{margin-top:auto;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .footer .cap{font-family:'Anton',sans-serif;font-size:34px;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+  .footer .cap .lime{color:var(--lime)}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+  .footer .right strong{color:var(--white);font-weight:500}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1920 · Roadmap story</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="badge">ROADMAP · v1.0</div>
+  </div>
+
+  <div class="title">
+    <div class="eyebrow">/ NO FLUFF · NO PROMISES /</div>
+    <h1>WHAT WE'RE<br><span class="em">BUILDING.</span></h1>
+    <div class="lede">FIVE PHASES. EVERY ONE SHIPPED OR SHAMED. WE PUT THE TIMELINE IN PUBLIC SO YOU CAN HOLD US TO IT.</div>
+  </div>
+
+  <div class="timeline">
+    <div class="phase now">
+      <div class="marker"></div>
+      <div class="stamp">NOW</div>
+      <div class="phead">
+        <span class="pnum">PHASE 00 · LIVE</span>
+        <span class="pwhen">2026 / Q2</span>
+      </div>
+      <div class="ptitle">MARKETS HUB + WHALES</div>
+      <div class="pbody">
+        <div class="deliverables">
+          <div class="dv"><span class="check"></span><span class="ln">POLY + KAL UNIFIED MARKETS TABLE — 1,200+ MARKETS</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">WHALE FIREHOSE — ≥ $500K POSITION ALERTS</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">WALLET TAGGING — TOP 2,800 TRACKED</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase next">
+      <div class="marker"></div>
+      <div class="stamp">NEXT</div>
+      <div class="phead">
+        <span class="pnum">PHASE 01 · IN FLIGHT</span>
+        <span class="pwhen">2026 / Q3</span>
+      </div>
+      <div class="ptitle">SENTIMENT + TOKEN LAUNCH</div>
+      <div class="pbody">
+        <div class="deliverables">
+          <div class="dv"><span class="check"></span><span class="ln">X / TG / REDDIT / NEWS SENTIMENT AGGREGATOR</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">$EDGE FAIR LAUNCH ON PUMP.FUN</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">UTILITY TIERS GO LIVE — WHALE BOT + RADAR FEED</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase future">
+      <div class="marker"></div>
+      <div class="stamp">+1Q</div>
+      <div class="phead">
+        <span class="pnum">PHASE 02 · BUILD</span>
+        <span class="pwhen">2026 / Q4</span>
+      </div>
+      <div class="ptitle">PICKER + TRACK RECORD</div>
+      <div class="pbody">
+        <div class="deliverables">
+          <div class="dv"><span class="check"></span><span class="ln">DIVERGENCE-DRIVEN PICK ALGORITHM</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">PUBLIC TRACK RECORD — ON-CHAIN TIMESTAMPED</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">RAW API V1 — POLY + KAL NORMALIZED</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase future">
+      <div class="marker"></div>
+      <div class="stamp">+2Q</div>
+      <div class="phead">
+        <span class="pnum">PHASE 03 · SOCIAL</span>
+        <span class="pwhen">2027 / Q1-2</span>
+      </div>
+      <div class="ptitle">SOCIAL LAYER</div>
+      <div class="pbody">
+        <div class="deliverables">
+          <div class="dv"><span class="check"></span><span class="ln">PROFILES — PUBLIC P&L AND PICK FEED</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">FOLLOW / COPY-CALL — PERMISSIONED</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">PRIVATE GROUPS GATED BY $EDGE TIER</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase future">
+      <div class="marker"></div>
+      <div class="stamp">+3Q</div>
+      <div class="phead">
+        <span class="pnum">PHASE 04 · SCALE</span>
+        <span class="pwhen">2027 / Q3+</span>
+      </div>
+      <div class="ptitle">MOBILE + PLATFORM</div>
+      <div class="pbody">
+        <div class="deliverables">
+          <div class="dv"><span class="check"></span><span class="ln">MOBILE APP — iOS + ANDROID</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">PUBLIC API PLATFORM — TIERED ACCESS</span></div>
+          <div class="dv"><span class="check"></span><span class="ln">ADDITIONAL VENUES — MANIFOLD, MYRIAD, ZEITGEIST</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="cap">SHIP. THEN <span class="lime">SAY IT.</span></div>
+    <div class="right">
+      <div><strong>EDGE-TWO-PSI.VERCEL.APP</strong></div>
+      <div>v1.0 · 2026 / Q3</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

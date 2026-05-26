@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · GM · Launch Day Community Share</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7)}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  /* terminal frame */
+  .top{position:absolute;top:36px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .top .mark{display:flex;align-items:center;gap:12px}
+  .top svg{width:28px;height:28px}
+  .top .nm{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .top .nm span{color:var(--lime)}
+  .top .meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+  .top .meta .l{color:var(--lime)}
+
+  /* big GM */
+  .gm{position:absolute;top:160px;left:56px;right:56px;text-align:center}
+  .gm .eye{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.4em;color:var(--lime);text-transform:uppercase;margin-bottom:14px}
+  .gm .big{font-family:'Anton',sans-serif;font-size:340px;line-height:.85;letter-spacing:-.025em;text-transform:uppercase;color:var(--white)}
+  .gm .second{font-family:'Anton',sans-serif;font-size:96px;line-height:.95;letter-spacing:-.025em;text-transform:uppercase;color:var(--lime);margin-top:-12px}
+  .gm .second .slash{color:var(--white)}
+
+  /* sun motif — single bright circle to evoke morning */
+  .sun{position:absolute;top:160px;right:120px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#C4FF00,#8aa800 60%,transparent 70%);opacity:.85;z-index:1;filter:blur(.5px)}
+  .sun::after{content:'';position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(196,255,0,.35),transparent 65%)}
+
+  /* receipt strip */
+  .receipt{position:absolute;left:56px;right:56px;top:730px;border:1px solid var(--border);background:var(--void-2);padding:0}
+  .rep-hdr{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+  .rep-hdr .l{color:var(--lime)}
+  .rep-rows{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .rep-row{padding:14px 22px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .rep-row:nth-child(2n){border-right:0}
+  .rep-row:nth-last-child(-n+2){border-bottom:0}
+  .rep-row .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+  .rep-row .v{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.05em;color:var(--white);text-transform:uppercase;word-break:break-all}
+  .rep-row .v.big{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:-.01em;line-height:1}
+  .rep-row .v.lime{color:var(--lime)}
+
+  /* footer */
+  .footer{position:absolute;bottom:42px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center}
+  .footer .note{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+  .footer .note .l{color:var(--lime)}
+  .footer .link{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.25em;color:var(--white);text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · Community share</div>
+<div class="canvas">
+  <div class="grain"></div>
+  <div class="sun"></div>
+
+  <div class="top">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="meta">
+      <div class="l">● LIVE · ON CHAIN</div>
+      <div>09:00:00 UTC · 2026</div>
+    </div>
+  </div>
+
+  <div class="gm">
+    <div class="eye">/ DAY 001 /</div>
+    <div class="big">GM.</div>
+    <div class="second">$EDGE <span class="slash">/</span> LIVE.</div>
+  </div>
+
+  <div class="receipt">
+    <div class="rep-hdr">
+      <span class="l">▸ LAUNCH RECEIPT</span>
+      <span>// SAVE & PIN</span>
+    </div>
+    <div class="rep-rows">
+      <div class="rep-row">
+        <div class="k">TIME · LAUNCH</div>
+        <div class="v big lime">09:00 UTC</div>
+      </div>
+      <div class="rep-row">
+        <div class="k">VENUE</div>
+        <div class="v big">PUMP.FUN</div>
+      </div>
+      <div class="rep-row" style="grid-column:1 / -1">
+        <div class="k">CONTRACT ADDRESS · COPY → PASTE</div>
+        <div class="v">_____________________________________________</div>
+      </div>
+      <div class="rep-row">
+        <div class="k">SUPPLY</div>
+        <div class="v big lime">1,000,000,000</div>
+      </div>
+      <div class="rep-row">
+        <div class="k">LAUNCH TYPE</div>
+        <div class="v big">FAIR · 0% TEAM</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="note">DON'T FOMO — <span class="l">READ THE TOKENOMICS FIRST.</span></div>
+    <div class="link">EDGE-TWO-PSI.VERCEL.APP</div>
+  </div>
+</div>
+</body>
+</html>

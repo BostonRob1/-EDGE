@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Launch Day · X Header</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+  .pfp-zone{position:fixed;top:16px;right:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase}
+
+  .canvas{position:relative;width:1500px;height:500px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7)}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");z-index:5}
+
+  /* main grid: left text block, right scoreboard, with PFP safe-zone at lower-left */
+  /* X profile picture overlaps roughly the lower-left circle of the banner.
+     We leave column 0-340px below y=320 as safe zone. */
+
+  .gridbg{position:absolute;inset:0;opacity:.05;background-image:linear-gradient(var(--white) 1px,transparent 1px),linear-gradient(90deg,var(--white) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+
+  /* top rail */
+  .topbar{position:absolute;top:24px;left:32px;right:32px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;z-index:6}
+  .topbar .live{color:var(--lime);display:flex;align-items:center;gap:8px}
+  .topbar .live::before{content:'';width:8px;height:8px;background:var(--lime);border-radius:50%;animation:blink 1.4s infinite}
+  @keyframes blink{0%,55%{opacity:1}60%,100%{opacity:.2}}
+
+  /* hero block centered, but tilted right to leave room for PFP */
+  .hero{position:absolute;top:75px;left:360px;right:540px;z-index:6}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.35em;color:var(--lime);text-transform:uppercase;margin-bottom:14px}
+  h1{font-family:'Anton',sans-serif;font-size:140px;line-height:.86;letter-spacing:-.025em;text-transform:uppercase;color:var(--white)}
+  h1 .accent{color:var(--lime)}
+  .tag{margin-top:14px;font-family:'Anton',sans-serif;font-size:32px;letter-spacing:-.01em;text-transform:uppercase;color:var(--white)}
+  .tag .lime{color:var(--lime)}
+
+  /* right scoreboard */
+  .score{position:absolute;top:60px;right:32px;width:480px;display:grid;grid-template-columns:1fr 1fr;gap:10px;z-index:6}
+  .card{border:1px solid var(--border);background:var(--void-2);padding:14px 16px;min-height:100px;display:flex;flex-direction:column;justify-content:space-between}
+  .card.lime{border-color:var(--border-bright);background:rgba(196,255,0,.04)}
+  .card.full{grid-column:1 / -1}
+  .card .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .card.lime .k{color:var(--lime)}
+  .card .v{font-family:'Anton',sans-serif;font-size:30px;letter-spacing:-.01em;color:var(--white);text-transform:uppercase;line-height:1;margin-top:8px}
+  .card .v.lime{color:var(--lime)}
+  .card .vsm{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--white);text-transform:uppercase;margin-top:8px;word-break:break-all}
+  .card .sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:6px}
+
+  /* bottom rail — outside pfp zone except text below banner */
+  .botrail{position:absolute;bottom:18px;right:32px;left:360px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;z-index:6}
+  .botrail .l{color:var(--white)}
+
+  /* pfp safe-zone visualizer — non-printing outline (will be removed on export naturally) */
+  .pfp-zone-circle{position:absolute;bottom:-90px;left:60px;width:240px;height:240px;border:1px dashed rgba(196,255,0,.3);border-radius:50%;z-index:7}
+  .pfp-zone-circle::after{content:'PFP';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:rgba(196,255,0,.35)}
+
+  /* big accent slash on the left */
+  .slash-art{position:absolute;top:50%;left:320px;transform:translate(-50%,-50%);width:1px;height:280px;background:linear-gradient(180deg,transparent,var(--lime),transparent);opacity:.5;z-index:5}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1500 × 500 · X / Twitter header</div>
+<div class="pfp-zone">PFP overlap at lower-left</div>
+<div class="canvas">
+  <div class="gridbg"></div>
+  <div class="grain"></div>
+
+  <div class="topbar">
+    <div>SYS · BROADCAST · 005 / LAUNCH DAY</div>
+    <div class="live">LIVE · ON CHAIN</div>
+  </div>
+
+  <div class="slash-art"></div>
+
+  <div class="hero">
+    <div class="eyebrow">/ FAIRLAUNCH · PUMP.FUN · SOLANA /</div>
+    <h1>$EDGE <span class="accent">/</span> LIVE.</h1>
+    <div class="tag">WATCH THE ACTION. <span class="lime">BEFORE YOU BET.</span></div>
+  </div>
+
+  <div class="score">
+    <div class="card lime">
+      <div class="k">SUPPLY</div>
+      <div class="v lime">1B</div>
+      <div class="sub">FAIR LAUNCH</div>
+    </div>
+    <div class="card">
+      <div class="k">PRESALE</div>
+      <div class="v">NONE</div>
+      <div class="sub">NO INSIDERS</div>
+    </div>
+    <div class="card full">
+      <div class="k">CONTRACT · COPY ON LAUNCH</div>
+      <div class="vsm">________________________________________</div>
+      <div class="sub">PUMP.FUN/EDGE · POSTED AT LAUNCH</div>
+    </div>
+  </div>
+
+  <div class="botrail">
+    <div class="l">EDGE-TWO-PSI.VERCEL.APP</div>
+    <div>POLY + KALSHI · WHALES · DIVERGENCE</div>
+  </div>
+
+  <div class="pfp-zone-circle"></div>
+</div>
+</body>
+</html>

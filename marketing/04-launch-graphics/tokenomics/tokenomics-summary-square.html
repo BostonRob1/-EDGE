@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Tokenomics Summary · Square</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:48px 52px}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  .hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:12px}
+  .mark svg{width:28px;height:28px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;padding:6px 10px;border:1px solid var(--lime);background:rgba(196,255,0,.04)}
+
+  .title-row{padding:22px 0 14px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.35em;color:var(--lime);text-transform:uppercase;margin-bottom:10px}
+  h1{font-family:'Anton',sans-serif;font-size:82px;line-height:.9;letter-spacing:-.025em;text-transform:uppercase}
+  h1 .accent{color:var(--lime)}
+
+  /* split: donut + supply card */
+  .top-grid{display:grid;grid-template-columns:300px 1fr;gap:18px;margin-top:18px}
+  .donut-wrap{position:relative;width:300px;height:300px;display:flex;align-items:center;justify-content:center;background:var(--void-2);border:1px solid var(--border)}
+  .donut-wrap svg{width:260px;height:260px}
+  .donut-wrap .cap{position:absolute;text-align:center}
+  .donut-wrap .cap .num{font-family:'Anton',sans-serif;font-size:54px;line-height:1;letter-spacing:-.01em}
+  .donut-wrap .cap .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  .supply-stack{display:flex;flex-direction:column;gap:12px}
+  .scell{border:1px solid var(--border);background:var(--void-2);padding:14px 18px;flex:1;display:flex;flex-direction:column;justify-content:center}
+  .scell.lime{border-color:var(--border-bright);background:rgba(196,255,0,.04)}
+  .scell .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+  .scell.lime .k{color:var(--lime)}
+  .scell .v{font-family:'Anton',sans-serif;font-size:40px;letter-spacing:-.01em;line-height:1}
+  .scell .v.lime{color:var(--lime)}
+  .scell .vsm{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-top:4px}
+
+  /* legend strip */
+  .legend{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+  .leg{padding:12px 12px;border:1px solid var(--border);background:var(--void-2);display:flex;flex-direction:column;gap:4px;border-top:3px solid var(--lime)}
+  .leg.g2{border-top-color:var(--green)}
+  .leg.g3{border-top-color:var(--amber)}
+  .leg.g4{border-top-color:var(--magenta)}
+  .leg.g5{border-top-color:#7aa0ff}
+  .leg .pct{font-family:'Anton',sans-serif;font-size:28px;letter-spacing:-.01em;line-height:1}
+  .leg.g1 .pct{color:var(--lime)}
+  .leg.g2 .pct{color:var(--green)}
+  .leg.g3 .pct{color:var(--amber)}
+  .leg.g4 .pct{color:var(--magenta)}
+  .leg.g5 .pct{color:#7aa0ff}
+  .leg .n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--white);text-transform:uppercase;line-height:1.3}
+  .leg .d{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;line-height:1.4}
+
+  /* utility */
+  .util-head{display:flex;justify-content:space-between;align-items:baseline;margin-top:24px;margin-bottom:10px}
+  .util-head h2{font-family:'Anton',sans-serif;font-size:38px;letter-spacing:-.02em;text-transform:uppercase}
+  .util-head .sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+
+  .util{border:1px solid var(--border);background:var(--void-2)}
+  .urow{display:grid;grid-template-columns:140px 1fr 200px;border-bottom:1px solid var(--border);padding:14px 18px;align-items:center;gap:14px}
+  .urow:last-child{border-bottom:0}
+  .urow .amt{font-family:'Anton',sans-serif;font-size:28px;color:var(--lime);letter-spacing:-.01em;line-height:1}
+  .urow .unlk{font-family:'Anton',sans-serif;font-size:22px;color:var(--white);text-transform:uppercase;letter-spacing:-.01em;line-height:1.05}
+  .urow .unlk .d{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;font-weight:400}
+  .urow .deliv{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right}
+
+  /* footer */
+  .footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;padding-top:18px;border-top:1px solid var(--border)}
+  .footer .left{font-family:'Anton',sans-serif;font-size:40px;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+  .footer .left .lime{color:var(--lime)}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+  .footer .right strong{color:var(--white);font-weight:500}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · TG / X / Discord</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="badge">TOKENOMICS · v1.0</div>
+  </div>
+
+  <div class="title-row">
+    <div class="eyebrow">/ THE WHOLE THING — ONE PAGE /</div>
+    <h1>SUPPLY. <span class="accent">UTILITY.</span> NO BS.</h1>
+  </div>
+
+  <div class="top-grid">
+    <div class="donut-wrap">
+      <svg viewBox="0 0 320 320">
+        <circle cx="160" cy="160" r="110" fill="none" stroke="#1c1c22" stroke-width="50"/>
+        <circle cx="160" cy="160" r="110" fill="none" stroke="#C4FF00" stroke-width="50"
+                stroke-dasharray="552.92 691.15" transform="rotate(-90 160 160)"/>
+        <circle cx="160" cy="160" r="110" fill="none" stroke="#00FF85" stroke-width="50"
+                stroke-dasharray="69.115 691.15" stroke-dashoffset="-552.92" transform="rotate(-90 160 160)"/>
+        <circle cx="160" cy="160" r="110" fill="none" stroke="#FFB800" stroke-width="50"
+                stroke-dasharray="34.557 691.15" stroke-dashoffset="-622.04" transform="rotate(-90 160 160)"/>
+        <circle cx="160" cy="160" r="110" fill="none" stroke="#FF006E" stroke-width="50"
+                stroke-dasharray="20.734 691.15" stroke-dashoffset="-656.59" transform="rotate(-90 160 160)"/>
+        <circle cx="160" cy="160" r="110" fill="none" stroke="#7aa0ff" stroke-width="50"
+                stroke-dasharray="13.823 691.15" stroke-dashoffset="-677.33" transform="rotate(-90 160 160)"/>
+      </svg>
+      <div class="cap">
+        <div class="num">1B</div>
+        <div class="lbl">FIXED SUPPLY</div>
+      </div>
+    </div>
+
+    <div class="supply-stack">
+      <div class="scell lime">
+        <div class="k">VENUE / TYPE</div>
+        <div class="v lime">PUMP.FUN · FAIR LAUNCH</div>
+        <div class="vsm">SOLANA · BONDING CURVE → RAYDIUM</div>
+      </div>
+      <div class="scell">
+        <div class="k">PRESALE · INSIDERS · TEAM (DAY 0)</div>
+        <div class="v">NONE · NONE · 0%</div>
+        <div class="vsm">FAIR FROM SECOND ONE</div>
+      </div>
+      <div class="scell">
+        <div class="k">LP · TEAM · TREASURY</div>
+        <div class="v">LOCKED · CLIFFED · MULTI-SIG</div>
+        <div class="vsm">12 MO LP · 6 MO TEAM CLIFF · 3/5 TREAS</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg g1"><div class="pct">80%</div><div class="n">FAIR LAUNCH</div><div class="d">PUMP.FUN</div></div>
+    <div class="leg g2"><div class="pct">10%</div><div class="n">LP LOCK</div><div class="d">RAYDIUM 12M</div></div>
+    <div class="leg g3"><div class="pct">5%</div><div class="n">TREASURY</div><div class="d">MULTI-SIG</div></div>
+    <div class="leg g4"><div class="pct">3%</div><div class="n">MKT / KOL</div><div class="d">6M VEST</div></div>
+    <div class="leg g5"><div class="pct">2%</div><div class="n">TEAM</div><div class="d">24M / 6M CLIFF</div></div>
+  </div>
+
+  <div class="util-head">
+    <h2>Utility · Hold to Unlock</h2>
+    <div class="sub">// 4 TIERS</div>
+  </div>
+  <div class="util">
+    <div class="urow">
+      <div class="amt">10K</div>
+      <div class="unlk">Whale alerts <span class="d">≥ $250K position moves · live · TG bot + X DM digest</span></div>
+      <div class="deliv">TIER 01</div>
+    </div>
+    <div class="urow">
+      <div class="amt">100K</div>
+      <div class="unlk">Divergence radar <span class="d">money vs mouth live signal feed · alerts ≥ 0.6</span></div>
+      <div class="deliv">TIER 02</div>
+    </div>
+    <div class="urow">
+      <div class="amt">1M</div>
+      <div class="unlk">Raw API <span class="d">poly + kalshi normalized · websocket + REST · 10K RPM</span></div>
+      <div class="deliv">TIER 03</div>
+    </div>
+    <div class="urow">
+      <div class="amt">10M</div>
+      <div class="unlk">Insider channel <span class="d">private TG · monthly call w/ founders · early features</span></div>
+      <div class="deliv">TIER 04</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="left">FAIR. <span class="lime">LOCKED.</span> LIVE.</div>
+    <div class="right">
+      <div><strong>EDGE-TWO-PSI.VERCEL.APP</strong></div>
+      <div>FULL SPEC · PIN THIS PAGE</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

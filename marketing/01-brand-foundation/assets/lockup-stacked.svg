@@ -1,0 +1,14 @@
+<svg viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE stacked lockup">
+  <title>$EDGE</title>
+  <style>
+    .dollar { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #C4FF00; letter-spacing: -0.02em; }
+    .word   { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #F5F5F0; letter-spacing: -0.02em; }
+    .tag    { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #6B6B73; letter-spacing: 0.2em; }
+  </style>
+  <g transform="translate(108 8)">
+    <path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+  <text x="60" y="156" class="dollar">$</text>
+  <text x="116" y="156" class="word">EDGE</text>
+  <text x="62" y="192" class="tag">MONEY · MOUTH · EDGE</text>
+</svg>

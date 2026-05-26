@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — One-Pager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85;
+    --amber: #FFB800; --red: #FF3344; --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08); --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #2a2a2e; color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  a { color: inherit; text-decoration: none; }
+
+  /* PAGE — US Letter portrait 8.5" x 11" */
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 24px auto;
+    background: var(--void);
+    padding: 0.5in 0.55in;
+    box-shadow: 0 6px 30px rgba(0,0,0,.6);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--lime);
+  }
+  .wordmark { font-family: 'Anton', sans-serif; font-size: 56px; letter-spacing: -0.02em; line-height: 1; }
+  .wordmark span { color: var(--lime); }
+  .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .tag em { color: var(--white); font-style: normal; }
+  .url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; }
+  .mark { width: 56px; height: 56px; flex-shrink: 0; }
+
+  /* META STRIP under header */
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .meta-cell { padding: 8px 10px 8px 0; border-right: 1px solid var(--border); }
+  .meta-cell:last-child { border-right: 0; padding-right: 0; padding-left: 10px; }
+  .meta-cell:nth-child(n+2) { padding-left: 10px; }
+  .meta-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase; }
+  .meta-cell .val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--white); margin-top: 3px; }
+
+  /* SECTIONS */
+  section { margin-top: 14px; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 8px; }
+  h2 { font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: -0.01em; text-transform: uppercase; }
+  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.22em; }
+  p { font-size: 11px; line-height: 1.5; color: var(--white); opacity: 0.92; }
+  p strong { color: var(--lime); font-weight: 700; }
+
+  /* PRODUCT BULLETS */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .prod-cell { background: var(--void-2); padding: 10px 12px; }
+  .prod-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--lime); letter-spacing: 0.22em; text-transform: uppercase; }
+  .prod-cell .name { font-family: 'Anton', sans-serif; font-size: 15px; margin: 4px 0; text-transform: uppercase; letter-spacing: -0.01em; }
+  .prod-cell .desc { font-size: 9.5px; line-height: 1.45; color: var(--white); opacity: 0.8; }
+  .prod-cell .stat { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--white); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .prod-cell .stat span:last-child { color: var(--lime); }
+
+  /* TRACTION */
+  .traction {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .tr-cell { background: var(--void-2); padding: 10px 12px; }
+  .tr-cell .num { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--lime); letter-spacing: -0.01em; line-height: 1; }
+  .tr-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.22em; text-transform: uppercase; margin-top: 4px; }
+
+  /* MOAT */
+  .moat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .moat-cell { background: var(--void-2); padding: 10px 12px; }
+  .moat-cell .word { font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: -0.01em; }
+  .moat-cell .word.l { color: var(--lime); }
+  .moat-cell .word.m { color: var(--magenta); }
+  .moat-cell .word.g { color: var(--green); }
+  .moat-cell .desc { font-size: 9.5px; line-height: 1.45; color: var(--white); opacity: 0.85; margin-top: 4px; }
+
+  /* TOKEN */
+  .token-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .token-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .ts-cell { background: var(--void-2); padding: 8px 10px; }
+  .ts-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.22em; text-transform: uppercase; }
+  .ts-cell .val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); margin-top: 3px; }
+  .util-table { border: 1px solid var(--border); }
+  .util-row { display: grid; grid-template-columns: 90px 1fr; border-bottom: 1px solid var(--border); padding: 6px 10px; }
+  .util-row:last-child { border-bottom: 0; }
+  .util-row .req { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--lime); }
+  .util-row .unlock { font-size: 10px; color: var(--white); opacity: 0.9; }
+
+  /* TEAM */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .team-cell { background: var(--void-2); padding: 10px 12px; }
+  .team-cell .name { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: -0.01em; }
+  .team-cell .role { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--lime); letter-spacing: 0.22em; text-transform: uppercase; margin: 3px 0; }
+  .team-cell .bio { font-size: 9.5px; line-height: 1.45; color: var(--white); opacity: 0.8; }
+  .team-cell.empty .name { color: var(--muted); }
+  .team-cell.empty .bio { font-style: italic; opacity: 0.6; }
+
+  /* ASK */
+  .ask-list { display: grid; gap: 4px; }
+  .ask-row { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px dashed var(--border); }
+  .ask-row:last-child { border-bottom: 0; }
+  .ask-row .marker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--lime); }
+  .ask-row .ask-text { font-size: 10px; line-height: 1.45; color: var(--white); }
+  .ask-row .ask-text strong { color: var(--lime); }
+
+  /* CONTACT FOOTER */
+  .contact {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 2px solid var(--lime);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .c-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 0.22em; text-transform: uppercase; }
+  .c-cell .val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--white); margin-top: 3px; word-break: break-all; }
+  .c-cell .val.lime { color: var(--lime); }
+  .foot {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+
+  /* PRINT */
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    html, body { background: var(--void); -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: 8.5in;
+      height: 11in;
+      page-break-after: avoid;
+      page-break-inside: avoid;
+    }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div>
+      <div class="wordmark">$<span>EDGE</span></div>
+      <div class="tag">The terminal for prediction markets · <em>Watch the action. Before you bet.</em></div>
+      <div class="url">edgeterminal.xyz</div>
+    </div>
+    <div>
+      <svg class="mark" viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    </div>
+  </div>
+
+  <!-- META STRIP -->
+  <div class="meta-strip">
+    <div class="meta-cell"><div class="lbl">Doc</div><div class="val">ONE-PAGER · v1.0</div></div>
+    <div class="meta-cell"><div class="lbl">Stage</div><div class="val">PRE-LAUNCH · T-30</div></div>
+    <div class="meta-cell"><div class="lbl">Chain</div><div class="val">SOLANA · PUMP.FUN</div></div>
+    <div class="meta-cell"><div class="lbl">Date</div><div class="val">2026-05-26</div></div>
+  </div>
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="sec-head"><h2>The Problem</h2><div class="sec-num">01</div></div>
+    <p>Prediction markets are now a <strong>$9B+ trading surface</strong> spanning Polymarket, Kalshi, and a wave of new venues — yet serious operators trade them across six browser tabs with no cross-platform price, no whale visibility, and no signal on when public narrative is diverging from where the money actually sits. There is no Bloomberg for prediction markets. The vacuum is the opportunity.</p>
+  </section>
+
+  <!-- PRODUCT -->
+  <section>
+    <div class="sec-head"><h2>The Product</h2><div class="sec-num">02</div></div>
+    <div class="product-grid">
+      <div class="prod-cell">
+        <div class="lbl">Pillar 01</div>
+        <div class="name">Markets Hub</div>
+        <div class="desc">Polymarket + Kalshi side-by-side. Live last-price, volume, depth. Spread highlights cross-venue arb.</div>
+        <div class="stat"><span>Venues</span><span>2 LIVE</span></div>
+      </div>
+      <div class="prod-cell">
+        <div class="lbl">Pillar 02</div>
+        <div class="name">Whales</div>
+        <div class="desc">On-chain wallet tracking. Top positions, recent entries, P&amp;L attribution. Smart-money tagged.</div>
+        <div class="stat"><span>Wallets</span><span>120+</span></div>
+      </div>
+      <div class="prod-cell">
+        <div class="lbl">Pillar 03</div>
+        <div class="name">Divergence</div>
+        <div class="desc">Proprietary score: when price disagrees with public chatter. The score IS the signal.</div>
+        <div class="stat"><span>Signal</span><span>REAL-TIME</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACTION -->
+  <section>
+    <div class="sec-head"><h2>The Traction</h2><div class="sec-num">03</div></div>
+    <div class="traction">
+      <div class="tr-cell"><div class="num">LIVE</div><div class="lbl">edgeterminal.xyz</div></div>
+      <div class="tr-cell"><div class="num">[ ★ ]</div><div class="lbl">GitHub stars</div></div>
+      <div class="tr-cell"><div class="num">[ # ]</div><div class="lbl">Waitlist signups</div></div>
+      <div class="tr-cell"><div class="num">2</div><div class="lbl">Founders shipping</div></div>
+    </div>
+  </section>
+
+  <!-- MOAT -->
+  <section>
+    <div class="sec-head"><h2>The Moat</h2><div class="sec-num">04</div></div>
+    <div class="moat-grid">
+      <div class="moat-cell">
+        <div class="word l">MONEY</div>
+        <div class="desc">Cross-platform price + volume + depth from Polymarket and Kalshi. The real flow.</div>
+      </div>
+      <div class="moat-cell">
+        <div class="word m">MOUTH</div>
+        <div class="desc">Public sentiment from X, Reddit, forums. What the crowd actually thinks.</div>
+      </div>
+      <div class="moat-cell">
+        <div class="word g">EDGE</div>
+        <div class="desc">The divergence. When Money and Mouth disagree, somebody is wrong. We score it.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKEN -->
+  <section>
+    <div class="sec-head"><h2>The Token</h2><div class="sec-num">05</div></div>
+    <div class="token-wrap">
+      <div class="token-stats">
+        <div class="ts-cell"><div class="lbl">Ticker</div><div class="val">$EDGE</div></div>
+        <div class="ts-cell"><div class="lbl">Chain</div><div class="val">SOLANA</div></div>
+        <div class="ts-cell"><div class="lbl">Supply</div><div class="val">1,000,000,000</div></div>
+        <div class="ts-cell"><div class="lbl">Venue</div><div class="val">PUMP.FUN</div></div>
+        <div class="ts-cell"><div class="lbl">Fair / LP</div><div class="val">80% / 10%</div></div>
+        <div class="ts-cell"><div class="lbl">Treasury / Mkt / Team</div><div class="val">5% / 3% / 2%</div></div>
+        <div class="ts-cell"><div class="lbl">LP Lock</div><div class="val">12 MONTHS</div></div>
+        <div class="ts-cell"><div class="lbl">Team Vest</div><div class="val">24M · 6M CLIFF</div></div>
+      </div>
+      <div class="util-table">
+        <div class="util-row"><div class="req">10K</div><div class="unlock">Whale alerts</div></div>
+        <div class="util-row"><div class="req">100K</div><div class="unlock">Divergence radar</div></div>
+        <div class="util-row"><div class="req">1M</div><div class="unlock">Raw API access</div></div>
+        <div class="util-row"><div class="req">10M</div><div class="unlock">Insider channel</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section>
+    <div class="sec-head"><h2>The Team</h2><div class="sec-num">06</div></div>
+    <div class="team-grid">
+      <div class="team-cell">
+        <div class="name">Robert Noejr</div>
+        <div class="role">Co-Founder · Product</div>
+        <div class="bio">Built the terminal end-to-end. Five years shipping in crypto + prediction-market infra. Bootstrapped operator.</div>
+      </div>
+      <div class="team-cell">
+        <div class="name">Tye</div>
+        <div class="role">Co-Founder · Audience</div>
+        <div class="bio">Owns growth, narrative, and KOL surface. Five years inside the trader audiences this product serves.</div>
+      </div>
+      <div class="team-cell empty">
+        <div class="name">[ Advisor ]</div>
+        <div class="role">Open Slot · TBA</div>
+        <div class="bio">Reserved for a Tier-1 prediction-market or Solana-native operator. Equity + token-aligned.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASK -->
+  <section>
+    <div class="sec-head"><h2>The Ask</h2><div class="sec-num">07</div></div>
+    <div class="ask-list">
+      <div class="ask-row"><div class="marker">→</div><div class="ask-text"><strong>Pre-launch KOL allocations.</strong> Trade-of-value pitches to Tier-S/A voices in prediction-markets, Solana, and fintwit. Token + vesting preferred over USDC.</div></div>
+      <div class="ask-row"><div class="marker">→</div><div class="ask-text"><strong>Tier-1 CEX conversations.</strong> Post-launch listings on a top-5 venue once organic volume + holder count clears the bar.</div></div>
+      <div class="ask-row"><div class="marker">→</div><div class="ask-text"><strong>Strategic partners.</strong> Polymarket / Kalshi affiliate relationships, on-chain analytics integrations, prediction-market sportsbook crossovers.</div></div>
+      <div class="ask-row"><div class="marker">→</div><div class="ask-text"><strong>Press introductions.</strong> Tier-1 crypto + business press for launch-day coverage and ongoing track-record stories.</div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact">
+    <div class="c-cell"><div class="lbl">Press</div><div class="val lime">cashbridgehomes@gmail.com</div></div>
+    <div class="c-cell"><div class="lbl">Partnerships</div><div class="val lime">cashbridgehomes@gmail.com</div></div>
+    <div class="c-cell"><div class="lbl">Founders</div><div class="val">cashbridgehomes@gmail.com<br>cashbridgehomes@gmail.com</div></div>
+  </div>
+
+  <div class="foot">
+    <div>$EDGE · ONE-PAGER · v1.0</div>
+    <div>2026-05-26 · CONFIDENTIAL</div>
+    <div>edgeterminal.xyz</div>
+  </div>
+
+</div>
+
+</body>
+</html>

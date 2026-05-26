@@ -1,0 +1,222 @@
+<!doctype html>
+<!--
+  $EDGE — TEASER · TICKER TAPE
+  ─────────────────────────────────────────────────────────────────
+  CANVAS:        1920 × 120 (horizontal banner)
+  RUNTIME:       Endless loop (60s full pass)
+  USE:           Website footer ticker · livestream lower-third · OBS source
+  AUDIO:         None embedded
+  SCREEN-RECORD INSTRUCTIONS:
+    1. Open in Chrome. Resize the window so .stage is exactly 1920×120.
+       (Or use DevTools device toolbar at 1920×120 @ 1x.)
+    2. macOS Cmd+Shift+5 → Record Selected Portion at 1920×120.
+    3. Record 60s for a full pass; trim to a clean loop point in post.
+    4. For OBS livestreams, add this file directly as a Browser Source
+       (Width 1920, Height 120) — it will animate forever, no recording needed.
+    5. Export H.264 / 60fps / 8Mbps for embedding in vertical or horizontal masters.
+  ─────────────────────────────────────────────────────────────────
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE — Teaser · Ticker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --lime: #C4FF00;
+    --magenta: #FF006E;
+    --green: #00FF85;
+    --red: #FF3344;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; -webkit-font-smoothing: antialiased; }
+
+  .stage {
+    width: 1920px;
+    height: 120px;
+    background: var(--void);
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid rgba(196,255,0,0.2);
+    border-bottom: 1px solid rgba(196,255,0,0.2);
+  }
+  @media (max-width: 2000px) { .stage { transform-origin: center center; transform: scale(calc((100vw - 60px) / 1920)); } }
+
+  /* fixed left brand block */
+  .brand-block {
+    position: absolute; left: 0; top: 0; bottom: 0; z-index: 4;
+    width: 220px;
+    background: var(--void);
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 24px;
+    border-right: 1px solid rgba(196,255,0,0.2);
+  }
+  .brand-block::after {
+    content: ''; position: absolute; right: -40px; top: 0; bottom: 0; width: 40px;
+    background: linear-gradient(to right, var(--void), transparent);
+    z-index: 5;
+  }
+  .brand-block svg { width: 28px; height: 28px; }
+  .brand-block .name { font-family:'Anton', sans-serif; font-size: 28px; letter-spacing: -.02em; color: var(--white); }
+  .brand-block .name span { color: var(--lime); }
+  .brand-block .live {
+    position: absolute; right: 22px; top: 50%; transform: translateY(-50%);
+    font-size: 10px; letter-spacing: .25em; color: var(--lime); text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .brand-block .live::before { content: ''; width: 6px; height: 6px; background: var(--lime); border-radius: 50%; animation: blink 1.2s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+  /* eyebrow strip — top */
+  .eyebrow-strip {
+    position: absolute; left: 220px; right: 0; top: 0; height: 24px; z-index: 3;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px;
+    font-size: 10px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase; gap: 28px;
+  }
+  .eyebrow-strip span { color: var(--lime); }
+
+  /* ticker rail */
+  .rail {
+    position: absolute; left: 220px; right: 0; top: 24px; bottom: 24px; overflow: hidden; z-index: 2;
+    display: flex; align-items: center;
+  }
+  .ticker {
+    display: flex; align-items: center; gap: 0;
+    white-space: nowrap;
+    animation: scroll 80s linear infinite;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .row {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 0 28px;
+    height: 72px;
+    border-right: 1px solid var(--border);
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .row .src { font-size: 10px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; padding: 3px 7px; border: 1px solid var(--border); }
+  .row .src.poly { color: var(--lime); border-color: rgba(196,255,0,.3); }
+  .row .src.kal { color: var(--white); }
+  .row .ticker-name { color: var(--white); font-weight: 700; letter-spacing: .02em; }
+  .row .price { color: var(--white); font-variant-numeric: tabular-nums; min-width: 60px; text-align: right; }
+  .row .delta { font-variant-numeric: tabular-nums; min-width: 80px; text-align: right; font-weight: 700; }
+  .row .delta.up { color: var(--green); }
+  .row .delta.dn { color: var(--red); }
+  .row .delta.up::before { content: '▲ '; }
+  .row .delta.dn::before { content: '▼ '; }
+  .row .vol { color: var(--muted); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+  .row .div { color: var(--magenta); font-weight: 700; letter-spacing: .12em; font-size: 14px; }
+  .row .div::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--magenta); margin-right: 6px; vertical-align: middle; box-shadow: 0 0 8px var(--magenta); }
+  .row .whale { color: var(--lime); font-weight: 700; letter-spacing: .08em; }
+  .row .whale::before { content: 'WHALE '; color: var(--muted); font-weight: 400; }
+
+  /* bottom timestamp strip */
+  .stamp-strip {
+    position: absolute; left: 220px; right: 0; bottom: 0; height: 24px; z-index: 3;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+    font-size: 10px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase;
+  }
+  .stamp-strip .left { display:flex; gap: 24px; }
+  .stamp-strip .right { display:flex; gap: 18px; }
+  .stamp-strip b { color: var(--white); font-weight: 500; }
+  .stamp-strip .stamp::before { content: ''; display:inline-block; width: 5px; height: 5px; background: var(--green); margin-right: 6px; vertical-align: middle; }
+
+  /* edge gradient fade on right */
+  .stage::after {
+    content: ''; position: absolute; right: 0; top: 24px; bottom: 24px; width: 80px; z-index: 4;
+    background: linear-gradient(to right, transparent, var(--void));
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="brand-block">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+    <span class="live">LIVE</span>
+  </div>
+
+  <div class="eyebrow-strip">
+    <div>EDGE TERMINAL · v1</div>
+    <div>POLYMARKET · KALSHI · SOCIAL · WHALES</div>
+    <div><span>UPDATED EVERY 30S</span></div>
+  </div>
+
+  <div class="rail">
+    <div class="ticker">
+      <!-- pass 1 -->
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">TRUMP-2028</span><span class="price">0.642</span><span class="delta up">+18.4%</span><span class="vol">$14.2M / 24H</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">FED-DEC-25BP</span><span class="price">0.318</span><span class="delta dn">-6.2%</span><span class="vol">$3.4M</span></div>
+      <div class="row"><span class="whale">+$2.4M · 0xA3F2 · TRUMP-2028 YES · 14M AGO</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">POWELL-OUT-26</span><span class="price">0.214</span><span class="delta up">+4.1%</span><span class="vol">$3.1M</span></div>
+      <div class="row"><span class="div">DIVERGENCE 0.72 · TRUMP-2028 · MONEY > MOUTH</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">HARRIS-VP-28</span><span class="price">0.412</span><span class="delta up">+1.8%</span><span class="vol">$1.8M</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">NVDA-EOY-2T</span><span class="price">0.733</span><span class="delta up">+2.4%</span><span class="vol">$820K</span></div>
+      <div class="row"><span class="whale">+$840K · 0x9B8C · POWELL-OUT-26 NO · 22M AGO</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">FED-DEC-50BP</span><span class="price">0.084</span><span class="delta dn">-1.2%</span><span class="vol">$612K</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">BTC-EOY-150K</span><span class="price">0.512</span><span class="delta up">+7.8%</span><span class="vol">$2.2M</span></div>
+      <div class="row"><span class="div">DIVERGENCE 0.58 · POWELL-OUT-26 · MOUTH > MONEY</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">RECESSION-2026</span><span class="price">0.241</span><span class="delta dn">-3.6%</span><span class="vol">$1.4M</span></div>
+      <div class="row"><span class="whale">+$502K · 0x7E0D · HARRIS-VP-28 YES · 38M AGO</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">CPI-MAY-COOL</span><span class="price">0.628</span><span class="delta up">+2.2%</span><span class="vol">$940K</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">SPX-EOY-7000</span><span class="price">0.471</span><span class="delta up">+5.4%</span><span class="vol">$1.1M</span></div>
+      <div class="row"><span class="div">DIVERGENCE 0.41 · NVDA-EOY-2T · MONEY > MOUTH</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">UNEMP-Q3-4.5</span><span class="price">0.392</span><span class="delta dn">-2.0%</span><span class="vol">$520K</span></div>
+      <div class="row"><span class="whale">+$310K · 0x4419 · FED-DEC-25BP NO · 51M AGO</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">ELON-CEO-2026</span><span class="price">0.882</span><span class="delta up">+1.1%</span><span class="vol">$3.8M</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">GDP-Q2-3.0</span><span class="price">0.541</span><span class="delta up">+0.8%</span><span class="vol">$680K</span></div>
+
+      <!-- pass 2 (duplicate for seamless loop) -->
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">TRUMP-2028</span><span class="price">0.642</span><span class="delta up">+18.4%</span><span class="vol">$14.2M / 24H</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">FED-DEC-25BP</span><span class="price">0.318</span><span class="delta dn">-6.2%</span><span class="vol">$3.4M</span></div>
+      <div class="row"><span class="whale">+$2.4M · 0xA3F2 · TRUMP-2028 YES · 14M AGO</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">POWELL-OUT-26</span><span class="price">0.214</span><span class="delta up">+4.1%</span><span class="vol">$3.1M</span></div>
+      <div class="row"><span class="div">DIVERGENCE 0.72 · TRUMP-2028 · MONEY > MOUTH</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">HARRIS-VP-28</span><span class="price">0.412</span><span class="delta up">+1.8%</span><span class="vol">$1.8M</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">NVDA-EOY-2T</span><span class="price">0.733</span><span class="delta up">+2.4%</span><span class="vol">$820K</span></div>
+      <div class="row"><span class="whale">+$840K · 0x9B8C · POWELL-OUT-26 NO · 22M AGO</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">FED-DEC-50BP</span><span class="price">0.084</span><span class="delta dn">-1.2%</span><span class="vol">$612K</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">BTC-EOY-150K</span><span class="price">0.512</span><span class="delta up">+7.8%</span><span class="vol">$2.2M</span></div>
+      <div class="row"><span class="div">DIVERGENCE 0.58 · POWELL-OUT-26 · MOUTH > MONEY</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">RECESSION-2026</span><span class="price">0.241</span><span class="delta dn">-3.6%</span><span class="vol">$1.4M</span></div>
+      <div class="row"><span class="whale">+$502K · 0x7E0D · HARRIS-VP-28 YES · 38M AGO</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">CPI-MAY-COOL</span><span class="price">0.628</span><span class="delta up">+2.2%</span><span class="vol">$940K</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">SPX-EOY-7000</span><span class="price">0.471</span><span class="delta up">+5.4%</span><span class="vol">$1.1M</span></div>
+      <div class="row"><span class="div">DIVERGENCE 0.41 · NVDA-EOY-2T · MONEY > MOUTH</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">UNEMP-Q3-4.5</span><span class="price">0.392</span><span class="delta dn">-2.0%</span><span class="vol">$520K</span></div>
+      <div class="row"><span class="whale">+$310K · 0x4419 · FED-DEC-25BP NO · 51M AGO</span></div>
+      <div class="row"><span class="src poly">POLY</span><span class="ticker-name">ELON-CEO-2026</span><span class="price">0.882</span><span class="delta up">+1.1%</span><span class="vol">$3.8M</span></div>
+      <div class="row"><span class="src kal">KAL</span><span class="ticker-name">GDP-Q2-3.0</span><span class="price">0.541</span><span class="delta up">+0.8%</span><span class="vol">$680K</span></div>
+    </div>
+  </div>
+
+  <div class="stamp-strip">
+    <div class="left">
+      <span class="stamp">FEED · NOMINAL</span>
+      <span>47 MARKETS LIVE</span>
+      <span>1,284 WALLETS TRACKED</span>
+    </div>
+    <div class="right">
+      <span>EDGETERMINAL.XYZ</span>
+      <span><b>1920 × 120</b></span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

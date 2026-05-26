@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE · Launch Graphics · Pack v1.0</title>
+<link rel="icon" type="image/svg+xml" href="../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--lime-dim:#8aa800;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--void);color:var(--white);font-family:'DM Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;min-height:100vh}
+  ::selection{background:var(--lime);color:var(--void)}
+
+  .grain{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);background:rgba(5,5,7,.85);border-bottom:1px solid var(--border-bright);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:28px;height:28px}
+  .brand .name{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .brand .name span{color:var(--lime)}
+  .crumbs{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .crumbs a{color:var(--muted);text-decoration:none}
+  .crumbs a:hover{color:var(--lime)}
+
+  main{max-width:1440px;margin:0 auto;padding:64px 32px 120px;position:relative;z-index:2}
+
+  .hero{padding:24px 0 56px;border-bottom:1px solid var(--border);margin-bottom:56px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'Anton',sans-serif;font-size:clamp(56px,9vw,128px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase}
+  h1 .accent{color:var(--lime)}
+  .lede{margin-top:24px;font-size:18px;line-height:1.55;max-width:720px;color:rgba(245,245,240,.82)}
+  .lede em{color:var(--lime);font-style:normal}
+
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px}
+  .stat{border:1px solid var(--border);background:var(--void-2);padding:18px 20px}
+  .stat .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+  .stat .v{font-family:'Anton',sans-serif;font-size:40px;letter-spacing:-.01em;line-height:1;color:var(--white)}
+  .stat.lime{border-color:var(--border-bright);background:rgba(196,255,0,.04)}
+  .stat.lime .k{color:var(--lime)}
+  .stat.lime .v{color:var(--lime)}
+
+  /* nav */
+  .quicknav{display:flex;gap:6px;flex-wrap:wrap;margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+  .quicknav a{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:8px 12px;background:var(--void-2)}
+  .quicknav a:hover{color:var(--lime);border-color:var(--border-bright);background:rgba(196,255,0,.04)}
+
+  /* section shell */
+  section{padding:48px 0;border-bottom:1px solid var(--border)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+  .sec-head h2{font-family:'Anton',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:-.02em;text-transform:uppercase}
+  .sec-head .num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
+  .sec-intro{margin-bottom:24px;color:var(--muted);max-width:760px;font-size:15px;line-height:1.6}
+  .sec-intro em{color:var(--lime);font-style:normal}
+
+  /* grid */
+  .grid{display:grid;gap:14px}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  .grid.cols-4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:1100px){
+    .grid.cols-3,.grid.cols-4{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:680px){
+    .grid.cols-2,.grid.cols-3,.grid.cols-4{grid-template-columns:1fr}
+    .stat-row{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* tile */
+  .tile{background:var(--void-2);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s,transform .15s}
+  .tile:hover{border-color:var(--border-bright)}
+  .thumb{position:relative;background:var(--void);overflow:hidden;border-bottom:1px solid var(--border)}
+  /* aspect ratios */
+  .thumb.sq{aspect-ratio:1/1}
+  .thumb.vert{aspect-ratio:9/16}
+  .thumb.story{aspect-ratio:9/16}
+  .thumb.og{aspect-ratio:1200/630}
+  .thumb.banner{aspect-ratio:1500/500}
+  .thumb.tall{aspect-ratio:1200/1600}
+
+  .thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;background:var(--void)}
+  /* scale the rendered HTML preview inside the iframe by transforming the iframe.
+     We sized iframes to 200% scaled to fit container — too tricky cross-browser, so
+     just rely on the document overflow:hidden + the canvas's box-shadow / centering. */
+
+  .thumb .corner-tape{position:absolute;top:0;right:0;background:var(--lime);color:var(--void);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.25em;padding:4px 8px;text-transform:uppercase;z-index:2}
+  .thumb .corner-tape.amb{background:var(--amber)}
+  .thumb .corner-tape.mag{background:var(--magenta)}
+  .thumb .corner-tape.grn{background:var(--green)}
+
+  .tile-body{padding:18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .tile .top-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+  .tile h3{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.01em;text-transform:uppercase;line-height:1.05}
+  .tile .dim{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--lime);text-transform:uppercase;white-space:nowrap}
+  .tile p.desc{font-size:14px;line-height:1.5;color:rgba(245,245,240,.7)}
+  .tile .platforms{display:flex;flex-wrap:wrap;gap:6px}
+  .tile .pl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;padding:3px 7px;border:1px solid var(--border)}
+  .tile .pl.hi{color:var(--lime);border-color:var(--border-bright)}
+  .tile .actions{margin-top:auto;display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--border)}
+  .tile .btn{flex:1;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:10px 12px;text-decoration:none;border:1px solid var(--border);color:var(--white);background:var(--void)}
+  .tile .btn:hover{border-color:var(--border-bright);color:var(--lime)}
+  .tile .btn.primary{background:var(--lime);color:var(--void);border-color:var(--lime)}
+  .tile .btn.primary:hover{background:var(--white);border-color:var(--white)}
+
+  /* footer */
+  .footer{padding:48px 0 0;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer a{color:var(--muted);text-decoration:none}
+  .footer a:hover{color:var(--lime)}
+
+  /* how-to box */
+  .howto{margin-top:24px;border:1px solid var(--border-bright);background:rgba(196,255,0,.03);padding:24px 28px}
+  .howto .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;margin-bottom:10px}
+  .howto h3{font-family:'Anton',sans-serif;font-size:28px;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:10px}
+  .howto ol{padding-left:20px;font-size:14px;line-height:1.7;color:rgba(245,245,240,.82)}
+  .howto code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--void-4);padding:2px 6px;border:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html" style="text-decoration:none;color:inherit">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Launch Graphics</div>
+</header>
+
+<main>
+  <section class="hero" style="border-bottom:1px solid var(--border);padding:24px 0 32px;margin-bottom:24px">
+    <div class="eyebrow">04 / Launch Graphics · Pack v1.0</div>
+    <h1>Watch the action.<br><span class="accent">Before you bet.</span></h1>
+    <p class="lede">The full launch-graphic arsenal for $EDGE — five-stage teasers, announcement cards, a complete tokenomics dashboard, five product feature cards, the public roadmap, and a meme-template kit. <em>Every graphic is a self-contained HTML file sized to its native social dimension</em>, ready to screenshot and post.</p>
+
+    <div class="stat-row">
+      <div class="stat lime"><div class="k">TOTAL GRAPHICS</div><div class="v">22</div></div>
+      <div class="stat"><div class="k">FILE TYPE</div><div class="v">HTML</div></div>
+      <div class="stat"><div class="k">NATIVE SIZED</div><div class="v">YES</div></div>
+      <div class="stat"><div class="k">VERSION</div><div class="v">v1.0</div></div>
+    </div>
+
+    <div class="quicknav">
+      <a href="#teasers">▸ Teasers</a>
+      <a href="#announcements">▸ Announcements</a>
+      <a href="#tokenomics">▸ Tokenomics</a>
+      <a href="#features">▸ Feature Cards</a>
+      <a href="#roadmap">▸ Roadmap</a>
+      <a href="#memes">▸ Meme Templates</a>
+    </div>
+
+    <div class="howto">
+      <div class="lbl">/ HOW TO EXPORT /</div>
+      <h3>Click a graphic. Screenshot the centered card. Post.</h3>
+      <ol>
+        <li>Open any tile's <code>OPEN ↗</code> button — the graphic renders at its native size (e.g. 1080×1080) centered on a checkerboard backdrop.</li>
+        <li>Window-screenshot just the graphic (Cmd-Shift-4-Space on Mac → click the card). The corner "EXPORT AT…" badge sits outside the canvas so it won't show in the crop.</li>
+        <li>Alternatively use Chrome devtools → device mode at the listed dimension and capture full page.</li>
+        <li>Where you see <code>__________</code> or dashed slots — fill the contract address / market name / quote before posting.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ========== TEASERS ========== -->
+  <section id="teasers">
+    <div class="sec-head"><h2>01 · Teasers</h2><div class="num">5 GRAPHICS · PRE-LAUNCH RUNWAY</div></div>
+    <p class="sec-intro">Drop one every 24–48 hours leading up to launch. Order: <em>"something is coming" → divergence demo → redacted tokenomics → whale radar → live drop</em>. Each escalates urgency without burning the load.</p>
+
+    <div class="grid cols-3">
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="teasers/teaser-01-coming.html" loading="lazy" title="Teaser 01"></iframe>
+          <div class="corner-tape">T-7D</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>01 · Something is coming</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Pure void + Anton headline. <code style="font-family:'JetBrains Mono',monospace;font-size:11px">$EDGE</code> reveals via a scramble animation. Countdown badge in the corner.</p>
+          <div class="platforms"><span class="pl hi">X POST</span><span class="pl">IG SQUARE</span><span class="pl">TG</span><span class="pl">DISCORD</span></div>
+          <div class="actions">
+            <a href="teasers/teaser-01-coming.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="teasers/teaser-01-coming.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="teasers/teaser-02-divergence.html" loading="lazy" title="Teaser 02"></iframe>
+          <div class="corner-tape mag">T-5D</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>02 · Divergence in action</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Live-feel chart: money line up, mouth line down, magenta gap labeled <code style="font-family:'JetBrains Mono',monospace;font-size:11px">EDGE 0.72</code>. Sells the thesis.</p>
+          <div class="platforms"><span class="pl hi">X POST</span><span class="pl">IG SQUARE</span><span class="pl">REDDIT</span></div>
+          <div class="actions">
+            <a href="teasers/teaser-02-divergence.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="teasers/teaser-02-divergence.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="teasers/teaser-03-tokenomics-tease.html" loading="lazy" title="Teaser 03"></iframe>
+          <div class="corner-tape">T-14D</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>03 · Redacted tokenomics</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Declassified-document look. Black REDACTED bars over most fields, four confirmed facts visible: <em>Fair Launch · 1B Supply · No Presale · LP Burnt</em>.</p>
+          <div class="platforms"><span class="pl hi">X POST</span><span class="pl">TG</span><span class="pl">DISCORD</span></div>
+          <div class="actions">
+            <a href="teasers/teaser-03-tokenomics-tease.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="teasers/teaser-03-tokenomics-tease.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="teasers/teaser-04-whale-radar.html" loading="lazy" title="Teaser 04"></iframe>
+          <div class="corner-tape amb">T-24H</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>04 · Whale radar</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Live radar with sweep arm and three whale blips. Caption: <em>"We see them. Soon you will too."</em></p>
+          <div class="platforms"><span class="pl hi">X POST</span><span class="pl">TG STICKER-COMPAT</span><span class="pl">DISCORD</span></div>
+          <div class="actions">
+            <a href="teasers/teaser-04-whale-radar.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="teasers/teaser-04-whale-radar.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="teasers/teaser-05-final-cta.html" loading="lazy" title="Teaser 05"></iframe>
+          <div class="corner-tape grn">LIVE</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>05 · Live · final drop</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Launch moment. <em>$EDGE / IS LIVE</em> in 240px Anton, pump.fun link block, CA slot placeholder.</p>
+          <div class="platforms"><span class="pl hi">X POST</span><span class="pl hi">PINNED TWEET</span><span class="pl">TG</span><span class="pl">DISCORD</span></div>
+          <div class="actions">
+            <a href="teasers/teaser-05-final-cta.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="teasers/teaser-05-final-cta.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== ANNOUNCEMENTS ========== -->
+  <section id="announcements">
+    <div class="sec-head"><h2>02 · Announcements</h2><div class="num">3 GRAPHICS · LAUNCH DAY</div></div>
+    <p class="sec-intro">The hero card, the X header takeover, the GM community share. <em>Use all three within the first hour of launch.</em></p>
+
+    <div class="grid cols-3">
+      <div class="tile">
+        <div class="thumb og">
+          <iframe src="announcements/launch-day-hero.html" loading="lazy" title="Hero OG"></iframe>
+          <div class="corner-tape">OG / X</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>Launch-day hero · OG card</h3><div class="dim">1200×630</div></div>
+          <p class="desc">Link-preview card for the launch tweet + site OG. Split layout: hero left, info card right (supply / venue / CA / CTA).</p>
+          <div class="platforms"><span class="pl hi">X SHARE</span><span class="pl hi">OG IMAGE</span><span class="pl">LINKEDIN</span><span class="pl">DISCORD EMBED</span></div>
+          <div class="actions">
+            <a href="announcements/launch-day-hero.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="announcements/launch-day-hero.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb banner">
+          <iframe src="announcements/launch-thread-cover.html" loading="lazy" title="X header"></iframe>
+          <div class="corner-tape amb">HEADER</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>X header takeover</h3><div class="dim">1500×500</div></div>
+          <p class="desc">Replace founder + project X banner on launch day. PFP safe-zone respected at lower-left.</p>
+          <div class="platforms"><span class="pl hi">X HEADER</span></div>
+          <div class="actions">
+            <a href="announcements/launch-thread-cover.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="announcements/launch-thread-cover.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="announcements/gm-launch.html" loading="lazy" title="GM"></iframe>
+          <div class="corner-tape grn">GM</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>GM. $EDGE live.</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Community share. Giant <em>GM</em>, launch receipt with time / venue / CA / supply / launch type. Tagline: "Don't FOMO — read the tokenomics first."</p>
+          <div class="platforms"><span class="pl hi">X</span><span class="pl">TG</span><span class="pl">DISCORD</span><span class="pl">IG SQUARE</span></div>
+          <div class="actions">
+            <a href="announcements/gm-launch.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="announcements/gm-launch.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TOKENOMICS ========== -->
+  <section id="tokenomics">
+    <div class="sec-head"><h2>03 · Tokenomics</h2><div class="num">3 GRAPHICS · FULL SPEC + SHARES</div></div>
+    <p class="sec-intro">The full vertical dashboard (PDF-ready), a square summary for X / Discord / TG, and a story-format for IG / TikTok. <em>Pin the full spec to project profiles before launch.</em></p>
+
+    <div class="grid cols-3">
+      <div class="tile">
+        <div class="thumb tall">
+          <iframe src="tokenomics/tokenomics.html" loading="lazy" title="Tokenomics dashboard"></iframe>
+          <div class="corner-tape">FULL SPEC</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>Tokenomics dashboard</h3><div class="dim">1200×1600</div></div>
+          <p class="desc">Vertical one-page spec: supply, donut distribution, utility tiers table, vesting timeline with cliffs, launch mechanics, anti-rug guarantees.</p>
+          <div class="platforms"><span class="pl hi">IG VERTICAL</span><span class="pl hi">PDF</span><span class="pl">PINNED POST</span></div>
+          <div class="actions">
+            <a href="tokenomics/tokenomics.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="tokenomics/tokenomics.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq">
+          <iframe src="tokenomics/tokenomics-summary-square.html" loading="lazy" title="Tokenomics square"></iframe>
+          <div class="corner-tape mag">SQUARE</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>Tokenomics · square</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Condensed for X / Discord / TG. Donut + utility tiers + anti-rug pills in one screen.</p>
+          <div class="platforms"><span class="pl hi">X</span><span class="pl hi">DISCORD</span><span class="pl">TG</span></div>
+          <div class="actions">
+            <a href="tokenomics/tokenomics-summary-square.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="tokenomics/tokenomics-summary-square.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb story">
+          <iframe src="tokenomics/tokenomics-story.html" loading="lazy" title="Tokenomics story"></iframe>
+          <div class="corner-tape amb">9:16</div>
+        </div>
+        <div class="tile-body">
+          <div class="top-row"><h3>Tokenomics · story</h3><div class="dim">1080×1920</div></div>
+          <p class="desc">IG / TikTok story-format. Same content as the square, stacked vertically with bigger headlines.</p>
+          <div class="platforms"><span class="pl hi">IG STORY</span><span class="pl hi">TIKTOK</span><span class="pl">X CARD</span></div>
+          <div class="actions">
+            <a href="tokenomics/tokenomics-story.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="tokenomics/tokenomics-story.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURE CARDS ========== -->
+  <section id="features">
+    <div class="sec-head"><h2>04 · Feature Cards</h2><div class="num">5 GRAPHICS · PRODUCT PILLARS</div></div>
+    <p class="sec-intro">One card per product pillar. Each shows a plausible-looking data mockup so the value is <em>obvious in 2 seconds</em>. Use as a thread — one card per tweet — or as an "AMA / what is $EDGE" carousel on IG.</p>
+
+    <div class="grid cols-3">
+      <div class="tile">
+        <div class="thumb sq"><iframe src="feature-cards/feature-01-markets-hub.html" loading="lazy" title="Markets hub"></iframe><div class="corner-tape">01</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>01 · Markets hub</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">"POLY + KALSHI. ONE SCREEN." — 6 markets with normalized price, 24h, volume, edge score.</p>
+          <div class="platforms"><span class="pl hi">X THREAD</span><span class="pl">IG CAROUSEL</span></div>
+          <div class="actions">
+            <a href="feature-cards/feature-01-markets-hub.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="feature-cards/feature-01-markets-hub.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="feature-cards/feature-02-whale-radar.html" loading="lazy" title="Whale radar"></iframe><div class="corner-tape">02</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>02 · Whale radar</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">"WHALES IN REAL TIME." — live firehose mockup of 5 positions + 4 metric tiles.</p>
+          <div class="platforms"><span class="pl hi">X THREAD</span><span class="pl">IG CAROUSEL</span></div>
+          <div class="actions">
+            <a href="feature-cards/feature-02-whale-radar.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="feature-cards/feature-02-whale-radar.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="feature-cards/feature-03-sentiment.html" loading="lazy" title="Sentiment"></iframe><div class="corner-tape">03</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>03 · Sentiment</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">"MOUTH — DECODED." — bull/bear stacked mention-volume chart + sentiment metrics + source mix.</p>
+          <div class="platforms"><span class="pl hi">X THREAD</span><span class="pl">IG CAROUSEL</span></div>
+          <div class="actions">
+            <a href="feature-cards/feature-03-sentiment.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="feature-cards/feature-03-sentiment.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="feature-cards/feature-04-divergence.html" loading="lazy" title="Divergence"></iframe><div class="corner-tape mag">04</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>04 · Divergence</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">"THE EDGE — WHERE MONEY ≠ MOUTH." — divergence leaderboard with 4 ranked markets + 30d hit-rate.</p>
+          <div class="platforms"><span class="pl hi">X THREAD</span><span class="pl">IG CAROUSEL</span></div>
+          <div class="actions">
+            <a href="feature-cards/feature-04-divergence.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="feature-cards/feature-04-divergence.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="feature-cards/feature-05-picks.html" loading="lazy" title="Picks"></iframe><div class="corner-tape grn">05</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>05 · Picks · track record</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">"$EDGE CALLS. PROVEN." — KPI strip (win rate / ROI / equity / drawdown), 90-day equity curve, latest resolved picks.</p>
+          <div class="platforms"><span class="pl hi">X THREAD</span><span class="pl">IG CAROUSEL</span></div>
+          <div class="actions">
+            <a href="feature-cards/feature-05-picks.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="feature-cards/feature-05-picks.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ROADMAP ========== -->
+  <section id="roadmap">
+    <div class="sec-head"><h2>05 · Roadmap</h2><div class="num">1 GRAPHIC · 5 PHASES</div></div>
+    <p class="sec-intro">Public roadmap. Diamond markers on a vertical spine. No fluffy promises — everything is in shippable verbs.</p>
+
+    <div class="grid cols-3">
+      <div class="tile">
+        <div class="thumb story"><iframe src="roadmap/roadmap.html" loading="lazy" title="Roadmap"></iframe><div class="corner-tape">9:16</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>Roadmap · 5 phases</h3><div class="dim">1080×1920</div></div>
+          <p class="desc">Phase 00 NOW → Phase 04 Scale. Diamond timeline. Lit-up current phase. Greyed future phases.</p>
+          <div class="platforms"><span class="pl hi">IG STORY</span><span class="pl hi">PINNED POST</span><span class="pl">TG</span><span class="pl">DISCORD</span></div>
+          <div class="actions">
+            <a href="roadmap/roadmap.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="roadmap/roadmap.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MEMES ========== -->
+  <section id="memes" style="border-bottom:0">
+    <div class="sec-head"><h2>06 · Meme Templates</h2><div class="num">5 GRAPHICS · COMMUNITY KIT</div></div>
+    <p class="sec-intro">For the community. Fill the dashed slots with the market-of-the-day, your quote, your before/after, your name. <em>Vocabulary, not jewelry.</em></p>
+
+    <div class="grid cols-3">
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="memes/meme-template-01-money-vs-mouth.html" loading="lazy" title="Money vs Mouth"></iframe><div class="corner-tape">01</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>01 · Money vs Mouth</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Two-panel. "MONEY SAYS:" / "MOUTH SAYS:" with quote slots. EDGE SCORE caption.</p>
+          <div class="platforms"><span class="pl">COMMUNITY</span><span class="pl">X</span><span class="pl">TG</span></div>
+          <div class="actions">
+            <a href="memes/meme-template-01-money-vs-mouth.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="memes/meme-template-01-money-vs-mouth.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="memes/meme-template-02-divergence-pointer.html" loading="lazy" title="Pointer"></iframe><div class="corner-tape mag">02</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>02 · Divergence pointer</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Chart with a giant magenta arrow + note pointing at the divergence. Market + edge-score slots.</p>
+          <div class="platforms"><span class="pl">COMMUNITY</span><span class="pl">X</span></div>
+          <div class="actions">
+            <a href="memes/meme-template-02-divergence-pointer.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="memes/meme-template-02-divergence-pointer.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="memes/meme-template-03-degen-uniform.html" loading="lazy" title="Degen uniform"></iframe><div class="corner-tape">03</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>03 · The degen uniform</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Three terminals: POLY · KAL · $EDGE. Edge wins.</p>
+          <div class="platforms"><span class="pl">COMMUNITY</span><span class="pl">X</span><span class="pl">TG</span></div>
+          <div class="actions">
+            <a href="memes/meme-template-03-degen-uniform.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="memes/meme-template-03-degen-uniform.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="memes/meme-template-04-quote.html" loading="lazy" title="Quote"></iframe><div class="corner-tape amb">04</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>04 · Big pull quote</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">Giant quote glyph backdrop. Anton quote + attribution slots.</p>
+          <div class="platforms"><span class="pl">PRESS</span><span class="pl">REVIEWS</span><span class="pl">X</span></div>
+          <div class="actions">
+            <a href="memes/meme-template-04-quote.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="memes/meme-template-04-quote.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile">
+        <div class="thumb sq"><iframe src="memes/meme-template-05-before-after.html" loading="lazy" title="Before after"></iframe><div class="corner-tape grn">05</div></div>
+        <div class="tile-body">
+          <div class="top-row"><h3>05 · Before / After</h3><div class="dim">1080×1080</div></div>
+          <p class="desc">"BEFORE $EDGE" — chaos browser tabs, missed alert. "AFTER $EDGE" — one terminal, all signal.</p>
+          <div class="platforms"><span class="pl">COMMUNITY</span><span class="pl">X</span><span class="pl">REDDIT</span></div>
+          <div class="actions">
+            <a href="memes/meme-template-05-before-after.html" target="_blank" class="btn primary">OPEN ↗</a>
+            <a href="memes/meme-template-05-before-after.html" download class="btn">DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · LAUNCH GRAPHICS · v1.0 · 22 GRAPHICS</div>
+    <div><a href="../00-master/index.html">← Back to Marketing OS</a></div>
+  </footer>
+</main>
+</body>
+</html>

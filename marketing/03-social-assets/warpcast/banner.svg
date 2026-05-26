@@ -1,0 +1,63 @@
+<svg viewBox="0 0 1500 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Warpcast banner">
+  <title>$EDGE Warpcast</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="1500" height="500" fill="#050507"/>
+  <rect width="1500" height="500" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="60" y="64" font-size="13" fill="#C4FF00" letter-spacing="0.32em">ONCHAIN INTELLIGENCE &#183; FRAME-NATIVE</text>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="120" letter-spacing="-2" fill="#F5F5F0">
+    <text x="60" y="190">PREDICTION MARKETS,</text>
+    <text x="60" y="310">FROM YOUR <tspan fill="#C4FF00">WALLET</tspan>.</text>
+  </g>
+
+  <g font-family="DM Sans, system-ui, sans-serif" font-size="20" fill="#F5F5F0" opacity="0.78">
+    <text x="60" y="360">Frame-gated divergence alerts. /edge channel. $EDGE on Solana.</text>
+  </g>
+
+  <!-- Right panel: frame mock -->
+  <g transform="translate(980 60)">
+    <rect width="460" height="380" fill="#0C0C10" stroke="rgba(196,255,0,0.2)" stroke-width="1"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="26">FRAME &#183; DIVERGENCE OF THE DAY</text>
+    </g>
+    <line x1="0" y1="40" x2="460" y2="40" stroke="rgba(245,245,240,0.08)"/>
+    <g font-family="Anton, Impact, sans-serif" font-size="48" fill="#F5F5F0">
+      <text x="16" y="100">TRUMP-2028</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#F5F5F0">
+      <text x="16" y="148">POLY</text><text x="444" y="148" text-anchor="end" fill="#C4FF00">0.51</text>
+      <text x="16" y="174">KALSHI</text><text x="444" y="174" text-anchor="end" fill="#C4FF00">0.42</text>
+      <text x="16" y="200">DIVERGENCE</text><text x="444" y="200" text-anchor="end" fill="#FF006E">+0.09</text>
+    </g>
+    <line x1="0" y1="222" x2="460" y2="222" stroke="rgba(245,245,240,0.08)"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="250">WHALE +$640K IN &#183; 18M AGO</text>
+      <text x="16" y="270">SENT -41% / 6H</text>
+    </g>
+    <!-- Frame buttons -->
+    <rect x="16" y="296" width="206" height="44" fill="none" stroke="rgba(196,255,0,0.4)" stroke-width="1"/>
+    <text x="119" y="324" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#C4FF00" letter-spacing="0.16em">VIEW MARKET</text>
+    <rect x="238" y="296" width="206" height="44" fill="#C4FF00"/>
+    <text x="341" y="324" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#050507" letter-spacing="0.16em">UNLOCK ALPHA</text>
+  </g>
+
+  <rect width="1500" height="500" fill="url(#vignette)"/>
+
+  <rect x="0" y="460" width="1500" height="40" fill="#0C0C10"/>
+  <line x1="0" y1="460" x2="1500" y2="460" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="486">/EDGE &#183; SOL: $EDGE &#183; HOLD &#8805;1K &#8594; WEBHOOK &#183; HOLD &#8805;10K &#8594; PUSH</text>
+    <text x="1480" y="486" text-anchor="end" fill="#C4FF00">warpcast.com/edge</text>
+  </g>
+</svg>

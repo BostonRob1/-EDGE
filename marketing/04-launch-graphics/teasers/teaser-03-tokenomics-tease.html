@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Teaser 03 · Tokenomics (Redacted)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  /* "document" canvas, slightly warm to feel like declassified file scan */
+  .canvas{position:relative;width:1080px;height:1080px;background:#0a0a0c;color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);font-family:'JetBrains Mono',monospace}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.06;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");mix-blend-mode:overlay}
+
+  /* page padding emulates A4 file */
+  .page{position:absolute;inset:60px;border:1px solid rgba(245,245,240,.08);padding:48px 56px;display:flex;flex-direction:column;gap:18px}
+
+  /* declassified header */
+  .doc-hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:1px dashed rgba(245,245,240,.18)}
+  .doc-hdr .left{font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;line-height:1.9}
+  .doc-hdr .left strong{color:var(--white);font-weight:500}
+  .doc-hdr .stamp{
+    border:2px solid var(--magenta);color:var(--magenta);padding:8px 14px;
+    font-family:'Anton',sans-serif;font-size:32px;letter-spacing:.06em;
+    transform:rotate(-4deg);background:rgba(255,0,110,0.04);text-transform:uppercase
+  }
+
+  .doc-title{font-family:'Anton',sans-serif;font-size:84px;letter-spacing:-.02em;text-transform:uppercase;line-height:.9;margin:6px 0 4px}
+  .doc-title .lime{color:var(--lime)}
+  .doc-subtitle{font-size:13px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+
+  /* redacted body — alternating rows: some visible facts, mostly black bars */
+  .body{display:flex;flex-direction:column;gap:18px;margin-top:6px}
+  .row{display:flex;align-items:center;gap:14px;min-height:34px}
+  .label{flex:0 0 240px;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+  .value{font-size:18px;letter-spacing:.1em;text-transform:uppercase;color:var(--white)}
+  .value.hi{color:var(--lime)}
+  /* redacted bars */
+  .bar{flex:1;height:24px;background:var(--white);display:inline-block;position:relative}
+  .bar.short{flex:0 0 200px}
+  .bar.mid{flex:0 0 360px}
+  .bar.long{flex:0 0 520px}
+  .bar.xl{flex:0 0 640px}
+  .bar::after{content:'';position:absolute;inset:0;background:#000;}
+  .red-stamp{display:inline-block;background:#000;color:#fff;padding:2px 8px;font-size:11px;letter-spacing:.25em;border:1px solid #fff;text-transform:uppercase}
+
+  /* highlight cards for the visible facts */
+  .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  .fact{border:1px solid var(--border-bright);background:rgba(196,255,0,.03);padding:18px 22px}
+  .fact .k{font-size:10px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase;margin-bottom:6px}
+  .fact .v{font-family:'Anton',sans-serif;font-size:38px;letter-spacing:-.01em;text-transform:uppercase;line-height:1}
+  .fact .v.small{font-size:24px}
+
+  /* footer */
+  .doc-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;padding-top:18px;border-top:1px dashed rgba(245,245,240,.18)}
+  .drop{font-family:'Anton',sans-serif;font-size:52px;letter-spacing:-.02em;text-transform:uppercase;line-height:.95}
+  .drop span{color:var(--lime)}
+  .signature{text-align:right;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;line-height:1.8}
+  .signature strong{color:var(--white);font-weight:500}
+
+  /* corner mark */
+  .corner-mark{position:absolute;top:30px;right:36px;display:flex;align-items:center;gap:10px;z-index:5}
+  .corner-mark svg{width:24px;height:24px}
+  .corner-mark .nm{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:-.02em;color:var(--white)}
+  .corner-mark .nm span{color:var(--lime)}
+
+  /* serial */
+  .serial{position:absolute;top:30px;left:36px;font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · IG / X square</div>
+<div class="canvas">
+  <div class="grain"></div>
+  <div class="serial">DOC · TKN-001 · CLASSIFICATION: LIMITED</div>
+  <div class="corner-mark">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="nm">$<span>EDGE</span></span>
+  </div>
+
+  <div class="page">
+    <div class="doc-hdr">
+      <div class="left">
+        <div><strong>FILE</strong> · TOKENOMICS / DRAFT_v0.9</div>
+        <div><strong>ISSUED</strong> · 2026 / Q3</div>
+        <div><strong>SOURCE</strong> · INTERNAL</div>
+      </div>
+      <div class="stamp">REDACTED</div>
+    </div>
+
+    <div>
+      <div class="doc-title">$EDGE <span class="lime">/</span> TOKENOMICS</div>
+      <div class="doc-subtitle">// FULL SPEC DROP — T-MINUS 14D · JUN 09</div>
+    </div>
+
+    <div class="body">
+      <div class="row">
+        <div class="label">LAUNCH VENUE</div>
+        <div class="value hi">PUMP.FUN · SOLANA</div>
+      </div>
+      <div class="row">
+        <div class="label">TOTAL SUPPLY</div>
+        <div class="value hi">1,000,000,000 $EDGE</div>
+      </div>
+      <div class="row">
+        <div class="label">LAUNCH TYPE</div>
+        <div class="value hi">FAIR LAUNCH · NO PRESALE</div>
+      </div>
+      <div class="row">
+        <div class="label">TEAM ALLOCATION (DAY 0)</div>
+        <div class="value hi">0% · NONE OFF THE BAT</div>
+      </div>
+      <div class="row">
+        <div class="label">PRESALE</div>
+        <div class="bar mid"></div>
+        <div class="red-stamp">NONE</div>
+      </div>
+      <div class="row">
+        <div class="label">CONTRACT</div>
+        <div class="bar long"></div>
+      </div>
+      <div class="row">
+        <div class="label">LP UNLOCK</div>
+        <div class="bar mid"></div>
+        <div class="bar short"></div>
+      </div>
+      <div class="row">
+        <div class="label">UTILITY TIERS</div>
+        <div class="bar xl"></div>
+      </div>
+      <div class="row">
+        <div class="label">TREASURY ADDR</div>
+        <div class="bar long"></div>
+      </div>
+      <div class="row">
+        <div class="label">VESTING SCHEDULE</div>
+        <div class="bar mid"></div>
+        <div class="bar short"></div>
+      </div>
+      <div class="row">
+        <div class="label">KOL BUDGET</div>
+        <div class="bar long"></div>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div class="fact">
+        <div class="k">/ CONFIRMED /</div>
+        <div class="v">FAIR LAUNCH</div>
+      </div>
+      <div class="fact">
+        <div class="k">/ CONFIRMED /</div>
+        <div class="v">1B SUPPLY</div>
+      </div>
+      <div class="fact">
+        <div class="k">/ CONFIRMED /</div>
+        <div class="v small">NO PRESALE · NO INSIDERS</div>
+      </div>
+      <div class="fact">
+        <div class="k">/ CONFIRMED /</div>
+        <div class="v small">LP BURNT @ GRADUATION</div>
+      </div>
+    </div>
+
+    <div class="doc-foot">
+      <div class="drop">FULL DROP<br><span>T-14D.</span></div>
+      <div class="signature">
+        <div><strong>$EDGE</strong> · MARKETING OS</div>
+        <div>EDGE-TWO-PSI.VERCEL.APP</div>
+        <div>WATCH THE ACTION. BEFORE YOU BET.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

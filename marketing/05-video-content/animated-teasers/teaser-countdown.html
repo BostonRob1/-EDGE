@@ -1,0 +1,410 @@
+<!doctype html>
+<!--
+  $EDGE — TEASER · T-MINUS COUNTDOWN
+  ─────────────────────────────────────────────────────────────────
+  CANVAS:        1080 × 1920 (vertical / Story format)
+  RUNTIME:       Continuous (counts down to launch in real-time)
+  USE:           IG Stories · TikTok story · X countdown post
+  AUDIO:         None embedded
+  SCREEN-RECORD INSTRUCTIONS:
+    1. Open in Chrome. Resize the window so .stage is exactly 1080×1920.
+       (Or use DevTools device toolbar at 1080×1920 @ 1x.)
+    2. macOS Cmd+Shift+5 → Record Selected Portion at 1080×1920.
+    3. Record at least 10 seconds (long enough to capture a few digit flips).
+    4. For a "countdown over many hours" version, record 60s and time-lapse 6x in DaVinci.
+    5. To change target: edit the LAUNCH_OFFSET_MS constant in the <script> tag
+       at the bottom (default: 72 hours from page load).
+    6. Export H.264 / 60fps / 1080×1920 / 16Mbps.
+  ─────────────────────────────────────────────────────────────────
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE — Teaser · Countdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --void-3: #141418;
+    --lime: #C4FF00;
+    --magenta: #FF006E;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; -webkit-font-smoothing: antialiased; }
+
+  .stage {
+    width: 1080px;
+    height: 1920px;
+    background: var(--void);
+    position: relative;
+    overflow: hidden;
+    transform-origin: center center;
+  }
+  @media (max-width: 1180px) or (max-height: 2020px) {
+    .stage { transform: scale(min(calc((100vw - 60px) / 1080), calc((100vh - 60px) / 1920))); }
+  }
+
+  /* grain */
+  .grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.04; z-index: 8;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+    mix-blend-mode: screen;
+  }
+  /* dot grid */
+  .dotgrid {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0.35;
+    background-image: radial-gradient(rgba(245,245,240,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* top bar */
+  .top-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 80px; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 48px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    background: rgba(5,5,7,.5);
+  }
+  .top-bar .brand { display: flex; align-items: center; gap: 14px; }
+  .top-bar .brand svg { width: 32px; height: 32px; }
+  .top-bar .brand .name { font-family:'Anton', sans-serif; font-size: 28px; letter-spacing: -.02em; color: var(--white); }
+  .top-bar .brand .name span { color: var(--lime); }
+  .top-bar .live {
+    font-size: 12px; letter-spacing: .25em; color: var(--lime); text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+  }
+  .top-bar .live::before { content: ''; width: 8px; height: 8px; background: var(--lime); border-radius: 50%; animation: blink 1.2s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+  /* hero block */
+  .hero {
+    position: absolute; top: 200px; left: 0; right: 0; padding: 0 64px;
+    display: flex; flex-direction: column; gap: 32px;
+    z-index: 4;
+  }
+  .eyebrow {
+    font-size: 18px; letter-spacing: .35em; color: var(--lime); text-transform: uppercase; font-weight: 500;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--lime); }
+
+  .tmin {
+    font-family: 'Anton', sans-serif;
+    font-size: 220px;
+    letter-spacing: -.04em;
+    line-height: .82;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .tmin .lime { color: var(--lime); }
+
+  .headline {
+    font-family: 'Anton', sans-serif;
+    font-size: 96px;
+    letter-spacing: -.02em;
+    line-height: .9;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-top: 12px;
+  }
+  .headline .lime { color: var(--lime); }
+
+  .sub {
+    font-size: 22px; letter-spacing: .15em; color: var(--muted); text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .sub b { color: var(--white); font-weight: 500; }
+
+  /* countdown grid */
+  .clock {
+    position: absolute; left: 0; right: 0; top: 1080px;
+    padding: 0 64px;
+    z-index: 4;
+  }
+  .clock-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-bottom: 20px;
+  }
+  .digit-pair {
+    background: var(--void-2);
+    border: 1px solid var(--border);
+    position: relative;
+    height: 220px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 18px 0 24px;
+    overflow: hidden;
+  }
+  .digit-pair::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+    background: var(--border); z-index: 1;
+  }
+  .digit-pair::after {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px;
+    background: linear-gradient(to bottom, rgba(196,255,0,.04), transparent);
+  }
+  .digit-pair.flash::after {
+    background: linear-gradient(to bottom, rgba(196,255,0,.18), transparent);
+    transition: background .12s ease-out;
+  }
+  .digit-pair .digits {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 140px;
+    letter-spacing: -.04em;
+    text-align: center;
+    color: var(--lime);
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    text-shadow: 0 0 30px rgba(196,255,0,.4);
+    z-index: 2;
+  }
+  .digit-pair .digit {
+    display: inline-block;
+    width: 0.65em;
+    position: relative;
+    overflow: hidden;
+    height: 1em;
+    line-height: 1;
+  }
+  .digit-pair .digit .roll {
+    position: absolute;
+    left: 0; top: 0;
+    transition: transform .35s cubic-bezier(.6,.0,.2,1);
+  }
+  .digit-pair .digit .roll span {
+    display: block;
+    height: 1em;
+    text-align: center;
+  }
+  .digit-pair .label {
+    font-size: 13px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase;
+    text-align: center;
+    z-index: 2;
+  }
+
+  /* target line */
+  .target {
+    position: absolute; bottom: 320px; left: 0; right: 0;
+    padding: 0 64px; text-align: center;
+    z-index: 4;
+  }
+  .target .label {
+    font-size: 14px; letter-spacing: .35em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .target .when {
+    font-family: 'JetBrains Mono', monospace; font-size: 26px; color: var(--white); letter-spacing: .12em; font-weight: 500;
+  }
+  .target .when .lime { color: var(--lime); }
+
+  /* CTA bar */
+  .cta-bar {
+    position: absolute; bottom: 140px; left: 0; right: 0;
+    padding: 0 64px;
+    z-index: 4;
+  }
+  .cta-bar .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .cta-bar .url { font-family:'Anton', sans-serif; font-size: 44px; color: var(--white); letter-spacing: -.01em; text-transform: lowercase; }
+  .cta-bar .where { font-size: 14px; letter-spacing: .3em; color: var(--lime); text-transform: uppercase; }
+
+  /* footer chrome */
+  .footer-bar {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 60px; z-index: 5;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 48px;
+    font-size: 12px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase;
+    backdrop-filter: blur(10px);
+    background: rgba(5,5,7,.5);
+  }
+  .footer-bar .badge { padding: 4px 8px; border: 1px solid var(--border); color: var(--white); font-size: 10px; }
+
+  /* corner decorations */
+  .corner-tl, .corner-tr, .corner-bl, .corner-br {
+    position: absolute; width: 32px; height: 32px; z-index: 6; pointer-events: none;
+  }
+  .corner-tl { top: 100px; left: 32px; border-top: 2px solid var(--lime); border-left: 2px solid var(--lime); }
+  .corner-tr { top: 100px; right: 32px; border-top: 2px solid var(--lime); border-right: 2px solid var(--lime); }
+  .corner-bl { bottom: 80px; left: 32px; border-bottom: 2px solid var(--lime); border-left: 2px solid var(--lime); }
+  .corner-br { bottom: 80px; right: 32px; border-bottom: 2px solid var(--lime); border-right: 2px solid var(--lime); }
+
+  /* scan-line ambient */
+  .scan-amb {
+    position: absolute; inset: 80px 0 60px 0; pointer-events: none; z-index: 2;
+    background: linear-gradient(to bottom, transparent 0%, rgba(196,255,0,.03) 50%, transparent 100%);
+    animation: scanAmb 12s linear infinite;
+  }
+  @keyframes scanAmb {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="dotgrid"></div>
+  <div class="scan-amb"></div>
+
+  <!-- top -->
+  <div class="top-bar">
+    <div class="brand">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="name">$<span>EDGE</span></span>
+    </div>
+    <span class="live">PRE-LAUNCH</span>
+  </div>
+
+  <!-- corner brackets -->
+  <div class="corner-tl"></div>
+  <div class="corner-tr"></div>
+  <div class="corner-bl"></div>
+  <div class="corner-br"></div>
+
+  <!-- hero -->
+  <div class="hero">
+    <div class="eyebrow">PUMP.FUN · FAIRLAUNCH</div>
+    <div class="tmin">T<span class="lime">−</span>MINUS</div>
+    <div class="headline">$<span class="lime">EDGE</span><br>LAUNCHES.</div>
+    <div class="sub">The terminal for prediction markets. <b>Watch the action. Before you bet.</b></div>
+  </div>
+
+  <!-- countdown clock -->
+  <div class="clock">
+    <div class="clock-row">
+      <div class="digit-pair" id="p-days">
+        <div class="digits" id="d-days">
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+        </div>
+        <div class="label">DAYS</div>
+      </div>
+      <div class="digit-pair" id="p-hours">
+        <div class="digits" id="d-hours">
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+        </div>
+        <div class="label">HOURS</div>
+      </div>
+      <div class="digit-pair" id="p-minutes">
+        <div class="digits" id="d-minutes">
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+        </div>
+        <div class="label">MINUTES</div>
+      </div>
+      <div class="digit-pair" id="p-seconds">
+        <div class="digits" id="d-seconds">
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+          <span class="digit"><span class="roll"><span>0</span></span></span>
+        </div>
+        <div class="label">SECONDS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- target -->
+  <div class="target">
+    <div class="label">LAUNCH AT</div>
+    <div class="when" id="target-when">— · — · — UTC</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bar">
+    <div class="row">
+      <div class="url">edgeterminal.xyz</div>
+      <div class="where">LIVE ON PUMP.FUN</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer-bar">
+    <span>$EDGE · MARKETING OS · v1</span>
+    <span class="badge">1080 × 1920</span>
+  </div>
+
+  <div class="grain"></div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────────────
+  // COUNTDOWN — target = $EDGE fairlaunch
+  // 2026-06-09 at 13:00 UTC (09:00 ET) — 14 days from kickoff (2026-05-26).
+  // ─────────────────────────────────────────────────────
+  const launchAt = new Date(Date.UTC(2026, 5, 9, 13, 0, 0));
+
+  // Target display (e.g. "MAY 29 · 14:00 UTC")
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  function formatTarget(d) {
+    const utcMo = months[d.getUTCMonth()];
+    const utcDay = String(d.getUTCDate()).padStart(2,'0');
+    const utcHr = String(d.getUTCHours()).padStart(2,'0');
+    const utcMin = String(d.getUTCMinutes()).padStart(2,'0');
+    return `${utcMo} ${utcDay} · <span class="lime">${utcHr}:${utcMin}</span> UTC`;
+  }
+  document.getElementById('target-when').innerHTML = formatTarget(launchAt);
+
+  // Digit flip animation helper
+  function setDigitPair(rootId, value) {
+    const root = document.getElementById(rootId);
+    const digits = root.querySelectorAll('.digit');
+    const str = String(value).padStart(2, '0');
+    digits.forEach((digit, idx) => {
+      const char = str[idx];
+      const roll = digit.querySelector('.roll');
+      const current = roll.dataset.current;
+      if (current !== char) {
+        // animate flip
+        const span = document.createElement('span');
+        span.textContent = char;
+        roll.appendChild(span);
+        // shift up one digit height
+        roll.style.transform = `translateY(-${roll.children.length - 1}em)`;
+        roll.dataset.current = char;
+        // cleanup old spans after transition
+        setTimeout(() => {
+          while (roll.children.length > 1) roll.removeChild(roll.firstChild);
+          roll.style.transition = 'none';
+          roll.style.transform = 'translateY(0)';
+          // force reflow before re-enabling transition
+          void roll.offsetHeight;
+          roll.style.transition = '';
+        }, 400);
+      }
+    });
+  }
+
+  // Brief lime flash on parent pair
+  function flashPair(id) {
+    const el = document.getElementById(id);
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 200);
+  }
+
+  let lastSec = -1, lastMin = -1, lastHr = -1, lastDay = -1;
+  function tick() {
+    const now = Date.now();
+    let diff = Math.max(0, launchAt.getTime() - now);
+    const days = Math.floor(diff / (24 * 3600 * 1000)); diff -= days * 24 * 3600 * 1000;
+    const hours = Math.floor(diff / (3600 * 1000));    diff -= hours * 3600 * 1000;
+    const minutes = Math.floor(diff / (60 * 1000));    diff -= minutes * 60 * 1000;
+    const seconds = Math.floor(diff / 1000);
+
+    if (seconds !== lastSec) { setDigitPair('d-seconds', seconds); flashPair('p-seconds'); lastSec = seconds; }
+    if (minutes !== lastMin) { setDigitPair('d-minutes', minutes); flashPair('p-minutes'); lastMin = minutes; }
+    if (hours !== lastHr)    { setDigitPair('d-hours', hours);     flashPair('p-hours');   lastHr = hours; }
+    if (days !== lastDay)    { setDigitPair('d-days', Math.min(days, 99));  flashPair('p-days'); lastDay = days; }
+  }
+  tick();
+  setInterval(tick, 250);
+</script>
+
+</body>
+</html>

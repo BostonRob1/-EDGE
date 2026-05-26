@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Social / Reddit</title>
+<link rel="icon" type="image/svg+xml" href="../../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --void:#050507; --void-2:#0C0C10; --void-3:#141418; --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --white:#F5F5F0; --muted:#6B6B73; --border:rgba(245,245,240,0.08); --border-bright:rgba(196,255,0,0.2); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+  main { max-width: 1480px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+  .hero { padding: 16px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; display:grid; gap: 24px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 110px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 720px; opacity: .85; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(28px, 4vw, 48px); letter-spacing:-.02em; text-transform: uppercase; }
+  .asset-frame { background-image: linear-gradient(45deg, #0C0C10 25%, transparent 25%), linear-gradient(-45deg, #0C0C10 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #0C0C10 75%), linear-gradient(-45deg, transparent 75%, #0C0C10 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #08080A; padding: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .asset-frame .size { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.22em; text-transform: uppercase; }
+  .pfp-square { width: 256px; height: 256px; }
+  .pfp-circle { width: 256px; height: 256px; border-radius: 50%; overflow: hidden; }
+  .banner-rd { width: 100%; max-width: 1920px; aspect-ratio: 5 / 1; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  .copy-card { background: var(--void-2); border: 1px solid var(--border); padding: 28px; }
+  .copy-card h3 { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .copy-card .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: var(--lime); text-transform: uppercase; margin-bottom: 14px; }
+  .copy-card pre { font-family:'JetBrains Mono', monospace; font-size: 12px; line-height: 1.65; background: var(--void); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; word-break: break-word; margin-top: 12px; overflow-x: auto; }
+  .copy-card .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-top: 12px; }
+  .steps { counter-reset: step; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: 0; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.22em; }
+  .step .body { font-size: 15px; line-height: 1.55; }
+  .step code { font-family:'JetBrains Mono', monospace; font-size: 12px; background: var(--void-3); padding: 2px 8px; border: 1px solid var(--border); }
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="top">
+  <a class="brand" href="../../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Social</a> / Reddit</div>
+</header>
+<main>
+  <div class="hero">
+    <div class="eyebrow">03.10 / Social Asset Pack &#183; Reddit</div>
+    <h1>r/<span class="accent">EdgeTerminal.</span></h1>
+    <p class="lede">Subreddit icon 256&times;256 (circle), banner 1920&times;384. Reddit values community-first language &#8212; the welcome post sets rules, the megathread slate is the conversion engine.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Subreddit Icon</h2><div class="sec-num">03.10.01 &#183; 256&times;256 &#183; circle</div></div>
+    <div class="two-col">
+      <div class="asset-frame"><img src="pfp.svg" class="pfp-square"/><div class="size">256 &times; 256 &#183; SVG</div></div>
+      <div class="asset-frame"><div class="pfp-circle"><img src="pfp.svg" style="width:100%;height:100%;display:block"/></div><div class="size">256 &times; 256 &#183; circle render</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Banner</h2><div class="sec-num">03.10.02 &#183; 1920&times;384</div></div>
+    <div class="asset-frame"><img src="banner.svg" class="banner-rd"/><div class="size">1920 &times; 384 &#183; SVG</div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Sidebar / Description</h2><div class="sec-num">03.10.03</div></div>
+    <div class="copy-card">
+      <div class="tag">community description</div>
+      <h3>r/EdgeTerminal sidebar</h3>
+      <pre>**r/EdgeTerminal** &#8212; community for traders, researchers, and degens who take prediction markets seriously.
+
+We discuss Polymarket and Kalshi markets, surface whale activity, dissect divergence between price and sentiment, and keep a public picker track record.
+
+**Topics in scope:**
+&#8226; Polymarket / Kalshi market analysis (politics, macro, crypto, sports, geo)
+&#8226; Whale-flow observations (&#8805;$25K entries)
+&#8226; Sentiment vs price divergence
+&#8226; Picker strategy + back-testing
+&#8226; Tooling, APIs, automation
+
+**Topics out of scope:**
+&#8226; Token shilling unrelated to $EDGE
+&#8226; Generic crypto pump posts
+&#8226; DMs claiming to be mods (we don't DM about access)
+&#8226; Speculation without receipts
+
+**Tools:**
+&#8226; Terminal: edge-two-psi.vercel.app
+&#8226; Token: $EDGE on Solana
+&#8226; Discord: discord.gg/edge</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned Welcome Post</h2><div class="sec-num">03.10.04</div></div>
+    <div class="copy-card">
+      <div class="tag">pinned &#183; rules + welcome</div>
+      <h3>Welcome to r/EdgeTerminal &#8212; read this first</h3>
+      <pre>Welcome.
+
+r/EdgeTerminal is the discussion forum for the $EDGE terminal &#8212; a real-time aggregator and intelligence layer for Polymarket and Kalshi.
+
+This sub is for people who take prediction markets seriously: traders, researchers, election forecasters, sports-betting quants, anyone who's wired into the markets and wants a higher-signal room than the existing /r/PredictIt /r/PredictionMarkets crossover.
+
+&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+
+## WHAT WE DISCUSS
+
+&#10003; Market analysis (Polymarket + Kalshi, all topics)
+&#10003; Whale-flow observations
+&#10003; Divergence between price and sentiment
+&#10003; Picker strategy + back-tests
+&#10003; Tooling, APIs, scrapers, automation
+&#10003; The $EDGE terminal itself
+
+&#10007; Token shilling that isn't $EDGE
+&#10007; Generic crypto pump posts
+&#10007; "Wen lambo" or rocket emojis
+&#10007; Posts without receipts
+
+## RULES
+
+1. Receipts in every post. Link the market. Include a screenshot. Cite the wallet.
+2. No DM scams. Mods will never DM about access, claims, or wallet verification.
+3. No off-topic shilling.
+4. The picker track record is immutable.
+5. Mark resolved markets with [RESOLVED &#8212; YES/NO].
+6. Be civil. Disagree with the data, not the person.
+
+## TOOLS
+
+&#8211; Terminal: edge-two-psi.vercel.app
+&#8211; Discord: discord.gg/edge
+&#8211; X: @edgeterminal
+&#8211; Token: $EDGE on Solana
+
+## FOUNDERS
+
+&#8211; u/robertnoejr &#8212; Rob (product, frontend)
+&#8211; u/tye &#8212; Tye (data, infra)
+
+Flair'd as Founder. AMA on the last Friday of every month.
+
+Welcome aboard.</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>First 5 Megathreads</h2><div class="sec-num">03.10.05</div></div>
+    <div class="copy-card"><div class="tag">megathread &#183; always-on</div><h3>01 &#183; Daily Discussion Thread</h3><pre>Drop:
+&#8212; Markets you're watching
+&#8212; Whales you spotted on the tape
+&#8212; Sentiment divergence you noticed
+&#8212; Questions about the terminal, the picker, the data
+
+(New thread auto-posted at 09:00 ET daily.)</pre></div>
+    <div class="copy-card" style="margin-top:16px;"><div class="tag">megathread &#183; weekly</div><h3>02 &#183; Picker Track Record</h3><pre>This week's calls from the public picker algorithm. Methodology:
+1. The algo flags markets where divergence &#8805;0.15 AND whale flow &#8805;$25K in the same direction.
+2. Entry is recorded at the moment of flag. No edits.
+3. Resolution is the market's settled outcome.
+
+All historical picks publicly viewable at edge-two-psi.vercel.app/picker.</pre></div>
+    <div class="copy-card" style="margin-top:16px;"><div class="tag">megathread &#183; rolling</div><h3>03 &#183; Whale Spotting</h3><pre>Post wallets that have shown unusual size or accuracy.
+
+Format:
+&gt; Wallet:
+&gt; Venue:
+&gt; Notable moves:
+&gt; Hit rate observation:
+&gt; What you think they know:</pre></div>
+    <div class="copy-card" style="margin-top:16px;"><div class="tag">megathread &#183; builder</div><h3>04 &#183; Data / Tooling / API</h3><pre>For anyone building on top of Polymarket / Kalshi / on-chain prediction-market data.
+
+Drop datasets, scrapers, notebooks, endpoint issues. We share what we use internally as we open-source pieces.</pre></div>
+    <div class="copy-card" style="margin-top:16px;"><div class="tag">megathread &#183; community ops</div><h3>05 &#183; Suggest a Market to Cover</h3><pre>The terminal's bot coverage is prioritized by community demand. Post markets you'd like full coverage on. Upvote others' requests. Top requests each week get added.</pre></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Setup Notes</h2><div class="sec-num">03.10.06</div></div>
+    <div class="steps">
+      <div class="step"><div class="body">Create <code>r/EdgeTerminal</code>. Community type: Public. Topics: Finance, Crypto, Politics. Mark non-NSFW.</div></div>
+      <div class="step"><div class="body">Upload <code>pfp.svg</code> (export 256&times;256 PNG) and <code>banner.svg</code> (export 1920&times;384 PNG).</div></div>
+      <div class="step"><div class="body">Paste sidebar copy. Configure rules from the welcome post into the official Rules system.</div></div>
+      <div class="step"><div class="body">Post + pin the welcome thread. Post + pin the Daily Discussion (megathread #1). Schedule the auto-repost for 09:00 ET daily via AutoModerator.</div></div>
+      <div class="step"><div class="body">Set up post flair: Market Analysis (lime), Whale Spotted (amber), Divergence (magenta &#8212; rare), Picker Call (green), Devlog (muted), Resolved (bone), Founder (auto for u/robertnoejr + u/tye).</div></div>
+      <div class="step"><div class="body">Require post flair via AutoModerator. Set the "no receipts &#8594; auto-remove" rule for posts that don't link a market or include a screenshot.</div></div>
+      <div class="step"><div class="body">Cross-promote first via Discord announcement, not via blasting other crypto subs. Reddit detects shill velocity and shadow-bans.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE &#183; SOCIAL / REDDIT &#183; v1.0</div>
+    <div><a href="../index.html">&larr; Social Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<svg viewBox="0 0 1128 191" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE LinkedIn company banner">
+  <title>$EDGE LinkedIn</title>
+  <defs>
+    <pattern id="grid" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M 14 0 L 0 0 0 14" fill="none" stroke="#C4FF00" stroke-width="0.4" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="1128" height="191" fill="#050507"/>
+  <rect width="1128" height="191" fill="url(#grid)"/>
+
+  <!-- Left side: brand statement -->
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="32" y="34" font-size="9" fill="#C4FF00" letter-spacing="0.32em">REAL-TIME PREDICTION-MARKET INTELLIGENCE</text>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="48" letter-spacing="-1" fill="#F5F5F0">
+    <text x="32" y="92">THE TERMINAL FOR</text>
+    <text x="32" y="140" fill="#C4FF00">PREDICTION MARKETS.</text>
+  </g>
+
+  <!-- Right side: mini panel -->
+  <g transform="translate(800 32)">
+    <rect width="296" height="120" fill="#0C0C10" stroke="rgba(196,255,0,0.2)" stroke-width="1"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="12" y="20">LIVE / DIVERGENCE</text>
+      <text x="284" y="20" text-anchor="end" fill="#00FF85">+0.72</text>
+    </g>
+    <line x1="0" y1="28" x2="296" y2="28" stroke="rgba(245,245,240,0.08)"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" fill="#F5F5F0">
+      <text x="12" y="50">POLY:TRUMP-2028</text>
+      <text x="284" y="50" text-anchor="end" fill="#C4FF00">0.51</text>
+      <text x="12" y="72">KALSHI:TRUMP-2028</text>
+      <text x="284" y="72" text-anchor="end" fill="#C4FF00">0.42</text>
+      <text x="12" y="94">WHALE 0xA3F2</text>
+      <text x="284" y="94" text-anchor="end" fill="#C4FF00">+$640K</text>
+    </g>
+  </g>
+
+  <!-- Faint chevron -->
+  <g opacity="0.16">
+    <path d="M696 38 L756 80 L696 122" fill="none" stroke="#C4FF00" stroke-width="14" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+
+  <rect width="1128" height="191" fill="url(#vignette)"/>
+
+  <rect x="0" y="172" width="1128" height="19" fill="#0C0C10"/>
+  <line x1="0" y1="172" x2="1128" y2="172" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="8" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="16" y="186">POLYMARKET &#183; KALSHI &#183; WHALES &#183; SENTIMENT &#183; DIVERGENCE &#183; EDGE-TWO-PSI.VERCEL.APP</text>
+  </g>
+</svg>

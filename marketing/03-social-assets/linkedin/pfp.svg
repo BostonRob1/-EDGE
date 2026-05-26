@@ -1,0 +1,20 @@
+<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE LinkedIn company logo">
+  <title>$EDGE</title>
+  <defs>
+    <pattern id="grid" width="15" height="15" patternUnits="userSpaceOnUse">
+      <path d="M 15 0 L 0 0 0 15" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.7"/>
+    </radialGradient>
+  </defs>
+  <rect width="300" height="300" fill="#050507"/>
+  <rect width="300" height="300" fill="url(#grid)"/>
+  <rect width="300" height="300" fill="url(#vignette)"/>
+  <path d="M104 82 L205 150 L104 218" fill="none" stroke="#C4FF00" stroke-width="26" stroke-linecap="square" stroke-linejoin="miter"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" fill="#F5F5F0" letter-spacing="0.25em">
+    <text x="20" y="28" opacity="0.55">$EDGE</text>
+    <text x="280" y="28" text-anchor="end" opacity="0.35">v1.0</text>
+  </g>
+</svg>

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Website Conversion · 07</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800; --red: #FF3344;
+    --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--lime); color: var(--void); }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 100;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: -.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { display: grid; gap: 28px; padding: 24px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(56px, 10vw, 140px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 19px; line-height: 1.55; max-width: 720px; color: var(--white); opacity: .85; }
+  .lede em { color: var(--lime); font-style: normal; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 64px); letter-spacing: -.02em; text-transform: uppercase; }
+  h2 .accent { color: var(--lime); }
+
+  /* PAGES GRID (landing pages) */
+  .pages-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .page-card { background: var(--void-2); padding: 0; display: flex; flex-direction: column; transition: background .2s; }
+  .page-card:hover { background: var(--void-3); }
+  .page-card .frame-wrap { aspect-ratio: 16 / 10; background: var(--void); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .page-card .frame-wrap iframe { width: 1600px; height: 1000px; border: 0; transform: scale(0.4); transform-origin: top left; pointer-events: none; }
+  .page-card .meta { padding: 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .page-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; color: var(--muted); text-transform: uppercase; }
+  .page-card .title { font-family: 'Anton', sans-serif; font-size: 32px; letter-spacing: -.01em; text-transform: uppercase; line-height: 1; }
+  .page-card .title .accent { color: var(--lime); }
+  .page-card .desc { font-size: 14px; color: var(--white); opacity: .82; line-height: 1.5; max-width: 540px; }
+  .page-card .row { display: flex; gap: 18px; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--lime); }
+  .page-card .row a { display: inline-flex; align-items: center; gap: 6px; }
+  .page-card .row a:hover { color: var(--white); }
+  .page-card .row a::after { content: '→'; transition: transform .15s; }
+  .page-card .row a:hover::after { transform: translateX(3px); }
+
+  /* OG GRID */
+  .og-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .og-card { background: var(--void-2); display: flex; flex-direction: column; transition: background .2s; }
+  .og-card:hover { background: var(--void-3); }
+  .og-card .frame-wrap { aspect-ratio: 1200 / 630; background: var(--void); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .og-card .frame-wrap iframe { width: 1200px; height: 630px; border: 0; transform: scale(0.25); transform-origin: top left; pointer-events: none; }
+  .og-card .meta { padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .og-card .label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .28em; color: var(--muted); text-transform: uppercase; }
+  .og-card .title { font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: -.01em; text-transform: uppercase; line-height: 1.05; }
+  .og-card .desc { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; color: var(--white); opacity: .7; text-transform: uppercase; line-height: 1.3; }
+
+  /* SPEC TABLE */
+  .spec { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .spec .row { background: var(--void-2); padding: 16px 22px; display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+  .spec .row .k { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  .spec .row .v { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--white); text-align: right; }
+  .spec .row .v.lime { color: var(--lime); }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a:hover { color: var(--lime); }
+
+  @media (max-width: 1080px) { .og-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 720px) {
+    main { padding: 36px 18px 80px; }
+    .pages-grid { grid-template-columns: 1fr; }
+    .spec { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .og-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html" aria-label="$EDGE master index">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Website Conversion</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">07 / Website Conversion</div>
+    <h1>Pages that <span class="accent">convert</span>. <br>OG images that <span class="accent">stop the scroll</span>.</h1>
+    <p class="lede">Every surface a prospective $EDGE holder touches before, during, and after launch — production-grade, mobile-first, and on-brand. <em>Money / Mouth / Edge.</em></p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Landing Pages</h2>
+      <div class="sec-num">07.01 · Conversion surfaces</div>
+    </div>
+    <div class="pages-grid">
+
+      <article class="page-card">
+        <a class="frame-wrap" href="landing-pages/coming-soon.html" aria-label="Open coming soon page">
+          <iframe src="landing-pages/coming-soon.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">01 · PRE-LAUNCH · WAITLIST CAPTURE</div>
+          <div class="title">Coming <span class="accent">Soon</span></div>
+          <div class="desc">T-minus 72h countdown, hero, animated divergence chart, email capture with social proof, why-cards, tokenomics spec sheet, founder bios. The most important conversion surface in the company pre-launch.</div>
+          <div class="row">
+            <a href="landing-pages/coming-soon.html">Open page</a>
+            <a href="landing-pages/coming-soon.html" target="_blank" rel="noopener">New tab</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="page-card">
+        <a class="frame-wrap" href="landing-pages/waitlist-confirmation.html" aria-label="Open waitlist confirmation page">
+          <iframe src="landing-pages/waitlist-confirmation.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">02 · POST-SIGNUP CONFIRMATION</div>
+          <div class="title">Waitlist <span class="accent">Confirmation</span></div>
+          <div class="desc">Lime checkmark, animated position-in-line, 4-step "what happens next", referral link generator with X / Telegram / copy-link share, Discord + Telegram CTAs.</div>
+          <div class="row">
+            <a href="landing-pages/waitlist-confirmation.html">Open page</a>
+            <a href="landing-pages/waitlist-confirmation.html" target="_blank" rel="noopener">New tab</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="page-card">
+        <a class="frame-wrap" href="landing-pages/token-launch-modal.html" aria-label="Open token launch modal demo">
+          <iframe src="landing-pages/token-launch-modal.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">03 · LAUNCH-DAY OVERLAY</div>
+          <div class="title">Token Launch <span class="accent">Modal</span></div>
+          <div class="desc">Standalone demo of the modal that overlays the product the moment the token goes live. Backdrop blur, contract address with copy, BUY ON PUMP.FUN primary + READ TOKENOMICS secondary. Trigger button included.</div>
+          <div class="row">
+            <a href="landing-pages/token-launch-modal.html">Open demo</a>
+            <a href="landing-pages/token-launch-modal.html" target="_blank" rel="noopener">New tab</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="page-card">
+        <a class="frame-wrap" href="landing-pages/post-launch-home.html" aria-label="Open post-launch home page">
+          <iframe src="landing-pages/post-launch-home.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">04 · POST-LAUNCH MAIN PAGE</div>
+          <div class="title">Post-Launch <span class="accent">Home</span></div>
+          <div class="desc">Replaces coming-soon after the drop. LIVE pill + contract bar at top, animated token stats (price / mcap / vol / holders), 5-pillar product strip with mini-mockups, primary CTA to the live terminal.</div>
+          <div class="row">
+            <a href="landing-pages/post-launch-home.html">Open page</a>
+            <a href="landing-pages/post-launch-home.html" target="_blank" rel="noopener">New tab</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>OG Image Templates</h2>
+      <div class="sec-num">07.02 · 1200×630 · Screenshot to PNG</div>
+    </div>
+    <div class="og-grid">
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-home.html" aria-label="Open OG home template">
+          <iframe src="og-images/og-home.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · HOME</div>
+          <div class="title">Watch the action.</div>
+          <div class="desc">Hero · Wordmark · Live ticker</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-tokenomics.html" aria-label="Open OG tokenomics template">
+          <iframe src="og-images/og-tokenomics.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · TOKENOMICS</div>
+          <div class="title">$EDGE Tokenomics</div>
+          <div class="desc">Key stats · LP + vesting</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-whales.html" aria-label="Open OG whales template">
+          <iframe src="og-images/og-whales.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · WHALES</div>
+          <div class="title">Whales — Tracked.</div>
+          <div class="desc">Whale-radar mockup</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-divergence.html" aria-label="Open OG divergence template">
+          <iframe src="og-images/og-divergence.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · DIVERGENCE</div>
+          <div class="title">The Edge — Visualized.</div>
+          <div class="desc">Divergence chart + stats</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-launch.html" aria-label="Open OG launch template">
+          <iframe src="og-images/og-launch.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · LAUNCH</div>
+          <div class="title">$EDGE / IS LIVE</div>
+          <div class="desc">Contract slot · Pump.fun CTA</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-coming-soon.html" aria-label="Open OG coming-soon template">
+          <iframe src="og-images/og-coming-soon.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · COMING SOON</div>
+          <div class="title">T-Minus / Drops [Date]</div>
+          <div class="desc">Countdown clock</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-press.html" aria-label="Open OG press template">
+          <iframe src="og-images/og-press.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · PRESS</div>
+          <div class="title">Media / Press / Partners</div>
+          <div class="desc">Contact emails</div>
+        </div>
+      </article>
+
+      <article class="og-card">
+        <a class="frame-wrap" href="og-images/og-pitch.html" aria-label="Open OG pitch template">
+          <iframe src="og-images/og-pitch.html" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+        </a>
+        <div class="meta">
+          <div class="label">OG · PITCH</div>
+          <div class="title">Investor One-Liner</div>
+          <div class="desc">Bloomberg for prediction markets</div>
+        </div>
+      </article>
+
+    </div>
+    <p style="margin-top:18px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;">Each OG template is fully styled at native 1200×630, centered on a checkered backdrop for export. Screenshot the centered card (or render headless at 1200×630 viewport) to produce the final og:image PNG.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Spec & Conventions</h2>
+      <div class="sec-num">07.03 · Build notes</div>
+    </div>
+    <div class="spec">
+      <div class="row"><span class="k">Display Font</span><span class="v">ANTON · LS -0.02em · CAPS</span></div>
+      <div class="row"><span class="k">Body Font</span><span class="v">DM SANS · 400/500/700</span></div>
+      <div class="row"><span class="k">Data Font</span><span class="v">JETBRAINS MONO · TABULAR</span></div>
+      <div class="row"><span class="k">Primary BG</span><span class="v">#050507 / VOID</span></div>
+      <div class="row"><span class="k">Brand Accent</span><span class="v lime">#C4FF00 / LIME</span></div>
+      <div class="row"><span class="k">Divergence Only</span><span class="v">#FF006E / MAGENTA</span></div>
+      <div class="row"><span class="k">Grain Overlay</span><span class="v">SVG NOISE · OPACITY 0.035</span></div>
+      <div class="row"><span class="k">Header</span><span class="v">STICKY · BACKDROP-BLUR 14PX</span></div>
+      <div class="row"><span class="k">Breakpoints</span><span class="v">720PX · 480PX</span></div>
+      <div class="row"><span class="k">Animation</span><span class="v">STAGGER REVEAL · CUBIC .2,.7,.2,1</span></div>
+      <div class="row"><span class="k">Focus Ring</span><span class="v">2PX LIME · OFFSET 3PX</span></div>
+      <div class="row"><span class="k">Selection</span><span class="v">LIME ON VOID</span></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0 · 07 · WEBSITE CONVERSION</div>
+    <div><a href="../00-master/index.html">← Back to Master Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

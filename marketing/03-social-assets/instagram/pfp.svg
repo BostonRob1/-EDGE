@@ -1,0 +1,23 @@
+<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Instagram PFP">
+  <title>$EDGE</title>
+  <defs>
+    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.75"/>
+    </radialGradient>
+    <clipPath id="circle"><circle cx="160" cy="160" r="160"/></clipPath>
+  </defs>
+  <g clip-path="url(#circle)">
+    <rect width="320" height="320" fill="#050507"/>
+    <rect width="320" height="320" fill="url(#grid)"/>
+    <rect width="320" height="320" fill="url(#vignette)"/>
+    <circle cx="160" cy="160" r="142" fill="none" stroke="#C4FF00" stroke-width="1" opacity="0.14"/>
+    <path d="M110 88 L218 160 L110 232" fill="none" stroke="#C4FF00" stroke-width="26" stroke-linecap="square" stroke-linejoin="miter"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" fill="#F5F5F0" letter-spacing="0.25em">
+      <text x="160" y="282" text-anchor="middle" opacity="0.55">$EDGE</text>
+    </g>
+  </g>
+</svg>

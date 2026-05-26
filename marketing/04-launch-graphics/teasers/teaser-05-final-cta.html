@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Teaser 05 · Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7)}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  /* a single hairline grid */
+  .gridbg{position:absolute;inset:0;opacity:.05;
+    background-image:linear-gradient(var(--white) 1px,transparent 1px),linear-gradient(90deg,var(--white) 1px,transparent 1px);
+    background-size:60px 60px}
+
+  /* corner brackets */
+  .bracket{position:absolute;width:54px;height:54px;border:2px solid var(--lime);}
+  .br-tl{top:44px;left:44px;border-right:0;border-bottom:0}
+  .br-tr{top:44px;right:44px;border-left:0;border-bottom:0}
+  .br-bl{bottom:44px;left:44px;border-right:0;border-top:0}
+  .br-br{bottom:44px;right:44px;border-left:0;border-top:0}
+
+  /* top bar */
+  .topbar{position:absolute;top:78px;left:78px;right:78px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .topbar .live{color:var(--lime);display:flex;align-items:center;gap:10px}
+  .topbar .live::before{content:'';width:10px;height:10px;background:var(--lime);border-radius:50%;animation:blink 1.2s infinite}
+  @keyframes blink{0%,55%{opacity:1}60%,100%{opacity:.15}}
+
+  /* hero stack */
+  .hero{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;padding:0 80px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.45em;color:var(--lime);text-transform:uppercase;margin-bottom:24px}
+  .big{font-family:'Anton',sans-serif;font-size:240px;line-height:.84;letter-spacing:-.025em;text-transform:uppercase}
+  .big .slash{color:var(--lime)}
+  .big .small{font-size:72px;display:block;letter-spacing:.04em;margin-top:8px;color:var(--white)}
+  .big .live-em{color:var(--lime)}
+
+  /* CA + pump link card */
+  .strip{position:absolute;left:78px;right:78px;bottom:200px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .card{border:1px solid var(--border);background:var(--void-2);padding:22px 26px}
+  .card.lime{border-color:var(--border-bright);background:rgba(196,255,0,.04)}
+  .card .k{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+  .card.lime .k{color:var(--lime)}
+  .card .v{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.05em;color:var(--white);text-transform:uppercase;word-break:break-all}
+  .card .vsm{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.05em;color:var(--muted)}
+  .card .arrow{display:inline-block;margin-left:8px;color:var(--lime)}
+
+  /* bottom rail */
+  .rail{position:absolute;bottom:84px;left:78px;right:78px;display:flex;justify-content:space-between;align-items:center}
+  .rail .mark{display:flex;align-items:center;gap:14px}
+  .rail .mark svg{width:36px;height:36px}
+  .rail .mark .name{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:-.02em}
+  .rail .mark .name span{color:var(--lime)}
+  .rail .tag{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+  .rail .tag strong{color:var(--white);font-weight:500}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · IG / X square</div>
+<div class="canvas">
+  <div class="gridbg"></div>
+  <div class="grain"></div>
+
+  <div class="bracket br-tl"></div>
+  <div class="bracket br-tr"></div>
+  <div class="bracket br-bl"></div>
+  <div class="bracket br-br"></div>
+
+  <div class="topbar">
+    <div>SYS · BROADCAST · 005</div>
+    <div class="live">LIVE · ON CHAIN</div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">/ FAIRLAUNCH · PUMP.FUN /</div>
+    <div class="big">
+      $EDGE <span class="slash">/</span><br>
+      IS <span class="live-em">LIVE.</span>
+      <span class="small">WATCH THE ACTION. BEFORE YOU BET.</span>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="card lime">
+      <div class="k">/ TRADE NOW</div>
+      <div class="v">PUMP.FUN/EDGE <span class="arrow">→</span></div>
+      <div class="vsm" style="margin-top:6px">SOLANA · BONDING CURVE</div>
+    </div>
+    <div class="card">
+      <div class="k">CONTRACT</div>
+      <div class="v">_______________________ <span class="arrow">⎘</span></div>
+      <div class="vsm" style="margin-top:6px">CA POSTED AT LAUNCH</div>
+    </div>
+  </div>
+
+  <div class="rail">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="name">$<span>EDGE</span></span>
+    </div>
+    <div class="tag">
+      <div><strong>EDGE-TWO-PSI.VERCEL.APP</strong></div>
+      <div>READ TOKENOMICS FIRST · DON'T FOMO</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

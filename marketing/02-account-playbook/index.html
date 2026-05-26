@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Account Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0C0C10;
+    --void-3: #141418;
+    --void-4: #1C1C22;
+    --lime: #C4FF00;
+    --lime-dim: #8aa800;
+    --magenta: #FF006E;
+    --green: #00FF85;
+    --amber: #FFB800;
+    --orange: #FF7A00;
+    --red: #FF3344;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; }
+  ::selection { background: var(--lime); color: var(--void); }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+  .brand svg { width: 28px; height: 28px; display:block; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { display:grid; grid-template-columns: 1fr; gap: 32px; padding: 24px 0 56px; border-bottom: 1px solid var(--border); margin-bottom: 56px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(56px, 10vw, 140px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 19px; line-height: 1.55; max-width: 760px; color: var(--white); opacity: .85; }
+  .lede em { color: var(--lime); font-style: normal; }
+
+  .meta-row { display:flex; gap:36px; flex-wrap:wrap; padding-top:10px; }
+  .meta-row .item { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; color: var(--muted); }
+  .meta-row .item span { color: var(--white); margin-left:8px; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(34px, 4.6vw, 56px); letter-spacing:-.02em; text-transform: uppercase; }
+  .sec-note { color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; margin-top: 14px; max-width: 760px; }
+  .sec-note strong { color: var(--lime); font-weight:500; }
+  .sec-note code { background: var(--void-3); padding:1px 6px; border:1px solid var(--border); color: var(--white); }
+
+  /* Reserve handle block */
+  .handles { display:grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 8px; }
+  .handle { background: var(--void-2); padding: 28px 24px; display:flex; flex-direction:column; gap:10px; }
+  .handle .role { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.2em; text-transform: uppercase; color: var(--muted); }
+  .handle .h { font-family:'Anton', sans-serif; font-size: clamp(28px, 3.4vw, 44px); letter-spacing:-.02em; text-transform: uppercase; line-height: .95; word-break: break-all; }
+  .handle.primary { background: var(--void); }
+  .handle.primary .role { color: var(--lime); }
+  .handle.primary .h { color: var(--lime); }
+
+  /* Main table */
+  .table-wrap { border: 1px solid var(--border); }
+  .scroll-x { overflow-x: auto; }
+  table.acct { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 940px; }
+  table.acct thead th { text-align: left; padding: 12px 14px; font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.2em; text-transform: uppercase; color: var(--muted); background: var(--void-2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.acct tbody td { padding: 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.acct tbody tr:hover td { background: var(--void-3); }
+  table.acct tbody tr:last-child td { border-bottom: 0; }
+  table.acct .platform { font-weight: 500; color: var(--white); white-space: nowrap; }
+  table.acct .handle-c { font-family:'JetBrains Mono', monospace; font-size: 12.5px; color: var(--white); white-space: nowrap; }
+  table.acct .url-c { font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); word-break: break-all; }
+  table.acct .url-c a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+  table.acct .url-c a:hover { color: var(--lime); border-color: var(--lime); }
+  table.acct .purpose { color: var(--white); opacity: .82; }
+  table.acct .status { font-family:'JetBrains Mono', monospace; font-size: 16px; color: var(--muted); text-align:center; width: 48px; }
+  table.acct .status .box { display:inline-block; width: 18px; height: 18px; border: 1px solid var(--muted); }
+
+  .pri { display: inline-block; font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.15em; padding: 4px 8px; text-transform: uppercase; border: 1px solid var(--border); white-space: nowrap; }
+  .pri.p0 { background: var(--lime); color: var(--void); border-color: var(--lime); font-weight: 700; }
+  .pri.p1 { background: var(--amber); color: var(--void); border-color: var(--amber); font-weight: 500; }
+  .pri.p2 { background: var(--void-3); color: var(--muted); }
+
+  .group-row td { background: var(--void); padding: 18px 14px 8px !important; }
+  .group-row .group-label { font-family:'Anton', sans-serif; font-size: 18px; letter-spacing:-.01em; text-transform: uppercase; color: var(--lime); }
+  .group-row .group-meta { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.2em; text-transform: uppercase; color: var(--muted); margin-left: 12px; }
+
+  /* List grids */
+  .list-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .list-cell { background: var(--void-2); padding: 22px 22px 18px; display:flex; flex-direction:column; gap: 8px; min-height: 130px; }
+  .list-cell .l-label { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.2em; text-transform: uppercase; color: var(--muted); }
+  .list-cell .l-val { font-family:'JetBrains Mono', monospace; font-size: 15px; color: var(--white); word-break: break-all; }
+  .list-cell .l-note { font-family:'DM Sans', sans-serif; font-size: 13px; color: var(--muted); line-height: 1.45; margin-top: auto; }
+  .list-cell .l-note strong { color: var(--lime); font-weight: 500; }
+  .list-cell.flag { background: var(--void); border-left: 2px solid var(--lime); }
+  .list-cell.warn { background: var(--void); border-left: 2px solid var(--magenta); }
+  .list-cell.warn .l-label { color: var(--magenta); }
+
+  /* Callout / warn */
+  .callout { border: 1px solid var(--border-bright); background: var(--void-2); padding: 24px 28px; margin-top: 28px; display:grid; grid-template-columns: 110px 1fr; gap: 24px; align-items: start; }
+  .callout .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.2em; text-transform: uppercase; color: var(--lime); }
+  .callout p { font-size: 14.5px; line-height: 1.6; color: var(--white); opacity: .88; }
+  .callout p + p { margin-top: 10px; }
+  .callout.warn { border-color: rgba(255, 0, 110, .35); }
+  .callout.warn .tag { color: var(--magenta); }
+
+  .legend { display:flex; gap:24px; flex-wrap:wrap; margin-top: 14px; }
+  .legend .item { display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.15em; text-transform: uppercase; color: var(--muted); }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+
+  @media (max-width: 960px) {
+    .handles { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 36px 18px 80px; }
+    header.top { padding: 14px 18px; }
+    .handles { grid-template-columns: 1fr; }
+    .callout { grid-template-columns: 1fr; }
+    .list-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Account Playbook</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">02 / Operations</div>
+    <h1>Account <span class="accent">playbook.</span></h1>
+    <p class="lede">Forty-plus accounts, six email aliases, six domains, a treasury stack, and a legal trip-wire — all reserved, all linked, all logged in one vault before <em>day one</em>. The launch is not a vibe. It is a checklist. Run the checklist.</p>
+    <div class="meta-row">
+      <div class="item">Owner <span>Robert</span></div>
+      <div class="item">Co-Owner <span>Tye</span></div>
+      <div class="item">Vault <span>1Password / "EDGE-Launch"</span></div>
+      <div class="item">Last Audit <span>2026-05-26</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Reserve these 4 handles everywhere.</h2><div class="sec-num">02.01 / Naming</div></div>
+    <p class="sec-note">One handle. Every surface. Use the primary on every platform where it's available. If taken, walk down the fallback list <strong>in order</strong> — never invent new variants on the fly. Same handle string everywhere is worth more than &ldquo;the cooler one&rdquo; on a single network.</p>
+    <div class="handles">
+      <div class="handle primary">
+        <div class="role">Primary · use first</div>
+        <div class="h">@edgeterminal</div>
+      </div>
+      <div class="handle">
+        <div class="role">Fallback 1</div>
+        <div class="h">@edgemarkets</div>
+      </div>
+      <div class="handle">
+        <div class="role">Fallback 2</div>
+        <div class="h">@edge_terminal</div>
+      </div>
+      <div class="handle">
+        <div class="role">Fallback 3</div>
+        <div class="h">@theedgeterminal</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Account registration matrix.</h2><div class="sec-num">02.02 / Accounts</div></div>
+    <p class="sec-note">Forty-two rows. Owner sweeps top-to-bottom in priority order. Mark <code>[x]</code> in the vault note once reserved. Linked references: pump.fun contract, GitHub <code>BostonRob1/-EDGE</code>, Vercel deployment <code>edge-two-psi.vercel.app</code>.</p>
+    <div class="legend">
+      <div class="item"><span class="pri p0">P0</span> Launch day · before mint</div>
+      <div class="item"><span class="pri p1">P1</span> Week 1 · post-mint</div>
+      <div class="item"><span class="pri p2">P2</span> Month 1+ · long-tail</div>
+    </div>
+    <div class="table-wrap" style="margin-top:24px;">
+      <div class="scroll-x">
+        <table class="acct">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Handle</th>
+              <th>Priority</th>
+              <th>URL</th>
+              <th>Purpose</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="group-row"><td colspan="6"><span class="group-label">P0 · Launch Day</span><span class="group-meta">10 accounts · reserve before contract goes live</span></td></tr>
+
+            <tr>
+              <td class="platform">X (Twitter)</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://x.com/edgeterminal" target="_blank" rel="noopener">x.com/edgeterminal</a></td>
+              <td class="purpose">Main megaphone. Real-time divergence calls, whale hits, daily edge digest. Apply for Premium to unlock 4K char + analytics.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Telegram · Announce</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://t.me/edgeterminal" target="_blank" rel="noopener">t.me/edgeterminal</a></td>
+              <td class="purpose">Broadcast-only channel. Mint announcements, contract address, CEX/DEX listings, critical fixes. Pin contract + verify mark.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Telegram · Community</td>
+              <td class="handle-c">@edgeterminal_chat</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://t.me/edgeterminal_chat" target="_blank" rel="noopener">t.me/edgeterminal_chat</a></td>
+              <td class="purpose">Open chat. Slowmode 5s at launch, anti-scam bot (Rose/Combot), pinned rules, no DMs from team policy.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Discord</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://discord.gg/edgeterminal" target="_blank" rel="noopener">discord.gg/edgeterminal</a></td>
+              <td class="purpose">Tiered server. #announce · #signals · #whales · #dev. Wallet-gated roles (Collab.Land or Vulcan) by month 2.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Farcaster / Warpcast</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://warpcast.com/edgeterminal" target="_blank" rel="noopener">warpcast.com/edgeterminal</a></td>
+              <td class="purpose">Web3-native distribution. Frame for live divergence stream. Cross-post X content with Solana flavor.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">GitHub · Org</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://github.com/edgeterminal" target="_blank" rel="noopener">github.com/edgeterminal</a></td>
+              <td class="purpose">Create org. Transfer <code>BostonRob1/-EDGE</code> to org and rename to <code>edgeterminal/app</code>. Enable 2FA org-wide.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Vercel · Team</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://vercel.com/edgeterminal" target="_blank" rel="noopener">vercel.com/edgeterminal</a></td>
+              <td class="purpose">Convert personal deployment to team. Connect custom domain, enable preview comments, lock prod branch to main.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">pump.fun</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://pump.fun/profile/edgeterminal" target="_blank" rel="noopener">pump.fun/profile/edgeterminal</a></td>
+              <td class="purpose">Mint surface. Wallet-connect with marketing wallet, link site + X + TG, upload PFP + banner, complete bio with contract once live.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Dexscreener</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://dexscreener.com" target="_blank" rel="noopener">dexscreener.com</a></td>
+              <td class="purpose">Token info update + ad slot reservation. Submit logo, socials, audit link, &ldquo;Boost&rdquo; budget locked for T+0.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Birdeye</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://birdeye.so" target="_blank" rel="noopener">birdeye.so</a></td>
+              <td class="purpose">Token verification, social linking, trending submission. Pair with Dexscreener push at +30min from mint.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Solscan</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p0">P0</span></td>
+              <td class="url-c"><a href="https://solscan.io" target="_blank" rel="noopener">solscan.io</a></td>
+              <td class="purpose">Token metadata, verified deployer flag, link to GitHub + audit. File update form within 1h of mint.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+
+            <tr class="group-row"><td colspan="6"><span class="group-label">P1 · Week 1</span><span class="group-meta">12 accounts · post-mint distribution</span></td></tr>
+
+            <tr>
+              <td class="platform">Substack</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://edgeterminal.substack.com" target="_blank" rel="noopener">edgeterminal.substack.com</a></td>
+              <td class="purpose">Weekly &ldquo;Edge Brief.&rdquo; Long-form whale analysis, post-mortems, divergence case studies. Owns email capture.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Medium</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://medium.com/@edgeterminal" target="_blank" rel="noopener">medium.com/@edgeterminal</a></td>
+              <td class="purpose">Mirror Substack content. SEO surface for &ldquo;Polymarket whales,&rdquo; &ldquo;Kalshi divergence,&rdquo; etc.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Dune Analytics</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://dune.com/edgeterminal" target="_blank" rel="noopener">dune.com/edgeterminal</a></td>
+              <td class="purpose">Public dashboards: $EDGE holders, top whales, Polymarket flow. Drives credibility + backlinks.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">DefiLlama</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://defillama.com" target="_blank" rel="noopener">defillama.com</a></td>
+              <td class="purpose">Submit token + listing request via GitHub PR. Requires logo + chain ID + LP address. Reviewer turnaround 3–10 days.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">CoinGecko</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://www.coingecko.com/en/coins/new" target="_blank" rel="noopener">coingecko.com/en/coins/new</a></td>
+              <td class="purpose">Application form. Requires 250+ holders, $1k+ liquidity, 7d trade history. Apply at T+72h minimum.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">CoinMarketCap</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://coinmarketcap.com/request" target="_blank" rel="noopener">coinmarketcap.com/request</a></td>
+              <td class="purpose">Stricter than CG. Requires $100k+ daily volume, 24-month roadmap, KYC of team. Submit at T+7d.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Reddit</td>
+              <td class="handle-c">r/EdgeTerminal · u/edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://reddit.com/r/EdgeTerminal" target="_blank" rel="noopener">reddit.com/r/EdgeTerminal</a></td>
+              <td class="purpose">Subreddit (locked 14 days for karma). Plus mod account. Cross-post to r/Solana / r/CryptoMoonShots with care.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">YouTube</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://youtube.com/@edgeterminal" target="_blank" rel="noopener">youtube.com/@edgeterminal</a></td>
+              <td class="purpose">Screen-recorded whale walk-throughs (60s shorts). Verify handle, set banner, link site.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">TikTok</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://tiktok.com/@edgeterminal" target="_blank" rel="noopener">tiktok.com/@edgeterminal</a></td>
+              <td class="purpose">Vertical clips of price-vs-Twitter divergence. No financial advice disclaimer in every caption.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Instagram</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://instagram.com/edgeterminal" target="_blank" rel="noopener">instagram.com/edgeterminal</a></td>
+              <td class="purpose">Defensive squat + Reels mirror of TikTok. Bio links to Linktree. Low effort, high real estate.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">LinkedIn · Company</td>
+              <td class="handle-c">edge-terminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://linkedin.com/company/edge-terminal" target="_blank" rel="noopener">linkedin.com/company/edge-terminal</a></td>
+              <td class="purpose">Press + recruiting surface. Quiet on tokenomics, loud on data + team. Founders as employees.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Linktree / Bento</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://bento.me/edgeterminal" target="_blank" rel="noopener">bento.me/edgeterminal</a></td>
+              <td class="purpose">Single bio-link target across every social. Bento preferred (crypto-native, cleaner).</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">ProductHunt</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p1">P1</span></td>
+              <td class="url-c"><a href="https://producthunt.com/products/edge-terminal" target="_blank" rel="noopener">producthunt.com/products/edge-terminal</a></td>
+              <td class="purpose">Reserve product page now. Queue launch for <strong>week 4</strong> when site + onboarding is stable. Tuesday 12:01 AM PT.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+
+            <tr class="group-row"><td colspan="6"><span class="group-label">P2 · Month 1+</span><span class="group-meta">10 accounts · defensive + long-tail SEO</span></td></tr>
+
+            <tr>
+              <td class="platform">Threads</td>
+              <td class="handle-c">@edgeterminal</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://threads.net/@edgeterminal" target="_blank" rel="noopener">threads.net/@edgeterminal</a></td>
+              <td class="purpose">Defensive squat. Auto-mirror X content via Buffer or manual cross-post weekly.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Bluesky</td>
+              <td class="handle-c">@edgeterminal.bsky.social</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://bsky.app/profile/edgeterminal.bsky.social" target="_blank" rel="noopener">bsky.app/profile/edgeterminal.bsky.social</a></td>
+              <td class="purpose">Squat + verify with custom domain handle once edgeterminal.xyz registered.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Mastodon</td>
+              <td class="handle-c">@edgeterminal@mas.to</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://mas.to/@edgeterminal" target="_blank" rel="noopener">mas.to/@edgeterminal</a></td>
+              <td class="purpose">Defensive squat on a stable instance (mas.to or fosstodon.org).</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Lens</td>
+              <td class="handle-c">@edgeterminal.lens</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://hey.xyz/u/edgeterminal" target="_blank" rel="noopener">hey.xyz/u/edgeterminal</a></td>
+              <td class="purpose">Web3 social squat. Mint handle NFT — they don't expire but they do get sniped.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Mirror.xyz</td>
+              <td class="handle-c">edgeterminal.mirror.xyz</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://mirror.xyz/edgeterminal.eth" target="_blank" rel="noopener">mirror.xyz/edgeterminal.eth</a></td>
+              <td class="purpose">On-chain blog for token-holder essays + Mirror entries. Requires ENS — buy <code>edgeterminal.eth</code>.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">GitBook</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://edgeterminal.gitbook.io" target="_blank" rel="noopener">edgeterminal.gitbook.io</a></td>
+              <td class="purpose">Public docs: tokenomics, methodology, API, brand kit. Replaces ad-hoc Notion docs once polished.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Notion · Public</td>
+              <td class="handle-c">edgeterminal</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://edgeterminal.notion.site" target="_blank" rel="noopener">edgeterminal.notion.site</a></td>
+              <td class="purpose">Lightweight pages while GitBook is being built. Roadmap, FAQ, press kit.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">AngelList / Wellfound</td>
+              <td class="handle-c">edge-terminal</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://wellfound.com/company/edge-terminal" target="_blank" rel="noopener">wellfound.com/company/edge-terminal</a></td>
+              <td class="purpose">Recruiting + future equity raise surface. List even if no roles open.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Crunchbase</td>
+              <td class="handle-c">edge-terminal</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://crunchbase.com/organization/edge-terminal" target="_blank" rel="noopener">crunchbase.com/organization/edge-terminal</a></td>
+              <td class="purpose">Press credibility. Submit company profile + funding signal once treasury LP is locked.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+            <tr>
+              <td class="platform">Wikipedia · Draft</td>
+              <td class="handle-c">EdgeTerminal_Editor</td>
+              <td><span class="pri p2">P2</span></td>
+              <td class="url-c"><a href="https://en.wikipedia.org/wiki/Draft:Edge_Terminal" target="_blank" rel="noopener">en.wikipedia.org/wiki/Draft:Edge_Terminal</a></td>
+              <td class="purpose">Draft only at month 3 with verifiable citations (CoinDesk/The Block/etc.). Do <strong>not</strong> publish without independent press first.</td>
+              <td class="status"><span class="box"></span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Email aliases.</h2><div class="sec-num">02.03 / Mail</div></div>
+    <p class="sec-note">All aliases on custom domain (<code>edgeterminal.xyz</code>) routed through <strong>Resend</strong> for outbound and <strong>Cloudflare Email Routing</strong> for inbound forwarding to founders' inboxes. Set SPF, DKIM, DMARC before any send.</p>
+    <div class="list-grid">
+      <div class="list-cell flag"><div class="l-label">Primary · Founders</div><div class="l-val">hello@edgeterminal.xyz</div><div class="l-note">Default public address. Goes to Robert + Tye. Auto-reply with 1-business-day SLA.</div></div>
+      <div class="list-cell"><div class="l-label">Founders · Private</div><div class="l-val">founders@edgeterminal.xyz</div><div class="l-note">High-value intros, VCs, exchange listings. Routes only to founders.</div></div>
+      <div class="list-cell"><div class="l-label">Press</div><div class="l-val">press@edgeterminal.xyz</div><div class="l-note">Journalists, podcasts, embargo requests. Reply within 24h or lose the cycle.</div></div>
+      <div class="list-cell"><div class="l-label">Partnerships</div><div class="l-val">partnerships@edgeterminal.xyz</div><div class="l-note">Affiliate routing, data partners, KOLs. Use a triage template.</div></div>
+      <div class="list-cell warn"><div class="l-label">Security · Required</div><div class="l-val">security@edgeterminal.xyz</div><div class="l-note">Mandatory per SOC norms. Publish in <code>/.well-known/security.txt</code>. PGP key in vault.</div></div>
+      <div class="list-cell"><div class="l-label">Legal</div><div class="l-val">legal@edgeterminal.xyz</div><div class="l-note">Counsel comms, takedown notices, regulator inbox. Forward to outside counsel.</div></div>
+      <div class="list-cell"><div class="l-label">Support</div><div class="l-val">support@edgeterminal.xyz</div><div class="l-note">User-facing help. Auto-route to Discord ticket bot until volume justifies a desk.</div></div>
+      <div class="list-cell warn"><div class="l-label">Abuse · Required</div><div class="l-val">abuse@edgeterminal.xyz</div><div class="l-note">Spam reports, impersonation alerts. Auto-tag and triage daily. Anti-spam standard.</div></div>
+      <div class="list-cell"><div class="l-label">DMCA</div><div class="l-val">dmca@edgeterminal.xyz</div><div class="l-note">Copyright takedowns. Required if hosting any user content (Discord screenshots, etc.).</div></div>
+      <div class="list-cell"><div class="l-label">Careers</div><div class="l-val">careers@edgeterminal.xyz</div><div class="l-note">Inbound applications. Forward to AngelList + a shared inbox.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Domains to register.</h2><div class="sec-num">02.04 / Domains</div></div>
+    <p class="sec-note">Register the full set in one Namecheap or Cloudflare Registrar transaction. Privacy-on by default. Auto-renew for 5y. Park fallbacks with a 301 to primary.</p>
+    <div class="list-grid">
+      <div class="list-cell flag"><div class="l-label">Primary · Recommended</div><div class="l-val">edgeterminal.xyz</div><div class="l-note"><strong>Lead with this.</strong> Cheap, recognizable in crypto, no premium tax. Site, email, all docs ride here.</div></div>
+      <div class="list-cell"><div class="l-label">Defensive · Brand</div><div class="l-val">edgeterminal.com</div><div class="l-note">Brand defense for press/legal credibility. 301 → .xyz. Likely $1k–5k aftermarket — set budget cap.</div></div>
+      <div class="list-cell"><div class="l-label">Defensive · Tech</div><div class="l-val">edgeterminal.io</div><div class="l-note">Standard tech TLD. 301 → primary. Block typosquatter access cheaply.</div></div>
+      <div class="list-cell"><div class="l-label">Vanity · Subdomain Pun</div><div class="l-val">edge.markets</div><div class="l-note">Premium &ldquo;hack&rdquo; URL for OG card sharing. Use as redirect short-link surface only.</div></div>
+      <div class="list-cell"><div class="l-label">Vanity · Backup</div><div class="l-val">theedge.xyz</div><div class="l-note">Fallback if &ldquo;edgeterminal&rdquo; squatters come asking. Defensive only.</div></div>
+      <div class="list-cell"><div class="l-label">CTA · Marketing</div><div class="l-val">getedge.xyz</div><div class="l-note">Use in paid ads, billboards, swag QR codes. Shorter for visual cleanliness.</div></div>
+      <div class="list-cell"><div class="l-label">Web3 · ENS</div><div class="l-val">edgeterminal.eth</div><div class="l-note">Required for Mirror, Lens, Farcaster verification. ~$5/yr at 10+ chars. Buy now.</div></div>
+      <div class="list-cell"><div class="l-label">Web3 · SNS</div><div class="l-val">edgeterminal.sol</div><div class="l-note">Solana naming. Use as wallet handle in pump.fun + Phantom. ~$20 one-time.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Dev &amp; infrastructure accounts.</h2><div class="sec-num">02.05 / Infra</div></div>
+    <p class="sec-note">Everything ops-critical. Use org-tier where available. SSO via the founders' Google Workspace once domain is live. No personal accounts for production.</p>
+    <div class="list-grid">
+      <div class="list-cell flag"><div class="l-label">Hosting · Exists</div><div class="l-val">Vercel</div><div class="l-note">Already live. Migrate to <strong>Team</strong> plan, attach custom domain, enable WAF + DDoS shield.</div></div>
+      <div class="list-cell"><div class="l-label">DNS · CDN</div><div class="l-val">Cloudflare</div><div class="l-note">Domain + DNS + WAF + Email Routing + Workers KV for cache. Org account, not personal.</div></div>
+      <div class="list-cell"><div class="l-label">Transactional Email</div><div class="l-val">Resend (primary) / Postmark (fallback)</div><div class="l-note">Magic links, weekly digest, alerts. SPF/DKIM/DMARC + dedicated subdomain (<code>mail.edgeterminal.xyz</code>).</div></div>
+      <div class="list-cell"><div class="l-label">Analytics · Web</div><div class="l-val">Plausible (default) / PostHog (product)</div><div class="l-note">Plausible for marketing site (privacy-first). PostHog for in-app funnels + feature flags.</div></div>
+      <div class="list-cell"><div class="l-label">Error Tracking</div><div class="l-val">Sentry</div><div class="l-note">Hook into Vercel + Next.js. Slack alert channel. Free tier through launch.</div></div>
+      <div class="list-cell"><div class="l-label">Solana RPC · Primary</div><div class="l-val">Helius</div><div class="l-note">Premium RPC + webhooks for whale tracking. Critical path — buy paid tier from day one.</div></div>
+      <div class="list-cell"><div class="l-label">ETH RPC · Fallback</div><div class="l-val">Alchemy</div><div class="l-note">For Polymarket (Polygon) calls. Free tier ample at launch volume.</div></div>
+      <div class="list-cell"><div class="l-label">Smart Contract Monitor</div><div class="l-val">Tenderly</div><div class="l-note">Tx simulation, alerts on treasury wallet movement, LP-burn watcher.</div></div>
+      <div class="list-cell"><div class="l-label">Block Explorer API</div><div class="l-val">Etherscan / Polygonscan</div><div class="l-note">Free API key for on-chain reads on Polymarket side. Rate-limit cache aggressively.</div></div>
+      <div class="list-cell"><div class="l-label">Polymarket Data</div><div class="l-val">Polymarket API key</div><div class="l-note">Apply via <code>docs.polymarket.com</code>. Public endpoints work day one; key unlocks rate limits.</div></div>
+      <div class="list-cell"><div class="l-label">Kalshi Data</div><div class="l-val">Kalshi dev account</div><div class="l-note">US KYC required. Robert applies in his name. Sandbox first, prod once volume justifies.</div></div>
+      <div class="list-cell"><div class="l-label">Status Page</div><div class="l-val">Instatus or BetterStack</div><div class="l-note">Public status page on <code>status.edgeterminal.xyz</code>. Auto-incident from Sentry.</div></div>
+      <div class="list-cell"><div class="l-label">Source Control · Backup</div><div class="l-val">GitHub Sponsors + Codeberg mirror</div><div class="l-note">Weekly push to Codeberg for resilience. Open source pieces signal credibility.</div></div>
+      <div class="list-cell"><div class="l-label">Image / Asset CDN</div><div class="l-val">Vercel Blob or Cloudflare R2</div><div class="l-note">For social asset variants, OG cards, press kit downloads.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Wallet &amp; treasury stack.</h2><div class="sec-num">02.06 / Treasury</div></div>
+    <p class="sec-note">Separate wallets by function. Never co-mingle. Multi-sig anything that touches treasury or LP. Hot wallets stay small. Document seed-phrase recovery to two locations — one steel plate per founder, never digital.</p>
+    <div class="list-grid">
+      <div class="list-cell flag"><div class="l-label">Multi-sig · Solana</div><div class="l-val">Squads.so (3-of-3)</div><div class="l-note">Robert + Tye + cold key. All treasury &gt; $50k passes through Squads. Default policy: 24h timelock on outflows.</div></div>
+      <div class="list-cell warn"><div class="l-label">Cold Storage · Default</div><div class="l-val">Ledger Nano X (x2)</div><div class="l-note">Two hardware wallets. <strong>$200k–1M parked here.</strong> Never connects to web wallets. Steel-plate seed phrase.</div></div>
+      <div class="list-cell"><div class="l-label">Hot Wallet · Ops</div><div class="l-val">Phantom · ops</div><div class="l-note">Day-to-day signing for tooling. Max balance: 50 SOL. Top up from treasury weekly.</div></div>
+      <div class="list-cell"><div class="l-label">Treasury Wallet</div><div class="l-val">Squads-controlled · treasury</div><div class="l-note">LP rewards, dev fund. Read-only public view on site for transparency.</div></div>
+      <div class="list-cell"><div class="l-label">Marketing Wallet</div><div class="l-val">Phantom · marketing</div><div class="l-note">Pays KOLs, Dexscreener boosts, ad spend. Capped allocation per month, on-chain receipts public.</div></div>
+      <div class="list-cell"><div class="l-label">Team Vesting</div><div class="l-val">Streamflow or Jupiter Lock</div><div class="l-note">4-year vest, 1-year cliff for founder allocation. Public lock URL pinned in announce channel.</div></div>
+      <div class="list-cell"><div class="l-label">LP Burn / Lock</div><div class="l-val">Raydium LP locked via PinkLock</div><div class="l-note">Proof in launch tweet. 12-month minimum, ideally permanent burn for credibility.</div></div>
+      <div class="list-cell"><div class="l-label">Bug Bounty Wallet</div><div class="l-val">Phantom · bounty</div><div class="l-note">Public address for whitehat payouts. Seed with 5 SOL + topped from treasury.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Legal &amp; compliance.</h2><div class="sec-num">02.07 / Legal</div></div>
+    <p class="sec-note">Token-launch projects without entities die in court. Spend the $1.5k now. Engage counsel before the first KOL deal.</p>
+    <div class="list-grid">
+      <div class="list-cell flag"><div class="l-label">Entity · Recommended</div><div class="l-val">Edge Terminal LLC · Wyoming</div><div class="l-note">Anonymous registered agent allowed. ~$200/yr. Fast to form. Use Stripe Atlas or Firstbase if remote.</div></div>
+      <div class="list-cell"><div class="l-label">Entity · Alternate</div><div class="l-val">Edge Terminal, Inc. · Delaware C-corp</div><div class="l-note">Choose only if equity fundraise is in the next 12 months. Higher overhead, mandatory franchise tax.</div></div>
+      <div class="list-cell"><div class="l-label">DBA</div><div class="l-val">Edge Terminal (d/b/a $EDGE)</div><div class="l-note">File in operating state. Lets you transact under both names on contracts + bank account.</div></div>
+      <div class="list-cell"><div class="l-label">EIN · IRS</div><div class="l-val">Apply within 7d of entity formation</div><div class="l-note">Free, online at irs.gov. Required for bank account, contractors, vendor onboarding.</div></div>
+      <div class="list-cell"><div class="l-label">DUNS Number</div><div class="l-val">D-U-N-S via Dun &amp; Bradstreet</div><div class="l-note">Free. Unlocks Apple Developer, Google Cloud credits, enterprise vendor portals.</div></div>
+      <div class="list-cell"><div class="l-label">Operating Agreement</div><div class="l-val">LLC OA · 2 members (Robert + Tye)</div><div class="l-note">Split, vesting, IP assignment, dissolution. Use a16z crypto template or hire counsel.</div></div>
+      <div class="list-cell"><div class="l-label">Token Legal Memo</div><div class="l-val">Howey + utility analysis</div><div class="l-note">Outside counsel memo. $3k–8k range. Required for any US listing conversation.</div></div>
+      <div class="list-cell"><div class="l-label">Terms of Service</div><div class="l-val">/legal/terms</div><div class="l-note">Custom for prediction-market aggregator. Disclaim: no investment advice, no execution, data &ldquo;as-is.&rdquo;</div></div>
+      <div class="list-cell"><div class="l-label">Privacy Policy</div><div class="l-val">/legal/privacy</div><div class="l-note">GDPR + CCPA. Plausible is privacy-first; PostHog needs consent banner.</div></div>
+      <div class="list-cell warn"><div class="l-label">USPTO · Critical Warning</div><div class="l-val">Trademark search: EDGE / EDGE TERMINAL</div><div class="l-note"><strong>Likely conflicts.</strong> &ldquo;EDGE&rdquo; is registered across IC 09, 36, 42 by dozens of holders (Microsoft Edge browser, Edge Fitness, etc.). Run a clearance search via TESS before any signage spend. <strong>Recommend brand pivot or descriptor</strong> — &ldquo;Edge Terminal&rdquo; is more defensible than bare &ldquo;Edge.&rdquo;</div></div>
+    </div>
+    <div class="callout warn">
+      <div class="tag">Brand-risk note</div>
+      <div>
+        <p>The bare word <strong>EDGE</strong> is among the most-litigated marks in software (IC 009 / IC 042). A clean USPTO registration is unlikely without a distinctive modifier. Three viable paths in priority order:</p>
+        <p><strong>1.</strong> Brand as <em>&ldquo;Edge Terminal&rdquo;</em> in all formal contexts — keep the <code>$EDGE</code> ticker as a sub-brand. This is the recommended posture.</p>
+        <p><strong>2.</strong> Add an industry descriptor (&ldquo;Edge Markets,&rdquo; &ldquo;Edge Signal,&rdquo; &ldquo;Edge Tape&rdquo;) to clear distinctiveness without losing equity.</p>
+        <p><strong>3.</strong> Skip federal registration; rely on common-law use + state-level filings. Acceptable for a token launch but fragile for a Series-A pitch.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0 · Account Playbook</div>
+    <div><a href="../00-master/index.html">← Back to Master Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

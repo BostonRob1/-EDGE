@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Video Content</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --void-3: #141418;
+    --void-4: #1c1c22;
+    --lime: #C4FF00;
+    --lime-dim: #8aa800;
+    --magenta: #FF006E;
+    --green: #00FF85;
+    --amber: #FFB800;
+    --red: #FF3344;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; }
+  ::selection { background: var(--lime); color: var(--void); }
+  a { color: inherit; text-decoration: none; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { display:grid; grid-template-columns: 1fr; gap: 40px; padding: 24px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(56px, 10vw, 140px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 19px; line-height: 1.55; max-width: 720px; color: var(--white); opacity: .85; }
+  .lede em { color: var(--lime); font-style: normal; }
+
+  .stats { display:flex; gap: 48px; flex-wrap: wrap; padding: 8px 0 0; font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing:.1em; text-transform: uppercase; }
+  .stats div b { color: var(--white); font-weight: 500; font-size: 18px; display: block; margin-bottom: 4px; font-family:'Anton', sans-serif; letter-spacing: -.01em; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 36px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 56px); letter-spacing:-.02em; text-transform: uppercase; line-height: .92; }
+  .sec-lead { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; max-width: 560px; margin-top: 6px; }
+
+  /* ===== Animated teasers section ===== */
+  .teaser-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  @media (max-width: 880px) { .teaser-grid { grid-template-columns: 1fr; } }
+
+  .teaser-card { background: var(--void-2); padding: 0; display: flex; flex-direction: column; transition: background .2s ease; }
+  .teaser-card:hover { background: var(--void-3); }
+  .teaser-card a.full { display: flex; flex-direction: column; height: 100%; color: inherit; text-decoration: none; }
+  .teaser-thumb { aspect-ratio: 16/9; background: var(--void); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .teaser-card.big .teaser-thumb { aspect-ratio: 16/10; }
+  .teaser-thumb .play {
+    position: absolute; top: 14px; right: 14px; z-index: 3;
+    width: 36px; height: 36px; border: 1px solid var(--lime); display: flex; align-items: center; justify-content: center;
+    background: rgba(5,5,7,.5); backdrop-filter: blur(6px); transition: background .2s ease, transform .2s ease;
+  }
+  .teaser-thumb .play svg { width: 14px; height: 14px; fill: var(--lime); }
+  .teaser-card:hover .play { background: var(--lime); transform: scale(1.06); }
+  .teaser-card:hover .play svg { fill: var(--void); }
+  .teaser-thumb .corner-badge { position: absolute; top: 14px; left: 14px; z-index: 3; font-family:'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); background: rgba(5,5,7,.6); backdrop-filter: blur(6px); }
+
+  /* divergence thumb */
+  .thumb-div { position: absolute; inset: 0; padding: 24px 28px; display: flex; flex-direction: column; justify-content: space-between; }
+  .thumb-div .row { display: flex; justify-content: space-between; align-items: flex-start; }
+  .thumb-div .money-w { font-family:'Anton', sans-serif; font-size: 36px; color: var(--lime); letter-spacing: -.02em; text-transform: uppercase; line-height: 1; }
+  .thumb-div .mouth-w { font-family:'Anton', sans-serif; font-size: 36px; color: var(--white); letter-spacing: -.02em; text-transform: uppercase; line-height: 1; text-align: right; }
+  .thumb-div svg { position: absolute; left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100%; pointer-events: none; }
+  .thumb-div .gap-lbl { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 6px 12px; background: var(--void); border: 1px solid var(--magenta); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--magenta); letter-spacing: .2em; box-shadow: 0 0 16px rgba(255,0,110,.4); z-index: 2; }
+  .thumb-div .seam { position: absolute; left: 50%; top: 60px; bottom: 60px; width: 2px; background: var(--magenta); transform: translateX(-50%); box-shadow: 0 0 16px rgba(255,0,110,.5); z-index: 1; }
+  .thumb-div .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .2em; text-transform: uppercase; }
+
+  /* ticker thumb */
+  .thumb-ticker { position: absolute; inset: 0; display: flex; flex-direction: column; }
+  .thumb-ticker .brand-block { background: var(--void); padding: 12px 16px; display: flex; align-items: center; gap: 10px; border-right: 1px solid rgba(196,255,0,.2); width: 140px; height: 100%; position: absolute; left:0; top:0; bottom:0; z-index: 2; }
+  .thumb-ticker .brand-block svg { width: 18px; height: 18px; }
+  .thumb-ticker .brand-block .nm { font-family:'Anton', sans-serif; font-size: 18px; color: var(--white); letter-spacing: -.02em; }
+  .thumb-ticker .brand-block .nm span { color: var(--lime); }
+  .thumb-ticker .strip { position: absolute; left: 140px; right: 0; top: 0; bottom: 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; justify-content: center; overflow: hidden; }
+  .thumb-ticker .strip .top, .thumb-ticker .strip .bot { display:flex; gap: 18px; white-space: nowrap; }
+  .thumb-ticker .strip .item { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--white); letter-spacing: .04em; }
+  .thumb-ticker .strip .item .src { color: var(--muted); font-size: 8px; letter-spacing: .2em; margin-right: 6px; }
+  .thumb-ticker .strip .item .up { color: var(--green); }
+  .thumb-ticker .strip .item .dn { color: var(--red); }
+  .thumb-ticker .strip .item .di { color: var(--magenta); }
+
+  /* countdown thumb */
+  .thumb-count { position: absolute; inset: 0; padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; }
+  .thumb-count .eyebrow-c { font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--lime); letter-spacing: .3em; text-transform: uppercase; }
+  .thumb-count .tm { font-family:'Anton', sans-serif; font-size: 48px; color: var(--white); letter-spacing: -.04em; text-transform: uppercase; line-height: .9; }
+  .thumb-count .tm span { color: var(--lime); }
+  .thumb-count .grid-c { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 80%; }
+  .thumb-count .cell { background: var(--void-2); border: 1px solid var(--border); padding: 8px 4px; text-align: center; }
+  .thumb-count .cell .v { font-family:'JetBrains Mono', monospace; font-weight: 700; font-size: 22px; color: var(--lime); letter-spacing: -.04em; }
+  .thumb-count .cell .l { font-family:'JetBrains Mono', monospace; font-size: 7px; color: var(--muted); letter-spacing: .2em; margin-top: 2px; text-transform: uppercase; }
+
+  .teaser-body { padding: 22px 24px 24px; }
+  .teaser-body .h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 12px; }
+  .teaser-body h3 { font-family: 'Anton', sans-serif; font-size: 26px; letter-spacing: -.01em; text-transform: uppercase; }
+  .teaser-body .meta { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .18em; color: var(--lime); text-transform: uppercase; flex-shrink: 0; }
+  .teaser-body p { color: var(--white); opacity: .82; font-size: 14px; line-height: 1.55; }
+  .teaser-body .links { margin-top: 14px; display:flex; gap: 10px; font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .2em; text-transform: uppercase; }
+  .teaser-body .links a { color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+  .teaser-body .links a:hover { color: var(--lime); border-color: var(--lime); }
+
+  /* ===== Scripts table ===== */
+  .scripts-list { background: var(--border); display: grid; grid-template-columns: 1fr; gap: 1px; border: 1px solid var(--border); }
+  .script-row { background: var(--void-2); padding: 28px 28px; display: grid; grid-template-columns: 100px 1fr 120px 80px; gap: 24px; align-items: center; transition: background .2s ease; }
+  .script-row:hover { background: var(--void-3); }
+  .script-row .id { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing: .2em; }
+  .script-row .main h3 { font-family:'Anton', sans-serif; font-size: 24px; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 6px; line-height: 1; }
+  .script-row .main p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .script-row .dur { font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--white); letter-spacing: .15em; text-transform: uppercase; text-align: right; }
+  .script-row .open { text-align: right; font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .25em; text-transform: uppercase; padding: 6px 10px; border: 1px solid var(--border); transition: all .2s ease; }
+  .script-row:hover .open { color: var(--lime); border-color: var(--lime); }
+  @media (max-width: 720px) {
+    .script-row { grid-template-columns: 60px 1fr; gap: 12px; padding: 20px; }
+    .script-row .dur, .script-row .open { grid-column: 2 / 3; text-align: left; padding: 0; border: 0; }
+  }
+
+  /* ===== Storyboards row ===== */
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  @media (max-width: 720px) { .story-grid { grid-template-columns: 1fr; } }
+  .story-card { background: var(--void-2); transition: background .2s ease; }
+  .story-card:hover { background: var(--void-3); }
+  .story-card a { display: flex; flex-direction: column; height: 100%; color: inherit; text-decoration: none; }
+  .story-thumb { aspect-ratio: 16/9; background: var(--void); position: relative; overflow: hidden; border-bottom: 1px solid var(--border); display: grid; gap: 1px; padding: 1px; background: var(--border); }
+  .story-thumb.s60 { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); }
+  .story-thumb.s15 { grid-template-columns: repeat(3, 1fr); padding: 14px; gap: 8px; background: var(--void); }
+  .story-thumb .pane { background: var(--void); position: relative; }
+  .story-thumb .pane .n { position: absolute; top: 4px; left: 6px; font-family:'JetBrains Mono', monospace; font-size: 7px; color: var(--lime); letter-spacing: .2em; }
+  .story-thumb.s15 .pane { aspect-ratio: 9/16; }
+  .story-thumb .glyph-money { position: absolute; left: 30%; top: 40%; font-family:'Anton', sans-serif; color: var(--lime); font-size: 14px; }
+  .story-thumb .glyph-mouth { position: absolute; right: 10%; top: 30%; font-family:'Anton', sans-serif; color: var(--white); font-size: 10px; }
+  .story-thumb .seam { position: absolute; left: 50%; top: 14px; bottom: 14px; width: 1px; background: var(--magenta); }
+  .story-thumb .tiny-line { position: absolute; inset: 0; }
+
+  .story-body { padding: 22px 24px 24px; }
+  .story-body .h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 12px; }
+  .story-body h3 { font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: -.01em; text-transform: uppercase; }
+  .story-body .meta { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .18em; color: var(--lime); text-transform: uppercase; }
+  .story-body p { color: var(--white); opacity: .8; font-size: 14px; line-height: 1.55; margin-bottom: 14px; }
+  .story-body .links { font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .2em; text-transform: uppercase; }
+  .story-body .links a { color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+  .story-body .links a:hover { color: var(--lime); border-color: var(--lime); }
+
+  /* ===== Production notes block ===== */
+  .prod-card { background: var(--void-2); border: 1px solid var(--border); padding: 36px 36px; display: grid; grid-template-columns: 1fr auto; gap: 36px; align-items: center; }
+  @media (max-width: 720px) { .prod-card { grid-template-columns: 1fr; } }
+  .prod-card h3 { font-family: 'Anton', sans-serif; font-size: 32px; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 12px; }
+  .prod-card p { color: var(--white); opacity: .82; font-size: 15px; line-height: 1.55; max-width: 600px; }
+  .prod-card .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .prod-card .pill { font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--lime); letter-spacing: .2em; text-transform: uppercase; padding: 4px 10px; border: 1px solid var(--border-bright); }
+  .prod-card .cta { display: inline-flex; align-items: center; gap: 10px; padding: 16px 24px; border: 1px solid var(--lime); color: var(--lime); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; transition: all .2s ease; }
+  .prod-card .cta:hover { background: var(--lime); color: var(--void); }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a { color: var(--muted); }
+  .footer a:hover { color: var(--lime); }
+
+  @media (max-width: 720px) {
+    main { padding: 36px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Video Content</div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="eyebrow">05 / Video Content</div>
+    <h1>The <span class="accent">moving image</span> of $EDGE.</h1>
+    <p class="lede">Every script, storyboard, and animated teaser the brand needs to ship into motion. The <em>animated teasers</em> render natively in this browser — screen-record them to land them in any cut. The <em>scripts</em> carry the Money / Mouth / Edge framing. The <em>storyboards</em> visualize every frame at the right aspect ratio. The <em>production playbook</em> tells you what to use and what to never use.</p>
+    <div class="stats">
+      <div><b>3</b>Animated Teasers</div>
+      <div><b>7</b>Scripts</div>
+      <div><b>2</b>Storyboards</div>
+      <div><b>1</b>Playbook</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2>Animated Teasers</h2>
+        <div class="sec-lead">CSS + SVG, native browser playback. Open in Chrome → screen-record at the noted canvas → drop into any cut.</div>
+      </div>
+      <div class="sec-num">05.01</div>
+    </div>
+
+    <div class="teaser-grid">
+
+      <!-- DIVERGENCE — big hero -->
+      <div class="teaser-card big">
+        <a class="full" href="animated-teasers/teaser-divergence.html">
+          <div class="teaser-thumb">
+            <div class="thumb-div">
+              <span class="corner-badge">1080 × 1080</span>
+              <div class="row">
+                <span class="money-w">MONEY</span>
+                <span class="mouth-w">MOUTH</span>
+              </div>
+              <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+                <path d="M0 160 L80 130 L160 100 L240 70 L320 40 L400 20" fill="none" stroke="#C4FF00" stroke-width="2.5" />
+                <path d="M0 40 L80 60 L160 80 L240 110 L320 140 L400 180" fill="none" stroke="#F5F5F0" stroke-width="2.5" opacity=".85" />
+              </svg>
+              <div class="seam"></div>
+              <div class="gap-lbl">EDGE 0.72</div>
+              <div class="row">
+                <span class="tag">+18.4% / 24H</span>
+                <span class="tag">−32% SENT</span>
+              </div>
+            </div>
+            <div class="play"><svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z"/></svg></div>
+          </div>
+          <div class="teaser-body">
+            <div class="h"><h3>Teaser · Divergence</h3><span class="meta">9.0s LOOP · 1:1</span></div>
+            <p>Money rises in lime, mouth falls in bone — a magenta gap opens, EDGE 0.72 prints. The brand thesis in 8 seconds.</p>
+            <div class="links"><a href="animated-teasers/teaser-divergence.html">Open Teaser →</a></div>
+          </div>
+        </a>
+      </div>
+
+      <!-- TICKER -->
+      <div class="teaser-card">
+        <a class="full" href="animated-teasers/teaser-ticker.html">
+          <div class="teaser-thumb">
+            <div class="thumb-ticker">
+              <span class="corner-badge" style="z-index:3">1920 × 120</span>
+              <div class="brand-block">
+                <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+                <span class="nm">$<span>EDGE</span></span>
+              </div>
+              <div class="strip">
+                <div class="top">
+                  <span class="item"><span class="src">POLY</span>TRUMP-2028 0.642 <span class="up">+18.4%</span></span>
+                  <span class="item"><span class="src">KAL</span>FED-DEC 0.318 <span class="dn">−6.2%</span></span>
+                  <span class="item"><span class="di">DIV 0.72 ·</span></span>
+                </div>
+                <div class="bot">
+                  <span class="item"><span class="src">POLY</span>POWELL-OUT 0.214 <span class="up">+4.1%</span></span>
+                  <span class="item"><span class="src">KAL</span>HARRIS-VP 0.412 <span class="up">+1.8%</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="play"><svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z"/></svg></div>
+          </div>
+          <div class="teaser-body">
+            <div class="h"><h3>Teaser · Ticker</h3><span class="meta">∞ LOOP · 16:1</span></div>
+            <p>Bloomberg-style endless ticker. Plausible Polymarket + Kalshi rows. Use as OBS browser source or web embed.</p>
+            <div class="links"><a href="animated-teasers/teaser-ticker.html">Open Teaser →</a></div>
+          </div>
+        </a>
+      </div>
+
+      <!-- COUNTDOWN -->
+      <div class="teaser-card">
+        <a class="full" href="animated-teasers/teaser-countdown.html">
+          <div class="teaser-thumb">
+            <div class="thumb-count">
+              <span class="corner-badge" style="z-index:3">1080 × 1920</span>
+              <div class="eyebrow-c">PUMP.FUN · FAIRLAUNCH</div>
+              <div class="tm">T<span>−</span>MINUS</div>
+              <div class="grid-c">
+                <div class="cell"><div class="v">02</div><div class="l">DAYS</div></div>
+                <div class="cell"><div class="v">23</div><div class="l">HRS</div></div>
+                <div class="cell"><div class="v">59</div><div class="l">MIN</div></div>
+                <div class="cell"><div class="v">12</div><div class="l">SEC</div></div>
+              </div>
+            </div>
+            <div class="play"><svg viewBox="0 0 14 14"><path d="M2 0 L14 7 L2 14 Z"/></svg></div>
+          </div>
+          <div class="teaser-body">
+            <div class="h"><h3>Teaser · Countdown</h3><span class="meta">REAL-TIME · 9:16</span></div>
+            <p>T-minus clock with digit-flip animation. Auto-sets to 72h from page open. Story-ready vertical canvas.</p>
+            <div class="links"><a href="animated-teasers/teaser-countdown.html">Open Teaser →</a></div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2>Scripts</h2>
+        <div class="sec-lead">Markdown, shot-by-shot. Each script has visual, audio/VO, caption, and director notes per beat. Use as the source of truth in any cut.</div>
+      </div>
+      <div class="sec-num">05.02</div>
+    </div>
+
+    <div class="scripts-list">
+
+      <a class="script-row" href="scripts/60s-launch-trailer.md">
+        <div class="id">SCR.01</div>
+        <div class="main">
+          <h3>60s Launch Trailer</h3>
+          <p>The hero trailer. Money · Mouth · Edge framing carried by VO across 12 shots. Ends on edgeterminal.xyz + CA slot.</p>
+        </div>
+        <div class="dur">60.0s · 16:9</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+      <a class="script-row" href="scripts/30s-product-tour.md">
+        <div class="id">SCR.02</div>
+        <div class="main">
+          <h3>30s Product Tour</h3>
+          <p>Screen-record-driven walk through the live terminal — markets, whales, divergence, route-to-market, token gate.</p>
+        </div>
+        <div class="dur">30.0s · 16:9</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+      <a class="script-row" href="scripts/15s-vertical-hook.md">
+        <div class="id">SCR.03</div>
+        <div class="main">
+          <h3>15s Vertical Hook</h3>
+          <p>TikTok / IG Reel opener. "WHALES JUST MOVED $2.4M ON TRUMP-2028. AND YOU MISSED IT." → product → CTA.</p>
+        </div>
+        <div class="dur">15.0s · 9:16</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+      <a class="script-row" href="scripts/pump-fun-launch-tweet-video.md">
+        <div class="id">SCR.04</div>
+        <div class="main">
+          <h3>Pump.fun Launch Tweet Video</h3>
+          <p>6-second X-native loop. Mark draws, $EDGE wordmark types, LIVE ON PUMP.FUN + CA. Pairs with launch tweet.</p>
+        </div>
+        <div class="dur">6.0s · 1:1 + 16:9</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+      <a class="script-row" href="scripts/kol-quote-video-template.md">
+        <div class="id">SCR.05</div>
+        <div class="main">
+          <h3>KOL Quote Video Template</h3>
+          <p>30s endorsement template — positioning, talking points, B-roll requirements, CTA placement, KOL kit checklist.</p>
+        </div>
+        <div class="dur">30.0s · 9:16</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+      <a class="script-row" href="scripts/founder-intro.md">
+        <div class="id">SCR.06</div>
+        <div class="main">
+          <h3>Founder Intro · Robert + Tye</h3>
+          <p>90-second founder-on-camera. Cold open with the whale move, then product, then why-a-token, then the close.</p>
+        </div>
+        <div class="dur">90.0s · 16:9</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+      <a class="script-row" href="scripts/weekly-recap-format.md">
+        <div class="id">SCR.07</div>
+        <div class="main">
+          <h3>Weekly Recap Format · "Edge of the Week"</h3>
+          <p>3–5 minute Sunday-night format. Whale of the week, divergence of the week, move of the week. Recurring chrome.</p>
+        </div>
+        <div class="dur">~4:00 · 16:9</div>
+        <div class="open">Open .md →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2>Storyboards</h2>
+        <div class="sec-lead">Visual frame-by-frame, rendered at proper aspect ratio with brand design tokens. Each panel shows visual, VO, caption.</div>
+      </div>
+      <div class="sec-num">05.03</div>
+    </div>
+
+    <div class="story-grid">
+
+      <div class="story-card">
+        <a href="storyboards/storyboard-60s-trailer.html">
+          <div class="story-thumb s60">
+            <div class="pane"><span class="n">01</span></div>
+            <div class="pane"><span class="n">02</span><svg class="tiny-line" viewBox="0 0 100 60" preserveAspectRatio="none"><path d="M0 50 L100 8" fill="none" stroke="#C4FF00" stroke-width="2"/></svg></div>
+            <div class="pane"><span class="n">03</span></div>
+            <div class="pane"><span class="n">04</span><span class="seam" style="background:#FF006E"></span></div>
+            <div class="pane"><span class="n">05</span></div>
+            <div class="pane"><span class="n">06</span></div>
+            <div class="pane"><span class="n">07</span></div>
+            <div class="pane"><span class="n">08</span></div>
+            <div class="pane"><span class="n">09</span></div>
+            <div class="pane"><span class="n">10</span></div>
+            <div class="pane"><span class="n">11</span></div>
+            <div class="pane"><span class="n">12</span></div>
+          </div>
+          <div class="story-body">
+            <div class="h"><h3>Storyboard · 60s Trailer</h3><span class="meta">12 FRAMES · 16:9</span></div>
+            <p>Every beat of the hero trailer at 16:9. Cold open through end card. Each frame mocks the actual visual with real CSS + SVG.</p>
+            <div class="links"><a href="storyboards/storyboard-60s-trailer.html">Open Storyboard →</a></div>
+          </div>
+        </a>
+      </div>
+
+      <div class="story-card">
+        <a href="storyboards/storyboard-15s-vertical.html">
+          <div class="story-thumb s15">
+            <div class="pane"><span class="n">01</span><span class="seam" style="background:#FF006E"></span></div>
+            <div class="pane"><span class="n">02</span></div>
+            <div class="pane"><span class="n">03</span></div>
+            <div class="pane"><span class="n">04</span></div>
+            <div class="pane"><span class="n">05</span></div>
+            <div class="pane"><span class="n">06</span></div>
+          </div>
+          <div class="story-body">
+            <div class="h"><h3>Storyboard · 15s Vertical</h3><span class="meta">6 FRAMES · 9:16</span></div>
+            <p>The TikTok / Reels hook frame-by-frame. Includes TikTok safe-area indicators so captions never collide with platform UI.</p>
+            <div class="links"><a href="storyboards/storyboard-15s-vertical.html">Open Storyboard →</a></div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2>Production Playbook</h2>
+        <div class="sec-lead">Recommended tools, voice-over, music, subtitles, B-roll, aspect-ratio matrix, export settings, and a what-to-never-do list.</div>
+      </div>
+      <div class="sec-num">05.04</div>
+    </div>
+
+    <div class="prod-card">
+      <div>
+        <h3>Read this before you cut.</h3>
+        <p>Every video that ships under the $EDGE brand follows the same production grammar — Resolve over Premiere, ElevenLabs or a Shure MV7+ for VO, ambient industrial for music, captions always burned in, four aspect ratios per deliverable. The playbook is the standard.</p>
+        <div class="pill-list">
+          <span class="pill">DaVinci Resolve</span>
+          <span class="pill">ElevenLabs</span>
+          <span class="pill">Artlist</span>
+          <span class="pill">−14 LUFS</span>
+          <span class="pill">Burn-in Captions</span>
+          <span class="pill">16:9 · 1:1 · 9:16 · 4:5</span>
+        </div>
+      </div>
+      <a class="cta" href="production-notes.md">Open Playbook →</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0 · VIDEO CONTENT</div>
+    <div><a href="../00-master/index.html">← Back to Master Index</a></div>
+  </footer>
+
+</main>
+</body>
+</html>

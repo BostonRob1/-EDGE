@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Meme 04 · Big Quote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:64px 80px;display:flex;flex-direction:column;justify-content:space-between}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  /* huge background quote glyph */
+  .glyph{position:absolute;top:-40px;left:30px;font-family:'Anton',sans-serif;font-size:520px;line-height:1;color:rgba(196,255,0,.06);letter-spacing:-.05em;pointer-events:none;z-index:1}
+
+  .top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:12px}
+  .mark svg{width:28px;height:28px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+
+  .body{position:relative;z-index:2;display:flex;flex-direction:column;gap:32px;flex:1;justify-content:center}
+  .pull-marker{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.45em;color:var(--lime);text-transform:uppercase}
+  .quote-text{font-family:'Anton',sans-serif;font-size:104px;line-height:.95;letter-spacing:-.025em;text-transform:uppercase;color:var(--white)}
+  .quote-text .em{color:var(--lime)}
+  .quote-text .placeholder{display:inline-block;border-bottom:3px dashed var(--muted);padding:0 12px;color:var(--muted);min-width:240px}
+
+  .attr{position:relative;z-index:2;border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end}
+  .attr .left{display:flex;flex-direction:column;gap:8px}
+  .attr .role{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .attr .name{font-family:'Anton',sans-serif;font-size:46px;letter-spacing:-.02em;text-transform:uppercase;line-height:1;color:var(--white)}
+  .attr .name .lime{color:var(--lime)}
+  .attr .name .slot{display:inline-block;border-bottom:2px dashed var(--muted);padding:0 8px;color:var(--muted);min-width:200px}
+  .attr .handle{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.18em;color:var(--lime);text-transform:uppercase}
+  .attr .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+  .attr .right strong{color:var(--white);font-weight:500}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · Meme template 04</div>
+<div class="canvas">
+  <div class="grain"></div>
+  <div class="glyph">"</div>
+
+  <div class="top">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="meta">MEME · 04 · PULL QUOTE</div>
+  </div>
+
+  <div class="body">
+    <div class="pull-marker">/ PULL QUOTE /</div>
+    <div class="quote-text">
+      "<span class="placeholder">DROP YOUR LINE HERE</span> — <span class="em">AND THE PUNCH AT THE END.</span>"
+    </div>
+  </div>
+
+  <div class="attr">
+    <div class="left">
+      <span class="role">— SAID BY</span>
+      <span class="name"><span class="slot">NAME</span><span class="lime"> ·</span></span>
+      <span class="handle">@HANDLE · ROLE OR CRED</span>
+    </div>
+    <div class="right">
+      <div><strong>$EDGE</strong> · EDGE-TWO-PSI.VERCEL.APP</div>
+      <div>FILL SLOTS · POST IT</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Social / TikTok</title>
+<link rel="icon" type="image/svg+xml" href="../../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --void:#050507; --void-2:#0C0C10; --void-3:#141418; --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --white:#F5F5F0; --muted:#6B6B73; --border:rgba(245,245,240,0.08); --border-bright:rgba(196,255,0,0.2); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+  main { max-width: 1280px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+  .hero { padding: 16px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; display:grid; gap: 24px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 110px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 720px; opacity: .85; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(28px, 4vw, 48px); letter-spacing:-.02em; text-transform: uppercase; }
+  .asset-frame { background-image: linear-gradient(45deg, #0C0C10 25%, transparent 25%), linear-gradient(-45deg, #0C0C10 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #0C0C10 75%), linear-gradient(-45deg, transparent 75%, #0C0C10 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #08080A; padding: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .asset-frame .size { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.22em; text-transform: uppercase; }
+  .pfp-square { width: 200px; height: 200px; }
+  .pfp-circle { width: 200px; height: 200px; border-radius: 50%; overflow: hidden; }
+  .vert { width: 360px; aspect-ratio: 9 / 16; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  .copy-card { background: var(--void-2); border: 1px solid var(--border); padding: 28px; }
+  .copy-card h3 { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .copy-card .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: var(--lime); text-transform: uppercase; margin-bottom: 14px; }
+  .copy-card pre { font-family:'JetBrains Mono', monospace; font-size: 12px; line-height: 1.65; background: var(--void); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; word-break: break-word; margin-top: 12px; overflow-x: auto; }
+  .copy-card .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-top: 12px; }
+  .steps { counter-reset: step; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: 0; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.22em; }
+  .step .body { font-size: 15px; line-height: 1.55; }
+  .step code { font-family:'JetBrains Mono', monospace; font-size: 12px; background: var(--void-3); padding: 2px 8px; border: 1px solid var(--border); }
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="top">
+  <a class="brand" href="../../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Social</a> / TikTok</div>
+</header>
+<main>
+  <div class="hero">
+    <div class="eyebrow">03.07 / Social Asset Pack &#183; TikTok</div>
+    <h1>TikTok. <span class="accent">Hook in 1.5s.</span></h1>
+    <p class="lede">PFP 200&times;200. No native banner &#8212; we ship a 1080&times;1920 vertical cover for pinned video #1. 3 pinned slots, each a different conversion path.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>PFP</h2><div class="sec-num">03.07.01 &#183; 200&times;200 &#183; circle</div></div>
+    <div class="two-col">
+      <div class="asset-frame"><img src="pfp.svg" class="pfp-square"/><div class="size">200 &times; 200 &#183; SVG</div></div>
+      <div class="asset-frame"><div class="pfp-circle"><img src="pfp.svg" style="width:100%;height:100%;display:block"/></div><div class="size">200 &times; 200 &#183; circle render</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned Video #1 Cover</h2><div class="sec-num">03.07.02 &#183; 1080&times;1920 (9:16)</div></div>
+    <div class="asset-frame"><img src="banner.svg" class="vert"/><div class="size">1080 &times; 1920 &#183; SVG &#183; pinned-video cover image</div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Bio</h2><div class="sec-num">03.07.03 &#183; 80 char max</div></div>
+    <div class="copy-card">
+      <div class="tag">Primary &#183; 80</div>
+      <h3>Bio</h3>
+      <pre>Money. Mouth. Edge.
+Polymarket + Kalshi, in one screen.</pre>
+      <div class="meta">@edgeterminal &#183; Link unlocks at 1K followers</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned Video Slate</h2><div class="sec-num">03.07.04 &#183; 3 pins</div></div>
+    <div class="copy-card">
+      <div class="tag">Pin #1 &#183; what is $EDGE &#183; 15s</div>
+      <h3>Hook + product + tagline</h3>
+      <pre>[0.0s] (silence, hard cut to terminal screen capture)
+[0.5s] "Watch this wallet."
+[2.0s] (highlight a $640K Poly entry on Trump-2028)
+[3.5s] "$640K in. 18 minutes ago. Polymarket."
+[5.0s] (cut to X timeline)
+[6.0s] "Meanwhile on X &#8212; same market, sentiment down 41%."
+[8.0s] (cut back to terminal, zoom on Divergence radar)
+[9.5s] "Mouth says no. Money says yes. That's the edge."
+[12.0s] (zoom to product hero)
+[12.5s] "$EDGE. The terminal for prediction markets."
+[14.0s] (end card: lime chevron, "follow + site link")
+[15.0s]</pre>
+      <div class="meta">Caption: The first time the chart in your group chat is wrong about the market &#8212; this is why. edge-two-psi.vercel.app</div>
+    </div>
+
+    <div class="copy-card" style="margin-top:16px;">
+      <div class="tag">Pin #2 &#183; whale of the day &#183; 12s template</div>
+      <h3>Daily whale rotation</h3>
+      <pre>[0.0s] (text on screen: "WHALE OF THE DAY")
+[1.0s] (cut to wallet detail page)
+[2.0s] "{wallet} dropped {amount} on {market}."
+[4.0s] (cut to market chart with the entry marker)
+[6.0s] "Their last 5 calls: {hit rate}."
+[8.0s] (cut to following-this-wallet UI)
+[10.0s] "Watch this wallet next time. $EDGE."</pre>
+    </div>
+
+    <div class="copy-card" style="margin-top:16px;">
+      <div class="tag">Pin #3 &#183; divergence tutorial &#183; 30s</div>
+      <h3>The conversion video</h3>
+      <pre>[0.0s] "Two markets. Same outcome. Different odds."
+[2.0s] (side-by-side Polymarket + Kalshi on same question)
+[4.0s] "Polymarket: 0.51. Kalshi: 0.42."
+[6.0s] "Difference: 9 cents. That's divergence."
+[9.0s] (zoom to divergence radar)
+[11.0s] "$EDGE sorts every market by this gap, live."
+[14.0s] "Big gap + whale flow same direction = highest-conviction trade signal we have."
+[18.0s] (cut to picker algo track record)
+[19.5s] "Our public picker hit-rate from this method: 64% last quarter."
+[22.0s] (zoom to site URL)
+[24.0s] "Open the terminal. Sort by divergence. Read top to bottom. That's the playbook."
+[28.0s] "$EDGE. Watch the action. Before you bet."
+[30.0s]</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Bio-Link Strategy</h2><div class="sec-num">03.07.05</div></div>
+    <div class="steps">
+      <div class="step"><div class="body"><strong>Under 1K followers</strong>: bio link is hidden. Cover the URL in every video's on-screen text at <code>~14s</code>. End every caption with <code>edge-two-psi.vercel.app</code>. Pin a self-comment with the link on each video.</div></div>
+      <div class="step"><div class="body"><strong>1K+ followers</strong>: link a launch splash with three buttons &#8212; TERMINAL / TOKEN / DISCORD. Update weekly with current whale of the week and divergence of the week.</div></div>
+      <div class="step"><div class="body">Pin order: <code>#1 (what is $EDGE)</code> &#8594; <code>#3 (divergence tutorial)</code> &#8594; <code>#2 (today's whale, rotates daily)</code>. The tutorial converts. Pin it.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Setup Notes</h2><div class="sec-num">03.07.06</div></div>
+    <div class="steps">
+      <div class="step"><div class="body">Create Business account &#8211; required for analytics + verified link. Category: Finance.</div></div>
+      <div class="step"><div class="body">Upload <code>pfp.svg</code> exported to 200&times;200 PNG. Confirm it reads at 50px (TikTok comment list).</div></div>
+      <div class="step"><div class="body">Record + post Pin #1 first. Use the 1080&times;1920 cover. Hook in 1.5s.</div></div>
+      <div class="step"><div class="body">Set cadence: 1 post/day for first 30 days, then 4&#8211;5/week. Whale-of-the-day templates make this sustainable.</div></div>
+      <div class="step"><div class="body">No music with vocals. Soundscape: terminal taps, brief synth pad, or silence. The screen capture is the protagonist.</div></div>
+      <div class="step"><div class="body">Reserve impersonator handles: <code>@edgeterminal_</code>, <code>@edge.terminal</code>, <code>@theedgeterminal</code>. Park them with the chevron PFP and a single video pointing to <code>@edgeterminal</code>.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE &#183; SOCIAL / TIKTOK &#183; v1.0</div>
+    <div><a href="../index.html">&larr; Social Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

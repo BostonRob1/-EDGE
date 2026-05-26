@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Social / LinkedIn</title>
+<link rel="icon" type="image/svg+xml" href="../../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --void:#050507; --void-2:#0C0C10; --void-3:#141418; --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --white:#F5F5F0; --muted:#6B6B73; --border:rgba(245,245,240,0.08); --border-bright:rgba(196,255,0,0.2); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+  main { max-width: 1280px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+  .hero { padding: 16px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; display:grid; gap: 24px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 110px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 720px; opacity: .85; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(28px, 4vw, 48px); letter-spacing:-.02em; text-transform: uppercase; }
+  .asset-frame { background-image: linear-gradient(45deg, #0C0C10 25%, transparent 25%), linear-gradient(-45deg, #0C0C10 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #0C0C10 75%), linear-gradient(-45deg, transparent 75%, #0C0C10 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #08080A; padding: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .asset-frame .size { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.22em; text-transform: uppercase; }
+  .pfp-square { width: 300px; height: 300px; }
+  .banner-li { width: 100%; max-width: 1128px; aspect-ratio: 1128 / 191; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  .copy-card { background: var(--void-2); border: 1px solid var(--border); padding: 28px; }
+  .copy-card h3 { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .copy-card .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: var(--lime); text-transform: uppercase; margin-bottom: 14px; }
+  .copy-card pre { font-family:'JetBrains Mono', monospace; font-size: 12px; line-height: 1.65; background: var(--void); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; word-break: break-word; margin-top: 12px; overflow-x: auto; }
+  .copy-card .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-top: 12px; }
+  .steps { counter-reset: step; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: 0; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.22em; }
+  .step .body { font-size: 15px; line-height: 1.55; }
+  .step code { font-family:'JetBrains Mono', monospace; font-size: 12px; background: var(--void-3); padding: 2px 8px; border: 1px solid var(--border); }
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="top">
+  <a class="brand" href="../../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Social</a> / LinkedIn</div>
+</header>
+<main>
+  <div class="hero">
+    <div class="eyebrow">03.09 / Social Asset Pack &#183; LinkedIn</div>
+    <h1>LinkedIn. <span class="accent">Serious surface.</span></h1>
+    <p class="lede">Company page tuned for finance + fintech. 300&times;300 logo (no circle &#8212; LinkedIn renders square with rounded corners), 1128&times;191 banner. Voice: declarative, receipts-first, no degen jargon.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Company Logo</h2><div class="sec-num">03.09.01 &#183; 300&times;300</div></div>
+    <div class="asset-frame"><img src="pfp.svg" class="pfp-square"/><div class="size">300 &times; 300 &#183; SVG &#183; LinkedIn rounds corners; square source is correct</div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Page Banner</h2><div class="sec-num">03.09.02 &#183; 1128&times;191</div></div>
+    <div class="asset-frame"><img src="banner.svg" class="banner-li"/><div class="size">1128 &times; 191 &#183; SVG</div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>About Copy</h2><div class="sec-num">03.09.03 &#183; 2000 char</div></div>
+    <div class="copy-card">
+      <div class="tag">About</div>
+      <h3>Company description</h3>
+      <pre>$EDGE is the real-time intelligence terminal for prediction markets.
+
+Prediction markets &#8212; Polymarket, Kalshi, and the rest &#8212; have quietly become the most accurate near-term forecasters on the internet. They out-called every traditional pollster in 2024, and volume has more than 10x'd since. The market for high-fidelity, low-latency intelligence on what prediction markets are pricing has not yet been built.
+
+$EDGE is that intelligence layer.
+
+We aggregate every Polymarket and Kalshi market into a single sortable, filterable, latency-tolerant grid. We surface whale flow in real time &#8212; the same way an FX desk watches central-bank tape. We score market prices against aggregated sentiment from X, Farcaster, and Reddit, producing a "divergence" reading that measures the gap between where the money is and what the mouth is saying. That gap is, by construction, the edge.
+
+The terminal is in early access at edge-two-psi.vercel.app. The accompanying token, $EDGE, launches on Solana and gates premium features by holding tier &#8212; webhook access, push notifications, governance over which markets get full bot coverage, direct channels to the founders.
+
+Built by Robert and Tye. Headquartered remotely; data flow is the only office that matters.</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Pinned Announcement</h2><div class="sec-num">03.09.04 &#183; 3000 char</div></div>
+    <div class="copy-card">
+      <div class="tag">launch post &#183; pin to page</div>
+      <h3>Pinned post</h3>
+      <pre>Announcing $EDGE &#8212; the real-time intelligence terminal for prediction markets.
+
+The thesis:
+In 2024, prediction markets out-called every major pollster &#8212; Polymarket's Trump-Harris price moved hours ahead of network calls. Kalshi added regulated event contracts that institutional flow can actually touch. Combined volume has more than 10x'd in 18 months. And yet the tooling that traders use to read these markets in real time is, charitably, group chats and refresh buttons.
+
+We built the terminal we wanted to use.
+
+What's in v1 (live now at edge-two-psi.vercel.app):
+
+&#8226; Every Polymarket and Kalshi market in one sortable grid, with cross-venue arbitrage flagged at the row level.
+&#8226; Whale-flow tape &#8212; wallet-level entries &#8805;$25K, surfaced in real time with historical hit-rate per wallet.
+&#8226; A sentiment radar that scores aggregated X / Farcaster / Reddit chatter against market price, producing a "divergence" reading (the gap between Money and Mouth).
+&#8226; A public picker algorithm with an immutable track record. No retcons.
+
+What's coming in v2:
+&#8226; Custom alert webhooks for any divergence &#8805;X threshold on any market.
+&#8226; Cross-venue normalization (synthetic Polymarket &times; Kalshi prices).
+&#8226; A research suite for back-testing strategies against the historical whale corpus.
+
+We're a two-person team: Robert (frontend / product) and Tye (data / infra). We use this every day for our own trading. If you're a quant, a market researcher, a trader, or a fintech operator who has wanted to take prediction markets seriously and couldn't find the right surface &#8212; you're who we're building for.
+
+Try the terminal: https://edge-two-psi.vercel.app/
+Follow this page for product updates, market notes, and the occasional public divergence dossier.
+
+The token, $EDGE, gates premium tiers &#8212; webhooks, push, governance. Launching on Solana via pump.fun. Details on the site.
+
+Watch the action. Before you bet.
+
+&#8212; Robert + Tye</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Setup Notes</h2><div class="sec-num">03.09.05</div></div>
+    <div class="steps">
+      <div class="step"><div class="body">Create Company Page. Industry: <code>Financial Services</code>. Size: 2&#8211;10. Founded: 2026. Tagline from <code>bio.md</code>.</div></div>
+      <div class="step"><div class="body">Upload <code>pfp.svg</code> (export 300&times;300 PNG) and <code>banner.svg</code> (export 1128&times;191 PNG).</div></div>
+      <div class="step"><div class="body">Paste About copy. Set website <code>edge-two-psi.vercel.app</code>. Set specialties (see <code>bio.md</code>).</div></div>
+      <div class="step"><div class="body">Publish the pinned announcement. Pin it.</div></div>
+      <div class="step"><div class="body">Have @robert + @tye list <code>$EDGE</code> as current employer on their personal LinkedIn profiles. Re-share the announcement from each. Personal-profile amplification beats company-page reach 5:1.</div></div>
+      <div class="step"><div class="body">Cadence: 1 post/week. Mix market notes, product updates, thesis pieces. No GIFs, no generic motivational posts, no comment-bait polls.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE &#183; SOCIAL / LINKEDIN &#183; v1.0</div>
+    <div><a href="../index.html">&larr; Social Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

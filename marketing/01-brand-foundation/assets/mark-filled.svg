@@ -1,0 +1,5 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE mark filled">
+  <title>$EDGE</title>
+  <rect width="64" height="64" fill="#050507"/>
+  <path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

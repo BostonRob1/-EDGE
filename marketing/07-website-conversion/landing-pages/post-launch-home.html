@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — The Terminal for Prediction Markets · Live on Solana</title>
+<meta name="description" content="$EDGE is the terminal for prediction markets. Live on Solana. Watch the action. Before you bet." />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="$EDGE — The Terminal for Prediction Markets" />
+<meta property="og:description" content="Watch the action. Before you bet. Money / Mouth / Edge — in one screen." />
+<meta property="og:image" content="../og-images/og-home.html" />
+<meta property="og:url" content="https://edgeterminal.xyz" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800; --red: #FF3344;
+    --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+  ::selection { background: var(--lime); color: var(--void); }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 100;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(5,5,7,.78); border-bottom: 1px solid var(--border-bright); padding: 14px 32px; display:flex; align-items:center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: -.02em; }
+  .brand .name span { color: var(--lime); }
+  nav.primary { display: flex; gap: 28px; }
+  nav.primary a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  nav.primary a:hover { color: var(--lime); }
+  .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); }
+  .live-pill::before { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+  .reveal { opacity: 0; transform: translateY(16px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  .d1 { animation-delay: .05s; } .d2 { animation-delay: .18s; } .d3 { animation-delay: .32s; }
+  .d4 { animation-delay: .48s; } .d5 { animation-delay: .62s; } .d6 { animation-delay: .78s; }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+
+  /* LIVE PILL BAR */
+  .live-bar { display: flex; align-items: stretch; border: 1px solid var(--border-bright); background: linear-gradient(180deg, rgba(196,255,0,0.04), transparent); margin-bottom: 48px; }
+  .live-bar .left { display: flex; align-items: center; gap: 12px; padding: 16px 22px; border-right: 1px solid var(--border); }
+  .live-bar .dot { width: 8px; height: 8px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  .live-bar .left .txt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--lime); }
+  .live-bar .addr { flex: 1; padding: 16px 22px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--white); overflow-x: auto; white-space: nowrap; display: flex; align-items: center; }
+  .live-bar .addr .lbl { color: var(--muted); margin-right: 12px; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; }
+  .live-bar button { padding: 0 24px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; border-left: 1px solid var(--void); transition: filter .15s; }
+  .live-bar button:hover { filter: brightness(1.08); }
+  .live-bar button.copied { background: var(--green); }
+
+  /* HERO */
+  .hero { display: grid; grid-template-columns: 1fr; gap: 28px; padding: 24px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(72px, 12vw, 180px); line-height: .9; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  h1 .strike { color: var(--muted); }
+  .lede { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; max-width: 720px; color: var(--white); opacity: .85; }
+  .lede em { color: var(--lime); font-style: normal; }
+  .hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .btn-primary { background: var(--lime); color: var(--void); padding: 16px 28px; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; transition: filter .15s; display: inline-flex; align-items: center; gap: 10px; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-primary::after { content: '→'; }
+  .btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); padding: 16px 24px; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; transition: background .15s; }
+  .btn-secondary:hover { background: var(--void-3); }
+
+  /* TOKEN STATS BAR */
+  .token-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 64px; }
+  .stat { background: var(--void-2); padding: 22px 24px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
+  .stat .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+  .stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: clamp(22px, 2.6vw, 32px); color: var(--white); line-height: 1; }
+  .stat .v.lime { color: var(--lime); }
+  .stat .v.green { color: var(--green); }
+  .stat .delta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); }
+  .stat .delta.neg { color: var(--red); }
+  .stat::after { content: ''; position: absolute; bottom: 0; left: 0; height: 1px; background: var(--lime); width: 0; animation: bar 4s ease-in-out infinite; }
+  .stat:nth-child(2)::after { animation-delay: 1s; }
+  .stat:nth-child(3)::after { animation-delay: 2s; }
+  .stat:nth-child(4)::after { animation-delay: 3s; }
+  @keyframes bar { 0% { width: 0; opacity: 0; } 20% { opacity: 1; } 100% { width: 100%; opacity: 0; } }
+
+  /* SECTIONS */
+  section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 36px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 64px); letter-spacing: -.02em; text-transform: uppercase; line-height: .96; }
+  h2 .accent { color: var(--lime); }
+
+  /* 5-PILLAR STRIP */
+  .pillars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .pillar { background: var(--void-2); padding: 24px 22px; display: flex; flex-direction: column; gap: 14px; min-height: 320px; transition: background .2s; }
+  .pillar:hover { background: var(--void-3); }
+  .pillar .num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; color: var(--muted); }
+  .pillar .name { font-family: 'Anton', sans-serif; font-size: 26px; letter-spacing: -.01em; text-transform: uppercase; line-height: .96; }
+  .pillar .name .accent { color: var(--lime); }
+  .pillar .mock { flex: 1; background: var(--void); border: 1px solid var(--border); min-height: 120px; display: flex; flex-direction: column; padding: 12px; gap: 6px; overflow: hidden; }
+  .pillar .mock .row { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); padding: 4px 0; border-bottom: 1px solid var(--border); }
+  .pillar .mock .row:last-child { border-bottom: 0; }
+  .pillar .mock .row b { color: var(--white); font-weight: 500; }
+  .pillar .mock .row .v.pos { color: var(--green); }
+  .pillar .mock .row .v.neg { color: var(--red); }
+  .pillar .mock .row .v.lime { color: var(--lime); }
+  .pillar .mock .row .v.mag { color: var(--magenta); }
+  .pillar .copy { font-size: 13px; color: var(--white); opacity: .8; line-height: 1.45; }
+  .pillar .chart { height: 80px; }
+
+  /* CTA SECTION */
+  .cta-block { padding: 64px 40px; background: var(--void-2); border: 1px solid var(--border-bright); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; position: relative; overflow: hidden; }
+  .cta-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--lime), transparent); }
+  .cta-block h3 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 72px); letter-spacing: -.02em; text-transform: uppercase; line-height: .96; }
+  .cta-block h3 .accent { color: var(--lime); }
+  .cta-block .copy { font-size: 17px; line-height: 1.5; max-width: 560px; color: var(--white); opacity: .85; }
+
+  /* FOOTER */
+  footer.bottom { padding-top: 56px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+  footer .col h4 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; color: var(--white); margin-bottom: 14px; }
+  footer .col ul { list-style: none; display: grid; gap: 8px; }
+  footer .col a:hover { color: var(--lime); }
+  footer .col .contract { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--white); word-break: break-all; padding: 8px 10px; border: 1px solid var(--border); background: var(--void-2); }
+  .footer-fine { grid-column: 1 / -1; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 1080px) {
+    .pillars { grid-template-columns: repeat(3, 1fr); }
+    .pillar:nth-child(4), .pillar:nth-child(5) { grid-column: span 1; }
+  }
+  @media (max-width: 960px) {
+    .token-stats { grid-template-columns: repeat(2, 1fr); }
+    .pillars { grid-template-columns: repeat(2, 1fr); }
+    footer.bottom { grid-template-columns: 1fr 1fr; }
+    nav.primary a:nth-child(n+3) { display: none; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 28px 18px 80px; }
+    header.top { padding: 12px 18px; }
+    nav.primary { display: none; }
+    .live-bar { flex-direction: column; }
+    .live-bar .left { border-right: 0; border-bottom: 1px solid var(--border); }
+    .live-bar button { border-left: 0; border-top: 1px solid var(--void); padding: 14px; }
+    .pillars { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 24px 14px 60px; }
+    .token-stats { grid-template-columns: 1fr; }
+    footer.bottom { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="#top" aria-label="$EDGE home">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <nav class="primary" aria-label="Primary">
+    <a href="#pillars">PRODUCT</a>
+    <a href="coming-soon.html#spec">TOKENOMICS</a>
+    <a href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">TERMINAL</a>
+    <a href="#" aria-label="Twitter">TWITTER</a>
+    <a href="#" aria-label="Discord">DISCORD</a>
+  </nav>
+  <div class="live-pill">LIVE</div>
+</header>
+
+<main id="top">
+
+  <!-- LIVE BAR -->
+  <div class="live-bar reveal d1">
+    <div class="left">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="txt">LIVE ON SOLANA</span>
+    </div>
+    <div class="addr">
+      <span class="lbl">CONTRACT</span>
+      <span id="contract-addr">EdgE7r7TmnL2yQ3vK8sN9mPxR4dHfXcZbA1gJk6uW5vt</span>
+    </div>
+    <button id="copy-contract" type="button" aria-label="Copy contract address">COPY</button>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow reveal d2">The terminal for prediction markets · v1 · 2026</div>
+    <h1 class="reveal d3">Watch the <span class="accent">action</span>.<br>Before you <span class="accent">bet</span>.</h1>
+    <p class="lede reveal d4">Polymarket, Kalshi, whales, sentiment — in one screen. The gap between <em>money</em> and <em>mouth</em> is your <em>edge</em>. We show it to you, live.</p>
+    <div class="hero-cta-row reveal d5">
+      <a class="btn-primary" href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">TRY THE TERMINAL</a>
+      <a class="btn-secondary" href="#pillars">SEE WHAT'S INSIDE</a>
+    </div>
+  </section>
+
+  <!-- TOKEN STATS BAR -->
+  <div class="token-stats reveal d6" aria-label="Live token stats">
+    <div class="stat">
+      <div class="k">Price</div>
+      <div class="v green" id="stat-price">$0.0042</div>
+      <div class="delta" id="stat-price-delta">+18.4% 24H</div>
+    </div>
+    <div class="stat">
+      <div class="k">Market Cap</div>
+      <div class="v" id="stat-mcap">$4.2M</div>
+      <div class="delta">CIRCULATING</div>
+    </div>
+    <div class="stat">
+      <div class="k">24h Volume</div>
+      <div class="v lime" id="stat-vol">$1.84M</div>
+      <div class="delta" id="stat-vol-delta">+62% 24H</div>
+    </div>
+    <div class="stat">
+      <div class="k">Holders</div>
+      <div class="v" id="stat-holders">1,847</div>
+      <div class="delta" id="stat-holders-delta">+124 24H</div>
+    </div>
+  </div>
+
+  <!-- 5 PILLARS -->
+  <section id="pillars">
+    <div class="sec-head">
+      <h2>Five Surfaces, <span class="accent">One Screen</span></h2>
+      <div class="sec-num">01 · The Product</div>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="num">01</div>
+        <div class="name"><span class="accent">Markets</span> Hub</div>
+        <div class="mock" aria-hidden="true">
+          <div class="row"><b>TRUMP × FED</b><span class="v pos">62.4%</span></div>
+          <div class="row"><b>CPI > 3.5%</b><span class="v neg">34.0%</span></div>
+          <div class="row"><b>BTC $200K</b><span class="v pos">28.4%</span></div>
+          <div class="row"><b>SCOTUS '26</b><span class="v pos">71.6%</span></div>
+          <div class="row"><b>ETH ETF +</b><span class="v pos">66.4%</span></div>
+        </div>
+        <div class="copy">Live Polymarket + Kalshi rollup with cross-venue pricing.</div>
+      </div>
+      <div class="pillar">
+        <div class="num">02</div>
+        <div class="name"><span class="accent">Whale</span> Radar</div>
+        <div class="mock" aria-hidden="true">
+          <div class="row"><b>0xA3F2...</b><span class="v pos">+$324K</span></div>
+          <div class="row"><b>0xB12C...</b><span class="v pos">+$208K</span></div>
+          <div class="row"><b>0xC9D4...</b><span class="v neg">-$112K</span></div>
+          <div class="row"><b>0x7E81...</b><span class="v pos">+$96K</span></div>
+          <div class="row"><b>0x4A06...</b><span class="v neg">-$48K</span></div>
+        </div>
+        <div class="copy">Track the wallets that move markets, in real time.</div>
+      </div>
+      <div class="pillar">
+        <div class="num">03</div>
+        <div class="name"><span class="accent">Sentiment</span> Feed</div>
+        <div class="mock" aria-hidden="true">
+          <div class="row"><b>@ANON_TRADER</b><span class="v pos">+2.4K</span></div>
+          <div class="row"><b>r/PREDICT</b><span class="v lime">FIRE</span></div>
+          <div class="row"><b>@MACRO_GUY</b><span class="v neg">-440</span></div>
+          <div class="row"><b>TG:DEGEN</b><span class="v pos">+1.8K</span></div>
+          <div class="row"><b>DC:ALPHA</b><span class="v lime">SPIKE</span></div>
+        </div>
+        <div class="copy">What the loudest accounts are saying — quantified.</div>
+      </div>
+      <div class="pillar">
+        <div class="num">04</div>
+        <div class="name"><span class="accent">Edge</span> Picker</div>
+        <div class="mock" aria-hidden="true">
+          <div class="row"><b>TRUMP × FED</b><span class="v lime">+18.4</span></div>
+          <div class="row"><b>ETH ETF +</b><span class="v lime">+12.1</span></div>
+          <div class="row"><b>BTC $200K</b><span class="v pos">+8.6</span></div>
+          <div class="row"><b>CPI > 3.5%</b><span class="v neg">-7.2</span></div>
+          <div class="row"><b>SUPER BOWL</b><span class="v neg">-2.8</span></div>
+        </div>
+        <div class="copy">Algorithm-ranked opportunities with public track record.</div>
+      </div>
+      <div class="pillar">
+        <div class="num">05</div>
+        <div class="name"><span class="accent">Divergence</span> Radar</div>
+        <div class="mock" aria-hidden="true">
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none" style="width:100%;height:100%;">
+            <path d="M 0 50 L 30 46 L 60 42 L 90 38 L 120 30 L 150 22 L 180 18 L 200 12" fill="none" stroke="#C4FF00" stroke-width="2"/>
+            <path d="M 0 60 L 30 58 L 60 54 L 90 52 L 120 48 L 150 44 L 180 40 L 200 38" fill="none" stroke="#F5F5F0" stroke-width="1.5" opacity=".7"/>
+            <circle cx="200" cy="12" r="3" fill="#C4FF00"/>
+            <circle cx="200" cy="38" r="3" fill="#F5F5F0"/>
+            <line x1="200" y1="12" x2="200" y2="38" stroke="#FF006E" stroke-width="1" stroke-dasharray="2,2"/>
+          </svg>
+        </div>
+        <div class="copy">Cross-venue mispricing scanner with custom alerts.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="border-bottom: 0;">
+    <div class="cta-block">
+      <div class="eyebrow">Live now · No signup · v1 free</div>
+      <h3>Try The <span class="accent">Terminal</span>.</h3>
+      <div class="copy">Open the live product. See the divergence radar. Find the gap.</div>
+      <a class="btn-primary" href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">OPEN TERMINAL</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bottom">
+    <div class="col">
+      <h4>$EDGE</h4>
+      <p style="text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.5;color:var(--muted);max-width:340px;">The terminal for prediction markets. Money / Mouth / Edge — in one screen. Live on Solana.</p>
+      <div class="contract" style="margin-top:18px;">EdgE7r7TmnL2yQ3vK8sN9mPxR4dHfXcZbA1gJk6uW5vt</div>
+    </div>
+    <div class="col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">Terminal</a></li>
+        <li><a href="#pillars">Pillars</a></li>
+        <li><a href="coming-soon.html#spec">Tokenomics</a></li>
+        <li><a href="#" aria-label="API docs">API Docs</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="#" aria-label="Twitter">Twitter / X</a></li>
+        <li><a href="#" aria-label="Discord">Discord</a></li>
+        <li><a href="#" aria-label="Telegram">Telegram</a></li>
+        <li><a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:cashbridgehomes@gmail.com">cashbridgehomes@gmail.com</a></li>
+        <li><a href="mailto:cashbridgehomes@gmail.com">cashbridgehomes@gmail.com</a></li>
+        <li><a href="mailto:cashbridgehomes@gmail.com">cashbridgehomes@gmail.com</a></li>
+      </ul>
+    </div>
+    <div class="footer-fine">
+      <div>$EDGE · LIVE · v1.0 · NOT FINANCIAL ADVICE</div>
+      <div>© 2026 EDGE TERMINAL</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // ============ COPY CONTRACT ============
+  const copyBtn = document.getElementById('copy-contract');
+  const addr = document.getElementById('contract-addr');
+  copyBtn.addEventListener('click', () => {
+    const text = addr.textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = 'COPIED';
+      setTimeout(() => { copyBtn.classList.remove('copied'); copyBtn.textContent = 'COPY'; }, 1600);
+    }).catch(() => {
+      const t = document.createElement('textarea');
+      t.value = text; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); } catch(e){}
+      document.body.removeChild(t);
+    });
+  });
+
+  // ============ ANIMATE STATS ============
+  // PRODUCTION: replace with live websocket / poll from Birdeye / Dexscreener / Jupiter.
+  function jitter(node, base, delta, dur) {
+    const start = performance.now();
+    function step(t) {
+      const p = Math.min(1, (t - start) / dur);
+      const v = base + Math.sin(p * Math.PI * 2) * delta * (Math.random() * 0.4 + 0.6);
+      node.textContent = '$' + (v).toFixed(4);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  const priceNode = document.getElementById('stat-price');
+  setInterval(() => {
+    jitter(priceNode, 0.0042, 0.00008, 1200);
+  }, 2400);
+
+  // increment holders subtly
+  const holdersNode = document.getElementById('stat-holders');
+  setInterval(() => {
+    if (Math.random() < 0.6) {
+      const cur = parseInt(holdersNode.textContent.replace(/,/g,''), 10);
+      const next = cur + Math.floor(Math.random() * 3) + 1;
+      animateNumber(holdersNode, cur, next, 800);
+    }
+  }, 4200);
+
+  function animateNumber(node, from, to, dur, prefix = '') {
+    const start = performance.now();
+    function step(t) {
+      const p = Math.min(1, (t - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const v = Math.round(from + (to - from) * eased);
+      node.textContent = prefix + v.toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+</script>
+</body>
+</html>

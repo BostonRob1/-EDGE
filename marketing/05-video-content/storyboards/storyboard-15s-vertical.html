@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Storyboard · 15s Vertical Hook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --void-3: #141418;
+    --lime: #C4FF00;
+    --magenta: #FF006E;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --green: #00FF85;
+    --red: #FF3344;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+  .hero { display:grid; gap: 32px; padding: 24px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 7vw, 96px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .meta { display:flex; gap: 36px; flex-wrap: wrap; font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing:.1em; text-transform: uppercase; }
+  .meta b { color: var(--white); font-weight: 500; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; } }
+
+  .frame-cell { background: var(--void-2); border: 1px solid var(--border); display: flex; flex-direction: column; }
+  .frame-header { padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); font-family:'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .18em; }
+  .frame-header .num { color: var(--lime); font-weight: 700; }
+  .frame-header .dur { color: var(--muted); }
+
+  /* 9:16 vertical frame */
+  .frame { aspect-ratio: 9/16; background: var(--void); position: relative; overflow: hidden; }
+
+  .frame-body { padding: 14px 16px 18px; font-size: 13px; line-height: 1.5; }
+  .frame-body .vo { display:block; font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .frame-body .desc { color: var(--white); opacity: .85; }
+  .frame-body .cap { display:block; margin-top: 10px; font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing:.12em; text-transform: uppercase; }
+
+  /* tiktok safe area bar at bottom of every frame */
+  .safe { position:absolute; bottom: 0; left:0; right:0; height: 16%; background: linear-gradient(to top, rgba(255,255,255,.04), transparent); pointer-events: none; border-top: 1px dashed rgba(245,245,240,.06); }
+  .safe::after { content: 'TIKTOK SAFE AREA'; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); font-family:'JetBrains Mono', monospace; font-size: 7px; color: var(--muted); letter-spacing:.2em; text-transform: uppercase; opacity: .6; }
+
+  /* ========== FRAME 01 — hook ========== */
+  .f01 { display:flex; align-items:center; justify-content:center; height:100%; position:relative; }
+  .f01 .seam { position:absolute; left:50%; top:0; bottom:0; width:3px; background: var(--magenta); transform: translateX(-50%); box-shadow: 0 0 18px rgba(255,0,110,.6); }
+  .f01 .stack { display:grid; gap: 12px; text-align:center; padding: 0 24px; z-index:2; }
+  .f01 .l1 { font-family:'Anton', sans-serif; font-size: 28px; letter-spacing:-.02em; color: var(--white); text-transform: uppercase; line-height: 1; }
+  .f01 .l2 { font-family:'Anton', sans-serif; font-size: 32px; letter-spacing:-.02em; color: var(--lime); text-transform: uppercase; line-height: 1; }
+  .f01 .l3 { font-family:'Anton', sans-serif; font-size: 28px; letter-spacing:-.02em; color: var(--white); text-transform: uppercase; line-height: 1; }
+
+  /* ========== FRAME 02 — proof ========== */
+  .whales-v { padding: 22px 16px; display:flex; flex-direction:column; gap: 8px; height:100%; }
+  .whales-v .h { font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; }
+  .whales-v .row { font-family:'JetBrains Mono', monospace; font-size: 9px; padding: 6px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: 6px; }
+  .whales-v .row .a { color: var(--muted); }
+  .whales-v .row.hot { background: rgba(196,255,0,.06); padding: 8px 8px; border-left: 2px solid var(--lime); margin: 0 -8px; }
+  .whales-v .row .m { color: var(--white); }
+  .whales-v .row .v { color: var(--lime); font-weight: 700; }
+  .whales-v .cap-bot { position:absolute; bottom: 22%; left: 16px; right: 16px; text-align:center; font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; }
+
+  /* ========== FRAME 03 — divergence ========== */
+  .div-v { padding: 22px 16px; display:flex; flex-direction:column; gap: 16px; height:100%; }
+  .div-v .h { font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--magenta); letter-spacing:.2em; text-transform: uppercase; }
+  .div-v svg { flex:1; }
+  .div-v .div-label { position:absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); padding: 8px 16px; background: var(--void); border: 1px solid var(--magenta); font-family:'JetBrains Mono', monospace; font-size: 18px; color: var(--magenta); letter-spacing:.15em; box-shadow: 0 0 24px rgba(255,0,110,.4); }
+
+  /* ========== FRAME 04 — tagline ========== */
+  .tag-v { height:100%; display:flex; flex-direction:column; justify-content:center; padding: 24px; gap: 8px; }
+  .tag-v .l1 { font-family:'Anton', sans-serif; font-size: 56px; letter-spacing:-.02em; line-height: .92; color: var(--white); text-transform: uppercase; }
+  .tag-v .l2 { font-family:'Anton', sans-serif; font-size: 56px; letter-spacing:-.02em; line-height: .92; color: var(--lime); text-transform: uppercase; }
+
+  /* ========== FRAME 05 — tiers ========== */
+  .tiers-v { padding: 28px 18px; display:flex; flex-direction:column; gap: 12px; height:100%; justify-content:center; }
+  .tiers-v .h { font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; margin-bottom: 8px; }
+  .tiers-v .row { display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items:center; }
+  .tiers-v .row .amt { font-family:'Anton', sans-serif; font-size: 26px; color: var(--lime); letter-spacing:-.01em; }
+  .tiers-v .row .util { font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--white); letter-spacing:.14em; text-transform: uppercase; }
+  .tiers-v .cap-bot { position:absolute; bottom: 22%; left: 16px; right: 16px; text-align:center; font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; }
+
+  /* ========== FRAME 06 — CTA ========== */
+  .cta-v { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 16px; padding: 24px; }
+  .cta-v svg { width: 56px; height: 56px; }
+  .cta-v .url { font-family:'Anton', sans-serif; font-size: 36px; color: var(--white); letter-spacing:-.01em; text-transform: lowercase; }
+  .cta-v .bio { font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; padding-top: 8px; border-top: 1px solid var(--border); width: 60%; text-align:center; }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Video Content</a> / Storyboard · 15s Vertical</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">05.03 / Storyboard · Vertical Hook</div>
+    <h1>15s · <span class="accent">$2.4M You Missed</span></h1>
+    <div class="meta">
+      <span><b>Aspect</b> 9:16 · 1080×1920</span>
+      <span><b>Frames</b> 6</span>
+      <span><b>Runtime</b> 15.0s</span>
+      <span><b>Platforms</b> TikTok · IG Reels · Shorts</span>
+      <span><b>Subtitles</b> Burn-in always</span>
+    </div>
+  </section>
+
+  <section class="grid">
+
+    <!-- FRAME 01 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 01 · HOOK</span><span class="dur">0.0–3.0s</span></div>
+      <div class="frame">
+        <div class="f01">
+          <div class="seam"></div>
+          <div class="stack">
+            <div class="l1">WHALES JUST MOVED</div>
+            <div class="l2">$2.4M ON TRUMP-2028.</div>
+            <div class="l3">AND YOU MISSED IT.</div>
+          </div>
+        </div>
+        <div class="safe"></div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · (none — captions ARE the hook)</span>
+        <span class="desc">Pure void. Magenta vertical line slides in. Captions print word-by-word, centered. Music up-tempo intro spike.</span>
+        <span class="cap">First 1.5s decides the watch · stops the scroll</span>
+      </div>
+    </div>
+
+    <!-- FRAME 02 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 02 · PROOF</span><span class="dur">3.0–5.5s</span></div>
+      <div class="frame">
+        <div class="whales-v">
+          <div class="h">WHALE ALERTS · LIVE</div>
+          <div class="row hot"><div><div class="a">0xA3F2</div><div class="m">TRUMP-2028 YES · 14m AGO</div></div><div class="v">+$2.4M</div></div>
+          <div class="row"><div><div class="a">0x9B8C</div><div class="m">POWELL-OUT-26 NO</div></div><div class="v">+$840K</div></div>
+          <div class="row"><div><div class="a">0x7E0D</div><div class="m">HARRIS-VP-28 YES</div></div><div class="v">+$502K</div></div>
+          <div class="row"><div><div class="a">0x4419</div><div class="m">FED-DEC-25BP NO</div></div><div class="v">+$310K</div></div>
+        </div>
+        <div class="whales-v">
+          <div class="cap-bot">$EDGE WHALE ALERTS · LIVE</div>
+        </div>
+        <div class="safe"></div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "$EDGE sees every whale move the second it hits."</span>
+        <span class="desc">Hard cut to whales panel. Top row highlighted in lime, pulsing. Real product, not a recreation.</span>
+        <span class="cap">Caption · $EDGE WHALE ALERTS · LIVE · mono 28px lime</span>
+      </div>
+    </div>
+
+    <!-- FRAME 03 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 03 · DIVERGENCE</span><span class="dur">5.5–8.5s</span></div>
+      <div class="frame">
+        <div class="div-v">
+          <div class="h">DIVERGENCE RADAR</div>
+          <svg viewBox="0 0 200 280" preserveAspectRatio="xMidYMid meet">
+            <line x1="0" y1="260" x2="200" y2="260" stroke="rgba(245,245,240,.12)"/>
+            <line x1="20" y1="0" x2="20" y2="280" stroke="rgba(245,245,240,.12)"/>
+            <line x1="20" y1="260" x2="190" y2="20" stroke="rgba(245,245,240,.18)" stroke-dasharray="3 3"/>
+            <circle cx="40" cy="240" r="3" fill="#6B6B73"/>
+            <circle cx="60" cy="220" r="3" fill="#6B6B73"/>
+            <circle cx="84" cy="190" r="3" fill="#6B6B73"/>
+            <circle cx="106" cy="160" r="3" fill="#6B6B73"/>
+            <circle cx="128" cy="124" r="3" fill="#6B6B73"/>
+            <circle cx="150" cy="90" r="3" fill="#6B6B73"/>
+            <circle cx="172" cy="48" r="3" fill="#6B6B73"/>
+          </svg>
+          <div class="div-label">DIVERGENCE 0.72</div>
+        </div>
+        <div class="safe"></div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "When the crowd disagrees with the money — that's your edge."</span>
+        <span class="desc">Divergence radar. Magenta outlier pulses. Tooltip prints "DIVERGENCE 0.72". Magenta is brand "alpha" color.</span>
+        <span class="cap">Caption · DIVERGENCE 0.72 · mono 32px magenta</span>
+      </div>
+    </div>
+
+    <!-- FRAME 04 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 04 · TAGLINE</span><span class="dur">8.5–11.5s</span></div>
+      <div class="frame">
+        <div class="tag-v">
+          <div class="l1">WATCH THE ACTION.</div>
+          <div class="l2">BEFORE YOU BET.</div>
+        </div>
+        <div class="safe"></div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "Watch the action. Before you bet."</span>
+        <span class="desc">Cut to black. Anton caps fill the screen, line by line. Hold each 1.2s. Don't rush.</span>
+        <span class="cap">Caption · tagline IS the visual</span>
+      </div>
+    </div>
+
+    <!-- FRAME 05 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 05 · TOKEN</span><span class="dur">11.5–13.5s</span></div>
+      <div class="frame">
+        <div class="tiers-v">
+          <div class="h">TOKEN UTILITY</div>
+          <div class="row"><div class="amt">10K</div><div class="util">WHALE ALERTS</div></div>
+          <div class="row"><div class="amt">100K</div><div class="util">DIVERGENCE RADAR</div></div>
+          <div class="row"><div class="amt">1M</div><div class="util">API ACCESS</div></div>
+          <div class="row"><div class="amt">10M</div><div class="util">INSIDER CHANNEL</div></div>
+        </div>
+        <div class="tiers-v">
+          <div class="cap-bot">$EDGE · LIVE ON PUMP.FUN</div>
+        </div>
+        <div class="safe"></div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "Token live on pump.fun."</span>
+        <span class="desc">Quick stack of mono tier rows. Each prints with 0.2s stagger. Lime tier numbers.</span>
+        <span class="cap">Caption · $EDGE · LIVE ON PUMP.FUN · mono 24px lime</span>
+      </div>
+    </div>
+
+    <!-- FRAME 06 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 06 · CTA</span><span class="dur">13.5–15.0s</span></div>
+      <div class="frame">
+        <div class="cta-v">
+          <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+          <div class="url">edgeterminal.xyz</div>
+          <div class="bio">LINK IN BIO →</div>
+        </div>
+        <div class="safe"></div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · (music resolves)</span>
+        <span class="desc">Mark draws. URL + LINK IN BIO. Swap "LINK IN BIO" for "SWIPE UP" on Stories, "DROP SITE BELOW" on X.</span>
+        <span class="cap">Caption · matches visual</span>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0 · STORYBOARD</div>
+    <div><a href="../index.html">← Back to Video Content</a></div>
+  </footer>
+</main>
+</body>
+</html>

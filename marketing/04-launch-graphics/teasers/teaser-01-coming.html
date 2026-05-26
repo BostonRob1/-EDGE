@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Teaser 01 · Something is Coming</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{
+    position:relative;width:1080px;height:1080px;
+    background:var(--void);color:var(--white);
+    overflow:hidden;
+    box-shadow:0 60px 120px rgba(0,0,0,.7);
+  }
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  /* faint terminal grid */
+  .grid-bg{position:absolute;inset:0;opacity:.06;
+    background-image:
+      linear-gradient(var(--white) 1px,transparent 1px),
+      linear-gradient(90deg,var(--white) 1px,transparent 1px);
+    background-size:60px 60px;}
+
+  /* corner brackets */
+  .bracket{position:absolute;width:48px;height:48px;border:2px solid var(--lime);}
+  .br-tl{top:48px;left:48px;border-right:0;border-bottom:0}
+  .br-tr{top:48px;right:48px;border-left:0;border-bottom:0}
+  .br-bl{bottom:48px;left:48px;border-right:0;border-top:0}
+  .br-br{bottom:48px;right:48px;border-left:0;border-top:0}
+
+  /* top bar */
+  .top-bar{position:absolute;top:80px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+  .top-bar .sig{color:var(--lime)}
+
+  /* countdown badge */
+  .countdown{position:absolute;top:80px;right:80px;
+    border:1px solid var(--border-bright);background:rgba(196,255,0,0.04);
+    padding:10px 14px;display:flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.2em;color:var(--lime);text-transform:uppercase}
+  .countdown .dot{width:8px;height:8px;background:var(--lime);border-radius:50%;animation:blink 1.4s infinite}
+  @keyframes blink{0%,55%{opacity:1}60%,100%{opacity:.15}}
+
+  /* center stage */
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.4em;color:var(--lime);text-transform:uppercase;margin-bottom:32px}
+  .headline{font-family:'Anton',sans-serif;font-size:160px;line-height:.86;letter-spacing:-.025em;text-transform:uppercase}
+  .headline .scram{display:inline-block;color:var(--lime)}
+  .headline .scram .ch{display:inline-block;min-width:.55em}
+  .sub{margin-top:48px;font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .sub .accent{color:var(--white)}
+
+  /* bottom rail */
+  .rail{position:absolute;bottom:96px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+  .rail .mark{display:flex;align-items:center;gap:12px}
+  .rail svg{width:28px;height:28px}
+  .rail .name{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em;color:var(--white)}
+  .rail .name span{color:var(--lime)}
+  .rail .meta{text-align:right;line-height:1.7}
+  .rail .meta strong{color:var(--white);font-weight:500}
+
+  /* big slash divider */
+  .slash{position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(180deg,transparent,var(--border-bright),transparent);opacity:.5}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · IG / X square</div>
+<div class="canvas">
+  <div class="grid-bg"></div>
+  <div class="grain"></div>
+
+  <div class="bracket br-tl"></div>
+  <div class="bracket br-tr"></div>
+  <div class="bracket br-bl"></div>
+  <div class="bracket br-br"></div>
+
+  <div class="top-bar">
+    <div>SYS · TRANSMISSION · 001</div>
+    <div class="sig">SIGNAL · OPEN</div>
+  </div>
+
+  <div class="countdown" style="top:130px">
+    <div class="dot"></div>
+    <span>T-MINUS 168:00:00</span>
+  </div>
+
+  <div class="center">
+    <div class="eyebrow">/ INCOMING TRANSMISSION /</div>
+    <div class="headline">
+      SOMETHING<br>
+      IS COMING.<br>
+      <span class="scram">
+        <span class="ch">$</span><span class="ch">E</span><span class="ch">D</span><span class="ch">G</span><span class="ch">E</span>
+      </span>
+    </div>
+    <div class="sub">WATCH THE ACTION. <span class="accent">BEFORE YOU BET.</span></div>
+  </div>
+
+  <div class="rail">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="name">$<span>EDGE</span></span>
+    </div>
+    <div class="meta">
+      <div><strong>edge-two-psi.vercel.app</strong></div>
+      <div>FAIRLAUNCH · PUMP.FUN · SOLANA</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scramble effect — runs once on load
+  const target='$EDGE';
+  const pool='!<>-_\\/[]{}—=+*^?#________01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const els=document.querySelectorAll('.scram .ch');
+  let frame=0;
+  function tick(){
+    els.forEach((el,i)=>{
+      const reveal = Math.floor(frame/8) > i;
+      if(reveal){ el.textContent=target[i]; el.style.color='#C4FF00'; }
+      else { el.textContent=pool[Math.floor(Math.random()*pool.length)]; el.style.color='#6B6B73'; }
+    });
+    frame++;
+    if(frame<120) requestAnimationFrame(tick);
+    else els.forEach((el,i)=>{el.textContent=target[i]; el.style.color='#C4FF00';});
+  }
+  setTimeout(tick,400);
+</script>
+</body>
+</html>

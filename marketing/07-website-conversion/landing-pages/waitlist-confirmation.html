@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>You're In — $EDGE Waitlist</title>
+<meta name="description" content="You're on the $EDGE waitlist. Refer friends to jump the line." />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="You're on the $EDGE waitlist." />
+<meta property="og:description" content="Watch the action. Before you bet." />
+<meta property="og:image" content="../og-images/og-coming-soon.html" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800; --red: #FF3344;
+    --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+  input { font-family: inherit; }
+  ::selection { background: var(--lime); color: var(--void); }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 100;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(5,5,7,.78); border-bottom: 1px solid var(--border-bright); padding: 14px 32px; display:flex; align-items:center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: -.02em; }
+  .brand .name span { color: var(--lime); }
+  nav.primary { display: flex; gap: 28px; }
+  nav.primary a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  nav.primary a:hover, nav.primary a.active { color: var(--white); }
+  .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); }
+  .live-pill::before { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+  .reveal { opacity: 0; transform: translateY(16px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  .d1 { animation-delay: .05s; } .d2 { animation-delay: .18s; } .d3 { animation-delay: .32s; }
+  .d4 { animation-delay: .48s; } .d5 { animation-delay: .62s; } .d6 { animation-delay: .78s; }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 80px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { text-align: center; padding: 40px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+  .check-mark { width: 96px; height: 96px; border: 2px solid var(--lime); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 28px; position: relative; }
+  .check-mark svg { width: 56px; height: 56px; }
+  .check-mark .check-path { stroke-dasharray: 200; stroke-dashoffset: 200; animation: draw 1s cubic-bezier(.2,.7,.2,1) forwards .4s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .check-mark::after { content: ''; position: absolute; inset: -8px; border: 1px solid var(--border-bright); animation: ring 1.6s ease-out 1s; }
+  @keyframes ring { 0% { opacity: 0; transform: scale(.85); } 50% { opacity: 1; } 100% { opacity: 0; transform: scale(1.4); } }
+
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; color: var(--lime); text-transform: uppercase; margin-bottom: 22px; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(64px, 12vw, 160px); letter-spacing: -.02em; text-transform: uppercase; line-height: .92; }
+  h1 .accent { color: var(--lime); }
+
+  .position-block { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 36px; padding: 22px 36px; border: 1px solid var(--border-bright); background: rgba(196,255,0,0.04); }
+  .position-block .k { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+  .position-block .v { font-family: 'Anton', sans-serif; font-size: 64px; color: var(--lime); letter-spacing: -.02em; line-height: 1; }
+  .position-block .sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(32px, 4.5vw, 52px); letter-spacing: -.02em; text-transform: uppercase; line-height: .96; }
+  h2 .accent { color: var(--lime); }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .step { background: var(--void-2); padding: 24px 22px; min-height: 180px; display: flex; flex-direction: column; gap: 14px; }
+  .step .num { font-family: 'Anton', sans-serif; font-size: 36px; color: var(--lime); letter-spacing: -.02em; line-height: 1; }
+  .step .title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--white); }
+  .step .copy { font-size: 14px; color: var(--white); opacity: .82; line-height: 1.5; }
+
+  /* REFERRAL */
+  .refer-wrap { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .refer-link { display: flex; gap: 0; border: 1px solid var(--border-bright); background: var(--void-2); }
+  .refer-link .url { flex: 1; padding: 18px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--white); overflow-x: auto; white-space: nowrap; }
+  .refer-link button { padding: 0 24px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; border-left: 1px solid var(--void); transition: filter .15s; }
+  .refer-link button:hover { filter: brightness(1.08); }
+  .refer-link button.copied { background: var(--green); }
+  .share-row { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .share-btn { flex: 1; background: var(--void-2); padding: 16px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--white); display: flex; align-items: center; justify-content: center; gap: 10px; transition: background .2s; }
+  .share-btn:hover { background: var(--void-3); }
+  .share-btn .icon { width: 14px; height: 14px; }
+
+  .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 18px; }
+  .stat { background: var(--void-2); padding: 18px 22px; }
+  .stat .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
+  .stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px; color: var(--lime); margin-top: 4px; }
+
+  /* JOIN */
+  .join-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .join-cell { background: var(--void-2); padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; transition: background .2s; }
+  .join-cell:hover { background: var(--void-3); }
+  .join-cell .title { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; letter-spacing: -.01em; }
+  .join-cell .title .accent { color: var(--lime); }
+  .join-cell .copy { color: var(--white); opacity: .8; font-size: 14px; line-height: 1.5; }
+  .join-cell .cta { margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); display: inline-flex; align-items: center; gap: 8px; }
+  .join-cell .cta::after { content: '→'; }
+
+  /* FOOTER */
+  footer.bottom { padding-top: 48px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  footer a:hover { color: var(--lime); }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 32px; right: 32px; background: var(--void-2); border: 1px solid var(--border-bright); padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--lime); transform: translateY(20px); opacity: 0; transition: opacity .25s, transform .25s; z-index: 50; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 960px) { .steps { grid-template-columns: repeat(2, 1fr); } .join-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) {
+    main { padding: 48px 18px 80px; }
+    header.top { padding: 12px 18px; }
+    nav.primary { display: none; }
+    h1 { font-size: clamp(52px, 16vw, 96px); }
+    .position-block { padding: 18px 24px; }
+    .position-block .v { font-size: 48px; }
+    .stats-bar { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    main { padding: 36px 14px 60px; }
+    .steps { grid-template-columns: 1fr; }
+    .share-row { flex-direction: column; }
+    .refer-link { flex-direction: column; }
+    .refer-link button { border-left: 0; border-top: 1px solid var(--void); padding: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="coming-soon.html" aria-label="$EDGE home">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <nav class="primary" aria-label="Primary">
+    <a href="coming-soon.html#why">PRODUCT</a>
+    <a href="coming-soon.html#spec">TOKENOMICS</a>
+    <a href="#" class="active">WAITLIST</a>
+    <a href="#" aria-label="Twitter">TWITTER</a>
+    <a href="#" aria-label="Discord">DISCORD</a>
+  </nav>
+  <div class="live-pill">CONFIRMED</div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="check-mark reveal d1" aria-hidden="true">
+      <svg viewBox="0 0 56 56"><path class="check-path" d="M12 28 L24 40 L44 18" fill="none" stroke="#C4FF00" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    </div>
+    <div class="eyebrow reveal d2">Confirmed · You're on the list</div>
+    <h1 class="reveal d3">You're <span class="accent">In.</span></h1>
+    <div class="position-block reveal d4">
+      <div class="k">Your Position</div>
+      <div class="v">#<span id="position">1,247</span></div>
+      <div class="sub">FIRST 1,000 GET WHITELIST</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>What Happens <span class="accent">Next</span></h2>
+      <div class="sec-num">01 · The Sequence</div>
+    </div>
+    <div class="steps">
+      <div class="step reveal d2">
+        <div class="num">01</div>
+        <div class="title">Countdown Email</div>
+        <div class="copy">A short note from the founders inside 24h with the exact launch time + the playbook.</div>
+      </div>
+      <div class="step reveal d3">
+        <div class="num">02</div>
+        <div class="title">Launch Alert</div>
+        <div class="copy">The second the contract is live, you get the address before the public ticker picks it up.</div>
+      </div>
+      <div class="step reveal d4">
+        <div class="num">03</div>
+        <div class="title">Whitelist</div>
+        <div class="copy">First 1,000 confirmed emails skip the public mempool window. Lower slippage, cleaner fill.</div>
+      </div>
+      <div class="step reveal d5">
+        <div class="num">04</div>
+        <div class="title">Claim Instructions</div>
+        <div class="copy">Step-by-step in-email guide to set up your wallet, claim, and start using the terminal.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Refer Friends, <span class="accent">Jump The Line</span></h2>
+      <div class="sec-num">02 · Climb · 1 per friend</div>
+    </div>
+    <div class="refer-wrap">
+      <div class="refer-link">
+        <div class="url" id="ref-url">https://edgeterminal.xyz/?ref=loading…</div>
+        <button id="copy-btn" type="button">COPY LINK</button>
+      </div>
+      <div class="share-row">
+        <a class="share-btn" id="share-x" href="#" target="_blank" rel="noopener" aria-label="Share on X">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h3l-7 8 8 12h-6l-5-7-6 7H2l8-9L2 2h6l4 6 6-6z"/></svg>
+          SHARE ON X
+        </a>
+        <a class="share-btn" id="share-tg" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3 1 11l6 2 2 7 4-4 6 5 3-18z"/></svg>
+          SHARE ON TG
+        </a>
+        <button class="share-btn" id="copy-btn-2" type="button" aria-label="Copy link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13"/><path d="M5 15V5h10"/></svg>
+          COPY LINK
+        </button>
+      </div>
+      <div class="stats-bar">
+        <div class="stat"><div class="k">Friends Joined</div><div class="v" id="stat-friends">0</div></div>
+        <div class="stat"><div class="k">Spots Climbed</div><div class="v" id="stat-spots">0</div></div>
+        <div class="stat"><div class="k">Current Position</div><div class="v" id="stat-pos">#1,247</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Join Us <span class="accent">Live</span></h2>
+      <div class="sec-num">03 · Real-time Comms</div>
+    </div>
+    <div class="join-grid">
+      <a class="join-cell reveal d2" href="#" target="_blank" rel="noopener">
+        <div class="title">Discord <span class="accent">/</span> Server</div>
+        <div class="copy">Where the alpha gets debated. Daily divergence drops, founder office hours, and the war room.</div>
+        <span class="cta">Join the Server</span>
+      </a>
+      <a class="join-cell reveal d3" href="#" target="_blank" rel="noopener">
+        <div class="title">Telegram <span class="accent">/</span> Chat</div>
+        <div class="copy">Fast-moving signal chat with the launch crew. Mobile-first, push-notification friendly.</div>
+        <span class="cta">Join the Chat</span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="bottom">
+    <div>$EDGE · CONFIRMED · NOT FINANCIAL ADVICE</div>
+    <div><a href="coming-soon.html">← BACK TO LANDING</a></div>
+  </footer>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">LINK COPIED TO CLIPBOARD</div>
+
+<script>
+  // ============ REFERRAL LINK ============
+  // Generate a short pseudo-random ref code, client-side only.
+  // PRODUCTION: read from user's account record, attribute server-side.
+  function genRef() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let out = '';
+    for (let i = 0; i < 7; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    return out;
+  }
+  const ref = genRef();
+  const base = 'https://edgeterminal.xyz/?ref=';
+  const url = base + ref;
+  document.getElementById('ref-url').textContent = url;
+  document.getElementById('share-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('I just got on the $EDGE waitlist — the terminal for prediction markets. Watch the action. Before you bet.') + '&url=' + encodeURIComponent(url);
+  document.getElementById('share-tg').href = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent('Get on the $EDGE waitlist before it drops.');
+
+  // ============ COPY HANDLERS ============
+  const toast = document.getElementById('toast');
+  function showToast(msg) {
+    toast.textContent = msg || 'LINK COPIED TO CLIPBOARD';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1900);
+  }
+  function copyLink(btn) {
+    navigator.clipboard.writeText(url).then(() => {
+      btn.classList.add('copied');
+      btn.textContent = 'COPIED';
+      showToast();
+      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = btn.dataset.label || 'COPY LINK'; }, 1900);
+    }).catch(() => {
+      // fallback
+      const t = document.createElement('textarea');
+      t.value = url; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); showToast(); } catch(e){}
+      document.body.removeChild(t);
+    });
+  }
+  const copyBtn = document.getElementById('copy-btn');
+  copyBtn.dataset.label = 'COPY LINK';
+  copyBtn.addEventListener('click', () => copyLink(copyBtn));
+  const copyBtn2 = document.getElementById('copy-btn-2');
+  copyBtn2.addEventListener('click', () => copyLink(copyBtn2));
+
+  // ============ ANIMATE NUMBERS ============
+  function animateNumber(node, from, to, dur, prefix = '') {
+    const start = performance.now();
+    function step(t) {
+      const p = Math.min(1, (t - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const v = Math.round(from + (to - from) * eased);
+      node.textContent = prefix + v.toLocaleString('en-US');
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  setTimeout(() => animateNumber(document.getElementById('position'), 0, 1247, 1500), 400);
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<svg viewBox="0 0 360 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE wordmark">
+  <title>$EDGE</title>
+  <style>
+    .dollar { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #C4FF00; letter-spacing: -0.02em; }
+    .word   { font-family: 'Anton', Impact, sans-serif; font-size: 88px; fill: #F5F5F0; letter-spacing: -0.02em; }
+  </style>
+  <text x="0" y="72" class="dollar">$</text>
+  <text x="56" y="72" class="word">EDGE</text>
+</svg>

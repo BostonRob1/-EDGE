@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Meme 05 · Before / After</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:48px}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  .hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:12px}
+  .mark svg{width:26px;height:26px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+
+  .title{margin-top:20px;text-align:center}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.4em;color:var(--lime);text-transform:uppercase;margin-bottom:8px}
+  h1{font-family:'Anton',sans-serif;font-size:64px;letter-spacing:-.02em;line-height:.95;text-transform:uppercase}
+
+  /* two panels */
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;height:760px}
+  .panel{border:1px solid var(--border);background:var(--void-2);overflow:hidden;display:flex;flex-direction:column;position:relative}
+  .panel.before{border-left:4px solid var(--red)}
+  .panel.after{border-left:4px solid var(--lime)}
+
+  .pheader{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--void-3)}
+  .pheader .l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase}
+  .panel.before .pheader .l{color:var(--red)}
+  .panel.after .pheader .l{color:var(--lime)}
+  .pheader .r{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+
+  .pbig{padding:20px 18px 12px;text-align:center}
+  .pbig .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+  .pbig .word{font-family:'Anton',sans-serif;font-size:60px;letter-spacing:-.02em;line-height:1;text-transform:uppercase}
+  .panel.before .pbig .word{color:var(--red)}
+  .panel.after .pbig .word{color:var(--lime)}
+
+  /* BEFORE: chaos browser-tab grid */
+  .tabs{padding:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;flex:1;overflow:hidden}
+  .tab{background:var(--void-3);border:1px solid var(--border);padding:8px 10px;display:flex;flex-direction:column;gap:4px;position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--white);letter-spacing:.05em;text-transform:uppercase;min-height:54px;justify-content:center}
+  .tab .x{position:absolute;top:4px;right:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);line-height:1}
+  .tab .name{color:var(--white);font-size:10px;letter-spacing:.05em}
+  .tab .url{color:var(--muted);font-size:8px;letter-spacing:.15em;text-transform:uppercase}
+  .tab.alert{border-color:var(--red);background:rgba(255,51,68,.05)}
+  .tab.alert .name{color:var(--red)}
+  .tab.warn{border-color:var(--amber)}
+  .tab.warn .name{color:var(--amber)}
+
+  /* missed alert strip */
+  .miss{padding:10px 14px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--red);text-transform:uppercase;background:rgba(255,51,68,.06);display:flex;justify-content:space-between;align-items:center}
+  .miss .x{color:var(--red);font-weight:700}
+
+  /* AFTER: one clean terminal */
+  .term-body{padding:16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;background:linear-gradient(180deg,rgba(196,255,0,.04),transparent 30%)}
+  .term-body .row{display:grid;grid-template-columns:1fr auto auto;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--white);padding:7px 10px;border:1px solid var(--border);background:var(--void);align-items:center;letter-spacing:.04em;text-transform:uppercase}
+  .term-body .row.hi{border-color:var(--border-bright);background:rgba(196,255,0,.05)}
+  .term-body .row .nm{color:var(--white);font-size:11px}
+  .term-body .row .ed{font-family:'Anton',sans-serif;font-size:20px;color:var(--magenta);letter-spacing:-.01em;line-height:1}
+  .term-body .row .vol{color:var(--muted);font-size:9px;letter-spacing:.18em}
+
+  .term-bottom{padding:10px 14px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--lime);text-transform:uppercase;background:rgba(196,255,0,.06);display:flex;justify-content:space-between;align-items:center}
+  .term-bottom strong{color:var(--white)}
+
+  .footer{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .footer .cap{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
+  .footer .cap .lime{color:var(--lime)}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · Meme template 05</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="meta">MEME · 05 · BEFORE / AFTER</div>
+  </div>
+
+  <div class="title">
+    <div class="eyebrow">/ ASK THE DEGEN /</div>
+    <h1>BEFORE $EDGE &nbsp;→&nbsp; AFTER $EDGE.</h1>
+  </div>
+
+  <div class="panels">
+    <!-- BEFORE -->
+    <div class="panel before">
+      <div class="pheader"><span class="l">▸ BEFORE</span><span class="r">8 TABS · 0 ANSWERS</span></div>
+      <div class="pbig"><div class="lbl">// THE OLD WAY</div><div class="word">CHAOS.</div></div>
+      <div class="tabs">
+        <div class="tab"><span class="x">×</span><div class="name">POLYMARKET</div><div class="url">polymarket.com</div></div>
+        <div class="tab"><span class="x">×</span><div class="name">KALSHI</div><div class="url">kalshi.com</div></div>
+        <div class="tab warn"><span class="x">×</span><div class="name">X · SEARCH</div><div class="url">x.com/search</div></div>
+        <div class="tab"><span class="x">×</span><div class="name">TG · WHALE BOT</div><div class="url">t.me/...</div></div>
+        <div class="tab alert"><span class="x">×</span><div class="name">DEXSCREENER</div><div class="url">dexscreener.com</div></div>
+        <div class="tab"><span class="x">×</span><div class="name">REDDIT · WSB</div><div class="url">r/wallstreetbets</div></div>
+        <div class="tab warn"><span class="x">×</span><div class="name">CALENDAR · CPI</div><div class="url">forexfactory.com</div></div>
+        <div class="tab alert"><span class="x">×</span><div class="name">SPREADSHEET</div><div class="url">sheets.google.com</div></div>
+      </div>
+      <div class="miss"><span>● MISSED · TRUMP-2028 +12% · 14m ago</span><span class="x">REKT</span></div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel after">
+      <div class="pheader"><span class="l">▸ AFTER</span><span class="r">1 TERMINAL · ALL SIGNAL</span></div>
+      <div class="pbig"><div class="lbl">// THE EDGE WAY</div><div class="word">CLARITY.</div></div>
+      <div class="term-body">
+        <div class="row hi">
+          <span class="nm">TRUMP-2028 · GOP</span>
+          <span class="ed">0.72</span>
+          <span class="vol">$2.4M ▲</span>
+        </div>
+        <div class="row">
+          <span class="nm">CPI-JUNE > 3.4%</span>
+          <span class="ed">0.58</span>
+          <span class="vol">$1.2M ▲</span>
+        </div>
+        <div class="row">
+          <span class="nm">FED-CUT JUL</span>
+          <span class="ed">0.41</span>
+          <span class="vol">$890K ▼</span>
+        </div>
+        <div class="row">
+          <span class="nm">REC-2026</span>
+          <span class="ed">0.33</span>
+          <span class="vol">$620K ▲</span>
+        </div>
+        <div class="row">
+          <span class="nm">NFL · MVP ALLEN</span>
+          <span class="ed">0.22</span>
+          <span class="vol">$340K ▲</span>
+        </div>
+      </div>
+      <div class="term-bottom"><span>● LIVE · <strong>14 WHALE PINGS</strong> · LAST 1H</span><span><strong>SIGNAL</strong></span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="cap">PICK A LANE. <span class="lime">PICK THE LIME ONE.</span></div>
+    <div class="right">
+      <div>$EDGE · EDGE-TWO-PSI.VERCEL.APP</div>
+      <div>WATCH THE ACTION. BEFORE YOU BET.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

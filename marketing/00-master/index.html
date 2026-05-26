@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Marketing OS</title>
+<meta name="description" content="The complete launch arsenal for $EDGE. Money. Mouth. Edge.">
+<link rel="icon" type="image/svg+xml" href="../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --void-3: #141418;
+    --void-4: #1c1c22;
+    --lime: #C4FF00;
+    --lime-dim: #8aa800;
+    --magenta: #FF006E;
+    --green: #00FF85;
+    --amber: #FFB800;
+    --orange: #FF7A00;
+    --red: #FF3344;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  a { color: var(--white); text-decoration: none; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .04; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(14px); background: rgba(5,5,7,.85);
+    border-bottom: 1px solid var(--border-bright);
+    padding: 16px 32px;
+    display:flex; align-items:center; justify-content: space-between; gap:24px;
+  }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .live-pill {
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.25em;
+    color: var(--lime); padding: 6px 10px; border: 1px solid var(--border-bright);
+    text-transform: uppercase;
+  }
+  .live-pill .dot { width: 6px; height: 6px; background: var(--lime); border-radius: 50%; animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { display:grid; gap: 32px; padding: 48px 0 80px; border-bottom: 1px solid var(--border); }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(72px, 14vw, 220px); line-height: .88; letter-spacing: -.025em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  h1 .muted-dot { color: var(--muted); }
+  .lede { font-size: 21px; line-height: 1.5; max-width: 760px; color: var(--white); opacity: .85; }
+  .lede em { color: var(--lime); font-style: normal; }
+  .hero-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 24px; }
+  .hero-meta .cell { background: var(--void-2); padding: 16px 20px; }
+  .hero-meta .cell .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+  .hero-meta .cell .v { font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing: -.01em; color: var(--lime); margin-top: 4px; }
+  .hero-meta .cell .sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 36px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(40px, 6vw, 72px); letter-spacing:-.02em; text-transform: uppercase; line-height: .95; }
+
+  .modules { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .module {
+    background: var(--void-2); padding: 28px 26px 22px;
+    display: flex; flex-direction: column; gap: 16px;
+    min-height: 280px;
+    transition: background .18s ease, transform .18s ease;
+    text-decoration: none; color: inherit;
+    position: relative; overflow: hidden;
+  }
+  .module::after {
+    content: ''; position: absolute; inset: 0;
+    border: 1px solid transparent;
+    pointer-events: none; transition: border-color .18s ease;
+  }
+  .module:hover { background: var(--void-3); transform: translateY(-2px); }
+  .module:hover::after { border-color: var(--border-bright); }
+  .module .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .25em; }
+  .module .title { font-family: 'Anton', sans-serif; font-size: 32px; letter-spacing: -.01em; text-transform: uppercase; line-height: .95; }
+  .module .desc { color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+  .module .files { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .15em; color: var(--lime); text-transform: uppercase; margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+  .module .files .arrow { transition: transform .18s ease; }
+  .module:hover .files .arrow { transform: translateX(4px); }
+
+  /* Phase strip */
+  .phase-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 36px; }
+  .phase { background: var(--void-2); padding: 18px 16px; }
+  .phase .name { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: -.01em; text-transform: uppercase; }
+  .phase .range { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+  .phase.active { background: var(--void-3); border-left: 2px solid var(--lime); }
+  .phase.active .name { color: var(--lime); }
+
+  /* Ops checklist preview */
+  .ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .op { background: var(--void-2); padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; }
+  .op .box { width: 16px; height: 16px; border: 1px solid var(--border-bright); flex-shrink: 0; margin-top: 2px; }
+  .op .box.done { background: var(--lime); border-color: var(--lime); position: relative; }
+  .op .box.done::after { content: ''; position: absolute; top: 2px; left: 5px; width: 4px; height: 8px; border-right: 2px solid var(--void); border-bottom: 2px solid var(--void); transform: rotate(45deg); }
+  .op .label { font-size: 14px; line-height: 1.4; }
+  .op .label .tag { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+
+  /* Stack diagram */
+  .stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .stack-cell { background: var(--void-2); padding: 22px 18px; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; color: var(--lime); text-transform: uppercase; }
+  .stack-cell .name { font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: -.01em; text-transform: uppercase; }
+  .stack-cell .body { font-size: 13px; line-height: 1.4; color: var(--muted); }
+
+  .footer { padding-top: 56px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a { color: var(--muted); }
+  .footer a:hover { color: var(--lime); }
+
+  @media (max-width: 960px) {
+    main { padding: 36px 20px 80px; }
+    .stack { grid-template-columns: repeat(2, 1fr); }
+    .phase-strip { grid-template-columns: repeat(5, 1fr); }
+    .phase .name { font-size: 16px; }
+    .hero-meta { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .phase-strip { grid-template-columns: 1fr 1fr; }
+    .hero-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="#top">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="live-pill"><span class="dot"></span>Marketing OS v1.0</div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="eyebrow">00 / Master Index · Marketing OS</div>
+    <h1>Money<span class="muted-dot">.</span><br>Mouth<span class="muted-dot">.</span><br><span class="accent">Edge.</span></h1>
+    <p class="lede">The complete launch arsenal for <em>$EDGE</em> — the terminal for prediction markets. Brand foundation, account playbook, social asset packs, launch graphics, video, tokenomics, press kit, paid media, and the runbooks to ship it all. Every asset is production-grade and ready to scale. <em>Watch the action. Before you bet.</em></p>
+    <div class="hero-meta">
+      <div class="cell"><div class="k">Modules</div><div class="v">10</div><div class="sub">brand → conversion</div></div>
+      <div class="cell"><div class="k">Platforms</div><div class="v">13</div><div class="sub">X · TG · DC · FC · IG · TT · YT · LI · RD · MD · DN · GH · WC</div></div>
+      <div class="cell"><div class="k">Voice</div><div class="v">1</div><div class="sub">money / mouth / edge</div></div>
+      <div class="cell"><div class="k">Days to Launch</div><div class="v" id="dtl">T-14D</div><div class="sub">fairlaunch 2026-06-09</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Launch Phases</h2><div class="sec-num">00.01 — Timeline</div></div>
+    <div class="phase-strip">
+      <div class="phase active">
+        <div class="name">Tease</div>
+        <div class="range">T-30 → T-15</div>
+      </div>
+      <div class="phase">
+        <div class="name">Amplify</div>
+        <div class="range">T-15 → T-3</div>
+      </div>
+      <div class="phase">
+        <div class="name">Countdown</div>
+        <div class="range">T-3 → T-0</div>
+      </div>
+      <div class="phase">
+        <div class="name">Launch</div>
+        <div class="range">T+0 → T+7</div>
+      </div>
+      <div class="phase">
+        <div class="name">Proof</div>
+        <div class="range">T+7 → T+30</div>
+      </div>
+    </div>
+    <p style="color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:12px; line-height:1.7;">Each module below maps to one or more phases. The 30-day content calendar (06) is the source of truth for what runs when. The launch-day runbook (06) is the source of truth for who does what at T-0.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Modules</h2><div class="sec-num">00.02 — Asset Map</div></div>
+    <div class="modules">
+
+      <a class="module" href="../01-brand-foundation/index.html">
+        <div class="num">01 / FOUNDATION</div>
+        <div class="title">Brand<br>Foundation</div>
+        <div class="desc">Logo system, color palette, typography, voice rules. Every other module inherits from this — single source of truth.</div>
+        <div class="files"><span>10 ASSETS · 1 INDEX</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../02-account-playbook/index.html">
+        <div class="num">02 / OPERATIONS</div>
+        <div class="title">Account<br>Playbook</div>
+        <div class="desc">Every account to register, handle reservations, login vault template, bios in 6 length tiers. The boring infra that makes launch possible.</div>
+        <div class="files"><span>1 INDEX · 3 DOCS</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../03-social-assets/twitter-x/index.html">
+        <div class="num">03 / SOCIAL</div>
+        <div class="title">Per-Platform<br>Asset Pack</div>
+        <div class="desc">PFPs, banners, pinned content, bios for X, Discord, Telegram, Farcaster, Warpcast, IG, TikTok, YouTube, LinkedIn, Reddit, Medium, Dune, GitHub.</div>
+        <div class="files"><span>13 PLATFORMS</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../04-launch-graphics/index.html">
+        <div class="num">04 / HYPE</div>
+        <div class="title">Launch<br>Graphics</div>
+        <div class="desc">Teasers, announcements, tokenomics card, roadmap, feature pillar cards, meme templates. Everything that hits the feed pre-launch and at T-0.</div>
+        <div class="files"><span>25+ GRAPHICS</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../05-video-content/index.html">
+        <div class="num">05 / MOTION</div>
+        <div class="title">Video<br>Content</div>
+        <div class="desc">60s trailer, 30s tour, 15s vertical hook scripts. Visual storyboards. Working CSS-animated teasers ready to screen-record.</div>
+        <div class="files"><span>SCRIPTS · STORYBOARDS · ANIMS</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../06-launch-playbook/index.html">
+        <div class="num">06 / PLAYBOOK</div>
+        <div class="title">Launch<br>Playbook</div>
+        <div class="desc">30-day content calendar, launch-day runbook, KOL outreach kit, press release, one-pager, pitch deck, FAQ. The campaign spine.</div>
+        <div class="files"><span>8 DOCS</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../07-website-conversion/index.html">
+        <div class="num">07 / CONVERSION</div>
+        <div class="title">Website<br>Conversion</div>
+        <div class="desc">Pre-launch coming-soon page with email capture. Waitlist confirmation. Token-launch modal. OG image templates per surface.</div>
+        <div class="files"><span>5 PAGES · 8 OG TEMPLATES</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../08-paid-media/index.html">
+        <div class="num">08 / PAID</div>
+        <div class="title">Paid<br>Media</div>
+        <div class="desc">X ad creative, Google display variants, YouTube pre-roll scripts, influencer briefs. Templates ready to go when the spend turns on.</div>
+        <div class="files"><span>BRIEFS · CREATIVE</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="../09-press-kit/index.html">
+        <div class="num">09 / PRESS</div>
+        <div class="title">Press<br>Kit</div>
+        <div class="desc">Founder bios, brand assets ZIP, press-ready stills, fact sheet, embargoed materials. Send-as-link, not as attachment.</div>
+        <div class="files"><span>FACT SHEET · BIOS · ASSETS</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="module" href="#shipping">
+        <div class="num">00 / META</div>
+        <div class="title">Ship<br>Checklist</div>
+        <div class="desc">The 30 things that must be true on launch day. Use as the final pre-flight check before pressing the pump.fun button.</div>
+        <div class="files"><span>JUMP ↓</span><span class="arrow">→</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>The Stack</h2><div class="sec-num">00.03 — How it fits</div></div>
+    <div class="stack">
+      <div class="stack-cell">
+        <div class="layer">LAYER 01</div>
+        <div>
+          <div class="name">Identity</div>
+          <div class="body">Logo · color · type · voice. Frozen and versioned in 01-brand-foundation.</div>
+        </div>
+      </div>
+      <div class="stack-cell">
+        <div class="layer">LAYER 02</div>
+        <div>
+          <div class="name">Surfaces</div>
+          <div class="body">Per-platform PFPs / banners / bios. Live in 03 — never edit outside of it.</div>
+        </div>
+      </div>
+      <div class="stack-cell">
+        <div class="layer">LAYER 03</div>
+        <div>
+          <div class="name">Hype</div>
+          <div class="body">Teasers, launch graphics, motion. Sourced from 04 + 05, scheduled by 06.</div>
+        </div>
+      </div>
+      <div class="stack-cell">
+        <div class="layer">LAYER 04</div>
+        <div>
+          <div class="name">Capture</div>
+          <div class="body">Landing + modal + OG cards. 07 is what converts the attention into wallets.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shipping">
+    <div class="sec-head"><h2>Ship Checklist</h2><div class="sec-num">00.04 — Pre-Flight</div></div>
+    <div class="ops-grid">
+      <div class="op"><div class="box done"></div><div class="label"><span class="tag">01 / Brand</span>Mark + wordmark exported in SVG + PNG @ 1x/2x/3x</div></div>
+      <div class="op"><div class="box done"></div><div class="label"><span class="tag">01 / Brand</span>Color tokens documented in CSS + Tailwind + Figma</div></div>
+      <div class="op"><div class="box done"></div><div class="label"><span class="tag">01 / Brand</span>Voice rules signed off by founders</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">02 / Ops</span>All P0 handles reserved across 10 platforms</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">02 / Ops</span>Primary domain registered + DNS pointed to Vercel</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">02 / Ops</span>10 email aliases set up on custom domain</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">02 / Ops</span>Multi-sig treasury created on Squads.so</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">03 / Social</span>PFPs uploaded to all 13 platforms</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">03 / Social</span>Banners uploaded to all 13 platforms</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">03 / Social</span>Bios live + Linktree / Bento built</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">04 / Hype</span>5 teasers scheduled in Buffer / Hypefury</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">04 / Hype</span>Tokenomics graphic finalized + reviewed by legal</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">05 / Motion</span>60s trailer cut + uploaded as unlisted YouTube</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">05 / Motion</span>15s vertical posted as test to TikTok dummy account</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">06 / Play</span>30-day calendar imported to Notion / Asana</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">06 / Play</span>KOL outreach: 20+ DMs sent in tier-A wave</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">06 / Play</span>Press release written + embargo set</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">06 / Play</span>Pitch deck exported to PDF + Pitch.com</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">07 / Conv</span>Coming-soon page LIVE at primary domain</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">07 / Conv</span>Email capture wired to ESP (Resend / Mailerlite)</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">07 / Conv</span>OG images set per route + validated with twittercard validator</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">07 / Conv</span>Plausible / PostHog analytics live + dashboards built</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">08 / Paid</span>X ad account funded + first promoted post scheduled</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">09 / Press</span>Press kit ZIP uploaded to S3 / Vercel blob</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">09 / Press</span>Fact sheet shared with 5 reporters under embargo</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">00 / Meta</span>X Spaces booked for T-0 hour</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">00 / Meta</span>Liquidity wallet funded with launch capital</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">00 / Meta</span>Founders rehearsed launch-day timeline 2x</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">00 / Meta</span>Incident comms template drafted (rug FUD response)</div></div>
+      <div class="op"><div class="box"></div><div class="label"><span class="tag">00 / Meta</span>Post-launch 24h recap thread drafted</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0 · 2026</div>
+    <div>MONEY · MOUTH · EDGE</div>
+    <div><a href="../../index.html">↩ Live Product</a></div>
+  </footer>
+</main>
+
+<script>
+  // Fairlaunch target: 2026-06-09 at 13:00 UTC (09:00 ET).
+  (function () {
+    const TARGET = Date.UTC(2026, 5, 9, 13, 0, 0);
+    function tick() {
+      const ms = TARGET - Date.now();
+      const dtl = document.getElementById('dtl');
+      if (ms <= 0) { dtl.textContent = 'LIVE'; return; }
+      const days = Math.floor(ms / 86400000);
+      if (days >= 1) { dtl.textContent = 'T-' + String(days).padStart(2, '0') + 'D'; return; }
+      const h = Math.floor(ms / 3600000);
+      dtl.textContent = 'T-' + String(h).padStart(2, '0') + 'H';
+    }
+    tick(); setInterval(tick, 60000);
+  })();
+</script>
+</body>
+</html>

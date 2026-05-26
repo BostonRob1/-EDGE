@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Social / YouTube</title>
+<link rel="icon" type="image/svg+xml" href="../../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --void:#050507; --void-2:#0C0C10; --void-3:#141418; --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --red:#FF3344; --white:#F5F5F0; --muted:#6B6B73; --border:rgba(245,245,240,0.08); --border-bright:rgba(196,255,0,0.2); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+  main { max-width: 1480px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+  .hero { padding: 16px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 56px; display:grid; gap: 24px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 110px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 18px; line-height: 1.55; max-width: 720px; opacity: .85; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(28px, 4vw, 48px); letter-spacing:-.02em; text-transform: uppercase; }
+  .asset-frame { background-image: linear-gradient(45deg, #0C0C10 25%, transparent 25%), linear-gradient(-45deg, #0C0C10 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #0C0C10 75%), linear-gradient(-45deg, transparent 75%, #0C0C10 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #08080A; padding: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .asset-frame .size { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.22em; text-transform: uppercase; }
+  .pfp-square { width: 256px; height: 256px; }
+  .pfp-circle { width: 256px; height: 256px; border-radius: 50%; overflow: hidden; }
+  .banner-wide { width: 100%; max-width: 1280px; aspect-ratio: 16 / 9; position: relative; }
+  .banner-wide img { width: 100%; display: block; }
+  .safe-overlay { position:absolute; top: 35.35%; left: 19.8%; width: 60.4%; height: 29.4%; border: 1px dashed rgba(255,51,68,0.65); pointer-events:none; }
+  .safe-overlay::after { content: 'SAFE ZONE 1546 \00d7 423'; position: absolute; bottom: -22px; left: 0; font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: #FF3344; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  .copy-card { background: var(--void-2); border: 1px solid var(--border); padding: 28px; }
+  .copy-card h3 { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .copy-card .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.22em; color: var(--lime); text-transform: uppercase; margin-bottom: 14px; }
+  .copy-card pre { font-family:'JetBrains Mono', monospace; font-size: 12px; line-height: 1.65; background: var(--void); border: 1px solid var(--border); padding: 16px; white-space: pre-wrap; word-break: break-word; margin-top: 12px; overflow-x: auto; }
+  .copy-card .meta { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.16em; text-transform: uppercase; margin-top: 12px; }
+  .steps { counter-reset: step; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); }
+  .step:first-child { border-top: 0; }
+  .step::before { counter-increment: step; content: counter(step, decimal-leading-zero); font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.22em; }
+  .step .body { font-size: 15px; line-height: 1.55; }
+  .step code { font-family:'JetBrains Mono', monospace; font-size: 12px; background: var(--void-3); padding: 2px 8px; border: 1px solid var(--border); }
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header class="top">
+  <a class="brand" href="../../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Social</a> / YouTube</div>
+</header>
+<main>
+  <div class="hero">
+    <div class="eyebrow">03.08 / Social Asset Pack &#183; YouTube</div>
+    <h1>YouTube. <span class="accent">Long form.</span></h1>
+    <p class="lede">PFP 800&times;800 (circle). Channel art 2560&times;1440 with a tightly designed 1546&times;423 center safe zone &#8212; everything outside that zone is decoration only.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Channel PFP</h2><div class="sec-num">03.08.01 &#183; 800&times;800 &#183; circle</div></div>
+    <div class="two-col">
+      <div class="asset-frame"><img src="pfp.svg" class="pfp-square"/><div class="size">800 &times; 800 &#183; SVG</div></div>
+      <div class="asset-frame"><div class="pfp-circle"><img src="pfp.svg" style="width:100%;height:100%;display:block"/></div><div class="size">800 &times; 800 &#183; circle render</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Channel Art</h2><div class="sec-num">03.08.02 &#183; 2560&times;1440 &#183; safe zone 1546&times;423</div></div>
+    <div class="asset-frame">
+      <div class="banner-wide"><img src="banner.svg" alt="YouTube channel art"/><div class="safe-overlay"></div></div>
+      <div class="size">2560 &times; 1440 &#183; SVG &#183; red dashed box = safe zone (visible on mobile/tablet/TV)</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Description</h2><div class="sec-num">03.08.03 &#183; 1000 char</div></div>
+    <div class="copy-card">
+      <div class="tag">About the channel</div>
+      <h3>Description</h3>
+      <pre>$EDGE is the terminal for prediction markets. Money (whales). Mouth (sentiment). Edge (the gap). Polymarket + Kalshi + onchain whale flow + X chatter, all in one screen.
+
+We publish:
+&#8212; Weekly market breakdowns
+&#8212; Whale-of-the-week deep dives
+&#8212; Divergence tutorials and playbooks
+&#8212; Founder devlogs on what we shipped this week
+
+Built by Rob + Tye. We trade these markets every day. The terminal is what we wished existed.
+
+Site: https://edge-two-psi.vercel.app/
+Token: $EDGE on Solana (pump.fun launch)
+X: @edgeterminal
+Discord: discord.gg/edge
+
+Watch the action. Before you bet.</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Channel Trailer Script</h2><div class="sec-num">03.08.04 &#183; 75 seconds</div></div>
+    <div class="copy-card">
+      <div class="tag">trailer &#183; non-subscriber autoplay</div>
+      <h3>$EDGE channel trailer</h3>
+      <pre>[0.0s &#8212; 2.0s] SMASH CUT. Terminal screen capture. Wallet 0xA3F2 dropping $640K on Trump-2028.
+ON-SCREEN: "$640K. 18 MINUTES AGO."
+
+[2.0s &#8212; 6.0s] CUT. Same market on X timeline. Sentiment scrolling negative.
+ON-SCREEN: "MEANWHILE, ON X: -41%"
+
+[6.0s &#8212; 9.0s] CUT to Divergence radar. Trump-2028 row highlighted.
+ON-SCREEN: "DIVERGENCE +0.72"
+
+[9.0s &#8212; 11.0s] VO: "Money says yes. Mouth says no. That's the edge."
+
+[11.0s &#8212; 16.0s] QUICK CUTS through the terminal: markets grid &#8226; whale tape &#8226; divergence radar &#8226; picker algo &#8226; sentiment heatmap.
+
+[16.0s &#8212; 20.0s] VO: "$EDGE is the terminal for prediction markets. Polymarket. Kalshi. Whale flow. Sentiment. One screen."
+
+[20.0s &#8212; 28.0s] PAN over the live divergence leaderboard.
+VO: "We score every market by the gap between where the money is and what the mouth is saying. When that gap is wide enough &#8212; and the whales are pointing the same direction &#8212; that's the call."
+
+[28.0s &#8212; 36.0s] CUT to picker algo track record page.
+VO: "Our public picker hit 64% last quarter. All calls live. No retcons. The track record is immutable &#8212; that's the point."
+
+[36.0s &#8212; 48.0s] CUT to founders intro card.
+VO: "Built by traders, for traders. Rob + Tye. We use this every day. The terminal is what we wished existed."
+
+[48.0s &#8212; 60.0s] CUT to channel content roadmap:
+&#8212; MONDAY      MARKET BREAKDOWN
+&#8212; WEDNESDAY   WHALE OF THE WEEK
+&#8212; FRIDAY      DEVLOG
+&#8212; DAILY       SHORTS (divergence drops)
+
+[60.0s &#8212; 68.0s] CUT to terminal hero with URL on screen.
+VO: "Open the terminal. Mute everything else."
+ON-SCREEN: "edge-two-psi.vercel.app"
+
+[68.0s &#8212; 75.0s] END CARD: lime chevron mark, "$EDGE &#8212; SUBSCRIBE".
+VO: "$EDGE. Watch the action. Before you bet."</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Setup Notes</h2><div class="sec-num">03.08.05</div></div>
+    <div class="steps">
+      <div class="step"><div class="body">Brand account, handle <code>@edgeterminal</code>. Upload <code>pfp.svg</code> exported to 800&times;800 PNG.</div></div>
+      <div class="step"><div class="body">Upload <code>banner.svg</code> exported to 2560&times;1440 PNG (max 6MB). YouTube will crop on TV/mobile down to the 1546&times;423 safe zone &#8212; verify in preview before publishing.</div></div>
+      <div class="step"><div class="body">Set channel description from <code>bio.md</code>. Add 5 links: Terminal, X, Discord, Telegram, Token.</div></div>
+      <div class="step"><div class="body">Record + publish the channel trailer. Set as the trailer for non-subscribers under Customization &#8594; Layout.</div></div>
+      <div class="step"><div class="body">Set up sections on the channel home: 1. Channel trailer 2. Latest video 3. Shorts shelf 4. Playlist: "Divergence school" 5. Playlist: "Devlogs"</div></div>
+      <div class="step"><div class="body">Thumbnails: black void, Anton headline in white, single lime accent word, JetBrains-mono data tag bottom-left. Never use a face on the thumbnail until the channel has 10+ videos.</div></div>
+      <div class="step"><div class="body">Reserve handle variants: <code>@edge_terminal</code>, <code>@theedgeterminal</code>, <code>@edgemarkets</code>. Park them with a redirect video pointing to <code>@edgeterminal</code>.</div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE &#183; SOCIAL / YOUTUBE &#183; v1.0</div>
+    <div><a href="../index.html">&larr; Social Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

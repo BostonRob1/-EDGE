@@ -1,0 +1,40 @@
+<svg viewBox="0 0 1500 750" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Medium publication logo">
+  <title>$EDGE on Medium</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="1500" height="750" fill="#050507"/>
+  <rect width="1500" height="750" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="60" y="70" font-size="14" fill="#C4FF00" letter-spacing="0.32em">$EDGE / NOTES</text>
+  </g>
+
+  <!-- Big chevron + wordmark -->
+  <g transform="translate(540 250)">
+    <path d="M0 0 L160 110 L0 220" fill="none" stroke="#C4FF00" stroke-width="40" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="120" letter-spacing="-2">
+    <text x="750" y="430" text-anchor="middle"><tspan fill="#C4FF00">$</tspan><tspan fill="#F5F5F0">EDGE</tspan></text>
+  </g>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#6B6B73" letter-spacing="0.32em">
+    <text x="750" y="490" text-anchor="middle">PREDICTION-MARKET INTELLIGENCE</text>
+  </g>
+
+  <rect width="1500" height="750" fill="url(#vignette)"/>
+
+  <rect x="0" y="700" width="1500" height="50" fill="#0C0C10"/>
+  <line x1="0" y1="700" x2="1500" y2="700" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="12" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="730">ESSAYS &#183; DOSSIERS &#183; PLAYBOOKS &#183; DEVLOGS</text>
+    <text x="1480" y="730" text-anchor="end" fill="#C4FF00">EDGE-TWO-PSI.VERCEL.APP</text>
+  </g>
+</svg>

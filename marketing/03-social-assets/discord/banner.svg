@@ -1,0 +1,66 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Discord banner">
+  <title>$EDGE Discord</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="540" fill="#050507"/>
+  <rect width="960" height="540" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="48" y="64" font-size="12" fill="#C4FF00" letter-spacing="0.32em">SERVER &#183; $EDGE TERMINAL</text>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="92" letter-spacing="-2" fill="#F5F5F0">
+    <text x="48" y="180">MONEY.</text>
+    <text x="48" y="270">MOUTH.</text>
+    <text x="48" y="360" fill="#C4FF00">EDGE.</text>
+  </g>
+
+  <g font-family="DM Sans, system-ui, sans-serif" font-size="18" fill="#F5F5F0" opacity="0.78">
+    <text x="48" y="408">The control room for prediction-market traders.</text>
+  </g>
+
+  <!-- Right panel: channel list -->
+  <g transform="translate(580 60)">
+    <rect width="332" height="380" fill="#0C0C10" stroke="rgba(196,255,0,0.2)" stroke-width="1"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="26"># CHANNELS</text>
+    </g>
+    <line x1="0" y1="40" x2="332" y2="40" stroke="rgba(245,245,240,0.08)"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#F5F5F0">
+      <text x="16" y="68"># intel-room</text>
+      <text x="16" y="98" fill="#C4FF00"># whales-alerts</text>
+      <text x="16" y="128"># divergence</text>
+      <text x="16" y="158"># polymarket</text>
+      <text x="16" y="188"># kalshi</text>
+      <text x="16" y="218"># picks &amp; track-record</text>
+      <text x="16" y="248"># trade-tape</text>
+      <text x="16" y="278"># dev-log</text>
+      <text x="16" y="308"># lounge</text>
+      <text x="16" y="338" fill="#FF006E"># holders-only</text>
+    </g>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="366">12 ROOMS &#183; LIVE</text>
+    </g>
+  </g>
+
+  <!-- Big chevron faint -->
+  <g opacity="0.16">
+    <path d="M780 460 L900 540 L780 620" fill="none" stroke="#C4FF00" stroke-width="36" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+
+  <rect width="960" height="540" fill="url(#vignette)"/>
+
+  <rect x="0" y="500" width="960" height="40" fill="#0C0C10"/>
+  <line x1="0" y1="500" x2="960" y2="500" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="526">POLY:0xA3F2 +18.4%   &#183;   KALSHI TRUMP-2028 0.42 &#8594; 0.51   &#183;   DIVERGENCE 0.72   &#183;   WHALE IN $640K</text>
+    <text x="940" y="526" text-anchor="end" fill="#C4FF00">discord.gg/edge</text>
+  </g>
+</svg>

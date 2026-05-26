@@ -1,0 +1,63 @@
+<svg viewBox="0 0 1500 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Dune cover">
+  <title>$EDGE Dune</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+    </radialGradient>
+  </defs>
+  <rect width="1500" height="500" fill="#050507"/>
+  <rect width="1500" height="500" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="60" y="64" font-size="13" fill="#C4FF00" letter-spacing="0.32em">DUNE &#183; PREDICTION-MARKET DASHBOARDS &#183; @EDGE</text>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="108" letter-spacing="-2" fill="#F5F5F0">
+    <text x="60" y="184">QUERY THE WHALES.</text>
+    <text x="60" y="294">CHART THE <tspan fill="#C4FF00">EDGE</tspan>.</text>
+  </g>
+
+  <g font-family="DM Sans, system-ui, sans-serif" font-size="20" fill="#F5F5F0" opacity="0.78">
+    <text x="60" y="344">Public Polymarket + Kalshi dashboards. SQL is open. Fork it, audit it, improve it.</text>
+  </g>
+
+  <!-- mock dashboard -->
+  <g transform="translate(960 80)">
+    <rect width="480" height="340" fill="#0C0C10" stroke="rgba(196,255,0,0.2)" stroke-width="1"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="26">POLY WHALE LEADERBOARD &#183; 24H</text>
+    </g>
+    <line x1="0" y1="40" x2="480" y2="40" stroke="rgba(245,245,240,0.08)"/>
+
+    <!-- bar chart -->
+    <g transform="translate(16 64)">
+      <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#F5F5F0">
+        <text x="0" y="14">0xA3F2</text><rect x="100" y="2" width="320" height="14" fill="#C4FF00"/><text x="448" y="14" text-anchor="end" fill="#C4FF00">$640K</text>
+        <text x="0" y="44">0x9DE1</text><rect x="100" y="32" width="210" height="14" fill="#C4FF00" opacity="0.85"/><text x="448" y="44" text-anchor="end" fill="#C4FF00">$420K</text>
+        <text x="0" y="74">0xCAB2</text><rect x="100" y="62" width="172" height="14" fill="#C4FF00" opacity="0.7"/><text x="448" y="74" text-anchor="end" fill="#C4FF00">$344K</text>
+        <text x="0" y="104">0x77B0</text><rect x="100" y="92" width="136" height="14" fill="#C4FF00" opacity="0.6"/><text x="448" y="104" text-anchor="end" fill="#C4FF00">$272K</text>
+        <text x="0" y="134">0xEE19</text><rect x="100" y="122" width="105" height="14" fill="#C4FF00" opacity="0.5"/><text x="448" y="134" text-anchor="end" fill="#C4FF00">$210K</text>
+        <text x="0" y="164">0x4400</text><rect x="100" y="152" width="92" height="14" fill="#C4FF00" opacity="0.45"/><text x="448" y="164" text-anchor="end" fill="#C4FF00">$184K</text>
+        <text x="0" y="194">0xB330</text><rect x="100" y="182" width="74" height="14" fill="#C4FF00" opacity="0.4"/><text x="448" y="194" text-anchor="end" fill="#C4FF00">$148K</text>
+        <text x="0" y="224">0x1771</text><rect x="100" y="212" width="56" height="14" fill="#C4FF00" opacity="0.35"/><text x="448" y="224" text-anchor="end" fill="#C4FF00">$112K</text>
+      </g>
+    </g>
+
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" fill="#6B6B73" letter-spacing="0.22em">
+      <text x="16" y="316">QUERY 4711 &#183; UPDATED 18M AGO</text>
+    </g>
+  </g>
+
+  <rect width="1500" height="500" fill="url(#vignette)"/>
+
+  <rect x="0" y="460" width="1500" height="40" fill="#0C0C10"/>
+  <line x1="0" y1="460" x2="1500" y2="460" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="486">5 PUBLIC DASHBOARDS &#183; OPEN-SQL &#183; FREE TO FORK &#183; UPDATED 5-MIN INTERVAL</text>
+    <text x="1480" y="486" text-anchor="end" fill="#C4FF00">DUNE.COM/EDGE</text>
+  </g>
+</svg>

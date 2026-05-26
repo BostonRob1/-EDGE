@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Press Kit</title>
+<link rel="icon" type="image/svg+xml" href="../01-brand-foundation/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void:#050507; --void-2:#0c0c10; --void-3:#141418; --void-4:#1c1c22;
+    --lime:#C4FF00; --magenta:#FF006E; --green:#00FF85; --amber:#FFB800; --red:#FF3344;
+    --white:#F5F5F0; --muted:#6B6B73;
+    --border: rgba(245,245,240,.08); --border-bright: rgba(196,255,0,.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--void);color:var(--white);font-family:'DM Sans',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--lime);color:var(--void)}
+  a{color:var(--white);text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+
+  .grain{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:1;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>")}
+
+  header.top{position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);background:rgba(5,5,7,.85);border-bottom:1px solid var(--border-bright);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:28px;height:28px}
+  .brand .name{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.02em}
+  .brand .name span{color:var(--lime)}
+  .crumbs{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .crumbs a{color:var(--muted)} .crumbs a:hover{color:var(--lime)}
+
+  main{max-width:1280px;margin:0 auto;padding:64px 32px 120px;position:relative;z-index:2}
+  .hero{display:grid;gap:32px;padding:24px 0 64px;border-bottom:1px solid var(--border);margin-bottom:48px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--lime);text-transform:uppercase}
+  h1{font-family:'Anton',sans-serif;font-size:clamp(56px,10vw,128px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase}
+  h1 .accent{color:var(--lime)}
+  .lede{font-size:19px;line-height:1.55;max-width:720px;opacity:.85}
+
+  section{padding:48px 0;border-bottom:1px solid var(--border)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.2em}
+  h2{font-family:'Anton',sans-serif;font-size:clamp(34px,5vw,56px);letter-spacing:-.02em;text-transform:uppercase}
+
+  /* Fact sheet */
+  .facts{display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid var(--border)}
+  .facts .k{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:var(--void-2);border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+  .facts .v{padding:14px 20px;background:var(--void-2);border-bottom:1px solid var(--border);font-size:15px}
+  .facts .v.mono{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--lime)}
+  .facts .row:last-child .k,.facts .row:last-child .v{border-bottom:0}
+
+  /* Founders / quotes */
+  .founders{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+  .founder{background:var(--void-2);padding:28px}
+  .founder .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--lime);text-transform:uppercase}
+  .founder h3{font-family:'Anton',sans-serif;font-size:42px;letter-spacing:-.01em;text-transform:uppercase;margin:8px 0 16px}
+  .founder p{color:var(--muted);font-size:14.5px;line-height:1.55}
+  .founder .links{margin-top:14px;display:flex;gap:14px;flex-wrap:wrap}
+  .founder .links a{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--lime);text-transform:uppercase;border-bottom:1px solid var(--border-bright);padding-bottom:1px}
+
+  /* Quotes */
+  .quotes{display:grid;gap:1px;background:var(--border);border:1px solid var(--border)}
+  .quote{background:var(--void-2);padding:28px;display:grid;grid-template-columns:60px 1fr;gap:18px;align-items:start}
+  .quote .mark{font-family:'Anton',sans-serif;font-size:96px;color:var(--lime);line-height:.6}
+  .quote blockquote{font-family:'Anton',sans-serif;font-size:24px;line-height:1.18;letter-spacing:-.01em;text-transform:uppercase}
+  .quote cite{display:block;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;font-style:normal}
+
+  /* Asset table */
+  .assets{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+  .asset{background:var(--void-2);padding:18px;display:flex;flex-direction:column;gap:12px;min-height:180px}
+  .asset .preview{flex:1;display:flex;align-items:center;justify-content:center;background:var(--void);border:1px solid var(--border);padding:14px;min-height:90px}
+  .asset .preview img{max-width:100%;max-height:80px}
+  .asset .preview svg{max-width:100%;max-height:80px}
+  .asset .meta{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+  .asset .meta a{color:var(--lime)}
+
+  /* Contact */
+  .contacts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+  .contact{background:var(--void-2);padding:22px}
+  .contact .role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--lime);text-transform:uppercase}
+  .contact .email{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--white);margin-top:8px;display:block}
+  .contact .note{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.4}
+
+  .footer{padding-top:48px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer a{color:var(--muted)} .footer a:hover{color:var(--lime)}
+
+  @media (max-width:720px){
+    main{padding:36px 20px 80px}
+    .facts{grid-template-columns:1fr}
+    .facts .k{border-right:0}
+    .founders{grid-template-columns:1fr}
+    .quote{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Press Kit</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">09 / Press Kit</div>
+    <h1>For the <span class="accent">record.</span></h1>
+    <p class="lede">Everything a reporter, partner, or platform reviewer needs to write about $EDGE accurately. Send this URL — don't email attachments. Embargoes honored. Founders available on 24h notice.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Fact Sheet</h2><div class="sec-num">09.01</div></div>
+    <div class="facts">
+      <div class="row" style="display:contents"><div class="k">Product</div><div class="v">$EDGE — a real-time aggregator and intelligence terminal for prediction markets (Polymarket + Kalshi).</div></div>
+      <div class="row" style="display:contents"><div class="k">Founded</div><div class="v">2026</div></div>
+      <div class="row" style="display:contents"><div class="k">Founders</div><div class="v">Robert (Boston, USA) · Tye</div></div>
+      <div class="row" style="display:contents"><div class="k">HQ</div><div class="v">Remote-first · USA</div></div>
+      <div class="row" style="display:contents"><div class="k">Live URL</div><div class="v mono">edge-two-psi.vercel.app</div></div>
+      <div class="row" style="display:contents"><div class="k">GitHub</div><div class="v mono">github.com/BostonRob1/-EDGE</div></div>
+      <div class="row" style="display:contents"><div class="k">Stack</div><div class="v">Static HTML/SVG · Vercel · Polymarket Gamma + CLOB · Kalshi API</div></div>
+      <div class="row" style="display:contents"><div class="k">Token</div><div class="v">$EDGE on Solana — fairlaunch via pump.fun · 1,000,000,000 supply</div></div>
+      <div class="row" style="display:contents"><div class="k">Token Utility</div><div class="v">Tier-gated terminal access: whale alerts (10K), divergence radar (100K), raw API (1M), insider channel (10M)</div></div>
+      <div class="row" style="display:contents"><div class="k">Treasury</div><div class="v">Multi-sig (Squads.so) · 5% supply · transparent on-chain</div></div>
+      <div class="row" style="display:contents"><div class="k">Vesting</div><div class="v">Team 2% — 24mo linear, 6mo cliff · Marketing 3% — 6mo linear</div></div>
+      <div class="row" style="display:contents"><div class="k">Funding</div><div class="v">Bootstrapped to date · pre-launch KOL allocations under discussion</div></div>
+      <div class="row" style="display:contents"><div class="k">Press Contact</div><div class="v mono">cashbridgehomes@gmail.com</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Boilerplate</h2><div class="sec-num">09.02 · Approved Copy</div></div>
+    <div style="background:var(--void-2);border:1px solid var(--border);padding:28px;line-height:1.65;font-size:15.5px;max-width:780px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--lime);text-transform:uppercase;margin-bottom:14px">Short — 1 sentence</p>
+      <p>$EDGE is a real-time intelligence terminal for prediction markets — Polymarket, Kalshi, whale flows, and social sentiment in one screen.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--lime);text-transform:uppercase;margin:24px 0 14px">Medium — 1 paragraph</p>
+      <p>$EDGE is a Bloomberg-terminal-grade aggregator for prediction markets. The product pulls live data from Polymarket and Kalshi, tracks the largest wallets across both venues, and overlays public sentiment from X and Reddit. The proprietary <em style="color:var(--lime);font-style:normal">divergence score</em> identifies markets where on-chain money and public sentiment disagree — surfacing the edge before it closes. The $EDGE token (Solana) gates premium signal access; the underlying product is free and requires no signup.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--lime);text-transform:uppercase;margin:24px 0 14px">Long — 3 paragraphs</p>
+      <p>$EDGE is the first intelligence layer for prediction markets. Prediction markets are projected to clear $15B+ in 2026 volume across Polymarket and Kalshi, yet professional operators still bounce across six browser tabs to see where capital is moving, what wallets are taking the other side, and what the public is saying about the same event. $EDGE collapses that workflow into one screen.</p>
+      <p style="margin-top:14px">The product is built around three primitives: <strong style="color:var(--white)">money</strong> (live order flow and whale wallet tracking across Polymarket's Gamma + CLOB and Kalshi's API), <strong style="color:var(--white)">mouth</strong> (sentiment volume scraped from X, Reddit, and YouTube comments on the same questions), and <strong style="color:var(--white)">edge</strong> (a proprietary divergence score where capital and sentiment disagree — historically the most reliable signal of mispricing). Founded by Robert and Tye in 2026, $EDGE is bootstrapped and ships on Vercel.</p>
+      <p style="margin-top:14px">The $EDGE token (Solana, fairlaunch via pump.fun, 1B supply) gates premium product tiers — whale alerts, the divergence radar, raw API access, and a private insider channel. Liquidity is locked for 12 months, team allocation is 2% (vested over 24 months with a 6-month cliff), and treasury sits in a multi-sig on Squads.so. The terminal itself is and will remain free to use without a wallet connection.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Founders</h2><div class="sec-num">09.03</div></div>
+    <div class="founders">
+      <div class="founder">
+        <div class="role">Co-Founder · Product</div>
+        <h3>Robert</h3>
+        <p>Robert leads product and engineering at $EDGE. Background in capital markets infrastructure. Builds the terminal in public, ships on Vercel, treats every feature as a falsifiable bet against the public track record.</p>
+        <div class="links">
+          <a href="#">X →</a>
+          <a href="#">GitHub →</a>
+          <a href="#">LinkedIn →</a>
+        </div>
+      </div>
+      <div class="founder">
+        <div class="role">Co-Founder · Growth</div>
+        <h3>Tye</h3>
+        <p>Tye leads growth, partnerships, and the trader community at $EDGE. Background in audience-building inside crypto-native and prediction-market verticals. Runs the KOL desk and the insider channel.</p>
+        <div class="links">
+          <a href="#">X →</a>
+          <a href="#">Telegram →</a>
+          <a href="#">LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Quotes</h2><div class="sec-num">09.04 · For Citation</div></div>
+    <div class="quotes">
+      <div class="quote">
+        <div class="mark">"</div>
+        <div>
+          <blockquote>Polymarket and Kalshi show you where the money is. They don't show you why. $EDGE is the connective tissue.</blockquote>
+          <cite>— Robert, Co-Founder</cite>
+        </div>
+      </div>
+      <div class="quote">
+        <div class="mark">"</div>
+        <div>
+          <blockquote>The edge isn't in the price. The edge is in the gap between the price and what the public is saying.</blockquote>
+          <cite>— Robert, Co-Founder</cite>
+        </div>
+      </div>
+      <div class="quote">
+        <div class="mark">"</div>
+        <div>
+          <blockquote>We're not building a casino. We're building the terminal the smart money already wishes existed.</blockquote>
+          <cite>— Tye, Co-Founder</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Logo &amp; Brand Assets</h2><div class="sec-num">09.05 · SVG · Free Use With Attribution</div></div>
+    <div class="assets">
+      <div class="asset">
+        <div class="preview"><img src="../01-brand-foundation/assets/mark.svg" alt="mark"></div>
+        <div class="meta"><span>MARK · LIME</span><a href="../01-brand-foundation/assets/mark.svg" download>SVG ↓</a></div>
+      </div>
+      <div class="asset">
+        <div class="preview"><img src="../01-brand-foundation/assets/mark-mono-white.svg" alt="mark white"></div>
+        <div class="meta"><span>MARK · WHITE</span><a href="../01-brand-foundation/assets/mark-mono-white.svg" download>SVG ↓</a></div>
+      </div>
+      <div class="asset">
+        <div class="preview" style="background:#F5F5F0"><img src="../01-brand-foundation/assets/mark-mono-black.svg" alt="mark black"></div>
+        <div class="meta"><span>MARK · BLACK</span><a href="../01-brand-foundation/assets/mark-mono-black.svg" download>SVG ↓</a></div>
+      </div>
+      <div class="asset">
+        <div class="preview"><img src="../01-brand-foundation/assets/wordmark.svg" alt="wordmark"></div>
+        <div class="meta"><span>WORDMARK</span><a href="../01-brand-foundation/assets/wordmark.svg" download>SVG ↓</a></div>
+      </div>
+      <div class="asset">
+        <div class="preview"><img src="../01-brand-foundation/assets/lockup-horizontal.svg" alt="lockup horizontal"></div>
+        <div class="meta"><span>LOCKUP · H</span><a href="../01-brand-foundation/assets/lockup-horizontal.svg" download>SVG ↓</a></div>
+      </div>
+      <div class="asset">
+        <div class="preview"><img src="../01-brand-foundation/assets/lockup-stacked.svg" alt="lockup stacked"></div>
+        <div class="meta"><span>LOCKUP · V</span><a href="../01-brand-foundation/assets/lockup-stacked.svg" download>SVG ↓</a></div>
+      </div>
+    </div>
+    <p style="margin-top:18px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;">
+      Usage: maintain clearspace equal to the height of "E" on all sides. Don't rotate, recolor outside palette, outline, or apply effects. Brand foundation spec: <a href="../01-brand-foundation/index.html" style="color:var(--lime)">/marketing/01-brand-foundation</a>.
+    </p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Contact</h2><div class="sec-num">09.06</div></div>
+    <div class="contacts">
+      <div class="contact">
+        <div class="role">Press / Media</div>
+        <span class="email">cashbridgehomes@gmail.com</span>
+        <p class="note">Embargoes honored. 24h response SLA.</p>
+      </div>
+      <div class="contact">
+        <div class="role">Partnerships</div>
+        <span class="email">cashbridgehomes@gmail.com</span>
+        <p class="note">Listings, integrations, API access.</p>
+      </div>
+      <div class="contact">
+        <div class="role">Founders Direct</div>
+        <span class="email">cashbridgehomes@gmail.com</span>
+        <p class="note">For Tier-1 reporters and strategics only.</p>
+      </div>
+      <div class="contact">
+        <div class="role">Security</div>
+        <span class="email">cashbridgehomes@gmail.com</span>
+        <p class="note">Vulnerability disclosures. PGP on request.</p>
+      </div>
+      <div class="contact">
+        <div class="role">Legal</div>
+        <span class="email">cashbridgehomes@gmail.com</span>
+        <p class="note">DMCA, trademark, regulatory inquiries.</p>
+      </div>
+      <div class="contact">
+        <div class="role">Community</div>
+        <span class="email">cashbridgehomes@gmail.com</span>
+        <p class="note">General questions, product feedback.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · PRESS KIT · v1.0</div>
+    <div>MONEY · MOUTH · EDGE</div>
+    <div><a href="../00-master/index.html">← Back to Marketing OS</a></div>
+  </footer>
+</main>
+</body>
+</html>

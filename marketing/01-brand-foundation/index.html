@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Brand Foundation</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --void-3: #141418;
+    --void-4: #1c1c22;
+    --lime: #C4FF00;
+    --lime-dim: #8aa800;
+    --magenta: #FF006E;
+    --green: #00FF85;
+    --amber: #FFB800;
+    --orange: #FF7A00;
+    --red: #FF3344;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; }
+  ::selection { background: var(--lime); color: var(--void); }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+
+  .hero { display:grid; grid-template-columns: 1fr; gap: 40px; padding: 24px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(56px, 10vw, 140px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  h1 .strike { color: var(--muted); }
+  .lede { font-size: 19px; line-height: 1.55; max-width: 720px; color: var(--white); opacity: .85; }
+  .lede em { color: var(--lime); font-style: normal; }
+
+  section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: 0; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 32px; gap: 16px; flex-wrap: wrap; }
+  .sec-num { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing:.2em; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 64px); letter-spacing:-.02em; text-transform: uppercase; }
+
+  /* Logo grid */
+  .logo-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .logo-cell { background: var(--void-2); padding: 36px 24px 18px; display:flex; flex-direction:column; gap: 18px; min-height: 220px; }
+  .logo-cell.dark { background: var(--void); }
+  .logo-cell.light { background: var(--white); color: var(--void); }
+  .logo-cell.cream { background: #F5EFE0; color: var(--void); }
+  .logo-art { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .logo-art img { max-width: 100%; max-height: 120px; }
+  .logo-meta { display:flex; justify-content: space-between; font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.18em; text-transform: uppercase; color: var(--muted); }
+  .logo-cell.light .logo-meta, .logo-cell.cream .logo-meta { color: rgba(5,5,7,.55); }
+
+  /* Color palette */
+  .palette { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .swatch { padding: 18px; display:flex; flex-direction:column; justify-content: space-between; min-height: 200px; }
+  .swatch .name { font-family:'Anton', sans-serif; font-size: 24px; letter-spacing:-.01em; text-transform: uppercase; }
+  .swatch .hex { font-family:'JetBrains Mono', monospace; font-size: 11px; opacity: .8; }
+  .swatch .role { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.18em; text-transform: uppercase; opacity: .65; }
+  .sw-void { background: var(--void); color: var(--white); }
+  .sw-void-2 { background: var(--void-2); color: var(--white); }
+  .sw-void-3 { background: var(--void-3); color: var(--white); }
+  .sw-lime { background: var(--lime); color: var(--void); }
+  .sw-magenta { background: var(--magenta); color: var(--void); }
+  .sw-green { background: var(--green); color: var(--void); }
+  .sw-amber { background: var(--amber); color: var(--void); }
+  .sw-red { background: var(--red); color: var(--void); }
+  .sw-white { background: var(--white); color: var(--void); }
+  .sw-muted { background: var(--muted); color: var(--white); }
+  .sw-cream { background: #F5EFE0; color: var(--void); }
+
+  /* Typography */
+  .type-grid { display:grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; padding: 24px 0; border-top: 1px solid var(--border); }
+  .type-grid:first-of-type { border-top: 0; }
+  .type-grid .label { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+  .type-grid .sample.display { font-family:'Anton', sans-serif; font-size: clamp(48px, 7vw, 96px); letter-spacing: -.02em; text-transform: uppercase; line-height: .95; }
+  .type-grid .sample.body { font-family:'DM Sans', sans-serif; font-size: 22px; line-height: 1.55; max-width: 56ch; }
+  .type-grid .sample.mono { font-family:'JetBrains Mono', monospace; font-size: 18px; letter-spacing: .02em; }
+  .type-grid .sample.eyebrow { font-family:'JetBrains Mono', monospace; font-size: 12px; letter-spacing:.3em; text-transform: uppercase; color: var(--lime); }
+  .type-grid .specs { color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; line-height: 1.8; }
+
+  /* Voice */
+  .voice-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .voice-cell { background: var(--void-2); padding: 28px; }
+  .voice-cell h3 { font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing:-.01em; text-transform: uppercase; margin-bottom: 6px; }
+  .voice-cell .tag { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing:.2em; text-transform: uppercase; }
+  .voice-cell.do .tag { color: var(--green); }
+  .voice-cell.dont .tag { color: var(--red); }
+  .voice-cell ul { list-style: none; margin-top: 18px; display: grid; gap: 10px; }
+  .voice-cell li { font-size: 15px; line-height: 1.45; padding-left: 18px; position: relative; }
+  .voice-cell li::before { content: ''; width: 6px; height: 6px; position: absolute; left: 0; top: 9px; }
+  .voice-cell.do li::before { background: var(--green); }
+  .voice-cell.dont li::before { background: var(--red); transform: rotate(45deg); }
+  .voice-cell li code { font-family:'JetBrains Mono', monospace; font-size: 13px; background: var(--void-4); padding: 1px 6px; border: 1px solid var(--border); }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+
+  @media (max-width: 720px) {
+    main { padding: 36px 20px 80px; }
+    .voice-grid { grid-template-columns: 1fr; }
+    .type-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../00-master/index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / Brand Foundation</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">01 / Brand Foundation</div>
+    <h1>Money <span class="accent">·</span> Mouth <span class="accent">·</span> <span class="accent">Edge</span>.</h1>
+    <p class="lede">The brand of the only product in the world that tells you <em>where the money is</em>, <em>what the mouth is saying</em>, and the precise gap between them — the <em>edge</em>. Everything in this folder inherits from these rules. Don't drift.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Logo System</h2><div class="sec-num">01.01</div></div>
+    <div class="logo-grid">
+      <div class="logo-cell dark">
+        <div class="logo-art"><img src="assets/mark.svg" alt="mark"></div>
+        <div class="logo-meta"><span>mark</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell dark">
+        <div class="logo-art"><img src="assets/wordmark.svg" alt="wordmark"></div>
+        <div class="logo-meta"><span>wordmark</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell dark">
+        <div class="logo-art"><img src="assets/lockup-horizontal.svg" alt="lockup horizontal"></div>
+        <div class="logo-meta"><span>lockup · horizontal</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell dark">
+        <div class="logo-art"><img src="assets/lockup-stacked.svg" alt="lockup stacked"></div>
+        <div class="logo-meta"><span>lockup · stacked</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell light">
+        <div class="logo-art"><img src="assets/mark-mono-black.svg" alt="mark black"></div>
+        <div class="logo-meta"><span>mark · mono / black</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell dark">
+        <div class="logo-art"><img src="assets/mark-mono-white.svg" alt="mark white"></div>
+        <div class="logo-meta"><span>mark · mono / white</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell dark">
+        <div class="logo-art"><img src="assets/pfp-square.svg" alt="profile picture"></div>
+        <div class="logo-meta"><span>profile · 400×400</span><span>SVG</span></div>
+      </div>
+      <div class="logo-cell cream">
+        <div class="logo-art"><img src="assets/mark-mono-black.svg" alt="mark on cream"></div>
+        <div class="logo-meta"><span>mark on warm cream</span><span>SVG</span></div>
+      </div>
+    </div>
+    <p style="margin-top:18px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;">Clearspace: minimum margin equal to the height of the wordmark's "E" on all sides. Minimum size: 24px height for the mark, 96px width for the wordmark. Never rotate, recolor outside palette, outline, drop-shadow, or apply gradients to the mark.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Color</h2><div class="sec-num">01.02</div></div>
+    <div class="palette">
+      <div class="swatch sw-void"><div><div class="role">Primary BG</div><div class="name">Void</div></div><div class="hex">#050507</div></div>
+      <div class="swatch sw-void-2"><div><div class="role">Card BG</div><div class="name">Void 02</div></div><div class="hex">#0C0C10</div></div>
+      <div class="swatch sw-void-3"><div><div class="role">Row hover</div><div class="name">Void 03</div></div><div class="hex">#141418</div></div>
+      <div class="swatch sw-lime"><div><div class="role">Primary accent</div><div class="name">Lime</div></div><div class="hex">#C4FF00</div></div>
+      <div class="swatch sw-magenta"><div><div class="role">Divergence</div><div class="name">Magenta</div></div><div class="hex">#FF006E</div></div>
+      <div class="swatch sw-green"><div><div class="role">Positive</div><div class="name">Green</div></div><div class="hex">#00FF85</div></div>
+      <div class="swatch sw-amber"><div><div class="role">Caution</div><div class="name">Amber</div></div><div class="hex">#FFB800</div></div>
+      <div class="swatch sw-red"><div><div class="role">Negative</div><div class="name">Red</div></div><div class="hex">#FF3344</div></div>
+      <div class="swatch sw-white"><div><div class="role">Primary text</div><div class="name">Bone</div></div><div class="hex">#F5F5F0</div></div>
+      <div class="swatch sw-muted"><div><div class="role">Secondary text</div><div class="name">Muted</div></div><div class="hex">#6B6B73</div></div>
+      <div class="swatch sw-cream"><div><div class="role">Editorial alt</div><div class="name">Cream</div></div><div class="hex">#F5EFE0</div></div>
+    </div>
+    <p style="margin-top:18px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;">Magenta is reserved for divergence/critical signals only. Never use it for decoration. Lime carries the brand — use it for one focal element per surface, not as a blanket fill.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Typography</h2><div class="sec-num">01.03</div></div>
+    <div class="type-grid">
+      <div class="label">Display</div>
+      <div>
+        <div class="sample display">Watch the action.<br>Before you bet.</div>
+        <div class="specs" style="margin-top:14px;">ANTON · 88px · TRACKING -2% · ALL CAPS · LINE 0.92</div>
+      </div>
+    </div>
+    <div class="type-grid">
+      <div class="label">Body</div>
+      <div>
+        <div class="sample body">Polymarket and Kalshi show you where the money is. Twitter shows you what the mouth is saying. $EDGE shows you the gap between them in real time — that gap is your edge.</div>
+        <div class="specs" style="margin-top:14px;">DM SANS · 22px · 400/500/700 · LINE 1.55</div>
+      </div>
+    </div>
+    <div class="type-grid">
+      <div class="label">Mono / Data</div>
+      <div>
+        <div class="sample mono">$1.42M · +18.4% · 24H · POLY:0xA3F2 · DIVERGENCE 0.72</div>
+        <div class="specs" style="margin-top:14px;">JETBRAINS MONO · 18px · TABULAR · 400/500/700</div>
+      </div>
+    </div>
+    <div class="type-grid">
+      <div class="label">Eyebrow</div>
+      <div>
+        <div class="sample eyebrow">Real-time intelligence · prediction markets · v1</div>
+        <div class="specs" style="margin-top:14px;">JETBRAINS MONO · 12px · TRACKING +30% · CAPS · LIME</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Voice</h2><div class="sec-num">01.04</div></div>
+    <div class="voice-grid">
+      <div class="voice-cell do">
+        <div class="tag">Do</div>
+        <h3>Degen-confident. Data-grounded.</h3>
+        <ul>
+          <li>Lead with the data: <code>"$2.4M moved on Trump-Powell in 18 minutes."</code></li>
+          <li>Use the Money / Mouth / Edge vocabulary across every surface.</li>
+          <li>Short, declarative sentences. Anton headlines, hairline rules, restraint.</li>
+          <li>Mono uppercase for labels (<code>VOLUME 24H</code>, <code>DIVERGENCE</code>).</li>
+          <li>Concede uncertainty when honest — credibility compounds.</li>
+          <li>Address the reader as someone who already gets it. No explainers in the hero.</li>
+        </ul>
+      </div>
+      <div class="voice-cell dont">
+        <div class="tag">Don't</div>
+        <h3>Generic crypto slop.</h3>
+        <ul>
+          <li>No "TO THE MOON," no rockets, no laser eyes, no <code>🚀💎</code>.</li>
+          <li>No purple-on-white SaaS gradients. No "AI-powered" boilerplate.</li>
+          <li>No Inter / Roboto / system fonts as the display face.</li>
+          <li>No "DYOR" "WAGMI" "GM" decoration — vocabulary, not jewelry.</li>
+          <li>Never write <code>$1,234.56</code> in a data row — use compact (<code>$1.2K</code>).</li>
+          <li>Never use lime on lime, magenta on lime, or any color combo that isn't in the palette.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Tagline System</h2><div class="sec-num">01.05</div></div>
+    <div style="display:grid; gap: 12px; font-family:'Anton',sans-serif; font-size: clamp(28px, 4vw, 48px); line-height: 1.05; text-transform: uppercase; letter-spacing:-.02em;">
+      <div>Watch the action. <span style="color:var(--lime);">Before you bet.</span></div>
+      <div>Money meets mouth. <span style="color:var(--lime);">The edge is where they disagree.</span></div>
+      <div>The terminal for <span style="color:var(--lime);">prediction markets.</span></div>
+      <div>$EDGE — <span style="color:var(--lime);">smart money lives here.</span></div>
+      <div><span style="color:var(--muted);">Polymarket + Kalshi + Twitter + Whales —</span> in one screen.</div>
+    </div>
+    <p style="margin-top:24px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;">Primary: <span style="color:var(--white)">Watch the action. Before you bet.</span> · Use on landing hero and OG image. Alternates rotate for ads, social, partner copy.</p>
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0</div>
+    <div><a href="../00-master/index.html">← Back to Master Index</a></div>
+  </footer>
+</main>
+</body>
+</html>

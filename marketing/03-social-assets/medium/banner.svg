@@ -1,0 +1,38 @@
+<svg viewBox="0 0 1500 750" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Medium publication cover">
+  <title>$EDGE on Medium &#8212; Cover</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.92"/>
+    </radialGradient>
+  </defs>
+  <rect width="1500" height="750" fill="#050507"/>
+  <rect width="1500" height="750" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="80" y="80" font-size="13" fill="#C4FF00" letter-spacing="0.32em">$EDGE / NOTES &#183; LONG-FORM &#183; v1</text>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="144" letter-spacing="-3" fill="#F5F5F0">
+    <text x="80" y="270">FIELD NOTES</text>
+    <text x="80" y="400">FROM THE</text>
+    <text x="80" y="530"><tspan fill="#C4FF00">EDGE</tspan> OF</text>
+    <text x="80" y="660">PREDICTION MARKETS.</text>
+  </g>
+
+  <g opacity="0.16">
+    <path d="M1200 200 L1380 340 L1200 480" fill="none" stroke="#C4FF00" stroke-width="40" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+
+  <rect width="1500" height="750" fill="url(#vignette)"/>
+
+  <rect x="0" y="710" width="1500" height="40" fill="#0C0C10"/>
+  <line x1="0" y1="710" x2="1500" y2="710" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="736">POLY:0xA3F2 +18.4%   &#183;   KALSHI TRUMP-2028 0.42 &#8594; 0.51   &#183;   DIVERGENCE 0.72   &#183;   WHALE IN $640K</text>
+    <text x="1480" y="736" text-anchor="end" fill="#C4FF00">@EDGETERMINAL</text>
+  </g>
+</svg>

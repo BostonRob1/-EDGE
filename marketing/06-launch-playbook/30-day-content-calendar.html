@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — 30-Day Content Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507; --void-2: #0c0c10; --void-3: #141418; --void-4: #1c1c22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800;
+    --red: #FF3344; --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08); --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+  a { color: inherit; text-decoration: none; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(5,5,7,.92); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1640px; margin: 0 auto; padding: 48px 24px 120px; position: relative; z-index: 2; }
+
+  .hero { display:grid; gap: 24px; padding: 24px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 8vw, 96px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .lede { font-size: 17px; line-height: 1.55; max-width: 720px; color: var(--white); opacity: .85; }
+
+  .toolbar { position: sticky; top: 65px; z-index: 15; background: var(--void); border-bottom: 1px solid var(--border); padding: 16px 0; margin-bottom: 0; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .toolbar .label { font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .25em; text-transform: uppercase; margin-right: 8px; }
+  .filter-btn { font-family:'JetBrains Mono', monospace; font-size: 11px; padding: 8px 14px; background: var(--void-2); border: 1px solid var(--border); color: var(--white); cursor: pointer; letter-spacing: .14em; text-transform: uppercase; transition: all .12s; }
+  .filter-btn:hover { border-color: var(--border-bright); }
+  .filter-btn.active { background: var(--lime); color: var(--void); border-color: var(--lime); }
+  .filter-btn .ct { color: var(--muted); margin-left: 6px; font-size: 10px; }
+  .filter-btn.active .ct { color: var(--void); opacity: .6; }
+  .legend { margin-left: auto; display: flex; gap: 16px; flex-wrap: wrap; font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; }
+  .legend span::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 6px; vertical-align: middle; }
+  .legend .lg-tease::before { background: var(--muted); }
+  .legend .lg-amp::before { background: var(--amber); }
+  .legend .lg-count::before { background: var(--magenta); }
+  .legend .lg-launch::before { background: var(--lime); }
+  .legend .lg-proof::before { background: var(--green); }
+
+  .table-wrap { margin-top: 24px; border: 1px solid var(--border); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead { position: sticky; top: 130px; z-index: 14; background: var(--void-2); }
+  thead th { font-family:'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--border-bright); }
+  tbody td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:hover { background: var(--void-3); }
+  tr.row { transition: background .1s; }
+  tr.is-hidden { display: none; }
+
+  .day-cell { font-family:'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; white-space: nowrap; min-width: 64px; }
+  .day-cell .t { color: var(--lime); }
+  .day-cell.is-today .t { background: var(--lime); color: var(--void); padding: 2px 6px; }
+  .date-cell { font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); white-space: nowrap; min-width: 90px; }
+  .phase-badge { display: inline-block; font-family:'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .2em; padding: 3px 8px; text-transform: uppercase; white-space: nowrap; }
+  .phase-badge.tease { background: rgba(107,107,115,.16); color: var(--muted); border: 1px solid rgba(107,107,115,.4); }
+  .phase-badge.amp { background: rgba(255,184,0,.12); color: var(--amber); border: 1px solid rgba(255,184,0,.4); }
+  .phase-badge.count { background: rgba(255,0,110,.14); color: var(--magenta); border: 1px solid rgba(255,0,110,.4); }
+  .phase-badge.launch { background: rgba(196,255,0,.14); color: var(--lime); border: 1px solid rgba(196,255,0,.4); }
+  .phase-badge.proof { background: rgba(0,255,133,.12); color: var(--green); border: 1px solid rgba(0,255,133,.4); }
+
+  .x-post { font-size: 13px; line-height: 1.55; min-width: 360px; max-width: 480px; color: var(--white); white-space: pre-wrap; }
+  .tg-post { font-size: 12px; line-height: 1.5; color: var(--white); opacity: .75; min-width: 220px; max-width: 320px; white-space: pre-wrap; }
+  .asset-cell { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--white); opacity: .8; min-width: 140px; max-width: 200px; }
+  .kpi-cell { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); min-width: 120px; max-width: 180px; }
+  .kpi-cell .neg { color: var(--muted); }
+
+  /* mobile cards */
+  .mobile-cards { display: none; }
+  .mcard { background: var(--void-2); border: 1px solid var(--border); padding: 20px; margin-bottom: 12px; }
+  .mcard .mhead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .mcard .mhead .left { font-family:'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; }
+  .mcard .mhead .left .t { color: var(--lime); }
+  .mcard .mhead .right { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+  .mcard dl { display: grid; gap: 14px; }
+  .mcard dt { font-family:'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+  .mcard dd { font-size: 13px; line-height: 1.55; white-space: pre-wrap; }
+  .mcard dd.mono { font-family:'JetBrains Mono', monospace; font-size: 11px; }
+  .mcard dd.kpi { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); }
+
+  @media (max-width: 1100px) {
+    .table-wrap { display: none; }
+    .mobile-cards { display: block; }
+    thead { display: none; }
+  }
+  @media (max-width: 720px) {
+    main { padding: 24px 16px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../00-master/index.html">Marketing OS</a> / <a href="index.html">Launch Playbook</a> / 30-Day Calendar</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">06.01 · Content Calendar · T-30 → T+30</div>
+    <h1>60 days. <span class="accent">Every post pre-written.</span></h1>
+    <p class="lede">Daily X post, daily TG/DC post, asset needed, KPI target. Filter by phase. Anchor date: launch is <strong style="color:var(--lime);">2026-06-25</strong>.</p>
+  </section>
+
+  <div class="toolbar">
+    <span class="label">Phase</span>
+    <button class="filter-btn active" data-f="all">All <span class="ct">60</span></button>
+    <button class="filter-btn" data-f="tease">Tease <span class="ct">15</span></button>
+    <button class="filter-btn" data-f="amp">Amplify <span class="ct">12</span></button>
+    <button class="filter-btn" data-f="count">Countdown <span class="ct">3</span></button>
+    <button class="filter-btn" data-f="launch">Launch Week <span class="ct">8</span></button>
+    <button class="filter-btn" data-f="proof">Proof <span class="ct">22</span></button>
+    <div class="legend">
+      <span class="lg-tease">Tease</span>
+      <span class="lg-amp">Amplify</span>
+      <span class="lg-count">Countdown</span>
+      <span class="lg-launch">Launch</span>
+      <span class="lg-proof">Proof</span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Phase</th>
+          <th>Post (X)</th>
+          <th>Post (TG/DC)</th>
+          <th>Asset Needed</th>
+          <th>KPI Target</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="mobile-cards" id="mcards"></div>
+</main>
+
+<script>
+const ANCHOR = new Date('2026-06-25T00:00:00Z');
+function fmtDate(d){ return d.toISOString().slice(0,10); }
+function dateForOffset(off){ const d = new Date(ANCHOR); d.setUTCDate(d.getUTCDate() + off); return d; }
+
+const data = [
+  // T-30 → T-15 TEASE
+  { off: -30, phase: 'tease', x: `something has been wrong with prediction markets for a long time.\n\nyou see odds on Polymarket. you see takes on twitter. they almost never agree.\n\nthe gap between them — that's where the money lives.\n\nwe built the screen for it.`, tg: `Tease window opens. Mention "we built something" only. No name. No date.`, asset: `Static · empty-table teaser`, kpi: `200 impressions / 25 likes / 5 replies` },
+  { off: -29, phase: 'tease', x: `Polymarket says 64%.\nKalshi says 71%.\nTwitter says "it's over."\n\nwhich one is the truth?\n\n(none of them — alone)`, tg: `Drop screenshot from prototype, blur out price labels. Caption: "soon."`, asset: `Screenshot · 3-source comparison`, kpi: `400 imp / 30 likes / 1 quote` },
+  { off: -28, phase: 'tease', x: `built a thing that watches every Polymarket and Kalshi market in real time and flags when the smart money disagrees with the loudest mouths on the timeline.\n\nyou'd be surprised how often that happens.`, tg: `Discord channel #early opens. Invite-only. Slow drip.`, asset: `Loom · 30s product walkthrough`, kpi: `600 imp / 40 likes / 10 DMs` },
+  { off: -27, phase: 'tease', x: `the divergence chart for "will Powell cut in June" is currently showing the largest gap we've ever logged.\n\nguess which side the smart money is on.`, tg: `Post the actual divergence value. Don't link to product yet.`, asset: `Chart · Powell-cut divergence`, kpi: `1K imp / 60 likes / 12 RT` },
+  { off: -26, phase: 'tease', x: `whales on Polymarket moved $4.2M into "NO" on a market the timeline is overwhelmingly "YES" on.\n\nthat's the trade you want to know about 15 minutes before the timeline does.\n\nwe show you. soon.`, tg: `Hint at "whale tracker" feature. Don't name it.`, asset: `Static · whale wallet visual`, kpi: `1.5K imp / 80 likes / 4 quotes` },
+  { off: -25, phase: 'tease', x: `name a prediction market and i'll show you, right now, the gap between what the money is saying and what the mouth is saying.\n\nreply with one. i'll DM you the screenshot.`, tg: `Engagement bait. Founders respond personally.`, asset: `Reply templates · 5 markets`, kpi: `2K imp / 100 likes / 40 replies` },
+  { off: -24, phase: 'tease', x: `the timeline gets it wrong constantly. the timeline is also where 90% of degens get their conviction.\n\nthe gap between those two facts is a business.`, tg: `Repost top reply from yesterday with founder commentary.`, asset: `None · text only`, kpi: `1.2K imp / 70 likes / 5 RT` },
+  { off: -23, phase: 'tease', x: `we're not a meme.\nwe're not a launchpad.\nwe're not "AI-powered."\n\nwe're the first Bloomberg-grade aggregator for prediction markets.\n\nlive product. real users. token in 3 weeks.`, tg: `First "live product" mention. Drive to vercel URL via bio link.`, asset: `Hero screenshot · live URL`, kpi: `3K imp / 150 likes / 20 RT / 50 site visits` },
+  { off: -22, phase: 'tease', x: `case study: trump-powell market.\n\nthe money moved at 14:18 ET. the timeline reacted at 14:31. 13 minutes of edge for anyone watching divergence.\n\nthat's the entire product, in one screenshot.`, tg: `Show actual timestamped chart. Walkthrough thread (5 tweets).`, asset: `Annotated chart · trump-powell`, kpi: `4K imp / 200 likes / 30 RT` },
+  { off: -21, phase: 'tease', x: `we built this because we kept losing money to slow information.\n\nturns out a lot of you have the same problem.`, tg: `Founder Robert quote-tweets with personal story (2026 lost trades).`, asset: `Founder quote-card`, kpi: `2.5K imp / 130 likes / 10 RT` },
+  { off: -20, phase: 'tease', x: `Polymarket did $9B in 2024.\nKalshi just got NYSE-greenlit.\n\nthe biggest market category of the next 10 years has no terminal.\n\nwe're building the terminal.`, tg: `Crosspost to Reddit r/Polymarket (manual, no spam).`, asset: `Stat-card · $9B / NYSE`, kpi: `5K imp / 250 likes / 50 RT` },
+  { off: -19, phase: 'tease', x: `naming things is hard.\n\n$EDGE = where the money meets the mouth and you stand in the gap.\n\nit's the only thing that matters.`, tg: `First brand-name reveal. Pin tweet for 48h.`, asset: `Logo reveal · 9:16 video`, kpi: `8K imp / 400 likes / 80 RT` },
+  { off: -18, phase: 'tease', x: `the live product is at edge-two-psi.vercel.app — go look.\n\nno wallet connect, no waitlist, no email gate. just the data.\n\nbecause if the product isn't obvious you don't need to read a deck.`, tg: `Push site link in Discord + Telegram banner. Drive measurable click.`, asset: `OG image · site preview`, kpi: `15K imp / 700 likes / 200 site visits` },
+  { off: -17, phase: 'tease', x: `4 things you can do on $EDGE right now, for free:\n\n— see Polymarket + Kalshi side by side\n— watch top wallet positions in real time\n— see sentiment vs odds divergence\n— filter by category\n\nthe pro tier unlocks at launch.`, tg: `List-format thread on Telegram (more readable than image carousels).`, asset: `4-feature carousel · 1080`, kpi: `10K imp / 500 likes / 100 RT` },
+  { off: -16, phase: 'tease', x: `we are going to ship $EDGE on pump.fun.\n\nfair launch. no presale. no allocation to anyone with a podcast.\n\nthe entry is the same for you and us.`, tg: `Announce pump.fun officially. AMA scheduled for Wed.`, asset: `Pump.fun banner · 1500x500`, kpi: `20K imp / 900 likes / 250 RT` },
+
+  // T-15 → T-3 AMPLIFY
+  { off: -15, phase: 'amp', x: `$EDGE tokenomics, in full:\n\n1,000,000,000 supply\n80% fair launch (pump.fun)\n10% LP (locked at graduation)\n5% treasury (multisig)\n3% marketing (6mo vested)\n2% team (24mo vested, 6mo cliff)\n\nno presale. no allocation. no friends.`, tg: `Pin tokenomics graphic in DC + TG. Move every gated post behind 10K $EDGE.`, asset: `Tokenomics pie chart · 1200x675`, kpi: `30K imp / 1.5K likes / 400 RT` },
+  { off: -14, phase: 'amp', x: `utility tiers on $EDGE:\n\n10K  → whale alerts\n100K → divergence radar\n1M   → raw API\n10M  → insider channel\n\nholding is the unlock. selling is the exit. simple.`, tg: `Tier graphic posted in #utility channel. New role flow goes live.`, asset: `Utility tier table · 1080`, kpi: `25K imp / 1.2K likes / 300 RT` },
+  { off: -13, phase: 'amp', x: `the picker algorithm sees every cross-platform divergence over the last 14 days and ranks the top 5 trades.\n\nwe back-tested it on Q1 — 71% win rate, +34% portfolio over the period.\n\nholders get the picker.`, tg: `Back-test deck linked in #data channel. CSV downloadable.`, asset: `Backtest chart · Q1 PnL`, kpi: `35K imp / 1.8K likes / 500 RT` },
+  { off: -12, phase: 'amp', x: `partner spotlight: @polymarket\n\nthe deepest order book in prediction markets. we read every tick. we don't replace them — we make them legible.`, tg: `Coordinate with Polymarket comms 24h prior. Soft mention only.`, asset: `Partner card · Polymarket co-mark`, kpi: `15K imp / 800 likes / 100 RT` },
+  { off: -11, phase: 'amp', x: `partner spotlight: @kalshi\n\nfirst CFTC-regulated event exchange. NYSE-greenlit. we surface their markets next to Polymarket's so you can see where the price disagrees.`, tg: `Mirror Polymarket post structure. Tag Kalshi handle.`, asset: `Partner card · Kalshi co-mark`, kpi: `15K imp / 800 likes / 100 RT` },
+  { off: -10, phase: 'amp', x: `Spaces tonight 8pm ET.\n\nme + @TyeBuilds going through the product live, walking through divergence trades from the last 30 days, taking every question.\n\ndon't watch the replay. show up.`, tg: `Pin Spaces link in TG. Slack outreach to expected co-hosts.`, asset: `Spaces graphic · 1500x500`, kpi: `40K imp / 2K likes / 300 RT / 150 Spaces` },
+  { off: -9, phase: 'amp', x: `replays from last night's Spaces:\n\n— why divergence is alpha\n— how the picker is built\n— what holders get\n— the launch mechanic\n\n38min. compressed. zero filler.`, tg: `Drop audio + thread summary in TG. Crosspost to YouTube short clip.`, asset: `Spaces replay · audio + clip`, kpi: `20K imp / 1K likes / 200 RT` },
+  { off: -8, phase: 'amp', x: `KOL drop incoming.\n\nover the next 72h, 12 traders we respect are going to talk about $EDGE.\n\nno paid placements. no scripted copy. they got early access. they decide what to say.`, tg: `Send all KOLs the disclosure boilerplate + early access link.`, asset: `KOL list · internal only`, kpi: `30K imp / 1.5K likes / 400 RT` },
+  { off: -7, phase: 'amp', x: `one week to fairlaunch.\n\npump.fun bonding curve goes live next Wed 13:00 ET.\n\nno presale. no allocation. no Telegram VIP group. one entry, one price, same as us.`, tg: `Update pinned tweet to "T-7" countdown. Announce exact UTC time.`, asset: `Countdown card · T-7`, kpi: `50K imp / 2.5K likes / 600 RT` },
+  { off: -6, phase: 'amp', x: `divergence of the day:\n\n"BTC > 200K by Dec 31" — Polymarket 38%, Kalshi 41%, timeline overwhelmingly bullish.\n\nthe money disagrees with the mouth by ~15pts.\n\nguess who's been right historically.`, tg: `Daily divergence post starts. Same time slot (16:00 ET).`, asset: `BTC divergence chart`, kpi: `25K imp / 1.2K likes / 300 RT` },
+  { off: -5, phase: 'amp', x: `holder simulator: drop your wallet, see what tier you'd unlock at 10K, 100K, 1M, 10M.\n\nlive at edge-two-psi.vercel.app/simulator.\n\nbuilt for fun. surprisingly accurate.`, tg: `Simulator launch post. Driving signups + creating anticipation.`, asset: `Simulator UI · OG image`, kpi: `40K imp / 2K likes / 800 site visits` },
+  { off: -4, phase: 'amp', x: `last 72 hours before launch.\n\nif you've been quietly watching: this is the part where it stops being optional to pay attention.\n\nT-3.`, tg: `Update banner. Slack KOLs for final wave coordination.`, asset: `T-3 countdown · video 9:16`, kpi: `60K imp / 3K likes / 800 RT` },
+
+  // T-3 → T-0 COUNTDOWN
+  { off: -3, phase: 'count', x: `T-72.\n\nthe contract address goes live at 2026-06-25 13:00 ET.\n\nthere is no whitelist. there is no presale. there is no "DM for early." anyone who DMs you that is a scammer.`, tg: `Anti-scam pinned message. Mod team on high alert mode.`, asset: `T-72 countdown card`, kpi: `80K imp / 4K likes / 1.2K RT` },
+  { off: -2, phase: 'count', x: `T-48.\n\ntokenomics, utility, mechanics, FAQ — all live at the link in bio.\n\nread everything before launch day. on launch day, you don't have time.`, tg: `FAQ doc dropped. Pin in all channels.`, asset: `T-48 countdown · FAQ link`, kpi: `90K imp / 4.5K likes / 1.5K RT` },
+  { off: -1, phase: 'count', x: `T-24.\n\ntomorrow, 13:00 ET, pump.fun.\n\nfounders go live on Spaces at 12:00 ET. then we ship.\n\none entry. one price. fair.`, tg: `Final pre-launch broadcast. Discord @everyone. TG all-caps post.`, asset: `T-24 countdown · video`, kpi: `150K imp / 8K likes / 3K RT` },
+
+  // T-0 → T+7 LAUNCH WEEK
+  { off: 0, phase: 'launch', x: `$EDGE IS LIVE.\n\nca: [PASTE AT T-0]\npump.fun: pump.fun/[ca]\n\nwatch the action. before you bet.`, tg: `T-0 detonation post. Sync across X, TG, DC within 60 seconds.`, asset: `Launch banner · final + ca`, kpi: `500K imp / 25K likes / 8K RT / 1K holders` },
+  { off: 1, phase: 'launch', x: `24h recap.\n\nholders: [N]\nvolume: $[N]\nbonding curve: [%]\nraydium graduation: [Y/N]\n\nthank you. we have a lot of work ahead of us.`, tg: `T+24 thread (8 tweets). Cover everything: numbers, mistakes, what's next.`, asset: `24h recap chart · numbers`, kpi: `200K imp / 12K likes / 3K RT` },
+  { off: 2, phase: 'launch', x: `quick FAQ from the launch chaos:\n\n— yes there's a real product (link in bio)\n— no there was no presale (check pump.fun)\n— yes the utility tiers go live this week\n— no the team can't sell for 24mo (verifiable)`, tg: `Anti-FUD broadcast. Post the FAQ from the playbook.`, asset: `FAQ broadcast · static`, kpi: `120K imp / 6K likes / 1.5K RT` },
+  { off: 3, phase: 'launch', x: `whale alerts (10K tier) — LIVE.\n\nhold 10K $EDGE → unlock a private TG bot that pings you whenever a wallet >$100K moves on Polymarket or Kalshi.\n\nfirst utility shipped on time.`, tg: `Open whale-alerts channel. Verify with token-gating bot.`, asset: `Whale-alert demo gif`, kpi: `80K imp / 4K likes / 600 unlocks` },
+  { off: 4, phase: 'launch', x: `today's whale moves (sample of what holders see):\n\n— $1.2M into "Fed cut June" YES at 14:02 ET\n— $480K into "Trump indicted" NO at 11:38 ET\n— $920K into "BTC > 200K" YES across 3 wallets\n\nthe alerts go to holders ~30s after these fire.`, tg: `Show value of feature in public to drive holder upgrades.`, asset: `Whale-feed snapshot`, kpi: `100K imp / 5K likes / 800 RT` },
+  { off: 5, phase: 'launch', x: `divergence radar (100K tier) — LIVE.\n\nhold 100K $EDGE → access the radar that scores every market by sentiment-vs-odds gap, refreshed every 60s.\n\nthis is the alpha layer. shipping early.`, tg: `Open #radar channel. Token-gate it. Drop demo loom.`, asset: `Radar UI · 16:9 loom`, kpi: `120K imp / 6K likes / 200 unlocks` },
+  { off: 6, phase: 'launch', x: `week-one performance:\n\nholders: [N] (T+0: 1K)\nvolume 7d: $[N]\nutilities live: 2 of 4 (ahead of schedule)\nraydium: [Y/N]\n\nthank you to everyone who showed up. now we build for you.`, tg: `Long-form weekly recap. Roadmap restated.`, asset: `Week-1 metrics graphic`, kpi: `180K imp / 9K likes / 2K RT` },
+  { off: 7, phase: 'launch', x: `we said before launch that the picker algorithm hit 71% on Q1 backtest.\n\nthis week — first week with live capital — it hit 4-of-5 on its calls. PnL +12%.\n\nthe edge is real. we'll keep publishing the numbers, win or lose.`, tg: `Weekly picker report begins. Same slot every Sunday.`, asset: `Picker scorecard · week 1`, kpi: `150K imp / 7K likes / 1.5K RT` },
+
+  // T+7 → T+30 PROOF
+  { off: 8, phase: 'proof', x: `divergence of the day, holder-grade:\n\n[market] — Poly [X]% / Kalshi [Y]% / sentiment score [Z]\n\ngap is [N]pts in favor of [side]. radar score [score]/100.\n\nholders see the chart. timeline sees the headline.`, tg: `Daily divergence post — gated preview, full chart for holders.`, asset: `Daily divergence template`, kpi: `60K imp / 3K likes / 600 RT` },
+  { off: 9, phase: 'proof', x: `the case for prediction markets as a category:\n\n2024 volume: $9B+\n2026 projected: $40B+\nNYSE-greenlit: Kalshi\nCFTC-regulated: yes\nuser cohort: smart money + degens + journos\n\nthe terminal is $EDGE.`, tg: `Market-size repost. Linked to the deck.`, asset: `Market-size deck slide`, kpi: `80K imp / 4K likes / 800 RT` },
+  { off: 10, phase: 'proof', x: `case study: BTC ETF approval week (2024 throwback).\n\nthe timeline panicked. Polymarket whales accumulated YES. divergence hit 18pts.\n\noutcome: approval, 11pt timeline reversal, +$2.3M for whales tracked.\n\nthat's the trade. that's the screen.`, tg: `Backtest content series begins. Once per week.`, asset: `BTC ETF case study chart`, kpi: `100K imp / 5K likes / 1K RT` },
+  { off: 11, phase: 'proof', x: `you don't have to hold $EDGE to use the free tier.\n\n— Polymarket + Kalshi side-by-side: free\n— top wallets visible: free\n— divergence basic view: free\n— whale alerts, radar, API, insider: holder-gated\n\nbe a user first. be a holder if it pays.`, tg: `Free vs paid tier comparison. Drive top-of-funnel.`, asset: `Tier comparison table`, kpi: `70K imp / 3.5K likes / 700 RT` },
+  { off: 12, phase: 'proof', x: `weekly picker report — week 2.\n\ncalls: 5\nwins: 3\nlosses: 2\nPnL on equal-weight: +6.2%\n\nbeat the timeline. lost to the spread on 1. transparent every week, win or lose.`, tg: `Same slot every Sunday. CSV download in #data channel.`, asset: `Picker scorecard · week 2`, kpi: `120K imp / 6K likes / 1.5K RT` },
+  { off: 13, phase: 'proof', x: `every holder who bought in the first 7 days now sees a green "early supporter" badge in the terminal.\n\nno utility. just a record.\n\nwhen you're early, we remember.`, tg: `Badge rollout post. Causes natural status flex.`, asset: `Badge UI · animated`, kpi: `90K imp / 4.5K likes / 900 RT` },
+  { off: 14, phase: 'proof', x: `T+14. two weeks in.\n\nholders: [N]\ndaily active: [N]\nutilities live: 2 of 4\npicker PnL: +18%\n\nnext: raw API (1M tier) ships Friday.`, tg: `Two-week recap. Restate roadmap.`, asset: `Two-week metrics graphic`, kpi: `150K imp / 7K likes / 1.5K RT` },
+  { off: 15, phase: 'proof', x: `quick founder note from @TyeBuilds:\n\n"the part nobody talks about is how much fun this is to build. we ship a feature. you use it. you tell us where it's broken. we ship the fix. that loop is what makes us different."`, tg: `Founder-voice break. Builds parasocial trust.`, asset: `Founder pull-quote card`, kpi: `60K imp / 3K likes / 400 RT` },
+  { off: 16, phase: 'proof', x: `raw API (1M tier) — LIVE.\n\nhold 1M $EDGE → API key with 10K req/day across all endpoints.\n\nendpoints:\n/markets · /whales · /divergence · /picker\n\ndocs: edge-two-psi.vercel.app/api`, tg: `API launch + docs link. Onboarding form for first 50 keys.`, asset: `API docs OG image`, kpi: `100K imp / 5K likes / 50 keys issued` },
+  { off: 17, phase: 'proof', x: `the first 5 builders using the $EDGE API:\n\n— @[name] (trading bot)\n— @[name] (newsletter automation)\n— @[name] (dashboard widget)\n— @[name] (research tool)\n— @[name] (X bot)\n\nbuild on us. we cosign.`, tg: `Surface ecosystem early. Becomes a flywheel.`, asset: `Builder spotlight grid`, kpi: `80K imp / 4K likes / 800 RT` },
+  { off: 18, phase: 'proof', x: `divergence of the day:\n\n"will Powell resign by EOY" — Poly 8% / Kalshi 11% / sentiment [score]\n\nlow odds. low timeline volume. but the gap moved 4pts in 48h. someone knows something. radar score 76/100.`, tg: `Daily slot. Same time. Holder preview + free top-line.`, asset: `Daily divergence card`, kpi: `60K imp / 3K likes / 600 RT` },
+  { off: 19, phase: 'proof', x: `weekly picker — week 3.\n\ncalls: 5\nwins: 4\nlosses: 1\nPnL: +9.4%\n\ncumulative 3-week PnL: +24.8% on equal-weight.\n\nbeating SPY by ~22%. beating the timeline by infinity.`, tg: `Same slot. Sunday recap.`, asset: `Picker scorecard · week 3`, kpi: `140K imp / 7K likes / 1.5K RT` },
+  { off: 20, phase: 'proof', x: `holder count crossed [N] today.\n\nthat's not a flex. that's the smallest viable cohort for the picker model to be statistically interesting.\n\nwe can ship the next thing now.`, tg: `Holder milestone post. Tee up next utility drop.`, asset: `Holder milestone card`, kpi: `90K imp / 4.5K likes / 900 RT` },
+  { off: 21, phase: 'proof', x: `T+21. three weeks in.\n\nutilities shipped on time: 3 of 4\nweekly recap retention: 70%+\npicker PnL: +24.8% cumulative\nteam tokens: 0 sold (24mo lock, on-chain verifiable)\n\nnext: insider channel.`, tg: `Three-week recap. Cite on-chain verifications.`, asset: `T+21 metrics + lock proof`, kpi: `160K imp / 8K likes / 2K RT` },
+  { off: 22, phase: 'proof', x: `affiliate revenue note:\n\nevery click that converts to a Polymarket or Kalshi deposit from $EDGE pays the treasury.\n\nweek 3 affiliate revenue: $[N].\nrunning 30d: $[N].\n\nflows to treasury multisig. tx hash: [link]`, tg: `On-chain proof of revenue. Crucial trust beat.`, asset: `Affiliate revenue chart + tx link`, kpi: `100K imp / 5K likes / 1K RT` },
+  { off: 23, phase: 'proof', x: `if you're new here:\n\n— $EDGE = Bloomberg for prediction markets\n— free tier is the whole timeline view + basic whales\n— hold the token to unlock alerts, radar, API, insider\n— team locked for 24mo\n— picker beats the timeline\n\nthat's the pitch.`, tg: `Onboarding repost for new followers. Pin for 24h.`, asset: `Pitch summary · 1080x1080`, kpi: `80K imp / 4K likes / 800 RT` },
+  { off: 24, phase: 'proof', x: `insider channel (10M tier) opens this Friday.\n\n10M $EDGE → direct line to Robert + Tye in a 20-person TG. founder PoV. raw thinking. unfiltered.\n\n10M is high on purpose. signal, not noise.`, tg: `Tease the insider tier. Build aspiration.`, asset: `Insider tier teaser card`, kpi: `100K imp / 5K likes / 1K RT` },
+  { off: 25, phase: 'proof', x: `divergence of the day:\n\n"Fed cuts at next meeting" — Poly 28% / Kalshi 33% / sentiment [score]\n\nradar score 81/100. money moved $1.4M in 6h. timeline still pricing in hold.\n\nholders see the live chart.`, tg: `Daily slot. Same format.`, asset: `Daily divergence card`, kpi: `60K imp / 3K likes / 600 RT` },
+  { off: 26, phase: 'proof', x: `weekly picker — week 4.\n\ncalls: 5\nwins: 3\nlosses: 2\nPnL: +4.1%\n\ncumulative: +29.8% across 20 trades.\n\nweek 4 was choppy. transparent both directions.`, tg: `Sunday slot. Acknowledge slower week.`, asset: `Picker scorecard · week 4`, kpi: `130K imp / 6.5K likes / 1.4K RT` },
+  { off: 27, phase: 'proof', x: `we said at launch that the team wouldn't sell for 24mo.\n\nthe token vesting contract is here: [solscan link]\n\nyou can verify cliff = 6mo, total = 24mo, signer = team multisig.\n\nproof beats promise.`, tg: `Pin the on-chain verification post. Anti-FUD foundation.`, asset: `Solscan link + screenshot`, kpi: `120K imp / 6K likes / 1.5K RT` },
+  { off: 28, phase: 'proof', x: `insider channel (10M tier) — LIVE.\n\n[N] members at open. 20-cap.\n\nfirst topic in there: the roadmap for Q3 + Q4 + the picker upgrade we haven't talked about publicly.\n\nholding is the unlock.`, tg: `Open the insider TG. Verify members against on-chain holding.`, asset: `Insider tier go-live banner`, kpi: `150K imp / 7K likes / 20 unlocks` },
+  { off: 29, phase: 'proof', x: `month one recap thread incoming tomorrow.\n\nwhat we shipped. what we got wrong. what we're shipping next. on-chain numbers, not vibes.\n\n09:00 ET.`, tg: `Tease the recap. Drive attention to tomorrow.`, asset: `Recap teaser card`, kpi: `100K imp / 5K likes / 1K RT` },
+  { off: 30, phase: 'proof', x: `T+30 recap.\n\nholders: [N]\ndaily active: [N]\nutilities shipped: 4 of 4 (on time)\npicker PnL: +29.8%\naffiliate rev: $[N]\nteam tokens sold: 0\n\nmonth one done. month two starts now. we keep building.`, tg: `Full T+30 thread (12 tweets). Restate vision. Roadmap forward.`, asset: `T+30 metrics dashboard`, kpi: `300K imp / 15K likes / 4K RT` },
+];
+
+const TODAY = new Date('2026-05-26T00:00:00Z');
+function isTodayOffset(off){ const d = dateForOffset(off); return d.toISOString().slice(0,10) === TODAY.toISOString().slice(0,10); }
+function dayLabel(off){
+  if (off === 0) return 'T-0';
+  return off < 0 ? `T-${Math.abs(off)}` : `T+${off}`;
+}
+
+const rows = document.getElementById('rows');
+const mcards = document.getElementById('mcards');
+
+data.forEach(r => {
+  const d = dateForOffset(r.off);
+  const dayClass = isTodayOffset(r.off) ? 'day-cell is-today' : 'day-cell';
+
+  const tr = document.createElement('tr');
+  tr.className = 'row';
+  tr.dataset.phase = r.phase;
+  tr.innerHTML = `
+    <td class="${dayClass}"><span class="t">${dayLabel(r.off)}</span></td>
+    <td class="date-cell">${fmtDate(d)}</td>
+    <td><span class="phase-badge ${r.phase}">${r.phase}</span></td>
+    <td class="x-post">${r.x}</td>
+    <td class="tg-post">${r.tg}</td>
+    <td class="asset-cell">${r.asset}</td>
+    <td class="kpi-cell">${r.kpi}</td>
+  `;
+  rows.appendChild(tr);
+
+  const mc = document.createElement('div');
+  mc.className = 'mcard row';
+  mc.dataset.phase = r.phase;
+  mc.innerHTML = `
+    <div class="mhead">
+      <div class="left"><span class="t">${dayLabel(r.off)}</span> · ${fmtDate(d)}</div>
+      <div class="right"><span class="phase-badge ${r.phase}">${r.phase}</span></div>
+    </div>
+    <dl>
+      <div><dt>Post (X)</dt><dd>${r.x}</dd></div>
+      <div><dt>Post (TG/DC)</dt><dd>${r.tg}</dd></div>
+      <div><dt>Asset</dt><dd class="mono">${r.asset}</dd></div>
+      <div><dt>KPI Target</dt><dd class="kpi">${r.kpi}</dd></div>
+    </dl>
+  `;
+  mcards.appendChild(mc);
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.f;
+    document.querySelectorAll('tr.row, .mcard.row').forEach(el => {
+      if (f === 'all' || el.dataset.phase === f) el.classList.remove('is-hidden');
+      else el.classList.add('is-hidden');
+    });
+  });
+});
+</script>
+</body>
+</html>

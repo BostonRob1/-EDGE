@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Storyboard · 60s Launch Trailer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050507;
+    --void-2: #0c0c10;
+    --void-3: #141418;
+    --void-4: #1c1c22;
+    --lime: #C4FF00;
+    --magenta: #FF006E;
+    --green: #00FF85;
+    --red: #FF3344;
+    --white: #F5F5F0;
+    --muted: #6B6B73;
+    --border: rgba(245, 245, 240, 0.08);
+    --border-bright: rgba(196, 255, 0, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--lime); color: var(--void); }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(5,5,7,.85); border-bottom: 1px solid var(--border-bright); padding: 16px 32px; display:flex; align-items:center; justify-content: space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family:'Anton', sans-serif; font-size:24px; letter-spacing:-.02em; }
+  .brand .name span { color: var(--lime); }
+  .crumbs { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; color: var(--muted); text-transform: uppercase; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--lime); }
+
+  main { max-width: 1400px; margin: 0 auto; padding: 64px 32px 120px; position: relative; z-index: 2; }
+  .hero { display:grid; gap: 32px; padding: 24px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+  .eyebrow { font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.3em; color: var(--lime); text-transform: uppercase; }
+  h1 { font-family: 'Anton', sans-serif; font-size: clamp(48px, 7vw, 96px); line-height: .92; letter-spacing: -.02em; text-transform: uppercase; }
+  h1 .accent { color: var(--lime); }
+  .meta { display:flex; gap: 36px; flex-wrap: wrap; font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing:.1em; text-transform: uppercase; }
+  .meta b { color: var(--white); font-weight: 500; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  @media (max-width: 1080px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  .frame-cell { background: var(--void-2); display: flex; flex-direction: column; }
+  .frame-header { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); font-family:'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .18em; }
+  .frame-header .num { color: var(--lime); font-weight: 700; }
+  .frame-header .dur { color: var(--muted); }
+
+  /* The frame canvas — 16:9 */
+  .frame { aspect-ratio: 16/9; background: var(--void); position: relative; overflow: hidden; }
+
+  .frame-body { padding: 14px 16px 18px; font-size: 13px; line-height: 1.5; }
+  .frame-body .vo { display:block; font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .frame-body .desc { color: var(--white); opacity: .85; }
+  .frame-body .cap { display:block; margin-top: 10px; font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing:.12em; text-transform: uppercase; }
+
+  /* ========== FRAME 01 — cursor cold open ========== */
+  .f01 { display:flex; align-items:center; justify-content:center; gap: 24px; font-family:'JetBrains Mono', monospace; font-size: 14px; }
+  .f01 .c { display:grid; gap: 4px; text-align: center; }
+  .f01 .money { color: var(--lime); }
+  .f01 .mouth { color: var(--white); }
+  .f01 .edge  { color: var(--magenta); }
+  .f01 .cursor { display:inline-block; width: 8px; height: 14px; background: var(--white); vertical-align: middle; margin-left: 4px; }
+
+  /* ========== FRAME 02 — money chart ========== */
+  .chart-frame { padding: 24px; height: 100%; display: flex; flex-direction: column; gap: 8px; }
+  .chart-frame .hud-top { display:flex; justify-content: space-between; font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; }
+  .chart-frame .hud-top .src { color: var(--lime); }
+  .chart-frame svg { flex: 1; width: 100%; height: auto; }
+  .chart-frame .hud-bot { display: flex; justify-content: space-between; font-family:'Anton', sans-serif; font-size: 22px; letter-spacing:-.01em; text-transform: uppercase; }
+  .chart-frame .hud-bot .ticker { color: var(--lime); }
+
+  /* ========== FRAME 03 — mouth tweet wall ========== */
+  .tweets { padding: 16px 20px; display: grid; gap: 4px; font-family:'DM Sans', sans-serif; font-size: 10px; line-height: 1.3; height: 100%; overflow: hidden; }
+  .tweets .tw { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; border-bottom: 1px dashed rgba(245,245,240,.05); }
+  .tweets .tw .h { color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 8px; min-width: 60px; }
+  .tweets .tw .b { color: var(--white); opacity: .85; flex: 1; }
+  .tweets .tw .n { color: var(--lime); font-family:'JetBrains Mono', monospace; font-size: 9px; min-width: 40px; text-align: right; }
+  .tweets-label { position: absolute; bottom: 14px; right: 18px; font-family:'Anton', sans-serif; font-size: 28px; text-transform: uppercase; letter-spacing:-.01em; color: var(--white); }
+
+  /* ========== FRAME 04 — divergence split ========== */
+  .split { height: 100%; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+  .split .left { padding: 16px; background: var(--void); display: flex; flex-direction: column; gap: 8px; }
+  .split .right { padding: 16px; background: var(--void); display: flex; flex-direction: column; gap: 6px; opacity: .7; }
+  .split .right .tw-mini { font-size: 8px; color: var(--white); opacity: .65; line-height: 1.2; }
+  .split svg { flex: 1; width: 100%; }
+  .split .label { font-family:'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing:.15em; text-transform: uppercase; }
+  .split .label.lime { color: var(--lime); }
+  .split .seam { position:absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--magenta); transform: translateX(-50%); box-shadow: 0 0 16px rgba(255,0,110,.6); }
+  .split .div { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--magenta); letter-spacing:.1em; padding: 4px 10px; background: var(--void); border: 1px solid var(--magenta); }
+
+  /* ========== FRAME 05 — terminal panel ========== */
+  .terminal { display: grid; grid-template-columns: 1fr 1.2fr 1fr; height: 100%; gap: 1px; background: var(--border); }
+  .term-col { background: var(--void); padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; }
+  .term-col .h { font-family:'JetBrains Mono', monospace; font-size: 8px; color: var(--lime); letter-spacing:.18em; text-transform: uppercase; }
+  .term-col .row { font-family:'JetBrains Mono', monospace; font-size: 8px; color: var(--white); opacity: .8; line-height: 1.5; display: flex; justify-content: space-between; }
+  .term-col .row .v { color: var(--green); }
+  .term-col .row .vr { color: var(--red); }
+  .term-col.mid { background: var(--void-2); }
+  .term-col .mid-chart { flex:1; display:flex; align-items:center; justify-content:center; position: relative; }
+  .term-col .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--magenta); position: absolute; box-shadow: 0 0 12px var(--magenta); }
+  .term-col .dot.mut { background: var(--muted); opacity: .4; box-shadow: none; }
+  .terminal-bar { grid-column: 1 / -1; background: var(--void-2); padding: 6px 10px; font-family:'JetBrains Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing:.15em; text-transform: uppercase; }
+
+  /* ========== FRAME 06 — whale alerts ========== */
+  .whales { padding: 18px; height: 100%; display:flex; flex-direction:column; gap: 8px; }
+  .whales .h { font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; }
+  .whales .row { display: grid; grid-template-columns: 70px 1fr auto auto; gap: 10px; font-family:'JetBrains Mono', monospace; font-size: 9px; padding: 4px 0; border-bottom: 1px solid var(--border); align-items: center; }
+  .whales .row.hot { background: rgba(196,255,0,.04); padding-left: 6px; border-left: 2px solid var(--lime); }
+  .whales .row .a { color: var(--muted); }
+  .whales .row .m { color: var(--white); }
+  .whales .row .v { color: var(--lime); font-weight: 700; }
+  .whales .row .t { color: var(--muted); }
+
+  /* ========== FRAME 07 — divergence radar ========== */
+  .radar { padding: 18px; height: 100%; position: relative; display: flex; flex-direction: column; gap: 6px; }
+  .radar .h { font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--magenta); letter-spacing:.2em; text-transform: uppercase; }
+  .radar svg { flex:1; }
+
+  /* ========== FRAME 08 — montage ========== */
+  .mont { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 1px; background: var(--border); height: 100%; }
+  .mont-cell { background: var(--void); display: flex; align-items: center; justify-content: center; position: relative; padding: 8px; overflow:hidden; }
+  .mont-cell .lab { position: absolute; bottom: 4px; left: 6px; font-family:'JetBrains Mono', monospace; font-size: 7px; color: var(--lime); letter-spacing:.15em; text-transform: uppercase; }
+  .mont-cell .bars { display:flex; align-items:flex-end; gap:2px; height:60%; }
+  .mont-cell .bars i { display:block; width: 4px; background: var(--lime); }
+  .mont-cell .gauge { width: 60%; height: 4px; background: var(--void-3); position: relative; }
+  .mont-cell .gauge::after { content:''; position: absolute; left: 0; top: 0; bottom: 0; width: 72%; background: var(--magenta); }
+  .mont-cell .num { font-family:'Anton', sans-serif; font-size: 24px; color: var(--lime); }
+
+  /* ========== FRAME 09 — tagline ========== */
+  .tagline { display: flex; flex-direction: column; align-items:flex-start; justify-content: center; padding: 24px 32px; height: 100%; }
+  .tagline .l1 { font-family:'Anton', sans-serif; font-size: 56px; letter-spacing:-.02em; line-height: .92; color: var(--white); text-transform: uppercase; }
+  .tagline .l2 { font-family:'Anton', sans-serif; font-size: 56px; letter-spacing:-.02em; line-height: .92; color: var(--lime); text-transform: uppercase; }
+
+  /* ========== FRAME 10 — tiers ========== */
+  .tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); height: 100%; }
+  .tier { background: var(--void-2); padding: 14px 10px; display: flex; flex-direction: column; justify-content: space-between; }
+  .tier:last-child { border: 1px solid var(--lime); }
+  .tier .amt { font-family:'Anton', sans-serif; font-size: 22px; color: var(--lime); letter-spacing: -.01em; }
+  .tier .util { font-family:'JetBrains Mono', monospace; font-size: 8px; color: var(--white); letter-spacing:.15em; text-transform: uppercase; }
+  .tiers-label { position: absolute; top: 14px; left: 18px; font-family:'JetBrains Mono', monospace; font-size: 9px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; }
+
+  /* ========== FRAME 11 — mark draw ========== */
+  .mark-draw { display: flex; flex-direction: column; align-items:center; justify-content: center; height:100%; gap: 14px; }
+  .mark-draw svg { width: 80px; height: 80px; }
+  .mark-draw .wm { font-family:'Anton', sans-serif; font-size: 56px; letter-spacing:-.02em; color: var(--white); text-transform: uppercase; }
+  .mark-draw .wm span { color: var(--lime); }
+  .mark-draw .pump { font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--lime); letter-spacing:.2em; text-transform: uppercase; }
+
+  /* ========== FRAME 12 — end card ========== */
+  .endcard { display: flex; flex-direction: column; align-items:center; justify-content: center; height:100%; gap: 14px; position:relative; }
+  .endcard svg { width: 56px; height: 56px; }
+  .endcard .url { font-family:'Anton', sans-serif; font-size: 40px; color: var(--white); letter-spacing:-.01em; text-transform: lowercase; }
+  .endcard .ca { font-family:'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing:.15em; }
+  .endcard .corner { position: absolute; right: 12px; bottom: 10px; font-family:'JetBrains Mono', monospace; font-size: 7px; color: var(--muted); letter-spacing:.18em; text-transform: uppercase; }
+
+  .footer { padding-top: 48px; color: var(--muted); font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing:.2em; text-transform: uppercase; display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--lime); }
+
+  /* shared HUD inside frames */
+  .hud-overlay { position: absolute; font-family:'JetBrains Mono', monospace; font-size: 8px; color: var(--lime); letter-spacing:.15em; text-transform: uppercase; }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  .f01 .cursor { animation: blink 1s steps(2) infinite; }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <a class="brand" href="../index.html">
+    <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <div class="crumbs"><a href="../../00-master/index.html">Marketing OS</a> / <a href="../index.html">Video Content</a> / Storyboard · 60s Trailer</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">05.02 / Storyboard · Hero Trailer</div>
+    <h1>60s · <span class="accent">Money · Mouth · Edge</span></h1>
+    <div class="meta">
+      <span><b>Aspect</b> 16:9 · 1920×1080</span>
+      <span><b>Frames</b> 12</span>
+      <span><b>Runtime</b> 60.0s</span>
+      <span><b>Music</b> Ambient industrial · 95–105 BPM</span>
+      <span><b>VO</b> Robert / ElevenLabs clone</span>
+    </div>
+  </section>
+
+  <section class="grid">
+
+    <!-- FRAME 01 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 01 · COLD OPEN</span><span class="dur">0.0–4.0s</span></div>
+      <div class="frame">
+        <div class="f01">
+          <div class="c">
+            <div class="money">MONEY</div>
+            <div class="mouth">MOUTH</div>
+            <div class="edge">EDGE<span class="cursor"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · (silence)</span>
+        <span class="desc">Black void. Cursor blinks center. "MONEY" types lime, "MOUTH" types white, "EDGE" types magenta. Mechanical key clicks only.</span>
+        <span class="cap">Caption · none · silence + keystrokes</span>
+      </div>
+    </div>
+
+    <!-- FRAME 02 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 02 · MONEY</span><span class="dur">4.0–9.0s</span></div>
+      <div class="frame">
+        <div class="chart-frame">
+          <div class="hud-top"><span class="src">POLYMARKET · TRUMP 2028</span><span>$14.2M VOL</span></div>
+          <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+            <path d="M0 70 L20 65 L40 60 L60 52 L80 48 L100 38 L120 30 L140 22 L160 16 L180 10 L200 6" fill="none" stroke="#C4FF00" stroke-width="2.5" stroke-linecap="square"/>
+          </svg>
+          <div class="hud-bot"><span class="ticker">MONEY</span><span style="color:var(--green); font-family:'JetBrains Mono', monospace; font-size:14px;">+18.4% / 24H</span></div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "This is the money."</span>
+        <span class="desc">Lime line chart fills frame, climbs left-to-right. Polymarket HUD. Music in — low industrial pad.</span>
+        <span class="cap">Caption · MONEY · Anton 64px lime · lower-third left</span>
+      </div>
+    </div>
+
+    <!-- FRAME 03 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 03 · MOUTH</span><span class="dur">9.0–14.0s</span></div>
+      <div class="frame">
+        <div class="tweets">
+          <div class="tw"><span class="h">@pol_obs</span><span class="b">trump locked. nobody's beating him.</span><span class="n">412</span></div>
+          <div class="tw"><span class="h">@degen42</span><span class="b">no way kamala 2028, the data is right there</span><span class="n">298</span></div>
+          <div class="tw"><span class="h">@macro_anon</span><span class="b">powell already lost the room</span><span class="n">187</span></div>
+          <div class="tw"><span class="h">@bet_doc</span><span class="b">selling all my trump shares before debate</span><span class="n">144</span></div>
+          <div class="tw"><span class="h">@whaletrack</span><span class="b">someone's loading up on POWELL-OUT-26</span><span class="n">102</span></div>
+          <div class="tw"><span class="h">@pricealert</span><span class="b">divergence signal flashed at 4:11pm est</span><span class="n">88</span></div>
+          <div class="tw"><span class="h">@polypro</span><span class="b">retail's about to get caught wrong way</span><span class="n">64</span></div>
+        </div>
+        <div class="tweets-label">MOUTH</div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "This is the mouth."</span>
+        <span class="desc">Wall of stacked tweet rows scrolls vertically, fast. Ambient crowd chatter under VO.</span>
+        <span class="cap">Caption · MOUTH · Anton 64px bone · lower-third right</span>
+      </div>
+    </div>
+
+    <!-- FRAME 04 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 04 · THE GAP</span><span class="dur">14.0–20.0s</span></div>
+      <div class="frame">
+        <div class="split">
+          <div class="left">
+            <span class="label lime">MONEY +18.4%</span>
+            <svg viewBox="0 0 100 60" preserveAspectRatio="none">
+              <path d="M0 50 L25 40 L50 30 L75 18 L100 8" fill="none" stroke="#C4FF00" stroke-width="2" stroke-linecap="square"/>
+            </svg>
+          </div>
+          <div class="right">
+            <span class="label">MOUTH -32% SENT</span>
+            <div class="tw-mini">trump locked · selling all · retail caught · POWELL-OUT loading · divergence flashed · loaded up · 4:11pm</div>
+          </div>
+          <div class="seam"></div>
+          <div class="div">DIVERGENCE 0.72</div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "The gap between them — that's your edge."</span>
+        <span class="desc">Split-screen. Magenta vertical seam slides in. First magenta of the film. Chatter ducks under music.</span>
+        <span class="cap">Caption · EDGE 0.72 · mono 32px magenta center</span>
+      </div>
+    </div>
+
+    <!-- FRAME 05 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 05 · PRODUCT REVEAL</span><span class="dur">20.0–26.0s</span></div>
+      <div class="frame">
+        <div class="terminal">
+          <div class="terminal-bar">$EDGE — THE TERMINAL FOR PREDICTION MARKETS</div>
+          <div class="term-col">
+            <div class="h">WHALES</div>
+            <div class="row"><span>0xA3F2</span><span class="v">+$2.4M</span></div>
+            <div class="row"><span>0x9B8C</span><span class="v">+$840K</span></div>
+            <div class="row"><span>0x4419</span><span class="vr">-$612K</span></div>
+            <div class="row"><span>0x7E0D</span><span class="v">+$502K</span></div>
+            <div class="row"><span>0x1A22</span><span class="v">+$310K</span></div>
+          </div>
+          <div class="term-col mid">
+            <div class="h">DIVERGENCE</div>
+            <div class="mid-chart">
+              <svg viewBox="0 0 120 60" preserveAspectRatio="none" style="width:100%;height:100%;">
+                <line x1="0" y1="60" x2="120" y2="0" stroke="rgba(245,245,240,.12)" stroke-dasharray="3 3" />
+                <circle cx="18" cy="48" r="2" fill="#6B6B73"/>
+                <circle cx="35" cy="40" r="2" fill="#6B6B73"/>
+                <circle cx="52" cy="32" r="2" fill="#6B6B73"/>
+                <circle cx="68" cy="22" r="2" fill="#6B6B73"/>
+                <circle cx="86" cy="14" r="2" fill="#6B6B73"/>
+                <circle cx="48" cy="6" r="3.5" fill="#FF006E"/>
+              </svg>
+            </div>
+          </div>
+          <div class="term-col">
+            <div class="h">VOLUME</div>
+            <div class="row"><span>TRUMP-28</span><span class="v">14.2M</span></div>
+            <div class="row"><span>POWELL-26</span><span class="v">3.1M</span></div>
+            <div class="row"><span>HARRIS-VP</span><span class="v">1.8M</span></div>
+            <div class="row"><span>NVDA-EOY</span><span class="v">820K</span></div>
+            <div class="row"><span>FED-DEC</span><span class="v">612K</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "We built a terminal for it."</span>
+        <span class="desc">Camera dollies out — split-screen pulls back into a 3-column Bloomberg-style terminal. Hairlines, sparse, mono everywhere.</span>
+        <span class="cap">Caption · $EDGE — terminal for prediction markets · mono 11px top</span>
+      </div>
+    </div>
+
+    <!-- FRAME 06 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 06 · WHALES</span><span class="dur">26.0–32.0s</span></div>
+      <div class="frame">
+        <div class="whales">
+          <div class="h">WHALE ALERTS · LIVE</div>
+          <div class="row hot"><span class="a">0xA3F2</span><span class="m">TRUMP-2028 YES</span><span class="v">+$2.4M</span><span class="t">14m</span></div>
+          <div class="row"><span class="a">0x9B8C</span><span class="m">POWELL-OUT-26 NO</span><span class="v">+$840K</span><span class="t">22m</span></div>
+          <div class="row"><span class="a">0x7E0D</span><span class="m">HARRIS-VP-28 YES</span><span class="v">+$502K</span><span class="t">38m</span></div>
+          <div class="row"><span class="a">0x4419</span><span class="m">FED-DEC-25BP NO</span><span class="v">+$310K</span><span class="t">51m</span></div>
+          <div class="row"><span class="a">0x1A22</span><span class="m">NVDA-EOY-2T YES</span><span class="v">+$208K</span><span class="t">1h</span></div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "When a whale moves, you see it."</span>
+        <span class="desc">Tight on whales column. Rows print in with bell-ticks. Top row pulses lime once.</span>
+        <span class="cap">Caption · WHALE ALERTS — LIVE · lime mono 12px</span>
+      </div>
+    </div>
+
+    <!-- FRAME 07 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 07 · DIVERGENCE RADAR</span><span class="dur">32.0–38.0s</span></div>
+      <div class="frame">
+        <div class="radar">
+          <div class="h">DIVERGENCE RADAR</div>
+          <svg viewBox="0 0 220 110" preserveAspectRatio="xMidYMid meet">
+            <line x1="0" y1="100" x2="220" y2="100" stroke="rgba(245,245,240,.12)"/>
+            <line x1="20" y1="0" x2="20" y2="110" stroke="rgba(245,245,240,.12)"/>
+            <line x1="20" y1="100" x2="200" y2="10" stroke="rgba(245,245,240,.18)" stroke-dasharray="3 3"/>
+            <text x="22" y="108" fill="#6B6B73" font-family="JetBrains Mono" font-size="6">MARKET PRICE →</text>
+            <text x="0" y="6" fill="#6B6B73" font-family="JetBrains Mono" font-size="6">SENTIMENT ↑</text>
+            <circle cx="40" cy="92" r="2" fill="#6B6B73"/>
+            <circle cx="62" cy="80" r="2" fill="#6B6B73"/>
+            <circle cx="80" cy="70" r="2" fill="#6B6B73"/>
+            <circle cx="98" cy="60" r="2" fill="#6B6B73"/>
+            <circle cx="118" cy="52" r="2" fill="#6B6B73"/>
+            <circle cx="138" cy="40" r="2" fill="#6B6B73"/>
+            <circle cx="158" cy="30" r="2" fill="#6B6B73"/>
+            <circle cx="178" cy="20" r="2" fill="#6B6B73"/>
+            <circle cx="110" cy="22" r="5" fill="#FF006E"/>
+            <text x="118" y="22" fill="#FF006E" font-family="JetBrains Mono" font-size="7">TRUMP-2028 · 0.72</text>
+          </svg>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "When the crowd disagrees with the market — you see it first."</span>
+        <span class="desc">Scatterplot. Diagonal consensus line. Magenta outlier pulses. Music swells.</span>
+        <span class="cap">Caption · DIVERGENCE RADAR · magenta mono 12px</span>
+      </div>
+    </div>
+
+    <!-- FRAME 08 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 08 · MONTAGE</span><span class="dur">38.0–43.0s</span></div>
+      <div class="frame">
+        <div class="mont">
+          <div class="mont-cell"><div style="display:grid;gap:2px;font-family:'JetBrains Mono', monospace;font-size:7px;color:var(--white)"><span style="color:var(--lime)">LIQ TABLE</span><span>TRUMP 28</span><span>POWELL 26</span><span>HARRIS VP</span><span>NVDA EOY</span></div><span class="lab">LIQUIDITY</span></div>
+          <div class="mont-cell"><div class="bars"><i style="height:30%"></i><i style="height:55%"></i><i style="height:42%"></i><i style="height:80%"></i><i style="height:62%"></i><i style="height:95%"></i></div><span class="lab">VOLUME</span></div>
+          <div class="mont-cell"><div style="font-family:'JetBrains Mono', monospace;font-size:8px;color:var(--lime)">0xA3F2 +$2.4M</div><span class="lab">WHALE PRINT</span></div>
+          <div class="mont-cell"><div class="gauge"></div><span class="lab">SENTIMENT</span></div>
+          <div class="mont-cell"><div class="num">02:14</div><span class="lab">COUNTDOWN</span></div>
+          <div class="mont-cell"><svg viewBox="0 0 60 30" style="width:60%; height:60%"><path d="M0 24 L10 18 L20 22 L30 12 L40 16 L50 6 L60 10" fill="none" stroke="#FF006E" stroke-width="1.5"/></svg><span class="lab">DIVERGENCE</span></div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "Polymarket. Kalshi. Twitter. Whales. One screen."</span>
+        <span class="desc">6-frame rapid montage. ~0.8s per cut. Sub-bass whump per cut. Each frame is a real $EDGE module.</span>
+        <span class="cap">Caption · tiny lime mono per frame · names the data source</span>
+      </div>
+    </div>
+
+    <!-- FRAME 09 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 09 · TAGLINE</span><span class="dur">43.0–49.0s</span></div>
+      <div class="frame">
+        <div class="tagline">
+          <div class="l1">Watch the action.</div>
+          <div class="l2">Before you bet.</div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "Watch the action. Before you bet."</span>
+        <span class="desc">Slow vertical scroll. Tagline holds. Music breathes — held pad, no percussion.</span>
+        <span class="cap">Caption · tagline IS the visual</span>
+      </div>
+    </div>
+
+    <!-- FRAME 10 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 10 · TIERS</span><span class="dur">49.0–55.0s</span></div>
+      <div class="frame">
+        <div style="position:relative; height:100%; padding-top: 28px;">
+          <div class="tiers-label">TOKEN UTILITY</div>
+          <div class="tiers">
+            <div class="tier"><div class="amt">10K</div><div class="util">WHALE ALERTS</div></div>
+            <div class="tier"><div class="amt">100K</div><div class="util">DIVERGENCE RADAR</div></div>
+            <div class="tier"><div class="amt">1M</div><div class="util">API ACCESS</div></div>
+            <div class="tier"><div class="amt">10M</div><div class="util">INSIDER CHANNEL</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "Hold $EDGE. Unlock the terminal."</span>
+        <span class="desc">Four columns print in one at a time. ~0.4s stagger. Last tier border-pulses lime.</span>
+        <span class="cap">Caption · TOKEN UTILITY · eyebrow mono 11px lime</span>
+      </div>
+    </div>
+
+    <!-- FRAME 11 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 11 · LAUNCH BEAT</span><span class="dur">55.0–58.5s</span></div>
+      <div class="frame">
+        <div class="mark-draw">
+          <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+          <div class="wm">$<span>EDGE</span></div>
+          <div class="pump">LAUNCHING ON PUMP.FUN</div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · "Fairlaunching on pump.fun."</span>
+        <span class="desc">Mark stroke-animates. Wordmark types in. Mark draw is the only motion — hold the rest.</span>
+        <span class="cap">Caption · LAUNCHING ON PUMP.FUN · lime mono 14px</span>
+      </div>
+    </div>
+
+    <!-- FRAME 12 -->
+    <div class="frame-cell">
+      <div class="frame-header"><span class="num">SHOT 12 · END CARD</span><span class="dur">58.5–60.0s</span></div>
+      <div class="frame">
+        <div class="endcard">
+          <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+          <div class="url">edgeterminal.xyz</div>
+          <div class="ca">CA: [CONTRACT ADDRESS]</div>
+          <div class="corner">$EDGE · v1</div>
+        </div>
+      </div>
+      <div class="frame-body">
+        <span class="vo">VO · (silence)</span>
+        <span class="desc">Mark + URL + CA placeholder. Music resolves on root. Card holds full 1.5s — no cut-to-black.</span>
+        <span class="cap">Caption · none · the card IS the card</span>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <div>$EDGE · MARKETING OS · v1.0 · STORYBOARD</div>
+    <div><a href="../index.html">← Back to Video Content</a></div>
+  </footer>
+</main>
+</body>
+</html>

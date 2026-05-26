@@ -1,0 +1,81 @@
+Title,Url,Username,Password,Notes,Tags
+X (Twitter) — @edgeterminal,https://x.com/edgeterminal,@edgeterminal,,"Primary megaphone. Owner: Robert. 2FA via authenticator app. Apply for Premium (4K chars + analytics).",edge-launch;p0;social
+Telegram Announce — @edgeterminal,https://t.me/edgeterminal,@edgeterminal,,"Broadcast-only channel. Verified mark target. Pin contract address.",edge-launch;p0;social
+Telegram Community — @edgeterminal_chat,https://t.me/edgeterminal_chat,@edgeterminal_chat,,"Open chat. Slowmode 5s. Rose/Combot anti-scam. No team DMs policy pinned.",edge-launch;p0;social
+Discord — edgeterminal,https://discord.gg/edgeterminal,edgeterminal,,"Server ID + invite vanity. Roles: founders/mods/whales/holders. Collab.Land by m2.",edge-launch;p0;social
+Farcaster/Warpcast — @edgeterminal,https://warpcast.com/edgeterminal,@edgeterminal,,"Custodial key in vault. Recovery to founders.eth multisig.",edge-launch;p0;social
+GitHub Org — edgeterminal,https://github.com/edgeterminal,edgeterminal,,"Org account. Owners: Robert + Tye. SSO via Google Workspace. 2FA enforced.",edge-launch;p0;dev
+Vercel Team — edgeterminal,https://vercel.com/edgeterminal,edgeterminal,,"Convert personal deploy. Custom domain. Locked prod branch.",edge-launch;p0;dev
+pump.fun — edgeterminal,https://pump.fun/profile/edgeterminal,edgeterminal,,"Wallet-connect with marketing wallet. Verify creator before mint.",edge-launch;p0;launch
+Dexscreener — edgeterminal,https://dexscreener.com,hello@edgeterminal.xyz,,"Token info form + boost ads. Apply T+0.",edge-launch;p0;launch
+Birdeye — edgeterminal,https://birdeye.so,hello@edgeterminal.xyz,,"Token verification + trending submission.",edge-launch;p0;launch
+Solscan — edgeterminal,https://solscan.io,hello@edgeterminal.xyz,,"Token metadata + verified deployer flag within 1h of mint.",edge-launch;p0;launch
+Substack — edgeterminal,https://edgeterminal.substack.com,hello@edgeterminal.xyz,,"Weekly Edge Brief. Owns email capture. Free tier to start.",edge-launch;p1;content
+Medium — @edgeterminal,https://medium.com/@edgeterminal,hello@edgeterminal.xyz,,"SEO mirror of Substack. Tag heavily.",edge-launch;p1;content
+Dune Analytics — edgeterminal,https://dune.com/edgeterminal,hello@edgeterminal.xyz,,"Public dashboards for holders + whales + flow.",edge-launch;p1;data
+DefiLlama — edgeterminal,https://defillama.com,hello@edgeterminal.xyz,,"Submit via GitHub PR. Logo + chain + LP required.",edge-launch;p1;listing
+CoinGecko — edgeterminal,https://coingecko.com/en/coins/new,hello@edgeterminal.xyz,,"Apply T+72h after 250+ holders + $1k+ liq + 7d trade history.",edge-launch;p1;listing
+CoinMarketCap — edgeterminal,https://coinmarketcap.com/request,hello@edgeterminal.xyz,,"Apply T+7d after $100k+ vol/day. Team KYC required.",edge-launch;p1;listing
+Reddit Sub — r/EdgeTerminal,https://reddit.com/r/EdgeTerminal,u/edgeterminal,,"Sub locked 14d for karma. Mod account separate.",edge-launch;p1;social
+YouTube — @edgeterminal,https://youtube.com/@edgeterminal,hello@edgeterminal.xyz,,"Verify handle. Banner + link to site. Shorts-first.",edge-launch;p1;content
+TikTok — @edgeterminal,https://tiktok.com/@edgeterminal,hello@edgeterminal.xyz,,"Vertical clips. No-advice disclaimer in every caption.",edge-launch;p1;content
+Instagram — @edgeterminal,https://instagram.com/edgeterminal,hello@edgeterminal.xyz,,"Defensive squat + Reels mirror.",edge-launch;p1;social
+LinkedIn Company — edge-terminal,https://linkedin.com/company/edge-terminal,hello@edgeterminal.xyz,,"Press + recruiting. Quiet on tokenomics.",edge-launch;p1;social
+Bento — edgeterminal,https://bento.me/edgeterminal,hello@edgeterminal.xyz,,"Single bio-link target. Linktree as fallback.",edge-launch;p1;social
+ProductHunt — edgeterminal,https://producthunt.com/products/edge-terminal,hello@edgeterminal.xyz,,"Reserve product page. Launch week 4 (Tue 12:01 AM PT).",edge-launch;p1;launch
+Threads — @edgeterminal,https://threads.net/@edgeterminal,hello@edgeterminal.xyz,,"Defensive squat. Auto-mirror via Buffer.",edge-launch;p2;social
+Bluesky — @edgeterminal.bsky.social,https://bsky.app/profile/edgeterminal.bsky.social,hello@edgeterminal.xyz,,"Verify via custom domain handle once .xyz live.",edge-launch;p2;social
+Mastodon — @edgeterminal@mas.to,https://mas.to/@edgeterminal,hello@edgeterminal.xyz,,"Defensive squat. mas.to instance.",edge-launch;p2;social
+Lens — @edgeterminal.lens,https://hey.xyz/u/edgeterminal,hello@edgeterminal.xyz,,"Handle NFT. Don't let it get sniped.",edge-launch;p2;social
+Mirror.xyz — edgeterminal.eth,https://mirror.xyz/edgeterminal.eth,hello@edgeterminal.xyz,,"Requires ENS. On-chain blog for token-holder entries.",edge-launch;p2;content
+GitBook — edgeterminal,https://edgeterminal.gitbook.io,hello@edgeterminal.xyz,,"Public docs: tokenomics + methodology + API + brand.",edge-launch;p2;docs
+Notion Public — edgeterminal,https://edgeterminal.notion.site,hello@edgeterminal.xyz,,"Lightweight pages while GitBook is built. Roadmap + FAQ + press.",edge-launch;p2;docs
+Wellfound — edge-terminal,https://wellfound.com/company/edge-terminal,hello@edgeterminal.xyz,,"Recruiting surface. List even if no roles open.",edge-launch;p2;corp
+Crunchbase — edge-terminal,https://crunchbase.com/organization/edge-terminal,hello@edgeterminal.xyz,,"Press credibility. Submit profile after treasury LP locked.",edge-launch;p2;corp
+Wikipedia Draft — EdgeTerminal_Editor,https://en.wikipedia.org/wiki/Draft:Edge_Terminal,EdgeTerminal_Editor,,"Draft only at m3 with verifiable citations. Do NOT publish without independent press first.",edge-launch;p2;corp
+Domain — edgeterminal.xyz,https://edgeterminal.xyz,hello@edgeterminal.xyz,,"PRIMARY domain. Cloudflare Registrar. Auto-renew 5y. Privacy on.",edge-launch;p0;domain
+Domain — edgeterminal.com,https://edgeterminal.com,hello@edgeterminal.xyz,,"Brand defense. 301 to .xyz. Budget cap on aftermarket bid.",edge-launch;p0;domain
+Domain — edgeterminal.io,https://edgeterminal.io,hello@edgeterminal.xyz,,"Tech TLD defense. 301 to .xyz.",edge-launch;p0;domain
+Domain — edge.markets,https://edge.markets,hello@edgeterminal.xyz,,"Vanity subdomain pun. Short-link surface.",edge-launch;p0;domain
+Domain — theedge.xyz,https://theedge.xyz,hello@edgeterminal.xyz,,"Fallback if squatters approach.",edge-launch;p1;domain
+Domain — getedge.xyz,https://getedge.xyz,hello@edgeterminal.xyz,,"CTA domain. Ads + billboards + QR.",edge-launch;p1;domain
+ENS — edgeterminal.eth,https://app.ens.domains/edgeterminal.eth,hello@edgeterminal.xyz,,"Required for Mirror + Lens + Farcaster verify. ~$5/yr.",edge-launch;p0;domain
+SNS — edgeterminal.sol,https://www.sns.id/domain?domain=edgeterminal,hello@edgeterminal.xyz,,"Solana naming. ~$20 one-time.",edge-launch;p0;domain
+Email — hello@edgeterminal.xyz,https://resend.com,hello@edgeterminal.xyz,,"Public default. 1 business day SLA. Forwarded to founders.",edge-launch;p0;email
+Email — founders@edgeterminal.xyz,https://resend.com,founders@edgeterminal.xyz,,"High-value intros only. Robert + Tye.",edge-launch;p0;email
+Email — press@edgeterminal.xyz,https://resend.com,press@edgeterminal.xyz,,"Journalists + podcasts. 24h reply or lose cycle.",edge-launch;p0;email
+Email — partnerships@edgeterminal.xyz,https://resend.com,partnerships@edgeterminal.xyz,,"KOLs + affiliate + data partners.",edge-launch;p0;email
+Email — security@edgeterminal.xyz,https://resend.com,security@edgeterminal.xyz,,"REQUIRED. /.well-known/security.txt. PGP key in vault.",edge-launch;p0;email
+Email — legal@edgeterminal.xyz,https://resend.com,legal@edgeterminal.xyz,,"Counsel + takedowns + regulator.",edge-launch;p0;email
+Email — support@edgeterminal.xyz,https://resend.com,support@edgeterminal.xyz,,"User help. Routes to Discord ticket bot.",edge-launch;p0;email
+Email — abuse@edgeterminal.xyz,https://resend.com,abuse@edgeterminal.xyz,,"REQUIRED. Spam + impersonation triage.",edge-launch;p0;email
+Email — dmca@edgeterminal.xyz,https://resend.com,dmca@edgeterminal.xyz,,"Copyright takedowns.",edge-launch;p0;email
+Email — careers@edgeterminal.xyz,https://resend.com,careers@edgeterminal.xyz,,"Inbound applications. Forward to Wellfound + shared inbox.",edge-launch;p0;email
+Cloudflare,https://dash.cloudflare.com,hello@edgeterminal.xyz,,"DNS + WAF + email routing + Workers KV. Org account.",edge-launch;p0;infra
+Resend,https://resend.com,hello@edgeterminal.xyz,,"Transactional email. SPF/DKIM/DMARC on mail.edgeterminal.xyz.",edge-launch;p0;infra
+Postmark,https://postmarkapp.com,hello@edgeterminal.xyz,,"Resend fallback. Same DNS posture.",edge-launch;p1;infra
+Plausible,https://plausible.io,hello@edgeterminal.xyz,,"Marketing site analytics. Privacy-first.",edge-launch;p1;infra
+PostHog,https://posthog.com,hello@edgeterminal.xyz,,"In-app funnels + feature flags + session replay.",edge-launch;p1;infra
+Sentry,https://sentry.io,hello@edgeterminal.xyz,,"Error tracking. Slack channel alert.",edge-launch;p1;infra
+Helius,https://helius.dev,hello@edgeterminal.xyz,,"Solana RPC + webhooks. Paid tier day one.",edge-launch;p0;infra
+Alchemy,https://alchemy.com,hello@edgeterminal.xyz,,"ETH RPC for Polymarket (Polygon). Free tier OK.",edge-launch;p1;infra
+Tenderly,https://tenderly.co,hello@edgeterminal.xyz,,"Tx simulation + treasury alerts + LP burn watcher.",edge-launch;p1;infra
+Etherscan API,https://etherscan.io/myapikey,hello@edgeterminal.xyz,,"Free key. Cache aggressively.",edge-launch;p1;infra
+Polygonscan API,https://polygonscan.com/myapikey,hello@edgeterminal.xyz,,"Free key. Polymarket-side on-chain reads.",edge-launch;p1;infra
+Polymarket API,https://docs.polymarket.com,hello@edgeterminal.xyz,,"Apply for key. Public endpoints day one. Higher RL with key.",edge-launch;p0;infra
+Kalshi Dev,https://kalshi.com/developers,robert@winthropandcompany.com,,"US KYC in Robert's name. Sandbox -> prod.",edge-launch;p0;infra
+Instatus,https://instatus.com,hello@edgeterminal.xyz,,"status.edgeterminal.xyz. Auto-incident from Sentry.",edge-launch;p1;infra
+Codeberg Mirror,https://codeberg.org/edgeterminal,hello@edgeterminal.xyz,,"Weekly GitHub mirror for resilience.",edge-launch;p2;dev
+Squads.so Multisig,https://squads.so,hello@edgeterminal.xyz,,"3-of-3 multisig. Robert + Tye + cold key. 24h timelock on outflows.",edge-launch;p0;treasury
+Phantom — Marketing,,marketing-wallet-address,,"Hot wallet for marketing spend. Capped balance.",edge-launch;p0;treasury
+Phantom — Ops,,ops-wallet-address,,"Day-to-day signing. Max 50 SOL.",edge-launch;p0;treasury
+Phantom — Bounty,,bounty-wallet-address,,"Whitehat payouts. Seed 5 SOL.",edge-launch;p1;treasury
+Ledger — Cold A,,N/A (hardware),,"Robert's cold wallet. Seed on steel plate. $200k-1M parked.",edge-launch;p0;treasury
+Ledger — Cold B,,N/A (hardware),,"Tye's cold wallet. Seed on steel plate.",edge-launch;p0;treasury
+Streamflow,https://streamflow.finance,hello@edgeterminal.xyz,,"Team vesting. 4y vest + 1y cliff for founders.",edge-launch;p1;treasury
+PinkLock,https://pinksale.finance/pinklock,hello@edgeterminal.xyz,,"LP lock proof. 12mo minimum, ideally permanent burn.",edge-launch;p0;treasury
+Stripe Atlas — LLC Filing,https://stripe.com/atlas,hello@edgeterminal.xyz,,"Wyoming LLC formation. Anonymous agent. ~$500 + $200/yr.",edge-launch;p0;legal
+IRS EIN,https://irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online,hello@edgeterminal.xyz,,"Free. Required for bank account + vendor onboarding.",edge-launch;p0;legal
+DUNS — D&B,https://www.dnb.com/duns/get-a-duns.html,hello@edgeterminal.xyz,,"Free. Unlocks Apple Developer + GCloud credits + vendor portals.",edge-launch;p1;legal
+USPTO TESS,https://tmsearch.uspto.gov,hello@edgeterminal.xyz,,"Trademark clearance search. WARN: EDGE has heavy IC 09/42 conflicts. Recommend Edge Terminal as filed mark.",edge-launch;p1;legal
+1Password — EDGE-Launch Vault,https://1password.com,hello@edgeterminal.xyz,,"Master vault for everything in this CSV. Shared with Tye.",edge-launch;p0;vault

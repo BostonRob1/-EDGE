@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Token Launch Modal Demo</title>
+<meta name="description" content="$EDGE token-launch modal demonstration." />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="$EDGE / IS LIVE" />
+<meta property="og:description" content="The terminal for prediction markets — token is live on Solana." />
+<meta property="og:image" content="../og-images/og-launch.html" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
+    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800; --red: #FF3344;
+    --white: #F5F5F0; --muted: #6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+  ::selection { background: var(--lime); color: var(--void); }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 100;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  header.top { position: sticky; top: 0; z-index: 5; backdrop-filter: blur(14px); background: rgba(5,5,7,.78); border-bottom: 1px solid var(--border-bright); padding: 14px 32px; display:flex; align-items:center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand svg { width: 28px; height: 28px; }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: -.02em; }
+  .brand .name span { color: var(--lime); }
+  nav.primary { display: flex; gap: 28px; }
+  nav.primary a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+  nav.primary a:hover { color: var(--lime); }
+  .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); }
+  .live-pill::before { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+  /* PRODUCT MOCKUP (background behind modal) */
+  main { max-width: 1320px; margin: 0 auto; padding: 32px; position: relative; z-index: 2; }
+  .terminal-mock { display: grid; grid-template-columns: 240px 1fr 320px; gap: 1px; background: var(--border); border: 1px solid var(--border); min-height: 720px; transition: filter .4s; }
+  .terminal-mock.blurred { filter: blur(8px) saturate(.6); pointer-events: none; }
+  .tm-sidebar { background: var(--void-2); padding: 22px 18px; display: flex; flex-direction: column; gap: 6px; }
+  .tm-sidebar .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+  .tm-sidebar .item { padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--white); border-left: 2px solid transparent; }
+  .tm-sidebar .item.active { color: var(--lime); border-color: var(--lime); background: rgba(196,255,0,0.04); }
+  .tm-main { background: var(--void); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .tm-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; gap: 14px; padding: 12px 14px; border: 1px solid var(--border); background: var(--void-2); font-family: 'JetBrains Mono', monospace; font-size: 12px; align-items: center; }
+  .tm-row.head { color: var(--muted); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; background: transparent; border: 0; padding: 4px 14px; }
+  .tm-row .ticker { font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: -.01em; text-transform: uppercase; }
+  .tm-row .pos { color: var(--green); }
+  .tm-row .neg { color: var(--red); }
+  .tm-row .div { color: var(--magenta); }
+  .tm-aside { background: var(--void-2); padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+  .tm-aside .card { border: 1px solid var(--border); padding: 14px; }
+  .tm-aside .card .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; }
+  .tm-aside .card .v { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--lime); margin-top: 4px; font-weight: 700; }
+
+  /* LAUNCH BUTTON */
+  .launch-fab { position: fixed; bottom: 32px; right: 32px; z-index: 6; background: var(--lime); color: var(--void); padding: 16px 22px; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; transition: filter .15s, transform .15s; box-shadow: 0 8px 32px rgba(196,255,0,0.2); }
+  .launch-fab:hover { filter: brightness(1.08); transform: translateY(-2px); }
+
+  /* MODAL */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(5,5,7,0.72); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity .35s ease; padding: 24px; }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    width: 100%; max-width: 480px; background: var(--void-2); border: 1px solid var(--border-bright); padding: 32px 28px; position: relative;
+    transform: scale(.94); opacity: 0; transition: transform .4s cubic-bezier(.2,.7,.2,1), opacity .35s ease;
+    box-shadow: 0 24px 72px rgba(0,0,0,0.6), 0 0 0 1px rgba(196,255,0,0.06);
+  }
+  .modal-backdrop.open .modal { transform: scale(1); opacity: 1; }
+  .modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--lime); }
+  .modal .close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: color .15s, transform .15s; }
+  .modal .close:hover { color: var(--white); transform: rotate(90deg); }
+  .modal .close svg { width: 16px; height: 16px; }
+  .modal .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--lime); margin-bottom: 14px; }
+  .modal .eyebrow::before { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  .modal h2 { font-family: 'Anton', sans-serif; font-size: 56px; letter-spacing: -.02em; text-transform: uppercase; line-height: .92; margin-bottom: 18px; }
+  .modal h2 .accent { color: var(--lime); }
+  .modal .lede { font-size: 15px; line-height: 1.5; color: var(--white); opacity: .85; margin-bottom: 22px; }
+  .modal .contract { display: flex; align-items: stretch; border: 1px solid var(--border-bright); background: var(--void); margin-bottom: 20px; }
+  .modal .contract .label { padding: 14px 14px 4px; }
+  .modal .contract .label-row { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; }
+  .modal .contract .addr { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--white); word-break: break-all; padding: 4px 14px 12px; line-height: 1.4; }
+  .modal .contract .copy-btn { flex-shrink: 0; padding: 0 18px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; border-left: 1px solid var(--void); transition: filter .15s, background .15s; }
+  .modal .contract .copy-btn:hover { filter: brightness(1.08); }
+  .modal .contract .copy-btn.copied { background: var(--green); }
+  .modal .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .modal .ctas a { padding: 16px 14px; text-align: center; font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; transition: filter .15s, background .15s, color .15s; }
+  .modal .ctas .primary { background: var(--lime); color: var(--void); }
+  .modal .ctas .primary:hover { filter: brightness(1.08); }
+  .modal .ctas .secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); }
+  .modal .ctas .secondary:hover { background: var(--void-3); }
+  .modal .caption { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .modal .caption .dot { width: 4px; height: 4px; background: var(--amber); }
+  .modal .caption b { color: var(--amber); font-weight: 700; }
+
+  /* MODAL CARDS - mini stat bar inside */
+  .modal .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 18px; }
+  .modal .stat-row .s { background: var(--void); padding: 12px; }
+  .modal .stat-row .k { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .25em; color: var(--muted); text-transform: uppercase; }
+  .modal .stat-row .v { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--white); font-weight: 700; margin-top: 2px; }
+  .modal .stat-row .v.pos { color: var(--green); }
+
+  @media (max-width: 960px) {
+    .terminal-mock { grid-template-columns: 1fr; }
+    .tm-sidebar, .tm-aside { display: none; }
+    .tm-row { grid-template-columns: 2fr 1fr 1fr; font-size: 11px; }
+    .tm-row .ml { display: none; }
+  }
+  @media (max-width: 720px) {
+    header.top { padding: 12px 18px; }
+    main { padding: 18px; }
+    nav.primary { display: none; }
+    .modal { padding: 24px 20px; }
+    .modal h2 { font-size: 42px; }
+    .launch-fab { bottom: 18px; right: 18px; padding: 14px 18px; font-size: 14px; }
+    .modal .ctas { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .modal .contract { flex-direction: column; }
+    .modal .contract .copy-btn { border-left: 0; border-top: 1px solid var(--void); padding: 12px; }
+    .modal .stat-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="coming-soon.html" aria-label="$EDGE home">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <span class="name">$<span>EDGE</span></span>
+  </a>
+  <nav class="primary" aria-label="Primary">
+    <a href="coming-soon.html#why">PRODUCT</a>
+    <a href="coming-soon.html#spec">TOKENOMICS</a>
+    <a href="coming-soon.html#waitlist">WAITLIST</a>
+    <a href="#" aria-label="Twitter">TWITTER</a>
+    <a href="#" aria-label="Discord">DISCORD</a>
+  </nav>
+  <div class="live-pill">DEMO · MODAL</div>
+</header>
+
+<main>
+  <!-- The "product" sits behind the modal. Looks like a stripped-down terminal. -->
+  <div class="terminal-mock" id="terminal" aria-hidden="false">
+    <aside class="tm-sidebar">
+      <div class="label">Surfaces</div>
+      <div class="item active">Markets</div>
+      <div class="item">Whales</div>
+      <div class="item">Divergence</div>
+      <div class="item">Watchlist</div>
+      <div class="label">Filters</div>
+      <div class="item">Politics</div>
+      <div class="item">Macro</div>
+      <div class="item">Crypto</div>
+      <div class="item">Sports</div>
+    </aside>
+    <section class="tm-main">
+      <div class="tm-row head"><div>MARKET</div><div>POLY</div><div>KALSHI</div><div class="ml">VOL 24H</div><div class="ml">WHALE</div><div>DIVERGENCE</div></div>
+      <div class="tm-row"><div class="ticker">TRUMP × FED RATE</div><div>62.4%</div><div>58.1%</div><div class="ml">$1.42M</div><div class="ml pos">+$324K</div><div class="div">+4.3pp</div></div>
+      <div class="tm-row"><div class="ticker">CPI > 3.5% Q4</div><div>34.0%</div><div>41.2%</div><div class="ml">$880K</div><div class="ml neg">-$112K</div><div class="div">-7.2pp</div></div>
+      <div class="tm-row"><div class="ticker">SCOTUS · 2026</div><div>71.6%</div><div>69.3%</div><div class="ml">$2.1M</div><div class="ml pos">+$48K</div><div>+2.3pp</div></div>
+      <div class="tm-row"><div class="ticker">BTC > $200K</div><div>28.4%</div><div>25.1%</div><div class="ml">$3.4M</div><div class="ml pos">+$622K</div><div>+3.3pp</div></div>
+      <div class="tm-row"><div class="ticker">SUPER BOWL · KC</div><div>52.0%</div><div>54.8%</div><div class="ml">$640K</div><div class="ml neg">-$22K</div><div>-2.8pp</div></div>
+      <div class="tm-row"><div class="ticker">ETH ETF FLOW · +</div><div>66.4%</div><div>61.0%</div><div class="ml">$1.18M</div><div class="ml pos">+$208K</div><div class="div">+5.4pp</div></div>
+      <div class="tm-row"><div class="ticker">SENATE · 51/49</div><div>43.1%</div><div>46.4%</div><div class="ml">$520K</div><div class="ml neg">-$76K</div><div>-3.3pp</div></div>
+    </section>
+    <aside class="tm-aside">
+      <div class="card"><div class="k">24h Volume</div><div class="v">$1.42M</div></div>
+      <div class="card"><div class="k">Edge Score</div><div class="v">+18.4</div></div>
+      <div class="card"><div class="k">Whale Inflow</div><div class="v">$324K</div></div>
+      <div class="card"><div class="k">Divergence</div><div class="v">CRITICAL</div></div>
+    </aside>
+  </div>
+</main>
+
+<!-- TRIGGER -->
+<button class="launch-fab" id="launch-btn" type="button">SIMULATE LAUNCH</button>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal">
+    <button class="close" id="close-btn" type="button" aria-label="Close">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3 L13 13 M13 3 L3 13"/></svg>
+    </button>
+    <div class="eyebrow">LIVE NOW · SOLANA</div>
+    <h2 id="modal-title">$<span class="accent">EDGE</span> / IS LIVE.</h2>
+    <p class="lede">The fairlaunch is open. Pump.fun bonding curve is active. Contract is verified. Read the tokenomics before you ape.</p>
+
+    <div class="stat-row">
+      <div class="s"><div class="k">PRICE</div><div class="v pos">$0.0042</div></div>
+      <div class="s"><div class="k">MCAP</div><div class="v">$4.2M</div></div>
+      <div class="s"><div class="k">HOLDERS</div><div class="v">1,847</div></div>
+    </div>
+
+    <div class="contract">
+      <div class="label">
+        <div class="label-row">Contract · SPL Token</div>
+        <div class="addr" id="contract-addr">EdgE7r7TmnL2yQ3vK8sN9mPxR4dHfXcZbA1gJk6uW5vt</div>
+      </div>
+      <button class="copy-btn" id="copy-contract" type="button" aria-label="Copy contract">COPY</button>
+    </div>
+
+    <div class="ctas">
+      <a class="primary" href="#" target="_blank" rel="noopener">BUY ON PUMP.FUN</a>
+      <a class="secondary" href="coming-soon.html#spec">READ TOKENOMICS</a>
+    </div>
+
+    <div class="caption"><span class="dot"></span>DON'T FOMO. <b>READ THE TOKENOMICS FIRST.</b></div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('modal');
+  const terminal = document.getElementById('terminal');
+  const launchBtn = document.getElementById('launch-btn');
+  const closeBtn = document.getElementById('close-btn');
+  const copyBtn = document.getElementById('copy-contract');
+  const addr = document.getElementById('contract-addr');
+
+  function openModal() {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    terminal.classList.add('blurred');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    terminal.classList.remove('blurred');
+    document.body.style.overflow = '';
+    launchBtn.focus();
+  }
+
+  launchBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  // COPY CONTRACT
+  copyBtn.addEventListener('click', () => {
+    const text = addr.textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = 'COPIED';
+      setTimeout(() => { copyBtn.classList.remove('copied'); copyBtn.textContent = 'COPY'; }, 1600);
+    }).catch(() => {
+      const t = document.createElement('textarea');
+      t.value = text; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); } catch(e){}
+      document.body.removeChild(t);
+      copyBtn.classList.add('copied'); copyBtn.textContent = 'COPIED';
+      setTimeout(() => { copyBtn.classList.remove('copied'); copyBtn.textContent = 'COPY'; }, 1600);
+    });
+  });
+</script>
+</body>
+</html>

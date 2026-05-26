@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Feature 04 · Divergence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:56px}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  .hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:12px}
+  .mark svg{width:28px;height:28px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .pill .num{color:var(--magenta);background:rgba(255,0,110,.07);border:1px solid rgba(255,0,110,.3);padding:4px 8px}
+
+  .title{margin-top:22px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.35em;color:var(--magenta);text-transform:uppercase;margin-bottom:12px}
+  h1{font-family:'Anton',sans-serif;font-size:90px;line-height:.88;letter-spacing:-.025em;text-transform:uppercase}
+  h1 .em{color:var(--lime)}
+  h1 .div{color:var(--magenta)}
+  h1 .neq{color:var(--magenta);font-family:'JetBrains Mono',monospace;font-size:64px;vertical-align:middle}
+  .sub{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;line-height:1.6}
+
+  /* radar list — sorted divergence scores */
+  .radar{margin-top:24px;border:1px solid var(--border);background:var(--void-2);font-family:'JetBrains Mono',monospace}
+  .rtop{display:flex;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .rtop .l{color:var(--magenta)}
+  .rcol{display:grid;grid-template-columns:60px 1fr 110px 110px 120px;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--void-3);font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+  .rrow{display:grid;grid-template-columns:60px 1fr 110px 110px 120px;padding:14px 18px;border-bottom:1px solid var(--border);align-items:center;font-size:13px;color:var(--white)}
+  .rrow:last-child{border-bottom:0}
+  .rank{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:-.01em;color:var(--magenta);line-height:1}
+  .name{font-size:12px;letter-spacing:.05em;color:var(--white);text-transform:uppercase}
+  .name .src{display:inline-block;font-size:9px;letter-spacing:.2em;color:var(--muted);padding:2px 5px;border:1px solid var(--border);margin-right:8px;vertical-align:middle}
+  .money{text-align:right;color:var(--lime);font-weight:500}
+  .mouth{text-align:right;color:var(--white)}
+  .score{text-align:right;font-family:'Anton',sans-serif;font-size:24px;color:var(--magenta);letter-spacing:-.01em;line-height:1}
+
+  /* metric row */
+  .meta-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  .meta-row .mc{border:1px solid var(--border);background:var(--void-2);padding:14px 16px}
+  .meta-row .mc .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+  .meta-row .mc .v{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:-.01em;color:var(--white);line-height:1}
+  .meta-row .mc .v.mag{color:var(--magenta)}
+  .meta-row .mc .d{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  .footer{position:absolute;bottom:36px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid var(--border)}
+  .footer .cap{font-family:'Anton',sans-serif;font-size:28px;letter-spacing:-.01em;text-transform:uppercase;color:var(--white);line-height:1.05}
+  .footer .cap .lime{color:var(--lime)}
+  .footer .cap .mag{color:var(--magenta)}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · Feature card 04</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="pill"><span>PILLAR <span class="num">04</span></span><span>· DIVERGENCE RADAR</span></div>
+  </div>
+
+  <div class="title">
+    <div class="eyebrow">/ THE EDGE LIVES IN THE GAP /</div>
+    <h1>THE <span class="em">EDGE</span> —<br>WHERE MONEY <span class="neq">≠</span> <span class="div">MOUTH.</span></h1>
+    <div class="sub">EVERY MARKET, EVERY MINUTE — WE COMPARE PRICE TO SENTIMENT. THE GAP IS THE SIGNAL.</div>
+  </div>
+
+  <div class="radar">
+    <div class="rtop">
+      <span class="l">▸ DIVERGENCE LEADERBOARD · LIVE</span>
+      <span>≥ 0.40 · LAST 6H</span>
+    </div>
+    <div class="rcol">
+      <div>#</div>
+      <div>MARKET</div>
+      <div style="text-align:right">MONEY 24H</div>
+      <div style="text-align:right">MOUTH 24H</div>
+      <div style="text-align:right">EDGE SCORE</div>
+    </div>
+
+    <div class="rrow">
+      <div class="rank">01</div>
+      <div class="name"><span class="src">POLY</span>TRUMP · 2028 GOP NOMINEE / YES</div>
+      <div class="money">+28%</div>
+      <div class="mouth">-22%</div>
+      <div class="score">0.72</div>
+    </div>
+    <div class="rrow">
+      <div class="rank">02</div>
+      <div class="name"><span class="src">KAL</span>CPI · JUNE > 3.4% / YES</div>
+      <div class="money">+18%</div>
+      <div class="mouth">-14%</div>
+      <div class="score">0.58</div>
+    </div>
+    <div class="rrow">
+      <div class="rank">03</div>
+      <div class="name"><span class="src">POLY</span>RECESSION · 2026 DECLARED / NO</div>
+      <div class="money">-12%</div>
+      <div class="mouth">+18%</div>
+      <div class="score">0.51</div>
+    </div>
+    <div class="rrow">
+      <div class="rank">04</div>
+      <div class="name"><span class="src">KAL</span>FED · 25BP CUT JUL / NO</div>
+      <div class="money">-8%</div>
+      <div class="mouth">+16%</div>
+      <div class="score">0.41</div>
+    </div>
+  </div>
+
+  <div class="meta-row">
+    <div class="mc"><div class="k">SIGNALS · 24H</div><div class="v mag">42</div><div class="d">FIRED TO HOLDERS</div></div>
+    <div class="mc"><div class="k">AVG EDGE · TOP 10</div><div class="v">0.54</div><div class="d">DIVERGENCE INDEX</div></div>
+    <div class="mc"><div class="k">HIT RATE · 30D</div><div class="v mag">71%</div><div class="d">SCORE ≥ 0.6 RESOLVED W/ MONEY</div></div>
+  </div>
+
+  <div class="footer">
+    <div class="cap">WHEN <span class="lime">MONEY</span> AND <span class="lime">MOUTH</span> DISAGREE — <span class="mag">EDGE.</span></div>
+    <div class="right">
+      <div>EDGE-TWO-PSI.VERCEL.APP</div>
+      <div>FEATURE 04 / 05</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

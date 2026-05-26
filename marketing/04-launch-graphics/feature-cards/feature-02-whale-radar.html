@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>$EDGE · Feature 02 · Whale Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050507;--void-2:#0c0c10;--void-3:#141418;--void-4:#1c1c22;
+    --lime:#C4FF00;--magenta:#FF006E;--green:#00FF85;--amber:#FFB800;--red:#FF3344;
+    --white:#F5F5F0;--muted:#6B6B73;
+    --border:rgba(245,245,240,0.08);--border-bright:rgba(196,255,0,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+  body{
+    background:#222;
+    background-image:
+      linear-gradient(45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(-45deg,#1a1a1a 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#1a1a1a 75%),
+      linear-gradient(-45deg,transparent 75%,#1a1a1a 75%);
+    background-size:24px 24px;
+    background-position:0 0,0 12px,12px -12px,-12px 0;
+    display:flex;align-items:center;justify-content:center;padding:40px;
+  }
+  .export-badge{position:fixed;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#888;background:#000;padding:6px 10px;border:1px solid #333;text-transform:uppercase;z-index:99}
+
+  .canvas{position:relative;width:1080px;height:1080px;background:var(--void);color:var(--white);overflow:hidden;box-shadow:0 60px 120px rgba(0,0,0,.7);padding:56px}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  .hdr{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .mark{display:flex;align-items:center;gap:12px}
+  .mark svg{width:28px;height:28px}
+  .mark .nm{font-family:'Anton',sans-serif;font-size:26px;letter-spacing:-.02em}
+  .mark .nm span{color:var(--lime)}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:10px}
+  .pill .num{color:var(--lime);background:rgba(196,255,0,.07);border:1px solid var(--border-bright);padding:4px 8px}
+
+  .title{margin-top:22px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.35em;color:var(--lime);text-transform:uppercase;margin-bottom:12px}
+  h1{font-family:'Anton',sans-serif;font-size:88px;line-height:.9;letter-spacing:-.025em;text-transform:uppercase}
+  h1 .accent{color:var(--lime)}
+  .sub{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;line-height:1.6}
+
+  .firehose{margin-top:28px;border:1px solid var(--border);background:var(--void-2);font-family:'JetBrains Mono',monospace}
+  .fh-top{display:flex;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .fh-top .l{color:var(--lime)}
+  .fh-top .live{display:flex;align-items:center;gap:8px;color:var(--lime)}
+  .fh-top .live::before{content:'';width:8px;height:8px;background:var(--lime);border-radius:50%;animation:blink 1.2s infinite}
+  @keyframes blink{0%,55%{opacity:1}60%,100%{opacity:.15}}
+
+  .col-hdr{display:grid;grid-template-columns:90px 110px 1fr 140px 130px;padding:10px 18px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;background:var(--void-3)}
+  .ping{display:grid;grid-template-columns:90px 110px 1fr 140px 130px;padding:14px 18px;border-bottom:1px solid var(--border);align-items:center;font-size:13px;color:var(--white);position:relative}
+  .ping:last-child{border-bottom:0}
+  .ping .bar{position:absolute;left:0;top:0;bottom:0;width:3px}
+  .ping.s1 .bar{background:var(--lime)}
+  .ping.s2 .bar{background:var(--amber)}
+  .ping.s3 .bar{background:var(--magenta)}
+  .ping.s4 .bar{background:var(--green)}
+  .when{font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .when .now{color:var(--lime)}
+  .wal{font-size:11px;letter-spacing:.12em;color:var(--white);text-transform:uppercase}
+  .mkt{font-size:12px;letter-spacing:.05em;color:var(--white)}
+  .mkt .side{font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-left:6px;padding:2px 5px;border:1px solid var(--border);display:inline-block}
+  .amt{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;text-align:right}
+  .amt.in{color:var(--lime)}
+  .amt.out{color:var(--magenta)}
+  .src{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);text-align:right}
+
+  /* mini metrics row */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+  .metric{border:1px solid var(--border);background:var(--void-2);padding:14px 16px}
+  .metric .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+  .metric .v{font-family:'Anton',sans-serif;font-size:34px;letter-spacing:-.01em;color:var(--white);line-height:1}
+  .metric .v.lime{color:var(--lime)}
+  .metric .v.amb{color:var(--amber)}
+  .metric .d{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+
+  .footer{position:absolute;bottom:36px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid var(--border)}
+  .footer .cap{font-family:'Anton',sans-serif;font-size:28px;letter-spacing:-.01em;text-transform:uppercase;color:var(--white);line-height:1.05}
+  .footer .cap .lime{color:var(--lime)}
+  .footer .right{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="export-badge">Export at 1080 × 1080 · Feature card 02</div>
+<div class="canvas">
+  <div class="grain"></div>
+
+  <div class="hdr">
+    <div class="mark">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <span class="nm">$<span>EDGE</span></span>
+    </div>
+    <div class="pill"><span>PILLAR <span class="num">02</span></span><span>· WHALE RADAR</span></div>
+  </div>
+
+  <div class="title">
+    <div class="eyebrow">/ WHALES · LIVE FIREHOSE /</div>
+    <h1>WHALES IN<br><span class="accent">REAL TIME.</span></h1>
+    <div class="sub">EVERY POSITION ≥ $500K. EVERY VENUE. EVERY WALLET. SHIPPED TO YOUR PHONE BEFORE THE PRICE MOVES.</div>
+  </div>
+
+  <div class="firehose">
+    <div class="fh-top">
+      <span class="l">▸ FIREHOSE</span>
+      <span class="live">LIVE · POLY + KAL</span>
+    </div>
+    <div class="col-hdr">
+      <div>WHEN</div>
+      <div>WALLET</div>
+      <div>MARKET</div>
+      <div style="text-align:right">$ MOVED</div>
+      <div style="text-align:right">SRC · DIR</div>
+    </div>
+    <div class="ping s1">
+      <div class="bar"></div>
+      <div class="when"><span class="now">14 sec</span></div>
+      <div class="wal">0xA3F2…91DC</div>
+      <div class="mkt">TRUMP · 2028 GOP<span class="side">YES</span></div>
+      <div class="amt in">+$2,412,000</div>
+      <div class="src">POLY · BUY</div>
+    </div>
+    <div class="ping s2">
+      <div class="bar"></div>
+      <div class="when">2m ago</div>
+      <div class="wal">0xB1E0…4A22</div>
+      <div class="mkt">FED · 25BP CUT JUL<span class="side">NO</span></div>
+      <div class="amt out">-$890,000</div>
+      <div class="src">POLY · SELL</div>
+    </div>
+    <div class="ping s3">
+      <div class="bar"></div>
+      <div class="when">7m ago</div>
+      <div class="wal">0xC4D2…77B9</div>
+      <div class="mkt">CPI · JUNE > 3.4%<span class="side">YES</span></div>
+      <div class="amt in">+$1,180,000</div>
+      <div class="src">KAL · BUY</div>
+    </div>
+    <div class="ping s4">
+      <div class="bar"></div>
+      <div class="when">12m ago</div>
+      <div class="wal">0xE5F8…220A</div>
+      <div class="mkt">BTC · 100K EOY<span class="side">YES</span></div>
+      <div class="amt in">+$640,000</div>
+      <div class="src">POLY · BUY</div>
+    </div>
+    <div class="ping s1">
+      <div class="bar"></div>
+      <div class="when">18m ago</div>
+      <div class="wal">0xF1A8…CC03</div>
+      <div class="mkt">NFL · MVP ALLEN<span class="side">YES</span></div>
+      <div class="amt in">+$340,000</div>
+      <div class="src">KAL · BUY</div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="k">TRACKED WALLETS</div><div class="v lime">2,847</div><div class="d">AUTOTAGGED</div></div>
+    <div class="metric"><div class="k">PINGS · 24H</div><div class="v">418</div><div class="d">≥ $250K</div></div>
+    <div class="metric"><div class="k">$ MOVED · 24H</div><div class="v amb">$184M</div><div class="d">CUMULATIVE</div></div>
+    <div class="metric"><div class="k">LATENCY</div><div class="v lime">&lt;30s</div><div class="d">CHAIN → ALERT</div></div>
+  </div>
+
+  <div class="footer">
+    <div class="cap">SMART MONEY <span class="lime">LEAVES FOOTPRINTS.</span></div>
+    <div class="right">
+      <div>EDGE-TWO-PSI.VERCEL.APP</div>
+      <div>FEATURE 02 / 05</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

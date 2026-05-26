@@ -1,0 +1,51 @@
+<svg viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE GitHub social preview (OG image)">
+  <title>github.com/edgeterminal</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="80%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.92"/>
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="640" fill="#050507"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+
+  <g font-family="JetBrains Mono, ui-monospace, monospace">
+    <text x="64" y="72" font-size="14" fill="#C4FF00" letter-spacing="0.32em">GITHUB.COM/EDGETERMINAL</text>
+  </g>
+
+  <g font-family="Anton, Impact, sans-serif" font-size="132" letter-spacing="-2" fill="#F5F5F0">
+    <text x="64" y="232">OPEN SOURCE</text>
+    <text x="64" y="358">FOR THE <tspan fill="#C4FF00">EDGE</tspan>.</text>
+  </g>
+
+  <g font-family="DM Sans, system-ui, sans-serif" font-size="22" fill="#F5F5F0" opacity="0.8">
+    <text x="64" y="412">SDKs, scrapers, dashboards, and frame components for prediction-market builders.</text>
+  </g>
+
+  <!-- repo list -->
+  <g transform="translate(64 460)">
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="14" fill="#F5F5F0">
+      <text x="0" y="0">/dune-queries</text><text x="600" y="0" fill="#6B6B73">SQL for every public $EDGE dashboard</text>
+      <text x="0" y="28">/poly-tape</text><text x="600" y="28" fill="#6B6B73">streaming Polymarket whale-flow listener (TS)</text>
+      <text x="0" y="56">/kalshi-rest</text><text x="600" y="56" fill="#6B6B73">typed client + reconnecting websocket wrapper</text>
+      <text x="0" y="84">/divergence-kit</text><text x="600" y="84" fill="#6B6B73">cross-venue + sentiment divergence scorer</text>
+      <text x="0" y="112">/frames</text><text x="600" y="112" fill="#6B6B73">Farcaster frames for divergence + whale alerts</text>
+    </g>
+  </g>
+
+  <g opacity="0.16">
+    <path d="M1060 100 L1220 200 L1060 300" fill="none" stroke="#C4FF00" stroke-width="36" stroke-linecap="square" stroke-linejoin="miter"/>
+  </g>
+
+  <rect width="1280" height="640" fill="url(#vignette)"/>
+
+  <rect x="0" y="608" width="1280" height="32" fill="#0C0C10"/>
+  <line x1="0" y1="608" x2="1280" y2="608" stroke="rgba(196,255,0,0.2)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" fill="#6B6B73" letter-spacing="0.22em">
+    <text x="20" y="630">$EDGE &#183; MONEY. MOUTH. EDGE.   &#183;   EDGE-TWO-PSI.VERCEL.APP</text>
+    <text x="1260" y="630" text-anchor="end" fill="#C4FF00">FORK + STAR</text>
+  </g>
+</svg>

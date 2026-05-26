@@ -1,0 +1,25 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="$EDGE Telegram channel logo">
+  <title>$EDGE</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#C4FF00" stroke-width="0.5" opacity="0.06"/>
+    </pattern>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+      <stop offset="55%" stop-color="#050507" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.75"/>
+    </radialGradient>
+    <clipPath id="circle">
+      <circle cx="256" cy="256" r="256"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circle)">
+    <rect width="512" height="512" fill="#050507"/>
+    <rect width="512" height="512" fill="url(#grid)"/>
+    <rect width="512" height="512" fill="url(#vignette)"/>
+    <circle cx="256" cy="256" r="228" fill="none" stroke="#C4FF00" stroke-width="1" opacity="0.14"/>
+    <path d="M178 138 L344 256 L178 374" fill="none" stroke="#C4FF00" stroke-width="40" stroke-linecap="square" stroke-linejoin="miter"/>
+    <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#F5F5F0" letter-spacing="0.25em">
+      <text x="256" y="448" text-anchor="middle" opacity="0.55">$EDGE</text>
+    </g>
+  </g>
+</svg>
