@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Dashboard — Live Command Center</title>
+<meta name="description" content="Polymarket + Kalshi command center. Hot markets, whale trades, chatter heat, breaking news. One screen. Real-time.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/dashboard.html">
+<meta property="og:title" content="$EDGE Dashboard — Live Command Center">
+<meta property="og:description" content="Every market. Every whale. Every signal. One screen.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+  --header-h: 60px;
+  --strip-h: 56px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  height: var(--header-h);
+  border-bottom: 1px solid var(--border-bright);
+  padding: 0 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: relative; z-index: 50;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 28px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.65;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; background: var(--green);
+  border-radius: 50%; margin-right: 6px; box-shadow: 0 0 10px var(--green);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+/* ── STAT STRIP ──────────────────────────────────────────────────────── */
+.stat-strip {
+  height: var(--strip-h);
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border-bottom: 1px solid var(--border);
+  background: rgba(5, 5, 7, 0.6);
+  position: relative; z-index: 40;
+}
+.stat-cell {
+  border-right: 1px solid var(--border);
+  padding: 8px 16px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 2px;
+}
+.stat-cell .val {
+  font-family: 'Anton', sans-serif; font-size: 22px; line-height: 1;
+  color: var(--lime); letter-spacing: 0.02em;
+}
+.stat-cell.alt .val { color: var(--white); }
+.stat-cell .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted);
+  margin-top: 2px;
+}
+.pos { color: var(--green) !important; }
+.neg { color: var(--red) !important; }
+
+/* ── GRID ───────────────────────────────────────────────────────────── */
+main {
+  height: calc(100vh - var(--header-h) - var(--strip-h));
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  position: relative; z-index: 10;
+}
+
+.panel {
+  background: var(--void-2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  display: flex; flex-direction: column;
+  min-height: 0; /* fix for flex children overflow */
+  overflow: hidden;
+}
+.panel-head {
+  padding: 10px 14px;
+  background: var(--void-3);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
+}
+.panel-title {
+  font-family: 'Anton', sans-serif; font-size: 16px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.panel-title .accent { color: var(--lime); }
+.panel-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;
+  display: flex; gap: 10px; align-items: center;
+}
+.panel-meta .refresh-dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 6px var(--green);
+}
+.panel-meta .refresh-dot.stale { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.panel-meta .refresh-dot.dead { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.panel-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--void-4) transparent;
+}
+.panel-body::-webkit-scrollbar { width: 6px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--void-4); border-radius: 3px; }
+.panel-body::-webkit-scrollbar-track { background: transparent; }
+
+/* ── ROW SHARED ─────────────────────────────────────────────────────── */
+.row {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.row:hover { background: var(--void-3); }
+.row:last-child { border-bottom: none; }
+
+/* ── MARKETS PANEL ──────────────────────────────────────────────────── */
+.market-row {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 12px;
+  align-items: center;
+}
+.market-title {
+  font-size: 13px; color: var(--white); font-weight: 500; line-height: 1.35;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.market-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 3px; display: flex; gap: 10px;
+}
+.market-meta .badge {
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
+}
+.market-meta .badge.poly { color: var(--magenta); }
+.market-meta .badge.kalshi { color: var(--lime); }
+.market-odds {
+  display: flex; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+}
+.market-odds .yes { color: var(--green); }
+.market-odds .no { color: var(--red); }
+.market-odds .v { display: block; font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.market-vol {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--lime);
+  text-align: right; white-space: nowrap;
+}
+.market-vol .v { display: block; font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ── WHALE PANEL ────────────────────────────────────────────────────── */
+.whale-row {
+  display: grid; grid-template-columns: 30px 1fr auto; gap: 10px;
+  align-items: center;
+}
+.whale-avatar {
+  width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
+  background: var(--void-3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Anton', sans-serif; font-size: 12px; color: var(--lime);
+}
+.whale-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.whale-who { font-size: 12px; min-width: 0; }
+.whale-who .name { color: var(--white); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.whale-who .meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+  display: flex; gap: 6px; align-items: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.whale-who .meta .side { font-weight: 700; letter-spacing: 0.05em; }
+.whale-who .meta .side.buy { color: var(--green); }
+.whale-who .meta .side.sell { color: var(--red); }
+.whale-amount {
+  font-family: 'Anton', sans-serif; font-size: 18px; color: var(--lime);
+  letter-spacing: 0.02em; white-space: nowrap;
+}
+
+/* ── BUZZ PANEL ─────────────────────────────────────────────────────── */
+.buzz-row {
+  display: grid; grid-template-columns: 1fr auto; gap: 10px;
+  align-items: center;
+}
+.buzz-row .title {
+  font-size: 13px; color: var(--white); line-height: 1.35;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.buzz-row .meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 3px;
+}
+.buzz-heat {
+  font-family: 'Anton', sans-serif; font-size: 18px; color: var(--lime);
+  text-align: right; white-space: nowrap;
+}
+.buzz-heat .lbl { display: block; font-size: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ── NEWS PANEL ─────────────────────────────────────────────────────── */
+.news-row { display: flex; flex-direction: column; gap: 4px; }
+.news-row .outlet {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--lime); text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 700;
+}
+.news-row .headline {
+  font-size: 13px; color: var(--white); line-height: 1.35;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.news-row .meta-foot {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.news-row .matched-pill {
+  background: var(--void-3); padding: 2px 6px; border: 1px solid var(--border);
+  border-radius: 2px; color: var(--white); font-size: 10px;
+  display: inline-flex; gap: 4px; align-items: center;
+}
+.news-row .matched-pill .market {
+  max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── EMPTY / SKELETON ────────────────────────────────────────────────── */
+.empty {
+  padding: 32px 20px; text-align: center;
+  color: var(--muted); font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; line-height: 1.6;
+}
+.skel {
+  background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2));
+  background-size: 200% 100%; animation: shimmer 1.4s linear infinite;
+  border-bottom: 1px solid var(--border);
+  height: 56px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── MOBILE ──────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  body { overflow: auto; }
+  main {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: 420px;
+  }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); height: auto; }
+  .stat-cell { border-bottom: 1px solid var(--border); }
+  nav ul { gap: 14px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html" class="active"><span class="live-dot"></span>Dashboard</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="stat-strip" id="statStrip">
+  <div class="stat-cell"><div class="lbl">Live Volume 24h</div><div class="val" id="globalVolume">—</div><div class="sub">all platforms</div></div>
+  <div class="stat-cell alt"><div class="lbl">Active Markets</div><div class="val" id="globalMarkets">—</div><div class="sub" id="globalMarketsSub">poly · kalshi</div></div>
+  <div class="stat-cell"><div class="lbl">Whales Tracked</div><div class="val" id="globalWhales">—</div><div class="sub" id="globalWhalesSub">active 24h</div></div>
+  <div class="stat-cell alt"><div class="lbl">Buzz Threads</div><div class="val" id="globalBuzz">—</div><div class="sub" id="globalBuzzSub">matched</div></div>
+  <div class="stat-cell"><div class="lbl">Last Pulse</div><div class="val" id="lastPulse">—</div><div class="sub">auto · 30s</div></div>
+</div>
+
+<main>
+  <!-- Panel 1: HOT MARKETS -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Hot <span class="accent">Markets</span></div>
+      <div class="panel-meta"><span class="refresh-dot" id="dotMarkets"></span><span id="metaMarkets">loading…</span></div>
+    </div>
+    <div class="panel-body" id="bodyMarkets">
+      <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+    </div>
+  </div>
+
+  <!-- Panel 2: WHALE FIREHOSE -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Whale <span class="accent">Firehose</span></div>
+      <div class="panel-meta"><span class="refresh-dot" id="dotWhales"></span><span id="metaWhales">loading…</span></div>
+    </div>
+    <div class="panel-body" id="bodyWhales">
+      <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+    </div>
+  </div>
+
+  <!-- Panel 3: BUZZ HEAT INDEX -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Buzz <span class="accent">Heat</span></div>
+      <div class="panel-meta"><span class="refresh-dot" id="dotBuzz"></span><span id="metaBuzz">loading…</span></div>
+    </div>
+    <div class="panel-body" id="bodyBuzz">
+      <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+    </div>
+  </div>
+
+  <!-- Panel 4: BREAKING NEWS -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Breaking <span class="accent">News</span></div>
+      <div class="panel-meta"><span class="refresh-dot" id="dotNews"></span><span id="metaNews">loading…</span></div>
+    </div>
+    <div class="panel-body" id="bodyNews">
+      <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+    </div>
+  </div>
+</main>
+
+<script type="module" src="/dashboard.js"></script>
+</body>
+</html>
