@@ -14,13 +14,13 @@ The moat is built on three signal layers fused into a single screen: **Money** (
 
 The $EDGE token launches today via fairlaunch on **pump.fun**, with a fixed supply of 1 billion tokens distributed as follows: 80% to the fair market, 10% to liquidity (locked 12 months), 5% to a project treasury, 3% to marketing (vested over 6 months), and 2% to the founding team (vested over 24 months with a 6-month cliff). There is no presale, no private round, no team-priority allocation. Token utility unlocks tiered terminal features: 10,000 $EDGE for whale alerts, 100,000 for the divergence radar, 1,000,000 for raw API access, and 10,000,000 for the insider channel. Liquidity is locked on-chain with verifiable timelock; team vesting is enforced by contract.
 
-$EDGE was built by **Robert Noejr** and **Tye [last name]**, two operators who spent the last five years trading and shipping in crypto and prediction markets. The product is bootstrapped — no venture funding, no convertibles, no priced rounds — and shipped end-to-end by the founding team. The team is hiring, but the operating model going forward is the same: lean, owner-operated, and accountable to the token holders who choose to back the build.
+$EDGE was built by **two anonymous operators** with five years each trading and shipping in crypto and prediction markets. The team operates publicly under a single shared identity, **@edgeops**, and stays anonymous by design — the trust contract is built on public artifacts (open-source code on GitHub, an append-only on-chain track record, a multi-sig treasury, and a free-to-use terminal) rather than on personal résumés. The product is bootstrapped — no venture funding, no convertibles, no priced rounds — and shipped end-to-end by the founding team. The operating model going forward is the same: lean, owner-operated, and accountable to the token holders who choose to back the build.
 
 > "We built $EDGE because we needed it. The Polymarket-Kalshi-whale-sentiment workflow exists in our heads every day already — we just wanted it in one screen, with the divergence math done for us. If it's useful to us, it's useful to every serious operator in this space."
-> — **Robert Noejr**, co-founder
+> — **Op / 01**, co-founder, $EDGE
 
-> "Prediction markets are where the next 100 million retail traders are going to live. They're more honest than crypto, more accessible than equities, and more entertaining than sports books. We're building the terminal they're going to use to do it."
-> — **Tye [last name]**, co-founder
+> "Names are private; the work is public. Anonymous by design means every claim we make is backed by something a stranger can verify — code, timestamps, on-chain wallets, the live terminal. Track record over résumés."
+> — **Op / 02**, co-founder, $EDGE
 
 ---
 

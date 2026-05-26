@@ -26,7 +26,7 @@ What's coming in v2:
 • Cross-venue normalization (synthetic Polymarket × Kalshi prices).
 • A research suite for back-testing strategies against the historical whale corpus.
 
-We're a two-person team: Robert (frontend / product) and Tye (data / infra). We use this every day for our own trading. If you're a quant, a market researcher, a trader, or a fintech operator who has wanted to take prediction markets seriously and couldn't find the right surface — you're who we're building for.
+We're a two-person team: an Operator (frontend / product) and an Operator (data / infra). We use this every day for our own trading. If you're a quant, a market researcher, a trader, or a fintech operator who has wanted to take prediction markets seriously and couldn't find the right surface — you're who we're building for.
 
 Try the terminal: https://edge-two-psi.vercel.app/
 Follow this page for product updates, market notes, and the occasional public divergence dossier.
@@ -35,7 +35,7 @@ The token, $EDGE, gates premium tiers — webhooks, push, governance. Launching 
 
 Watch the action. Before you bet.
 
-— Robert + Tye
+— the $EDGE Operators
 ```
 
 ---
@@ -82,4 +82,4 @@ $EDGE: edge-two-psi.vercel.app
 - Pinned: launch announcement (above)
 - 1 post/week: market note OR product update OR thesis piece
 - Engage in finance/fintech threads about prediction markets, polling, election forecasting, sports betting markets. Do not engage with crypto pump threads.
-- Use Robert's and Tye's personal profiles to amplify (employees-as-megaphone is far more powerful than the company page on LinkedIn).
+- Use company page only — operators are anonymous. Compensate with high reshare ratios from holders and KOLs.

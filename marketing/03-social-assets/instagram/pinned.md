@@ -49,7 +49,7 @@ Caption:
 
 **Post 7 — Founders (B&W portrait with Anton caption overlay)**
 Caption:
-> Built by Rob + Tye. We trade these markets every day. The terminal is what we wished existed.
+> Built by the $EDGE Operators. We trade these markets every day. The terminal is what we wished existed.
 
 **Post 8 — Token announcement**
 Caption:

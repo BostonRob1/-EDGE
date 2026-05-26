@@ -17,7 +17,7 @@ We aggregate every Polymarket and Kalshi market into a single sortable, filterab
 
 The terminal is in early access at edge-two-psi.vercel.app. The accompanying token, $EDGE, launches on Solana and gates premium features by holding tier — webhook access, push notifications, governance over which markets get full bot coverage, direct channels to the founders.
 
-Built by Robert and Tye. Headquartered remotely; data flow is the only office that matters.
+Built by the $EDGE Operators. Headquartered remotely; data flow is the only office that matters.
 
 ## Industry
 Financial Services

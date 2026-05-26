@@ -2,7 +2,7 @@
 
 > Marketing OS · 06.03 · Launch Playbook
 > Anchor date: launch is **2026-06-25 13:00 ET / 17:00 UTC**
-> Owner: comms lead (Robert covers Tier S personally)
+> Owner: comms lead (an Operator covers Tier S personally)
 
 ---
 
@@ -27,10 +27,10 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 | @milesdeutscher | ~700K | Macro + crypto, technical analysis crowd | "First terminal that bridges Polymarket + Kalshi — would you take a look?" |
 | @CryptoCobain | ~1M | Sets degen attention agenda | Trade-of-value: early API key, hand him divergence calls before the timeline sees them |
 | @CL207 (Cobie's co-host) | ~330K | UpOnly host, taste-maker on infra plays | Sponsor a single UpOnly episode segment |
-| @WhalePanda | ~700K | OG, surgical with what he co-signs | Direct DM from Robert: "we built the whale tracker you'd actually use" |
+| @WhalePanda | ~700K | OG, surgical with what he co-signs | Direct DM from an Operator: "we built the whale tracker you'd actually use" |
 | @hsakatrades | ~650K | High-velocity trading account | Pitch the picker algorithm + backtest data |
 | Orbit of @nayibbukele | varies | LATAM crypto attention | Spanish-language press release + product walkthrough |
-| @cobie | ~750K | Long shot but if it lands, defines the launch | Personal note from Robert. No pitch. Just the link. |
+| @cobie | ~750K | Long shot but if it lands, defines the launch | Personal note from an Operator. No pitch. Just the link. |
 
 ### Tier A — 100K-500K · doable with quality outreach + small comp
 

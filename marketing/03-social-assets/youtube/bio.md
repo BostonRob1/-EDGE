@@ -15,7 +15,7 @@ We publish:
 — Divergence tutorials and playbooks
 — Founder devlogs on what we shipped this week
 
-Built by Rob + Tye. We trade these markets every day. The terminal is what we wished existed.
+Built by the $EDGE Operators. We trade these markets every day. The terminal is what we wished existed.
 
 Site: https://edge-two-psi.vercel.app/
 Token: $EDGE on Solana (pump.fun launch)

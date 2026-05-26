@@ -54,8 +54,8 @@ The closed-source web terminal lives at [edge-two-psi.vercel.app](https://edge-t
 
 ## Founders
 
-- **Robert Noejr** — [@robertnoejr](https://github.com/robertnoejr) — product, frontend
-- **Tye** — [@tye](https://github.com/tye) — data, infra
+- **an $EDGE Operator** — [@edgeops](https://github.com/robertnoejr) — product, frontend
+- **an Operator** — [@tye](https://github.com/tye) — data, infra
 
 ## License
 

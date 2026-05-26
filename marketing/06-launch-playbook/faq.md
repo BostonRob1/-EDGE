@@ -72,10 +72,10 @@ Tier-1 listings are an explicit post-launch goal, not a day-one promise. We won'
 ## TEAM
 
 ### 19. Who built this?
-$EDGE was built by **Robert Noejr** and **Tye** — two operators with five years each shipping in crypto and inside the trader audiences this product serves. Robert owns product and engineering end-to-end. Tye owns audience, growth, and narrative end-to-end. The team is two people doing real work, not a roster of titles on a deck.
+$EDGE was built by two operators — five years each shipping in crypto and inside the trader audiences this product serves. **Op / 01** owns product and engineering end-to-end. **Op / 02** owns audience, growth, and narrative end-to-end. The team is two people doing real work, not a roster of titles on a deck. The team operates under one shared public identity: **@edgeops**.
 
 ### 20. Are you doxxed?
-Robert is fully doxxed — real name, real face, real history, real LinkedIn. Tye operates publicly under their handle and is identifiable to anyone who matters in the prediction-market and crypto-trader audiences. We're not anon. If you want to verify either of us, the receipts are public and we'll happily jump on a call with any serious partner or large holder.
+No — anonymous by design. Names are private; the work is public. The code is on GitHub, the calls are timestamped on a public track record, the treasury sits in a multi-sig on-chain, and the product is free to use without a wallet. That's the trust contract — receipts over résumés. Any reporter, partner, or large holder can verify the work, the wallet, and the build cadence in real time, and we're available for direct calls under **@edgeops** on X and Telegram.
 
 ### 21. Are you raising venture money?
 No. $EDGE is bootstrapped and intends to stay that way. We're not raising a priced round, not raising a SAFE, and not selling tokens to VCs at a private discount. The token launch is the only fundraising event, and it's a true fairlaunch — no insider terms.

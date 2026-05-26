@@ -25,8 +25,8 @@ medium.com/edge-notes (or /at-edge if -notes is taken)
 - Data Science
 
 ## Writers
-- Rob Noejr — `@robertnoejr` (intro: "Building $EDGE — a terminal for prediction markets.")
-- Tye — `@tye` (intro: "Data + infra at $EDGE. The market doesn't lie; the data sometimes does.")
+- an $EDGE Operator — `@edgeops` (intro: "Building $EDGE — a terminal for prediction markets.")
+- an Operator — `@tye` (intro: "Data + infra at $EDGE. The market doesn't lie; the data sometimes does.")
 
 ## Contributor application gate
 Closed for v1. Founders write everything for the first 90 days. Open submissions after the publication has 10+ posts and a reputation surface.

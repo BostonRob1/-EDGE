@@ -28,7 +28,7 @@ The playbook for actually shipping the videos described in this folder. Read thi
 ## 02 · VOICE-OVER
 
 ### Option A — ElevenLabs voice clone (recommended for scale)
-1. Record a 20-minute clean read from Robert (or whoever) in a quiet room, lav mic, no music.
+1. Record a 20-minute clean read from an Operator (or whoever) in a quiet room, lav mic, no music.
 2. Upload to ElevenLabs ($22/mo Starter or $99 Creator for commercial rights).
 3. Use **Eleven Multilingual v2** or **Eleven Turbo v2.5** for the voice model.
 4. **Settings:** Stability 45–55, Similarity 70–80, Style 0–15. Default voice modulation OFF.
@@ -43,7 +43,7 @@ The playbook for actually shipping the videos described in this folder. Read thi
 
 ### Voice direction notes
 - **Pace:** slow. ~140 words per minute. Crypto VO is almost always too fast.
-- **Tone:** dry, certain. Robert is not selling — he's stating the case.
+- **Tone:** dry, certain. an Operator is not selling — he's stating the case.
 - **Mouth noises:** kill clicks and pops in post. They scream amateur.
 - **The brand tagline** ("Watch the action. Before you bet.") is always the last line. Always slowed. Always landed.
 
@@ -185,9 +185,9 @@ The playbook for actually shipping the videos described in this folder. Read thi
 
 ## 09 · WHO OWNS WHAT
 
-- **Scripts** — Robert writes. Tye reviews for product accuracy.
-- **Edit** — Whoever's on the cut for the week. Default: Robert.
-- **VO** — Robert (or Robert's ElevenLabs clone after the first 5 videos).
+- **Scripts** — an Operator writes. an Operator reviews for product accuracy.
+- **Edit** — Whoever's on the cut for the week. Default: an Operator.
+- **VO** — an Operator (or the operators' ElevenLabs clone after the first 5 videos).
 - **Color + final mix** — DaVinci-fluent contractor if hero piece. Self if cutdown.
 - **Post + caption** — whoever drafted the script also drafts the social copy.
 

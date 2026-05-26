@@ -155,8 +155,8 @@
     <h1>Account <span class="accent">playbook.</span></h1>
     <p class="lede">Forty-plus accounts, six email aliases, six domains, a treasury stack, and a legal trip-wire — all reserved, all linked, all logged in one vault before <em>day one</em>. The launch is not a vibe. It is a checklist. Run the checklist.</p>
     <div class="meta-row">
-      <div class="item">Owner <span>Robert</span></div>
-      <div class="item">Co-Owner <span>Tye</span></div>
+      <div class="item">Owner <span>Op / 01</span></div>
+      <div class="item">Co-Owner <span>Op / 01</span></div>
       <div class="item">Vault <span>1Password / "EDGE-Launch"</span></div>
       <div class="item">Last Audit <span>2026-05-26</span></div>
     </div>
@@ -499,7 +499,7 @@
     <div class="sec-head"><h2>Email aliases.</h2><div class="sec-num">02.03 / Mail</div></div>
     <p class="sec-note">All aliases on custom domain (<code>edgeterminal.xyz</code>) routed through <strong>Resend</strong> for outbound and <strong>Cloudflare Email Routing</strong> for inbound forwarding to founders' inboxes. Set SPF, DKIM, DMARC before any send.</p>
     <div class="list-grid">
-      <div class="list-cell flag"><div class="l-label">Primary · Founders</div><div class="l-val">hello@edgeterminal.xyz</div><div class="l-note">Default public address. Goes to Robert + Tye. Auto-reply with 1-business-day SLA.</div></div>
+      <div class="list-cell flag"><div class="l-label">Primary · Founders</div><div class="l-val">hello@edgeterminal.xyz</div><div class="l-note">Default public address. Goes to the $EDGE Operators. Auto-reply with 1-business-day SLA.</div></div>
       <div class="list-cell"><div class="l-label">Founders · Private</div><div class="l-val">founders@edgeterminal.xyz</div><div class="l-note">High-value intros, VCs, exchange listings. Routes only to founders.</div></div>
       <div class="list-cell"><div class="l-label">Press</div><div class="l-val">press@edgeterminal.xyz</div><div class="l-note">Journalists, podcasts, embargo requests. Reply within 24h or lose the cycle.</div></div>
       <div class="list-cell"><div class="l-label">Partnerships</div><div class="l-val">partnerships@edgeterminal.xyz</div><div class="l-note">Affiliate routing, data partners, KOLs. Use a triage template.</div></div>
@@ -541,7 +541,7 @@
       <div class="list-cell"><div class="l-label">Smart Contract Monitor</div><div class="l-val">Tenderly</div><div class="l-note">Tx simulation, alerts on treasury wallet movement, LP-burn watcher.</div></div>
       <div class="list-cell"><div class="l-label">Block Explorer API</div><div class="l-val">Etherscan / Polygonscan</div><div class="l-note">Free API key for on-chain reads on Polymarket side. Rate-limit cache aggressively.</div></div>
       <div class="list-cell"><div class="l-label">Polymarket Data</div><div class="l-val">Polymarket API key</div><div class="l-note">Apply via <code>docs.polymarket.com</code>. Public endpoints work day one; key unlocks rate limits.</div></div>
-      <div class="list-cell"><div class="l-label">Kalshi Data</div><div class="l-val">Kalshi dev account</div><div class="l-note">US KYC required. Robert applies in his name. Sandbox first, prod once volume justifies.</div></div>
+      <div class="list-cell"><div class="l-label">Kalshi Data</div><div class="l-val">Kalshi dev account</div><div class="l-note">US KYC required. Op / 01 applies (cold address; tied to multi-sig signer key, not personal identity). Sandbox first, prod once volume justifies.</div></div>
       <div class="list-cell"><div class="l-label">Status Page</div><div class="l-val">Instatus or BetterStack</div><div class="l-note">Public status page on <code>status.edgeterminal.xyz</code>. Auto-incident from Sentry.</div></div>
       <div class="list-cell"><div class="l-label">Source Control · Backup</div><div class="l-val">GitHub Sponsors + Codeberg mirror</div><div class="l-note">Weekly push to Codeberg for resilience. Open source pieces signal credibility.</div></div>
       <div class="list-cell"><div class="l-label">Image / Asset CDN</div><div class="l-val">Vercel Blob or Cloudflare R2</div><div class="l-note">For social asset variants, OG cards, press kit downloads.</div></div>
@@ -552,7 +552,7 @@
     <div class="sec-head"><h2>Wallet &amp; treasury stack.</h2><div class="sec-num">02.06 / Treasury</div></div>
     <p class="sec-note">Separate wallets by function. Never co-mingle. Multi-sig anything that touches treasury or LP. Hot wallets stay small. Document seed-phrase recovery to two locations — one steel plate per founder, never digital.</p>
     <div class="list-grid">
-      <div class="list-cell flag"><div class="l-label">Multi-sig · Solana</div><div class="l-val">Squads.so (3-of-3)</div><div class="l-note">Robert + Tye + cold key. All treasury &gt; $50k passes through Squads. Default policy: 24h timelock on outflows.</div></div>
+      <div class="list-cell flag"><div class="l-label">Multi-sig · Solana</div><div class="l-val">Squads.so (3-of-3)</div><div class="l-note">the $EDGE Operators + cold key. All treasury &gt; $50k passes through Squads. Default policy: 24h timelock on outflows.</div></div>
       <div class="list-cell warn"><div class="l-label">Cold Storage · Default</div><div class="l-val">Ledger Nano X (x2)</div><div class="l-note">Two hardware wallets. <strong>$200k–1M parked here.</strong> Never connects to web wallets. Steel-plate seed phrase.</div></div>
       <div class="list-cell"><div class="l-label">Hot Wallet · Ops</div><div class="l-val">Phantom · ops</div><div class="l-note">Day-to-day signing for tooling. Max balance: 50 SOL. Top up from treasury weekly.</div></div>
       <div class="list-cell"><div class="l-label">Treasury Wallet</div><div class="l-val">Squads-controlled · treasury</div><div class="l-note">LP rewards, dev fund. Read-only public view on site for transparency.</div></div>
@@ -572,7 +572,7 @@
       <div class="list-cell"><div class="l-label">DBA</div><div class="l-val">Edge Terminal (d/b/a $EDGE)</div><div class="l-note">File in operating state. Lets you transact under both names on contracts + bank account.</div></div>
       <div class="list-cell"><div class="l-label">EIN · IRS</div><div class="l-val">Apply within 7d of entity formation</div><div class="l-note">Free, online at irs.gov. Required for bank account, contractors, vendor onboarding.</div></div>
       <div class="list-cell"><div class="l-label">DUNS Number</div><div class="l-val">D-U-N-S via Dun &amp; Bradstreet</div><div class="l-note">Free. Unlocks Apple Developer, Google Cloud credits, enterprise vendor portals.</div></div>
-      <div class="list-cell"><div class="l-label">Operating Agreement</div><div class="l-val">LLC OA · 2 members (Robert + Tye)</div><div class="l-note">Split, vesting, IP assignment, dissolution. Use a16z crypto template or hire counsel.</div></div>
+      <div class="list-cell"><div class="l-label">Operating Agreement</div><div class="l-val">LLC OA · 2 members (the $EDGE Operators)</div><div class="l-note">Split, vesting, IP assignment, dissolution. Use a16z crypto template or hire counsel.</div></div>
       <div class="list-cell"><div class="l-label">Token Legal Memo</div><div class="l-val">Howey + utility analysis</div><div class="l-note">Outside counsel memo. $3k–8k range. Required for any US listing conversation.</div></div>
       <div class="list-cell"><div class="l-label">Terms of Service</div><div class="l-val">/legal/terms</div><div class="l-note">Custom for prediction-market aggregator. Disclaim: no investment advice, no execution, data &ldquo;as-is.&rdquo;</div></div>
       <div class="list-cell"><div class="l-label">Privacy Policy</div><div class="l-val">/legal/privacy</div><div class="l-note">GDPR + CCPA. Plausible is privacy-first; PostHog needs consent banner.</div></div>

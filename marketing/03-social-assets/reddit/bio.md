@@ -29,7 +29,7 @@ We discuss Polymarket and Kalshi markets, surface whale activity, dissect diverg
 - Token: $EDGE on Solana (pump.fun)
 - Discord: discord.gg/edge
 
-Founders: u/robertnoejr (Rob) + u/tye (Tye) — flair'd as Founder.
+Operators: shared u/edgeops handle (anon team) — flaired as Operator
 
 ## Community type
 Public

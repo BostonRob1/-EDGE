@@ -162,7 +162,7 @@ The edge is the live gap between the two. When whales are quietly accumulating o
 
 The product aggregates both major prediction-market venues, tracks the top wallets on each, and overlays social sentiment in a single dense screen built for traders who already read tape. The $EDGE token (Solana-native, fair-launched on pump.fun) gates tier access to whale alerts, raw API, and historical divergence data.
 
-Founders: Robert and Tye. Watch the action. Before you bet.
+Founders: the $EDGE Operators. Watch the action. Before you bet.
 ```
 *(1183 char)*
 
@@ -174,7 +174,7 @@ The platform aggregates live order-book data from Polymarket (Polygon-based) and
 
 $EDGE, the platform's native token, fair-launched on pump.fun (Solana). The token gates tier access to real-time whale alerts, the raw event-streaming API, and historical divergence data sets. The protocol takes no execution fees, holds no user funds, offers no investment advice, and does not route orders. It is a data and signal product, full stop.
 
-The team is led by Robert (operations) and Tye (engineering), with a public roadmap and open-source dashboards on GitHub. Press kit, brand assets, and founder bios at edgeterminal.xyz/press. Watch the action. Before you bet.
+The team is led by an Operator (operations) and an Operator (engineering), with a public roadmap and open-source dashboards on GitHub. Press kit, brand assets, and founder bios at edgeterminal.xyz/press. Watch the action. Before you bet.
 ```
 *(1186 char)*
 

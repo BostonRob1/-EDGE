@@ -47,9 +47,9 @@ VO:
 "Our public picker hit 64% last quarter. All calls live. No retcons. The track record is immutable on-chain — that's the point."
 
 [36.0s — 48.0s]
-CUT to founders intro card (B&W stills of Rob + Tye, Anton labels).
+CUT to founders intro card (B&W stills of the $EDGE Operators, Anton labels).
 VO:
-"Built by traders, for traders. Rob + Tye. We use this every day. The terminal is what we wished existed."
+"Built by traders, for traders. the $EDGE Operators. We use this every day. The terminal is what we wished existed."
 
 [48.0s — 60.0s]
 CUT to the channel content roadmap:

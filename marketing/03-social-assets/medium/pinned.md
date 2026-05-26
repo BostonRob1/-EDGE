@@ -73,7 +73,7 @@ We've spent the last six months building the terminal we wanted to use for these
 ### Closing
 > The pollster era ended in 2024. We don't yet have the Bloomberg for what replaced it. We're going to build it. Field notes here every two weeks.
 >
-> — Robert Noejr + Tye
+> — an $EDGE Operator + an Operator
 
 ---
 

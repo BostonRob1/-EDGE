@@ -18,7 +18,7 @@ We honor embargoes. We also expect them honored back.
 - Strategic partners (with their explicit permission)
 - Funding announcements (when applicable)
 - Major product milestones
-- Quotes from Robert / Tye (attributable, on the record)
+- Quotes from an Operator / an Operator (attributable, on the record)
 
 ## What we do not share under embargo
 
@@ -40,7 +40,7 @@ We'll respond within 24 hours, almost always with yes.
 
 ## Founder availability
 
-| Window | Robert | Tye |
+| Window | an Operator | an Operator |
 |---|---|---|
 | US East morning (08:00–11:00 ET) | ✓ | ✓ |
 | US West afternoon (14:00–17:00 PT) | ✓ | ✓ |
