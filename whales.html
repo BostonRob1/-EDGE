@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Whales — Track the Smart Money</title>
+<meta name="description" content="Real-time Polymarket whale tracking. Live trade firehose, active whale leaderboard, per-wallet position drilldown. No signup.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/whales.html">
+<meta property="og:title" content="$EDGE Whales — Track the Smart Money">
+<meta property="og:description" content="Every Polymarket whale trade. Live. Free.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+.display { font-family: 'Anton', sans-serif; letter-spacing: -0.01em; text-transform: uppercase; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: rgba(5, 5, 7, 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  color: var(--lime);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 28px; align-items: center; }
+nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 0 12px var(--green);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 56px 32px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(48px, 9vw, 112px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero .tagline {
+  font-size: 17px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero .tagline strong { color: var(--white); font-weight: 500; }
+
+.stat-strip {
+  max-width: 1100px;
+  margin: 32px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-bright);
+}
+.stat-cell {
+  background: var(--void-2);
+  padding: 16px 20px;
+  text-align: left;
+}
+.stat-cell .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.stat-cell .val {
+  font-family: 'Anton', sans-serif;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--lime);
+  letter-spacing: 0.02em;
+}
+.stat-cell.alt .val { color: var(--white); }
+
+/* ── SECTIONS ───────────────────────────────────────────────────────── */
+section.panel {
+  max-width: 1400px;
+  margin: 56px auto 0;
+  padding: 0 32px;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.section-head h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.section-head h2 .accent { color: var(--lime); }
+.section-head .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.section-head .threshold-toggle {
+  display: flex;
+  gap: 4px;
+}
+.section-head .threshold-toggle button {
+  background: var(--void-2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 4px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.section-head .threshold-toggle button:hover { border-color: var(--lime); color: var(--lime); }
+.section-head .threshold-toggle button.active { background: var(--lime); color: var(--void); border-color: var(--lime); }
+
+/* ── FIREHOSE ───────────────────────────────────────────────────────── */
+.firehose-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.fh-row {
+  background: var(--void-2);
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 16px;
+  align-items: center;
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.fh-row:hover { background: var(--void-3); }
+.fh-row.new { animation: flash-in 1.2s ease-out; }
+@keyframes flash-in {
+  0% { background: rgba(196, 255, 0, 0.18); }
+  100% { background: var(--void-2); }
+}
+.fh-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--void-3);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  color: var(--lime);
+}
+.fh-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.fh-who { font-size: 13px; }
+.fh-who .name { font-weight: 600; color: var(--white); }
+.fh-who .wallet { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+.fh-action {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+.fh-action.buy { color: var(--green); }
+.fh-action.sell { color: var(--red); }
+.fh-market { color: var(--white); font-size: 13px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fh-amount {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  color: var(--lime);
+  letter-spacing: 0.02em;
+}
+.fh-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+/* ── LEADERBOARD ────────────────────────────────────────────────────── */
+.lb-table {
+  display: grid;
+  grid-template-columns: 40px auto 1fr auto auto auto;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.lb-table > * {
+  background: var(--void-2);
+  padding: 12px 16px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+.lb-table .h {
+  background: var(--void-3);
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.lb-rank { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--lime); justify-content: center; }
+.lb-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--void-3); overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Anton', sans-serif; font-size: 13px; color: var(--lime);
+}
+.lb-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.lb-name .name { color: var(--white); font-weight: 600; font-size: 13px; }
+.lb-name .wallet { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+.lb-num { font-family: 'JetBrains Mono', monospace; font-weight: 500; color: var(--white); justify-content: flex-end; }
+.lb-num.bright { color: var(--lime); }
+.lb-row {
+  display: contents;
+  cursor: pointer;
+}
+.lb-row > * { transition: background 0.15s; }
+.lb-row:hover > * { background: var(--void-3); }
+
+/* ── EMPTY / LOADING ────────────────────────────────────────────────── */
+.empty {
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--void-2);
+  border: 1px solid var(--border);
+}
+.empty strong { color: var(--white); font-weight: 600; }
+
+.skel-row {
+  background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  height: 60px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── WALLET DETAIL ──────────────────────────────────────────────────── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 32px 0 16px;
+}
+.back-link:hover { color: var(--lime); }
+
+.wallet-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 24px;
+  background: var(--void-2);
+  border: 1px solid var(--border-bright);
+  margin-bottom: 16px;
+}
+.wallet-avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: var(--void-3); overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Anton', sans-serif; font-size: 36px; color: var(--lime);
+}
+.wallet-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.wallet-meta .name { font-family: 'Anton', sans-serif; font-size: 36px; line-height: 1; color: var(--white); }
+.wallet-meta .pseudonym { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.wallet-meta .addr {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.wallet-meta .addr code { background: var(--void-3); padding: 4px 8px; color: var(--white); border-radius: 2px; }
+.wallet-meta .bio { color: var(--muted); font-size: 13px; margin-top: 10px; max-width: 600px; }
+.btn-copy {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 4px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.btn-copy:hover { color: var(--lime); border-color: var(--lime); }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.summary-cell { background: var(--void-2); padding: 16px 18px; }
+.summary-cell .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.summary-cell .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  color: var(--white);
+  font-weight: 500;
+}
+.pos { color: var(--green) !important; }
+.neg { color: var(--red) !important; }
+
+.pos-table {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto auto;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.pos-table > * {
+  background: var(--void-2);
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+.pos-table .h {
+  background: var(--void-3);
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.pos-table .title { color: var(--white); font-weight: 500; font-size: 13px; }
+.pos-table .title .market { display: block; }
+.pos-table .title .outcome { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.pos-table .outcome-pill {
+  display: inline-block; padding: 2px 8px; border-radius: 2px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  background: var(--void-3);
+}
+.pos-table .num { justify-content: flex-end; color: var(--white); font-weight: 500; }
+
+.trade-list {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.trade-list > * {
+  background: var(--void-2);
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  display: flex; align-items: center;
+}
+.trade-list .h {
+  background: var(--void-3);
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.trade-list .num { justify-content: flex-end; color: var(--white); }
+
+footer {
+  margin-top: 96px;
+  padding: 32px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .fh-row { grid-template-columns: auto 1fr auto; }
+  .fh-row .fh-market, .fh-row .fh-action { grid-column: 1 / -1; }
+  .lb-table { grid-template-columns: 30px 1fr auto auto; }
+  .lb-table .h.hide-mobile, .lb-row .hide-mobile { display: none; }
+  .wallet-head { grid-template-columns: 1fr; text-align: center; }
+  .wallet-avatar { margin: 0 auto; }
+  .pos-table { grid-template-columns: 1fr auto auto; }
+  .pos-table .hide-mobile { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/">Markets</a></li>
+      <li><a href="/whales.html" class="active"><span class="live-dot"></span>Whales</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <!-- Body is rendered by whales.js based on URL state -->
+</main>
+
+<footer>
+  Data: Polymarket public data-api · Updated live · Not financial advice. ·
+  <a href="/">$EDGE home</a>
+</footer>
+
+<script type="module" src="/whales.js"></script>
+</body>
+</html>
