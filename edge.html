@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Divergence Radar — Money Meets Mouth</title>
+<meta name="description" content="Where money and sentiment disagree, the Edge lives. Real-time divergence scoring on every Polymarket + Kalshi market.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/edge.html">
+<meta property="og:title" content="$EDGE Divergence Radar — Money Meets Mouth">
+<meta property="og:description" content="Live picker. Money vs Mouth scoring across every market. The Edge made tangible.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; background: var(--magenta);
+  border-radius: 50%; margin-right: 6px; box-shadow: 0 0 10px var(--magenta);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 72px 32px 24px; max-width: 1400px; margin: 0 auto; text-align: center;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 11vw, 144px); line-height: 0.9;
+  letter-spacing: -0.025em; text-transform: uppercase; margin-bottom: 16px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .mag { color: var(--magenta); }
+.hero .tagline {
+  font-size: 19px; color: var(--muted); margin-bottom: 14px;
+  max-width: 680px; margin-left: auto; margin-right: auto;
+}
+.hero .tagline strong { color: var(--white); font-weight: 500; }
+.hero .thesis {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.stat-strip {
+  max-width: 1100px; margin: 32px auto 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border-bright);
+}
+.stat-cell { background: var(--void-2); padding: 16px 20px; text-align: left; }
+.stat-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px;
+}
+.stat-cell .val {
+  font-family: 'Anton', sans-serif; font-size: 28px; line-height: 1;
+  color: var(--lime); letter-spacing: 0.02em;
+}
+.stat-cell.mag .val { color: var(--magenta); }
+.stat-cell.white .val { color: var(--white); }
+.stat-cell .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 4px;
+}
+
+/* ── SECTIONS ───────────────────────────────────────────────────────── */
+section.panel {
+  max-width: 1400px; margin: 56px auto 0; padding: 0 32px;
+}
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
+  gap: 12px; flex-wrap: wrap;
+}
+.section-head h2 {
+  font-family: 'Anton', sans-serif; font-size: 28px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.section-head h2 .accent { color: var(--lime); }
+.section-head h2 .mag { color: var(--magenta); }
+.section-head .meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* ── CALL CARDS (active picks) ──────────────────────────────────────── */
+.calls-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 12px;
+}
+.call {
+  background: var(--void-2); border: 1px solid var(--border); padding: 18px 20px;
+  border-radius: 2px; display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden; cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.call:hover { border-color: var(--lime); transform: translateY(-2px); }
+.call::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+}
+.call.insider::before { background: var(--lime); box-shadow: 0 0 12px var(--lime); }
+.call.front::before { background: var(--magenta); box-shadow: 0 0 12px var(--magenta); }
+.call.aligned::before { background: var(--muted); }
+.call-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+}
+.call-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase; padding: 3px 8px;
+  border-radius: 2px; font-weight: 700; white-space: nowrap;
+}
+.call.insider .call-tag { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.call.front .call-tag { background: rgba(255, 0, 110, 0.12); color: var(--magenta); }
+.call.aligned .call-tag { background: var(--void-3); color: var(--muted); }
+.call-divergence {
+  font-family: 'Anton', sans-serif; font-size: 24px;
+  letter-spacing: 0.02em; line-height: 1;
+}
+.call.insider .call-divergence { color: var(--lime); }
+.call.front .call-divergence { color: var(--magenta); }
+.call.aligned .call-divergence { color: var(--muted); }
+.call-divergence .lbl {
+  display: block; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--muted); margin-top: 2px; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.call-title {
+  font-size: 15px; color: var(--white); font-weight: 500; line-height: 1.4;
+  flex: 1;
+}
+.call-odds {
+  display: flex; gap: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+}
+.call-odds > div { flex: 1; }
+.call-odds .lbl {
+  font-size: 9px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.1em; margin-bottom: 2px;
+}
+.call-odds .val { color: var(--white); font-weight: 600; }
+.call-odds .val.pos { color: var(--green); }
+.call-odds .val.neg { color: var(--red); }
+
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar-row {
+  display: grid; grid-template-columns: 56px 1fr 40px;
+  align-items: center; gap: 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+}
+.bar-row .lbl {
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.bar-row.money .lbl { color: var(--lime); }
+.bar-row.mouth .lbl { color: var(--magenta); }
+.bar {
+  height: 8px; background: var(--void-3); border-radius: 2px; overflow: hidden;
+  position: relative;
+}
+.bar::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: var(--w, 0%); transition: width 0.6s ease;
+}
+.bar-row.money .bar::after { background: var(--lime); }
+.bar-row.mouth .bar::after { background: var(--magenta); }
+.bar-row .v {
+  text-align: right; color: var(--white); font-weight: 600;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+}
+.call-thesis {
+  font-size: 13px; color: var(--muted); line-height: 1.5;
+  border-top: 1px dashed var(--border); padding-top: 12px;
+}
+.call-thesis strong { color: var(--white); }
+
+/* ── ALL MARKETS TABLE ──────────────────────────────────────────────── */
+.markets-table {
+  display: grid;
+  grid-template-columns: 1fr 110px 110px 110px 120px;
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.markets-table > * {
+  background: var(--void-2); padding: 12px 14px;
+  font-size: 13px; display: flex; align-items: center;
+}
+.markets-table .h {
+  background: var(--void-3); color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.market-row-wrap {
+  display: contents; cursor: pointer;
+}
+.market-row-wrap > *:not(.h) { transition: background 0.15s; }
+.market-row-wrap:hover > *:not(.h) { background: var(--void-3); }
+.markets-table .title { color: var(--white); font-weight: 500; }
+.markets-table .mini-bar {
+  height: 6px; background: var(--void-3); border-radius: 2px; overflow: hidden;
+  position: relative; flex: 1;
+}
+.markets-table .mini-bar::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: var(--w, 0%);
+}
+.markets-table .money .mini-bar::after { background: var(--lime); }
+.markets-table .mouth .mini-bar::after { background: var(--magenta); }
+.markets-table .money, .markets-table .mouth, .markets-table .div {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--white); justify-content: flex-end; gap: 8px;
+}
+.markets-table .div .v {
+  font-family: 'Anton', sans-serif; font-size: 16px;
+}
+.markets-table .pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 7px;
+  border-radius: 2px; white-space: nowrap;
+}
+.markets-table .pill.insider { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.markets-table .pill.front { background: rgba(255, 0, 110, 0.12); color: var(--magenta); }
+.markets-table .pill.aligned { background: var(--void-3); color: var(--muted); }
+
+/* ── RECEIPTS PLACEHOLDER ───────────────────────────────────────────── */
+.receipts {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  padding: 28px; border-radius: 2px;
+  display: grid; grid-template-columns: 1fr auto; gap: 24px;
+  align-items: center;
+}
+.receipts h3 {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 10px;
+}
+.receipts h3 .accent { color: var(--amber); }
+.receipts p { color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 640px; }
+.receipts .badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 8px 14px; background: rgba(255, 184, 0, 0.1);
+  border: 1px solid var(--amber); color: var(--amber);
+  border-radius: 100px; text-transform: uppercase; letter-spacing: 0.15em;
+  font-weight: 700; white-space: nowrap;
+}
+
+/* ── EMPTY / LOADING ────────────────────────────────────────────────── */
+.empty {
+  padding: 48px 24px; text-align: center; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  background: var(--void-2); border: 1px solid var(--border);
+  grid-column: 1 / -1;
+}
+.skel-card {
+  background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2));
+  background-size: 200% 100%; animation: shimmer 1.4s linear infinite;
+  height: 240px; border-radius: 2px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+footer {
+  margin-top: 96px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .markets-table { grid-template-columns: 1fr 80px 90px; }
+  .markets-table .money, .markets-table .mouth { display: none; }
+  .receipts { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html" class="active"><span class="live-dot"></span>Edge</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/token.html">Token</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="thesis">Money meets Mouth. Where they disagree, the Edge lives.</div>
+    <h1>DIVERGENCE <span class="accent">RADAR</span></h1>
+    <p class="tagline">
+      Live picker. Every Polymarket + Kalshi market scored on
+      <strong style="color:var(--lime)">Money</strong> intensity and
+      <strong style="color:var(--magenta)">Mouth</strong> intensity.
+      When they disagree, the call surfaces.
+    </p>
+
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="lbl">Markets Analyzed</div><div class="val" id="statAnalyzed">—</div><div class="sub" id="statAnalyzedSub">live</div></div>
+      <div class="stat-cell mag"><div class="lbl">Active Calls</div><div class="val" id="statCalls">—</div><div class="sub" id="statCallsSub">divergence ≥ 20</div></div>
+      <div class="stat-cell"><div class="lbl">Insider Flow</div><div class="val" id="statInsider">—</div><div class="sub">money ahead of mouth</div></div>
+      <div class="stat-cell mag"><div class="lbl">Front-Running</div><div class="val" id="statFront">—</div><div class="sub">mouth ahead of money</div></div>
+      <div class="stat-cell white"><div class="lbl">Max Divergence</div><div class="val" id="statMax">—</div><div class="sub">today's biggest edge</div></div>
+    </div>
+  </section>
+
+  <!-- ── ACTIVE CALLS ───────────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="section-head">
+      <h2>Active <span class="accent">Calls</span></h2>
+      <div class="meta" id="callsMeta">loading…</div>
+    </div>
+    <div class="calls-grid" id="callsGrid">
+      <div class="skel-card"></div>
+      <div class="skel-card"></div>
+      <div class="skel-card"></div>
+    </div>
+  </section>
+
+  <!-- ── ALL MARKETS ────────────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="section-head">
+      <h2>All <span class="accent">Markets</span></h2>
+      <div class="meta" id="allMeta">loading…</div>
+    </div>
+    <div class="markets-table" id="marketsTable">
+      <div class="h">Market</div>
+      <div class="h" style="justify-content:flex-end">Money</div>
+      <div class="h" style="justify-content:flex-end">Mouth</div>
+      <div class="h" style="justify-content:flex-end">Divergence</div>
+      <div class="h" style="justify-content:center">Call</div>
+    </div>
+  </section>
+
+  <!-- ── RECEIPTS PLACEHOLDER ────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="receipts">
+      <div>
+        <h3><span class="accent">Receipts</span> — coming online</h3>
+        <p>
+          Every Active Call is timestamped the moment it surfaces. When the
+          underlying market resolves, the call is graded against the outcome —
+          win, loss, or push — and added to the public, append-only track record.
+          Receipts begin <strong style="color:var(--white)">Day 1 of public beta</strong>.
+          Anonymous by design. Public by code.
+        </p>
+      </div>
+      <div class="badge">Persistence Pending</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Live algorithm v0 · token-overlap matching · <a href="/token.html">$EDGE token</a> ·
+  divergence scoring is informational, not financial advice<br>
+  <a href="/">$EDGE home</a> · <a href="/dashboard.html">Dashboard</a>
+</footer>
+
+<script type="module" src="/edge.js"></script>
+</body>
+</html>
