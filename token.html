@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Token — Fair Launch. Day-One Utility.</title>
+<meta name="description" content="$EDGE on Solana — fair-launched via pump.fun, gated terminal access from day one. Whale alerts, divergence radar, raw API. Money meets Mouth.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/token.html">
+<meta property="og:title" content="$EDGE Token — Fair Launch. Day-One Utility.">
+<meta property="og:description" content="Hold $EDGE to unlock whale alerts, divergence radar, API access. Polymarket + Kalshi intelligence terminal, gated by token.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 24px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.65;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; background: var(--green);
+  border-radius: 50%; margin-right: 6px; box-shadow: 0 0 10px var(--green);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 80px 32px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; background: rgba(255, 184, 0, 0.1);
+  border: 1px solid var(--amber); border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--amber); letter-spacing: 0.15em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 28px;
+}
+.status-pill::before {
+  content: ''; width: 8px; height: 8px; background: var(--amber);
+  border-radius: 50%; box-shadow: 0 0 10px var(--amber);
+  animation: pulse 1.5s infinite;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(72px, 13vw, 160px); line-height: 0.9;
+  letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 16px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero .tagline {
+  font-size: 22px; color: var(--white); margin-bottom: 16px;
+  font-weight: 500; letter-spacing: -0.005em;
+}
+.hero .subline {
+  font-size: 16px; color: var(--muted); max-width: 620px;
+  margin: 0 auto 36px;
+}
+.hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  padding: 14px 28px; font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: transform 0.05s, background 0.15s, border-color 0.15s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-primary { background: var(--lime); color: var(--void); border: 1px solid var(--lime); }
+.btn-primary:hover { background: #d8ff33; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); }
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+
+/* ── STAT STRIP ──────────────────────────────────────────────────────── */
+.stat-strip {
+  max-width: 1100px; margin: 56px auto 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border-bright);
+}
+.stat-cell { background: var(--void-2); padding: 18px 20px; }
+.stat-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px;
+}
+.stat-cell .val {
+  font-family: 'Anton', sans-serif; font-size: 32px; line-height: 1;
+  color: var(--lime); letter-spacing: 0.02em;
+}
+.stat-cell.alt .val { color: var(--white); }
+.stat-cell .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 6px;
+}
+.stat-cell .draft { color: var(--amber); }
+
+/* ── SECTIONS ────────────────────────────────────────────────────────── */
+section.block {
+  max-width: 1400px; margin: 0 auto; padding: 80px 32px 0;
+}
+.block-head {
+  margin-bottom: 32px;
+}
+.block-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); text-transform: uppercase; letter-spacing: 0.2em;
+  margin-bottom: 10px; font-weight: 700;
+}
+.block-title {
+  font-family: 'Anton', sans-serif; font-size: clamp(40px, 6vw, 64px);
+  line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.block-title .accent { color: var(--lime); }
+.block-title .mag { color: var(--magenta); }
+.block-lede {
+  font-size: 18px; color: var(--muted); max-width: 720px; line-height: 1.5;
+}
+
+/* ── MONEY / MOUTH / EDGE ────────────────────────────────────────────── */
+.trio {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+}
+.trio-cell {
+  background: var(--void-2); padding: 36px 28px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.trio-cell .num {
+  font-family: 'Anton', sans-serif; font-size: 48px; line-height: 1;
+}
+.trio-cell.money .num { color: var(--lime); }
+.trio-cell.mouth .num { color: var(--white); }
+.trio-cell.edge .num { color: var(--magenta); }
+.trio-cell .label {
+  font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.trio-cell .desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.trio-cell .live {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--green);
+  margin-top: auto;
+}
+.trio-cell .live::before { content: '● '; }
+.trio-cell .soon { color: var(--amber); }
+.trio-cell .soon::before { content: '○ '; }
+
+/* ── UTILITY TIERS ──────────────────────────────────────────────────── */
+.tier-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+}
+.tier {
+  background: var(--void-2); padding: 28px 24px;
+  display: flex; flex-direction: column; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.tier::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.tier.t0::before { background: var(--muted); }
+.tier.t1::before { background: var(--green); }
+.tier.t2::before { background: var(--amber); }
+.tier.t3::before { background: var(--magenta); box-shadow: 0 0 20px var(--magenta); }
+.tier-name {
+  font-family: 'Anton', sans-serif; font-size: 24px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.tier-hold {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.tier-hold .amt { color: var(--lime); font-weight: 700; font-size: 14px; }
+.tier.t0 .tier-hold .amt { color: var(--muted); }
+.tier.t3 .tier-hold .amt { color: var(--magenta); }
+.tier-divider {
+  height: 1px; background: var(--border); margin: 4px 0;
+}
+.tier ul {
+  list-style: none; display: flex; flex-direction: column; gap: 8px;
+  font-size: 13px; line-height: 1.4;
+}
+.tier ul li {
+  display: flex; gap: 8px; align-items: flex-start;
+  color: var(--white);
+}
+.tier ul li::before {
+  content: '+'; color: var(--lime); font-weight: 700;
+  flex-shrink: 0; width: 10px;
+}
+.tier.t0 ul li::before { content: '·'; color: var(--muted); }
+.tier.t3 ul li::before { color: var(--magenta); }
+.tier ul li.locked {
+  color: var(--muted); text-decoration: line-through;
+  text-decoration-color: var(--void-4);
+}
+.tier ul li.soon {
+  color: var(--muted);
+}
+.tier ul li.soon::after {
+  content: 'soon';
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--amber); padding: 1px 5px; border: 1px solid var(--amber);
+  border-radius: 2px; margin-left: 6px; text-transform: uppercase;
+  letter-spacing: 0.05em; line-height: 1;
+}
+
+/* ── PUMP.FUN MECHANICS ─────────────────────────────────────────────── */
+.curve-grid {
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px;
+  align-items: start;
+}
+.curve-callouts {
+  display: grid; grid-template-columns: 1fr; gap: 12px;
+}
+.callout {
+  padding: 16px 20px; background: var(--void-2);
+  border: 1px solid var(--border); border-left: 3px solid var(--lime);
+  border-radius: 2px;
+}
+.callout .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+.callout .val { font-size: 15px; color: var(--white); font-weight: 500; }
+.callout .val strong { color: var(--lime); }
+.callout.warn { border-left-color: var(--amber); }
+.callout.warn .val strong { color: var(--amber); }
+
+.curve-explain {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 28px; border-radius: 2px;
+}
+.curve-explain h3 {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 14px;
+}
+.curve-explain p {
+  color: var(--muted); font-size: 14px; line-height: 1.65;
+  margin-bottom: 12px;
+}
+.curve-explain p:last-child { margin-bottom: 0; }
+.curve-explain strong { color: var(--white); }
+
+/* ── VALUE ACCRUAL ──────────────────────────────────────────────────── */
+.value-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+}
+.value-cell {
+  background: var(--void-2); padding: 28px 24px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.value-cell .icon {
+  font-family: 'Anton', sans-serif; font-size: 36px;
+  color: var(--lime); line-height: 1;
+}
+.value-cell h4 {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  text-transform: uppercase; letter-spacing: 0.02em;
+}
+.value-cell p {
+  color: var(--muted); font-size: 14px; line-height: 1.6;
+}
+.value-cell p strong { color: var(--white); }
+
+/* ── ROADMAP ─────────────────────────────────────────────────────────── */
+.roadmap {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.phase {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 22px 20px; border-radius: 2px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.phase.done { border-color: var(--green); }
+.phase.now { border-color: var(--lime); box-shadow: 0 0 24px rgba(196, 255, 0, 0.06); }
+.phase-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted);
+}
+.phase.done .phase-tag { color: var(--green); }
+.phase.done .phase-tag::before { content: '✓ '; }
+.phase.now .phase-tag { color: var(--lime); }
+.phase.now .phase-tag::before { content: '▸ '; }
+.phase-title {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.phase ul { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+.phase ul li { color: var(--muted); display: flex; gap: 6px; }
+.phase ul li::before { content: '·'; color: var(--lime); flex-shrink: 0; }
+.phase.done ul li { color: var(--white); }
+.phase.done ul li::before { color: var(--green); content: '✓'; }
+
+/* ── DISCLAIMER ──────────────────────────────────────────────────────── */
+.disclaimer {
+  margin: 64px auto 0; max-width: 900px; padding: 24px 28px;
+  background: var(--void-2); border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted); line-height: 1.7;
+}
+.disclaimer strong { color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; }
+.disclaimer .draft-note { color: var(--white); margin-top: 12px; }
+
+footer {
+  margin-top: 96px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+/* ── MOBILE ──────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .trio { grid-template-columns: 1fr; }
+  .tier-grid { grid-template-columns: 1fr 1fr; }
+  .curve-grid { grid-template-columns: 1fr; }
+  .value-grid { grid-template-columns: 1fr; }
+  .roadmap { grid-template-columns: 1fr 1fr; }
+  nav ul { gap: 14px; }
+}
+@media (max-width: 560px) {
+  .tier-grid, .roadmap { grid-template-columns: 1fr; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/token.html" class="active"><span class="live-dot"></span>Token</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="status-pill">Pre-Launch · Coming Soon</div>
+    <h1>$<span class="accent">EDGE</span></h1>
+    <p class="tagline">Fair launch. Day-one utility. Solana.</p>
+    <p class="subline">
+      The terminal isn't free forever. Holding $EDGE unlocks
+      <strong style="color:var(--white)">whale alerts</strong>,
+      <strong style="color:var(--white)">divergence radar</strong>, and
+      <strong style="color:var(--white)">raw API access</strong> — the tools
+      sophisticated traders pay for, gated by the token.
+    </p>
+    <div class="hero-ctas">
+      <a href="#tiers" class="btn btn-primary">See Utility Tiers</a>
+      <a href="https://pump.fun" target="_blank" rel="noopener" class="btn btn-secondary">Launch on pump.fun ↗</a>
+    </div>
+
+    <!-- All hard numbers below are DRAFT — confirm before launch -->
+    <div class="stat-strip">
+      <div class="stat-cell">
+        <div class="lbl">Total Supply</div>
+        <div class="val">1B</div>
+        <div class="sub">fixed · no inflation</div>
+      </div>
+      <div class="stat-cell alt">
+        <div class="lbl">Chain</div>
+        <div class="val">SOL</div>
+        <div class="sub">solana mainnet</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Launch Type</div>
+        <div class="val">FAIR</div>
+        <div class="sub">pump.fun bonding curve</div>
+      </div>
+      <div class="stat-cell alt">
+        <div class="lbl">Team Allocation</div>
+        <div class="val">0%</div>
+        <div class="sub">no presale · no vesting</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Status</div>
+        <div class="val draft">TBA</div>
+        <div class="sub draft">launch date pending</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MONEY / MOUTH / EDGE ────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">The Moat</div>
+      <h2 class="block-title">Money <span class="accent">meets</span> Mouth.</h2>
+      <p class="block-lede">
+        Polymarket and Kalshi show you <strong style="color:var(--white)">where the money is</strong>.
+        They don't show you <strong style="color:var(--white)">why</strong>.
+        $EDGE is the connective tissue.
+      </p>
+    </div>
+
+    <div class="trio">
+      <div class="trio-cell money">
+        <div class="num">01</div>
+        <div class="label">The Money</div>
+        <div class="desc">
+          On-chain bet volume. Real-time odds movement. Top positions per market.
+          Polymarket whale firehose. Kalshi events. Every dollar accounted for.
+        </div>
+        <div class="live">Live now · /whales</div>
+      </div>
+      <div class="trio-cell mouth">
+        <div class="num">02</div>
+        <div class="label">The Mouth</div>
+        <div class="desc">
+          What people are saying. Reddit, Polymarket native comments, HN front page,
+          7 news outlets. Matched to markets with confidence scoring. Sentiment-aware.
+        </div>
+        <div class="live">Live now · /buzz</div>
+      </div>
+      <div class="trio-cell edge">
+        <div class="num">03</div>
+        <div class="label">The Edge</div>
+        <div class="desc">
+          Divergence score where money and sentiment disagree. Picker algorithm
+          ranks markets by edge. Track record proves the calls. Name on the box.
+        </div>
+        <div class="live soon">In build · gated to holders</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── UTILITY TIERS ───────────────────────────────────────────────── -->
+  <section class="block" id="tiers">
+    <div class="block-head">
+      <div class="block-eyebrow">Token Utility</div>
+      <h2 class="block-title">Hold to <span class="accent">unlock</span>.</h2>
+      <p class="block-lede">
+        Most meme tokens have nothing behind them. $EDGE gates the actual product.
+        The more you hold, the more terminal you unlock. No subscriptions.
+        No paywalls. Just hold.
+      </p>
+    </div>
+
+    <div class="tier-grid">
+      <div class="tier t0">
+        <div class="tier-name">Free</div>
+        <div class="tier-hold">Hold <span class="amt">0</span> $EDGE</div>
+        <div class="tier-divider"></div>
+        <ul>
+          <li>Public dashboard</li>
+          <li>Hot markets feed</li>
+          <li>Buzz heat index</li>
+          <li>Whale firehose (delayed)</li>
+          <li>Rug Radar basic scan</li>
+        </ul>
+      </div>
+
+      <div class="tier t1">
+        <div class="tier-name">Trader</div>
+        <div class="tier-hold">Hold <span class="amt">100K</span> $EDGE</div>
+        <div class="tier-divider"></div>
+        <ul>
+          <li>Real-time whale alerts</li>
+          <li>Custom firehose thresholds</li>
+          <li>Wallet watchlists (10)</li>
+          <li>Rug Radar deep scan</li>
+          <li>Buzz market drilldown</li>
+        </ul>
+      </div>
+
+      <div class="tier t2">
+        <div class="tier-name">Analyst</div>
+        <div class="tier-hold">Hold <span class="amt">1M</span> $EDGE</div>
+        <div class="tier-divider"></div>
+        <ul>
+          <li class="soon">Divergence radar (picker algo)</li>
+          <li class="soon">Track record dashboard</li>
+          <li>Wallet watchlists (50)</li>
+          <li>API access (rate-limited)</li>
+          <li>Push & webhook alerts</li>
+        </ul>
+      </div>
+
+      <div class="tier t3">
+        <div class="tier-name">Desk</div>
+        <div class="tier-hold">Hold <span class="amt">5M</span> $EDGE</div>
+        <div class="tier-divider"></div>
+        <ul>
+          <li class="soon">Custom backtesting</li>
+          <li class="soon">Unlimited API + priority</li>
+          <li>Unlimited watchlists</li>
+          <li class="soon">Affiliate revenue share</li>
+          <li class="soon">Governance vote weight</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PUMP.FUN CURVE ──────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">Fair Launch Mechanics</div>
+      <h2 class="block-title">No insiders. <span class="accent">No bullshit.</span></h2>
+      <p class="block-lede">
+        $EDGE launches via pump.fun's bonding curve. Same entry for everyone.
+        Team buys on the open market like anyone else. Read the mechanics before you ape.
+      </p>
+    </div>
+
+    <div class="curve-grid">
+      <div class="curve-explain">
+        <h3>The Curve</h3>
+        <p>
+          Pump.fun is a Solana fair-launch protocol. <strong>1B tokens</strong> exist from
+          minute one — no presale, no team allocation, no vesting. Price is set by an
+          automated <strong>bonding curve</strong>: every buy pushes price up the curve,
+          every sell pulls it back.
+        </p>
+        <p>
+          When the bonding curve hits <strong>~$69K market cap</strong>, liquidity
+          automatically migrates to <strong>Raydium</strong> (Solana's primary DEX).
+          $12K worth of liquidity is permanently burned at migration.
+        </p>
+        <p>
+          Founders Robert and Tye start at zero with everyone else. No advisor
+          allocations. No locked tokens. If the team holds, it's because they
+          bought on the curve like you did.
+        </p>
+      </div>
+
+      <div class="curve-callouts">
+        <div class="callout">
+          <div class="lbl">Supply</div>
+          <div class="val"><strong>1,000,000,000</strong> $EDGE · fixed forever</div>
+        </div>
+        <div class="callout">
+          <div class="lbl">Team Allocation</div>
+          <div class="val"><strong>0%</strong> · founders buy on the open market</div>
+        </div>
+        <div class="callout">
+          <div class="lbl">Vesting</div>
+          <div class="val"><strong>None.</strong> Everything in circulation day one.</div>
+        </div>
+        <div class="callout">
+          <div class="lbl">Liquidity at Migration</div>
+          <div class="val"><strong>$12K</strong> permanently burned on Raydium</div>
+        </div>
+        <div class="callout warn">
+          <div class="lbl">Launch Date</div>
+          <div class="val"><strong>TBA</strong> · subscribe for the announcement</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VALUE ACCRUAL ──────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">Why Hold</div>
+      <h2 class="block-title">Three lines of <span class="accent">value accrual.</span></h2>
+      <p class="block-lede">
+        Memes pump on hype. $EDGE pumps because there are three real reasons to hold it.
+      </p>
+    </div>
+
+    <div class="value-grid">
+      <div class="value-cell">
+        <div class="icon">01</div>
+        <h4>Tier Demand</h4>
+        <p>
+          The terminal's most-wanted features — <strong>whale alerts, divergence
+          radar, raw API</strong> — require a balance, not a subscription. Every
+          new serious trader who wants access is a forced buyer.
+        </p>
+      </div>
+      <div class="value-cell">
+        <div class="icon">02</div>
+        <h4>Affiliate Buyback</h4>
+        <p>
+          Users who bet through $EDGE generate <strong>affiliate revenue from
+          Polymarket and Kalshi</strong>. A portion of every commission goes to
+          <strong>open-market $EDGE buybacks</strong>. Real cash flow → token demand.
+        </p>
+      </div>
+      <div class="value-cell">
+        <div class="icon">03</div>
+        <h4>Governance Weight</h4>
+        <p>
+          Desk-tier holders vote on <strong>algorithm weighting</strong>, new
+          source priorities, and revenue distribution. The smartest traders steer
+          the smartest tools. Skin in the game compounds.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ROADMAP ─────────────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">Roadmap</div>
+      <h2 class="block-title">Shipped. <span class="accent">Shipping.</span> <span class="mag">Coming.</span></h2>
+      <p class="block-lede">
+        Most projects sell roadmaps. $EDGE ships them. Three of these phases are already live.
+      </p>
+    </div>
+
+    <div class="roadmap">
+      <div class="phase done">
+        <div class="phase-tag">Phase 01 · Live</div>
+        <div class="phase-title">The Terminal</div>
+        <ul>
+          <li>Markets feed (Poly + Kalshi)</li>
+          <li>Whale firehose + drilldown</li>
+          <li>Buzz aggregator</li>
+          <li>Rug Radar (SOL + ETH)</li>
+          <li>Dashboard command center</li>
+        </ul>
+      </div>
+      <div class="phase now">
+        <div class="phase-tag">Phase 02 · In Build</div>
+        <div class="phase-title">The Algorithm</div>
+        <ul>
+          <li>Divergence picker engine</li>
+          <li>Embedding-based matching</li>
+          <li>Track record persistence</li>
+          <li>Affiliate routing</li>
+          <li>X / Twitter integration</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-tag">Phase 03 · Q3</div>
+        <div class="phase-title">The Token</div>
+        <ul>
+          <li>Pump.fun fair launch</li>
+          <li>Wallet gating live</li>
+          <li>Tier 1 + 2 access enabled</li>
+          <li>Affiliate buyback engine</li>
+          <li>Public API release</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-tag">Phase 04 · Q4+</div>
+        <div class="phase-title">The Community</div>
+        <ul>
+          <li>Social feed (post picks)</li>
+          <li>Follow + alpha sharing</li>
+          <li>Mobile app</li>
+          <li>Governance enabled</li>
+          <li>Revenue share live</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DISCLAIMER ──────────────────────────────────────────────────── -->
+  <div class="disclaimer">
+    <strong>Disclaimer</strong> · $EDGE is a utility token, not an investment contract or
+    security. Token launches involve substantial risk including total loss of capital.
+    Cryptocurrency is volatile and unregulated in many jurisdictions. Nothing on this page
+    is financial advice. Verify everything yourself. Don't risk what you can't afford to lose.
+    Prediction-market trading is illegal in some jurisdictions — check your local laws before
+    using $EDGE to bet.
+    <div class="draft-note">
+      <strong style="color:var(--amber)">DRAFT · CONFIRM BEFORE LAUNCH</strong> · Tier
+      thresholds (100K / 1M / 5M), affiliate buyback percentage, and migration mechanics
+      are placeholders. Final values will be set in a separate launch-day post. Subscribe
+      for the announcement.
+    </div>
+  </div>
+</main>
+
+<footer>
+  $EDGE on Solana · fair launch via pump.fun · day-one utility · not financial advice
+  <br>
+  <a href="/">$EDGE home</a> · <a href="/dashboard.html">Dashboard</a> · <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub ↗</a>
+</footer>
+
+</body>
+</html>
