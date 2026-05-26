@@ -1,5 +1,6 @@
 // $EDGE Tracker frontend — search box + trending feed + result rendering.
 // Pure browser ES module, no build step.
+import { fmtUsd, fmtNum, fmtPct, fmtAge, short, escapeHtml, escapeAttr } from "/lib/client/format.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -11,39 +12,7 @@ const results = $("#results");
 const trendingGrid = $("#trendingGrid");
 const trendingMeta = $("#trendingMeta");
 
-// ── formatting helpers ────────────────────────────────────────────────
-const fmtUsd = (n) => {
-  if (n == null || !Number.isFinite(n)) return "—";
-  if (n === 0) return "$0";
-  if (Math.abs(n) < 0.000001) return "$" + n.toExponential(2);
-  if (Math.abs(n) < 0.01) return "$" + n.toFixed(6);
-  if (Math.abs(n) < 1) return "$" + n.toFixed(4);
-  if (n >= 1_000_000_000) return "$" + (n / 1e9).toFixed(2) + "B";
-  if (n >= 1_000_000) return "$" + (n / 1e6).toFixed(2) + "M";
-  if (n >= 1_000) return "$" + (n / 1e3).toFixed(1) + "K";
-  return "$" + n.toFixed(2);
-};
-const fmtNum = (n) => {
-  if (n == null || !Number.isFinite(n)) return "—";
-  if (n >= 1e9) return (n / 1e9).toFixed(2) + "B";
-  if (n >= 1e6) return (n / 1e6).toFixed(2) + "M";
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
-  return n.toFixed(0);
-};
-const fmtPct = (n) => {
-  if (n == null || !Number.isFinite(n)) return "—";
-  const v = (n * (Math.abs(n) > 1 ? 1 : 100)); // treat fractions as 0..1
-  return (n > 0 ? "+" : "") + (Math.abs(n) > 1 ? n.toFixed(2) : (n * 100).toFixed(2)) + "%";
-};
-const fmtAge = (hours) => {
-  if (hours == null) return "—";
-  if (hours < 1) return Math.round(hours * 60) + "m";
-  if (hours < 48) return hours.toFixed(1) + "h";
-  if (hours < 24 * 30) return (hours / 24).toFixed(1) + "d";
-  return (hours / 24 / 30).toFixed(1) + "mo";
-};
-const shortAddr = (a, n = 6) =>
-  !a ? "" : a.length <= 2 * n + 2 ? a : `${a.slice(0, n)}…${a.slice(-n)}`;
+const shortAddr = short;
 const explorerToken = (chain, addr) =>
   chain === "solana"
     ? `https://solscan.io/token/${addr}`
@@ -476,16 +445,6 @@ function attachResultHandlers() {
       } catch {}
     });
   });
-}
-
-// ── utility ───────────────────────────────────────────────────────────
-function escapeHtml(s) {
-  return String(s ?? "").replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
-  );
-}
-function escapeAttr(s) {
-  return escapeHtml(s).replace(/`/g, "&#96;");
 }
 
 // ── wire it up ────────────────────────────────────────────────────────

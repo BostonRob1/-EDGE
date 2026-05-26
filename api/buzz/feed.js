@@ -36,17 +36,30 @@ export default async function handler(req, res) {
   // Chronological newest-first
   matched.sort((a, b) => (b.thread.created_at || 0) - (a.thread.created_at || 0));
 
+  // Trim each thread to only the fields the UI actually consumes — drops
+  // pre_matched (already mirrored in matches), body (long, unused in feed
+  // rendering), and other noise. Cuts response size meaningfully on large
+  // feeds.
   const out = matched
     .filter((m) => !onlyMatched || m.matches.length > 0)
     .slice(0, limit)
     .map((m) => ({
-      ...m.thread,
+      id: m.thread.id,
+      source: m.thread.source,
+      subsource: m.thread.subsource,
+      title: m.thread.title,
+      author: m.thread.author,
+      author_url: m.thread.author_url,
+      url: m.thread.url,
+      score: m.thread.score,
+      comments: m.thread.comments,
+      created_at: m.thread.created_at,
+      flair: m.thread.flair,
       matches: m.matches.map((s) => ({
         title: s.market.title,
         slug: s.market.slug,
         source: s.market.source,
         url: s.market.url,
-        icon: s.market.icon,
         score: Math.round(s.score * 100) / 100,
       })),
     }));

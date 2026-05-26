@@ -18,6 +18,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -45,6 +46,7 @@ body {
   background: var(--void);
   color: var(--white);
   font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
   overflow-x: hidden;
   min-height: 100vh;
   position: relative;
@@ -261,7 +263,7 @@ section.panel { max-width: 1400px; margin: 56px auto 0; padding: 0 32px; }
 .skel-row {
   background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2));
   background-size: 200% 100%; animation: shimmer 1.4s linear infinite;
-  height: 60px;
+  height: 82px;
 }
 @keyframes shimmer {
   0% { background-position: 200% 0; }

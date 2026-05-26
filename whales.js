@@ -1,34 +1,10 @@
 // $EDGE Whales frontend. URL-state driven:
 //   /whales.html          → firehose + leaderboard
 //   /whales.html?wallet=… → wallet detail
+import { fmtUsd, fmtUsdExact, fmtPct, fmtAgo, short, escapeHtml, escapeAttr } from "/lib/client/format.js";
+
 const $ = (sel, root = document) => root.querySelector(sel);
 const main = $("#main");
-
-// ── formatting ────────────────────────────────────────────────────────
-const fmtUsd = (n) => {
-  if (n == null || !Number.isFinite(n)) return "—";
-  const a = Math.abs(n);
-  if (a >= 1e9) return (n < 0 ? "-" : "") + "$" + (a / 1e9).toFixed(2) + "B";
-  if (a >= 1e6) return (n < 0 ? "-" : "") + "$" + (a / 1e6).toFixed(2) + "M";
-  if (a >= 1e3) return (n < 0 ? "-" : "") + "$" + (a / 1e3).toFixed(1) + "K";
-  return (n < 0 ? "-" : "") + "$" + a.toFixed(0);
-};
-const fmtUsdExact = (n) =>
-  n == null || !Number.isFinite(n) ? "—" : "$" + n.toLocaleString(undefined, { maximumFractionDigits: 2 });
-const fmtPct = (n) => (n == null || !Number.isFinite(n) ? "—" : (n > 0 ? "+" : "") + n.toFixed(2) + "%");
-const fmtAgo = (ts) => {
-  if (!ts) return "—";
-  const now = Date.now() / 1000;
-  const diff = now - ts;
-  if (diff < 60) return Math.round(diff) + "s";
-  if (diff < 3600) return Math.round(diff / 60) + "m";
-  if (diff < 86400) return Math.round(diff / 3600) + "h";
-  return Math.round(diff / 86400) + "d";
-};
-const short = (a, n = 6) => (!a ? "" : a.length <= 2 * n + 2 ? a : `${a.slice(0, n)}…${a.slice(-n)}`);
-const escapeHtml = (s) =>
-  String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const escapeAttr = (s) => escapeHtml(s).replace(/`/g, "&#96;");
 
 const polymarketMarketUrl = (slug) => (slug ? `https://polymarket.com/market/${slug}` : "#");
 

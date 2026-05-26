@@ -1,4 +1,6 @@
 // $EDGE Buzz — chatter aggregator frontend.
+import { fmtNum, fmtAgo, escapeHtml, escapeAttr } from "/lib/client/format.js";
+
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -6,26 +8,6 @@ const state = {
   feedFilter: "matched", // "matched" | "all"
   refreshTimer: null,
 };
-
-// ── formatting ────────────────────────────────────────────────────────
-const fmtNum = (n) => {
-  if (n == null || !Number.isFinite(n)) return "—";
-  if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
-  return String(Math.round(n));
-};
-const fmtAgo = (ts) => {
-  if (!ts) return "—";
-  const now = Date.now() / 1000;
-  const diff = now - ts;
-  if (diff < 60) return Math.round(diff) + "s";
-  if (diff < 3600) return Math.round(diff / 60) + "m";
-  if (diff < 86400) return Math.round(diff / 3600) + "h";
-  return Math.round(diff / 86400) + "d";
-};
-const escapeHtml = (s) =>
-  String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const escapeAttr = (s) => escapeHtml(s).replace(/`/g, "&#96;");
 
 function confidenceCls(score) {
   if (score >= 0.5) return "";
