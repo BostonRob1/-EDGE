@@ -466,10 +466,125 @@ function LaunchCard() {
   );
 }
 
+// --- Edge (Divergence Radar promo) card -------------------------------------
+function EdgeCard() {
+  return el(
+    "div",
+    {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
+      },
+    },
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("LIVE PICKER · v0"),
+    el(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          padding: "44px 56px 36px 56px",
+          flex: 1,
+        },
+      },
+      Eyebrow("MONEY MEETS MOUTH · WHERE THEY DISAGREE", C.magenta),
+      // Headline
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 168,
+            lineHeight: 0.9,
+            letterSpacing: "-5px",
+            marginTop: 28,
+          },
+        },
+        el("div", { style: { color: C.white, display: "flex" } }, "DIVERGENCE"),
+      ),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 168,
+            lineHeight: 0.9,
+            letterSpacing: "-5px",
+            marginTop: 4,
+          },
+        },
+        el("div", { style: { color: C.lime, display: "flex" } }, "RADAR"),
+        el("div", { style: { color: C.muted, display: "flex", marginLeft: 22 } }, "."),
+      ),
+      // Tagline
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "DM Sans",
+            fontWeight: 400,
+            fontSize: 28,
+            lineHeight: 1.35,
+            color: C.white,
+            opacity: 0.78,
+            marginTop: 26,
+            maxWidth: 940,
+          },
+        },
+        "Live picker. Every Polymarket + Kalshi market scored on money vs mouth. When they disagree, the call surfaces.",
+      ),
+      Hairline(),
+      // Bottom row — three pillars
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "auto",
+            fontFamily: "JetBrains Mono",
+            fontWeight: 500,
+            fontSize: 18,
+            letterSpacing: "5px",
+            textTransform: "uppercase",
+          },
+        },
+        el(
+          "div",
+          { style: { display: "flex", gap: 20, color: C.muted } },
+          el("div", { style: { display: "flex", color: C.lime } }, "MONEY"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.magenta } }, "MOUTH"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.lime } }, "EDGE"),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", color: C.muted, gap: 14 } },
+          el("div", { style: { display: "flex", color: C.white } }, "edge.html"),
+          el("div", { style: { display: "flex", color: C.lime } }, " →"),
+        ),
+      ),
+    ),
+  );
+}
+
 // Map of surfaces → renderers ------------------------------------------------
 const cards = {
   "coming-soon": ComingSoonCard,
   launch: LaunchCard,
+  edge: EdgeCard,
 };
 
 export default async function handler(req) {
