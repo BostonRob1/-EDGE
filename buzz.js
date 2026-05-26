@@ -113,7 +113,13 @@ function renderHeat(data) {
             tt
               ? `
             <div class="top-thread">
-              <div class="src">${escapeHtml(tt.source)} · ${tt.source === "reddit" ? "r/" + escapeHtml(tt.subsource || "") : tt.source === "polymarket" ? "comment" : escapeHtml(tt.subsource || "")} · ▲ ${tt.score} · ${fmtAgo(tt.created_at)} ago</div>
+              <div class="src">${escapeHtml(tt.source)} · ${
+                tt.source === "reddit" ? "r/" + escapeHtml(tt.subsource || "") :
+                tt.source === "polymarket" ? "comment" :
+                tt.source === "hn" ? "front page" :
+                tt.source === "news" ? escapeHtml(tt.subsource || "") :
+                escapeHtml(tt.subsource || "")
+              } · ▲ ${tt.score} · ${fmtAgo(tt.created_at)} ago</div>
               <div class="t">${escapeHtml((tt.title || "").slice(0, 140))}</div>
             </div>
           `
@@ -146,10 +152,12 @@ function renderFeed(data) {
 
   $("#feedList").innerHTML = threads
     .map((t) => {
-      const srcCls = t.source === "reddit" ? "reddit" : t.source === "polymarket" ? "polymarket" : t.source === "x" ? "x" : "";
+      const srcCls = t.source;
       const subLabel =
         t.source === "reddit" ? `r/${t.subsource}` :
         t.source === "polymarket" ? "POLYMARKET" :
+        t.source === "hn" ? "HACKER NEWS" :
+        t.source === "news" ? (t.subsource || "NEWS").toUpperCase() :
         t.source === "x" ? "X" :
         (t.subsource || t.source);
       const matchPills = (t.matches || [])

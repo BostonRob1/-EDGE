@@ -1,5 +1,7 @@
 import * as reddit from "../../lib/buzz/sources/reddit.js";
 import * as polyComments from "../../lib/buzz/sources/polymarket-comments.js";
+import * as hn from "../../lib/buzz/sources/hackernews.js";
+import * as news from "../../lib/buzz/sources/news-rss.js";
 import * as xStub from "../../lib/buzz/sources/_x_stub.js";
 import { fetchPolymarketMarkets } from "../../lib/buzz/polymarket-markets.js";
 import { matchThreadsToMarkets, aggregateMarketHeat } from "../../lib/buzz/market-match.js";
@@ -10,9 +12,11 @@ export default async function handler(req, res) {
   const url = new URL(req.url, "http://localhost");
   const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 25));
 
-  const [redditR, polyR, xR, marketsR] = await Promise.allSettled([
+  const [redditR, polyR, hnR, newsR, xR, marketsR] = await Promise.allSettled([
     reddit.fetchSignals({ limit: 80 }),
     polyComments.fetchSignals({ limit: 80 }),
+    hn.fetchSignals({ limit: 40, hours: 36 }),
+    news.fetchSignals({ limit: 60, perFeed: 8 }),
     xStub.fetchSignals({ limit: 30 }),
     fetchPolymarketMarkets(),
   ]);
@@ -20,6 +24,8 @@ export default async function handler(req, res) {
   const threads = [
     ...(redditR.status === "fulfilled" ? redditR.value : []),
     ...(polyR.status === "fulfilled" ? polyR.value : []),
+    ...(hnR.status === "fulfilled" ? hnR.value : []),
+    ...(newsR.status === "fulfilled" ? newsR.value : []),
     ...(xR.status === "fulfilled" ? xR.value : []),
   ];
   const markets = marketsR.status === "fulfilled" ? marketsR.value : [];
@@ -37,6 +43,8 @@ export default async function handler(req, res) {
     sources_active: {
       reddit: redditR.status === "fulfilled" && (redditR.value?.length || 0) > 0,
       polymarket: polyR.status === "fulfilled" && (polyR.value?.length || 0) > 0,
+      hn: hnR.status === "fulfilled" && (hnR.value?.length || 0) > 0,
+      news: newsR.status === "fulfilled" && (newsR.value?.length || 0) > 0,
       x: xR.status === "fulfilled" && (xR.value?.length || 0) > 0,
     },
     fetched_at: new Date().toISOString(),
