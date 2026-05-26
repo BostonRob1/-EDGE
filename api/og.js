@@ -1,55 +1,252 @@
-// Edge function that returns a 1200x630 PNG og-image.
-// Used by Open Graph meta tags so iMessage / Twitter / Discord / Slack
-// all show a beautiful preview when the URL is shared.
+// Edge function that returns 1200x630 PNGs for OG / Twitter card / iMessage previews.
+//
+// Surfaces (?surface=…):
+//   coming-soon  (default)  — the pre-launch waitlist hero
+//   launch                  — "$EDGE IS LIVE" post-launch card
+//   token                   — tokenomics snapshot
+//   press                   — press / partnerships contact card
+//
+// Cached at the edge for 24h once warm. First render after deploy is a cold
+// fetch of Anton + JetBrains Mono from Google Fonts (~200ms). Subsequent
+// shares are instant.
 
 import { ImageResponse } from "@vercel/og";
 
 export const config = { runtime: "edge" };
 
-// JSX-free helper: builds a React-element-shaped object that satori accepts
-const e = (type, props, ...children) => ({
+const C = {
+  void: "#050507",
+  void2: "#0C0C10",
+  void3: "#141418",
+  lime: "#C4FF00",
+  magenta: "#FF006E",
+  white: "#F5F5F0",
+  muted: "#6B6B73",
+  border: "rgba(245,245,240,0.12)",
+  borderBright: "rgba(196,255,0,0.28)",
+};
+
+// JSX-free helper — Satori accepts these element-shaped objects.
+const el = (type, props, ...children) => ({
   type,
-  props: {
-    ...(props || {}),
-    children: children.length <= 1 ? children[0] : children,
-  },
+  props: { ...(props || {}), children: children.length <= 1 ? children[0] : children },
   key: null,
 });
 
-export default async function handler() {
-  const C = {
-    ink: "#0A0A0B",
-    paper: "#F1EFEA",
-    mute: "#7C7C82",
-    money: "#E5B83D",
-    green: "#2EBD7A",
-    og: "#C4FF00",
-    glass: "#8B6BFF",
-    tape: "#00FFC8",
-  };
+// --- Font loader ------------------------------------------------------------
+// Pulls the actual font binary from Google Fonts so the OG image renders in
+// the real brand typefaces. Caches across invocations by holding promises at
+// module scope.
+let fontsPromise = null;
+async function loadFonts() {
+  if (fontsPromise) return fontsPromise;
+  fontsPromise = (async () => {
+    async function getFont(family, weight) {
+      const cssUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@${weight}`;
+      const css = await fetch(cssUrl, {
+        // Google serves a different file based on UA — pick a static modern Chrome string.
+        headers: { "User-Agent": "Mozilla/5.0 Chrome/120 Safari/537.36" },
+      }).then((r) => r.text());
+      const match = css.match(/src:\s*url\((https:\/\/fonts\.gstatic\.com\/[^)]+)\)/);
+      if (!match) throw new Error(`Font URL not found for ${family} ${weight}`);
+      return fetch(match[1]).then((r) => r.arrayBuffer());
+    }
+    const [anton, dmSans, dmSansBold, mono, monoBold] = await Promise.all([
+      getFont("Anton", 400),
+      getFont("DM Sans", 400),
+      getFont("DM Sans", 700),
+      getFont("JetBrains Mono", 500),
+      getFont("JetBrains Mono", 700),
+    ]);
+    return [
+      { name: "Anton", data: anton, weight: 400, style: "normal" },
+      { name: "DM Sans", data: dmSans, weight: 400, style: "normal" },
+      { name: "DM Sans", data: dmSansBold, weight: 700, style: "normal" },
+      { name: "JetBrains Mono", data: mono, weight: 500, style: "normal" },
+      { name: "JetBrains Mono", data: monoBold, weight: 700, style: "normal" },
+    ];
+  })();
+  return fontsPromise;
+}
 
-  const swatch = (label, color) =>
-    e(
+// --- Lime chevron mark, inline SVG -------------------------------------------
+const Mark = (size = 32) =>
+  el(
+    "svg",
+    {
+      width: size,
+      height: size,
+      viewBox: "0 0 64 64",
+      style: { display: "flex" },
+    },
+    el("path", {
+      d: "M20 10 L50 32 L20 54",
+      fill: "none",
+      stroke: C.lime,
+      strokeWidth: 6,
+      strokeLinecap: "square",
+      strokeLinejoin: "miter",
+    }),
+  );
+
+// Tiny shared atoms ----------------------------------------------------------
+const Eyebrow = (text, color = C.lime) =>
+  el(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        fontFamily: "JetBrains Mono",
+        fontWeight: 500,
+        fontSize: 22,
+        letterSpacing: "6px",
+        color,
+        textTransform: "uppercase",
+      },
+    },
+    el("div", {
+      style: { width: 10, height: 10, borderRadius: 999, backgroundColor: color },
+    }),
+    el("div", { style: { display: "flex" } }, text),
+  );
+
+const Hairline = () =>
+  el("div", {
+    style: {
+      display: "flex",
+      width: "100%",
+      height: 1,
+      backgroundColor: C.border,
+      marginTop: 32,
+      marginBottom: 24,
+    },
+  });
+
+// --- Top bar (shared) -------------------------------------------------------
+const TopBar = (rightText) =>
+  el(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        height: 64,
+        paddingLeft: 48,
+        paddingRight: 48,
+        borderBottom: `1px solid ${C.borderBright}`,
+      },
+    },
+    el(
       "div",
-      { style: { display: "flex", alignItems: "center", gap: "10px" } },
-      e("div", {
-        style: { width: "40px", height: "40px", backgroundColor: color },
-      }),
-      e(
+      { style: { display: "flex", alignItems: "center", gap: 14 } },
+      Mark(28),
+      el(
         "div",
         {
           style: {
-            fontSize: "14px",
-            color: C.mute,
-            letterSpacing: "3px",
-            textTransform: "uppercase",
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 30,
+            letterSpacing: "-1px",
+            color: C.white,
           },
         },
-        label,
+        el("div", { style: { color: C.lime, display: "flex" } }, "$"),
+        el("div", { style: { color: C.white, display: "flex" } }, "EDGE"),
       ),
-    );
+    ),
+    el(
+      "div",
+      {
+        style: {
+          fontFamily: "JetBrains Mono",
+          fontWeight: 700,
+          fontSize: 14,
+          letterSpacing: "5px",
+          color: C.muted,
+          textTransform: "uppercase",
+        },
+      },
+      rightText,
+    ),
+  );
 
-  const root = e(
+// --- Background grid + corner brackets atmosphere --------------------------
+const BgGrid = () =>
+  el(
+    "div",
+    {
+      style: {
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        backgroundImage:
+          "linear-gradient(rgba(196,255,0,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(196,255,0,0.045) 1px, transparent 1px)",
+        backgroundSize: "60px 60px",
+      },
+    },
+  );
+
+const CornerBrackets = () => {
+  const arm = 36;
+  const t = 2;
+  const off = 24;
+  const make = (corner) => {
+    const styles = {
+      tl: { top: off, left: off },
+      tr: { top: off, right: off },
+      bl: { bottom: off, left: off },
+      br: { bottom: off, right: off },
+    }[corner];
+    return el(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          width: arm,
+          height: arm,
+          display: "flex",
+          ...styles,
+        },
+      },
+      el("div", {
+        style: {
+          position: "absolute",
+          width: arm,
+          height: t,
+          backgroundColor: C.lime,
+          [corner.includes("t") ? "top" : "bottom"]: 0,
+          [corner.includes("l") ? "left" : "right"]: 0,
+        },
+      }),
+      el("div", {
+        style: {
+          position: "absolute",
+          width: t,
+          height: arm,
+          backgroundColor: C.lime,
+          [corner.includes("t") ? "top" : "bottom"]: 0,
+          [corner.includes("l") ? "left" : "right"]: 0,
+        },
+      }),
+    );
+  };
+  return el(
+    "div",
+    { style: { position: "absolute", inset: 0, display: "flex" } },
+    make("tl"),
+    make("tr"),
+    make("bl"),
+    make("br"),
+  );
+};
+
+// --- Coming-soon card -------------------------------------------------------
+function ComingSoonCard() {
+  return el(
     "div",
     {
       style: {
@@ -57,147 +254,235 @@ export default async function handler() {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: C.ink,
-        color: C.paper,
-        padding: "60px",
-        fontFamily: "sans-serif",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
       },
     },
-    // kicker
-    e(
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("PRE-LAUNCH · v1"),
+    // Body
+    el(
       "div",
       {
         style: {
           display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          fontSize: "16px",
-          letterSpacing: "4px",
-          color: C.mute,
-          textTransform: "uppercase",
+          flexDirection: "column",
+          padding: "44px 56px 36px 56px",
+          flex: 1,
+          position: "relative",
         },
       },
-      e("div", {
-        style: {
-          width: "10px",
-          height: "10px",
-          borderRadius: "999px",
-          backgroundColor: C.money,
-        },
-      }),
-      e("div", {}, "Edge Terminal · Internal review"),
-    ),
-    // $EDGE wordmark
-    e(
-      "div",
-      {
-        style: {
-          display: "flex",
-          alignItems: "baseline",
-          fontSize: "140px",
-          fontWeight: 800,
-          letterSpacing: "-6px",
-          lineHeight: 1,
-          marginTop: "44px",
-        },
-      },
-      e("div", { style: { color: C.money } }, "$"),
-      e("div", { style: { color: C.paper } }, "EDGE"),
-    ),
-    // tagline
-    e(
-      "div",
-      {
-        style: {
-          display: "flex",
-          alignItems: "baseline",
-          fontSize: "72px",
-          fontWeight: 500,
-          letterSpacing: "-2px",
-          marginTop: "12px",
-          lineHeight: 1,
-        },
-      },
-      e("div", { style: { color: C.paper, marginRight: "16px" } }, "Three"),
-      e(
-        "div",
-        { style: { color: C.money, fontStyle: "italic" } },
-        "finalists.",
-      ),
-    ),
-    e(
-      "div",
-      {
-        style: {
-          fontSize: "22px",
-          color: C.mute,
-          letterSpacing: "4px",
-          textTransform: "uppercase",
-          marginTop: "16px",
-        },
-      },
-      "One winner ships · Money meets mouth · Token-gated",
-    ),
-    // 3 finalist swatches
-    e(
-      "div",
-      {
-        style: {
-          display: "flex",
-          gap: "44px",
-          marginTop: "auto",
-          paddingTop: "32px",
-          borderTop: `1px solid #1F1F26`,
-        },
-      },
-      swatch("OG", C.og),
-      swatch("Glass", C.glass),
-      swatch("Tape", C.tape),
-    ),
-    // bottom strip
-    e(
-      "div",
-      {
-        style: {
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "24px",
-          fontSize: "18px",
-          letterSpacing: "1px",
-          color: C.mute,
-        },
-      },
-      e(
+      Eyebrow("T-MINUS 14 DAYS · FAIRLAUNCH JUN 09 · 13:00 UTC"),
+      // Headline
+      el(
         "div",
         {
-          style: { display: "flex", alignItems: "center", gap: "10px" },
-        },
-        e("div", {
           style: {
-            width: "8px",
-            height: "8px",
-            borderRadius: "999px",
-            backgroundColor: C.green,
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 188,
+            lineHeight: 0.92,
+            letterSpacing: "-6px",
+            marginTop: 28,
           },
-        }),
-        e(
+        },
+        el("div", { style: { color: C.lime, display: "flex" } }, "$"),
+        el("div", { style: { color: C.white, display: "flex" } }, "EDGE"),
+        el(
           "div",
-          { style: { color: C.paper } },
-          "edge-two-psi.vercel.app/options",
+          {
+            style: {
+              color: C.muted,
+              display: "flex",
+              marginLeft: 22,
+              marginRight: 22,
+            },
+          },
+          "/",
         ),
+        el("div", { style: { color: C.white, display: "flex" } }, "DROPS"),
       ),
-      e(
+      el(
         "div",
-        { style: { textTransform: "uppercase", letterSpacing: "4px" } },
-        "Polymarket + Kalshi · Solana",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 160,
+            lineHeight: 0.92,
+            letterSpacing: "-5px",
+            marginTop: 6,
+          },
+        },
+        el("div", { style: { color: C.white, display: "flex" } }, "JUN "),
+        el("div", { style: { color: C.lime, display: "flex" } }, "09"),
+        el("div", { style: { color: C.muted, display: "flex" } }, "."),
+      ),
+      // Tagline
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "DM Sans",
+            fontWeight: 400,
+            fontSize: 30,
+            lineHeight: 1.3,
+            color: C.white,
+            opacity: 0.78,
+            marginTop: 28,
+          },
+        },
+        "Watch the action. Before you bet.",
+      ),
+      Hairline(),
+      // Bottom row
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "auto",
+            fontFamily: "JetBrains Mono",
+            fontWeight: 500,
+            fontSize: 18,
+            letterSpacing: "5px",
+            textTransform: "uppercase",
+          },
+        },
+        el(
+          "div",
+          { style: { display: "flex", gap: 18, color: C.muted } },
+          el("div", { style: { display: "flex", color: C.lime } }, "MONEY"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.white } }, "MOUTH"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.lime } }, "EDGE"),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", color: C.muted, gap: 14 } },
+          el("div", { style: { display: "flex", color: C.white } }, "PUMP.FUN"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex" } }, "NO PRESALE"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.lime } }, "JOIN WAITLIST →"),
+        ),
       ),
     ),
   );
+}
 
-  return new ImageResponse(root, {
+// --- Launch (LIVE) card -----------------------------------------------------
+function LaunchCard() {
+  return el(
+    "div",
+    {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
+      },
+    },
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("LIVE NOW · PUMP.FUN"),
+    el(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          padding: "44px 56px 36px 56px",
+          flex: 1,
+        },
+      },
+      Eyebrow("LIVE NOW · CONTRACT VERIFIED · LP LOCKED 12MO", C.lime),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 220,
+            lineHeight: 0.9,
+            letterSpacing: "-7px",
+            marginTop: 28,
+          },
+        },
+        el("div", { style: { color: C.lime, display: "flex" } }, "$"),
+        el("div", { style: { color: C.white, display: "flex" } }, "EDGE"),
+      ),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 140,
+            letterSpacing: "-4px",
+            marginTop: 4,
+          },
+        },
+        el("div", { style: { color: C.white, display: "flex" } }, "IS "),
+        el("div", { style: { color: C.lime, display: "flex" } }, "LIVE."),
+      ),
+      Hairline(),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "auto",
+            fontFamily: "JetBrains Mono",
+            fontWeight: 500,
+            fontSize: 18,
+            letterSpacing: "5px",
+          },
+        },
+        el(
+          "div",
+          { style: { display: "flex", gap: 14, color: C.muted } },
+          el("div", { style: { display: "flex", color: C.white } }, "BUY"),
+          el("div", { style: { display: "flex", color: C.lime } }, "→ PUMP.FUN"),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", color: C.muted } },
+          "MONEY · MOUTH · EDGE",
+        ),
+      ),
+    ),
+  );
+}
+
+// Map of surfaces → renderers ------------------------------------------------
+const cards = {
+  "coming-soon": ComingSoonCard,
+  launch: LaunchCard,
+};
+
+export default async function handler(req) {
+  const url = new URL(req.url);
+  const surface = (url.searchParams.get("surface") || "coming-soon").toLowerCase();
+  const render = cards[surface] || cards["coming-soon"];
+
+  const fonts = await loadFonts();
+
+  return new ImageResponse(render(), {
     width: 1200,
     height: 630,
+    fonts,
     headers: {
       "Cache-Control":
         "public, immutable, no-transform, max-age=3600, s-maxage=86400",
