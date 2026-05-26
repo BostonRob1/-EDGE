@@ -1,0 +1,140 @@
+/* $EDGE elite layer — global polish + mobile fixes.
+ *
+ * Linked from every page BEFORE the page's own <style> block so it acts as
+ * a base that page-specific styles can still override. Doesn't redefine
+ * design tokens (those live inline per page for fastest first paint) —
+ * this is purely behavioral / responsive / a11y polish.
+ */
+
+/* ── Reset / hardening ────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  /* Safe-area insets for notched devices */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Branded text selection — uses lime as default, magenta inside .selection-mag scope */
+::selection {
+  background: rgba(196, 255, 0, 0.85);
+  color: #050507;
+}
+.selection-mag ::selection {
+  background: rgba(255, 0, 110, 0.85);
+  color: #F5F5F0;
+}
+
+/* ── Focus states (accessibility + elite feel) ───────────────────────── */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid #C4FF00;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Remove the default outline on click (we keep it only for keyboard nav via :focus-visible) */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Touch targets (≥44×44 on mobile) ────────────────────────────────── */
+
+@media (max-width: 768px) {
+  nav a,
+  .btn-copy,
+  .threshold-toggle button,
+  .filter-pills button {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+  }
+  /* Primary action buttons get bigger */
+  .btn,
+  .search-box button,
+  .hero-ctas a {
+    min-height: 44px;
+  }
+}
+
+/* ── Nav: horizontal scroll on mobile, no visible scrollbar ──────────── */
+/* Pattern used by mobile X / Discord / Bloomberg Terminal. Feels native. */
+
+@media (max-width: 768px) {
+  header > nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-left: 12px;
+    /* Fade edge to hint scrollability */
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+  }
+  header > nav::-webkit-scrollbar { display: none; }
+  header > nav ul {
+    flex-wrap: nowrap !important;
+    gap: 18px !important;
+    padding-right: 24px;
+  }
+  header > nav ul li {
+    flex-shrink: 0;
+  }
+  header > nav a {
+    white-space: nowrap;
+  }
+  /* Logo stays put while nav scrolls */
+  header > .logo {
+    flex-shrink: 0;
+  }
+}
+
+/* ── No horizontal page scroll ever ──────────────────────────────────── */
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* ── Smoother scroll for inner scrollable regions ────────────────────── */
+
+.panel-body,
+.firehose-list,
+.feed-list,
+.trending-grid,
+.heat-grid {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Print: minimal sanity (in case someone screenshots / prints) ─────── */
+
+@media print {
+  body::before, body::after { display: none; }
+  header, footer, nav { display: none; }
+  main { padding: 0; }
+}
