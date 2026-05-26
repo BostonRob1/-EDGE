@@ -1,4 +1,5 @@
 import * as reddit from "../../lib/buzz/sources/reddit.js";
+import * as polyComments from "../../lib/buzz/sources/polymarket-comments.js";
 import * as xStub from "../../lib/buzz/sources/_x_stub.js";
 import { fetchPolymarketMarkets } from "../../lib/buzz/polymarket-markets.js";
 import { matchThreadsToMarkets, aggregateMarketHeat } from "../../lib/buzz/market-match.js";
@@ -9,14 +10,16 @@ export default async function handler(req, res) {
   const url = new URL(req.url, "http://localhost");
   const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 25));
 
-  const [redditR, xR, marketsR] = await Promise.allSettled([
+  const [redditR, polyR, xR, marketsR] = await Promise.allSettled([
     reddit.fetchSignals({ limit: 80 }),
+    polyComments.fetchSignals({ limit: 80 }),
     xStub.fetchSignals({ limit: 30 }),
     fetchPolymarketMarkets(),
   ]);
 
   const threads = [
     ...(redditR.status === "fulfilled" ? redditR.value : []),
+    ...(polyR.status === "fulfilled" ? polyR.value : []),
     ...(xR.status === "fulfilled" ? xR.value : []),
   ];
   const markets = marketsR.status === "fulfilled" ? marketsR.value : [];
@@ -33,6 +36,7 @@ export default async function handler(req, res) {
     },
     sources_active: {
       reddit: redditR.status === "fulfilled" && (redditR.value?.length || 0) > 0,
+      polymarket: polyR.status === "fulfilled" && (polyR.value?.length || 0) > 0,
       x: xR.status === "fulfilled" && (xR.value?.length || 0) > 0,
     },
     fetched_at: new Date().toISOString(),

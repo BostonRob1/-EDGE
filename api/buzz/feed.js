@@ -1,4 +1,5 @@
 import * as reddit from "../../lib/buzz/sources/reddit.js";
+import * as polyComments from "../../lib/buzz/sources/polymarket-comments.js";
 import * as xStub from "../../lib/buzz/sources/_x_stub.js";
 import { fetchPolymarketMarkets } from "../../lib/buzz/polymarket-markets.js";
 import { matchThreadsToMarkets } from "../../lib/buzz/market-match.js";
@@ -10,14 +11,16 @@ export default async function handler(req, res) {
   const limit = Math.min(200, Math.max(1, Number(url.searchParams.get("limit")) || 60));
   const onlyMatched = url.searchParams.get("matched") === "1";
 
-  const [redditR, xR, marketsR] = await Promise.allSettled([
+  const [redditR, polyR, xR, marketsR] = await Promise.allSettled([
     reddit.fetchSignals({ limit: 80 }),
+    polyComments.fetchSignals({ limit: 80 }),
     xStub.fetchSignals({ limit: 30 }),
     fetchPolymarketMarkets(),
   ]);
 
   const threads = [
     ...(redditR.status === "fulfilled" ? redditR.value : []),
+    ...(polyR.status === "fulfilled" ? polyR.value : []),
     ...(xR.status === "fulfilled" ? xR.value : []),
   ];
   const markets = marketsR.status === "fulfilled" ? marketsR.value : [];
@@ -44,6 +47,7 @@ export default async function handler(req, res) {
 
   const errors = {};
   if (redditR.status === "rejected") errors.reddit = String(redditR.reason?.message || redditR.reason);
+  if (polyR.status === "rejected") errors.polymarket = String(polyR.reason?.message || polyR.reason);
   if (marketsR.status === "rejected") errors.markets = String(marketsR.reason?.message || marketsR.reason);
 
   res.status(200).json({
@@ -55,6 +59,7 @@ export default async function handler(req, res) {
     },
     sources_active: {
       reddit: redditR.status === "fulfilled" && (redditR.value?.length || 0) > 0,
+      polymarket: polyR.status === "fulfilled" && (polyR.value?.length || 0) > 0,
       x: xR.status === "fulfilled" && (xR.value?.length || 0) > 0,
     },
     errors: Object.keys(errors).length ? errors : undefined,
