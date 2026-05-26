@@ -200,18 +200,22 @@ function buildFrame(f) {
       ),
     ),
 
-    // ── BODY ────────────────────────────────────────────────────────────────
+    // ── BODY (centered safe-zone composition) ───────────────────────────────
+    // Everything critical lives inside the center 800px so iMessage/LinkedIn
+    // popup crops (which cut ~150-200px off the sides) don't kill the message.
     el(
       "div",
       {
         style: {
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
           flex: 1,
           paddingLeft: 56,
           paddingRight: 56,
-          paddingTop: 40,
-          paddingBottom: 28,
+          paddingTop: 32,
+          paddingBottom: 32,
           position: "relative",
         },
       },
@@ -225,15 +229,16 @@ function buildFrame(f) {
             gap: 12,
             fontFamily: "JetBrains Mono",
             fontWeight: 500,
-            fontSize: 22,
+            fontSize: 20,
             letterSpacing: "5px",
             color: C.lime,
+            textAlign: "center",
           },
         },
         el("div", {
           style: {
-            width: 10,
-            height: 10,
+            width: 9,
+            height: 9,
             borderRadius: 999,
             backgroundColor: liveOn ? C.lime : C.limeDim,
             display: "flex",
@@ -242,22 +247,23 @@ function buildFrame(f) {
         el(
           "div",
           { style: { display: "flex" } },
-          "T-MINUS 14 DAYS · FAIRLAUNCH JUN 09 · 13:00 UTC",
+          "T-MINUS 14 DAYS · FAIRLAUNCH JUN 09",
         ),
       ),
 
-      // Headline line 1: $EDGE / DROPS
+      // HERO — single massive centered $EDGE (the focal point)
       el(
         "div",
         {
           style: {
             display: "flex",
             alignItems: "baseline",
+            justifyContent: "center",
             fontFamily: "Anton",
-            fontSize: 188,
-            lineHeight: 0.92,
-            letterSpacing: "-6px",
-            marginTop: 24,
+            fontSize: 248,
+            lineHeight: 0.9,
+            letterSpacing: "-8px",
+            marginTop: 14,
           },
         },
         el(
@@ -266,36 +272,24 @@ function buildFrame(f) {
           "$",
         ),
         el("div", { style: { color: C.white, display: "flex" } }, "EDGE"),
-        el(
-          "div",
-          {
-            style: {
-              color: C.muted,
-              display: "flex",
-              marginLeft: 22,
-              marginRight: 22,
-            },
-          },
-          "/",
-        ),
-        el("div", { style: { color: C.white, display: "flex" } }, "DROPS"),
       ),
 
-      // Headline line 2: JUN 09.
+      // Subtitle — DROPS JUN 09. (smaller, still confident)
       el(
         "div",
         {
           style: {
             display: "flex",
             alignItems: "baseline",
+            justifyContent: "center",
             fontFamily: "Anton",
-            fontSize: 160,
-            lineHeight: 0.92,
-            letterSpacing: "-5px",
-            marginTop: 6,
+            fontSize: 86,
+            lineHeight: 1,
+            letterSpacing: "-2px",
+            marginTop: 10,
           },
         },
-        el("div", { style: { color: C.white, display: "flex" } }, "JUN "),
+        el("div", { style: { color: C.white, display: "flex" } }, "DROPS JUN "),
         el(
           "div",
           { style: { color: C.lime, display: "flex", opacity: nineOpacity } },
@@ -304,71 +298,47 @@ function buildFrame(f) {
         el("div", { style: { color: C.muted, display: "flex" } }, "."),
       ),
 
-      // Tagline
+      // Tagline — centered
       el(
         "div",
         {
           style: {
             display: "flex",
+            justifyContent: "center",
             fontFamily: "DM Sans",
             fontWeight: 400,
-            fontSize: 30,
+            fontSize: 26,
             color: C.white,
             opacity: 0.78,
-            marginTop: 26,
+            marginTop: 22,
+            textAlign: "center",
           },
         },
         "Watch the action. Before you bet.",
       ),
 
-      // Hairline
-      el("div", {
-        style: {
-          display: "flex",
-          width: "100%",
-          height: 1,
-          backgroundColor: C.border,
-          marginTop: 28,
-        },
-      }),
-
-      // Bottom row
+      // Bottom ribbon — centered, single line
       el(
         "div",
         {
           style: {
             display: "flex",
+            justifyContent: "center",
             alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: 16,
+            gap: 14,
+            marginTop: 22,
             fontFamily: "JetBrains Mono",
             fontWeight: 500,
-            fontSize: 18,
-            letterSpacing: "5px",
+            fontSize: 16,
+            letterSpacing: "4px",
+            color: C.muted,
           },
         },
-        el(
-          "div",
-          { style: { display: "flex", gap: 18, color: C.muted } },
-          el("div", { style: { display: "flex", color: C.lime } }, "MONEY"),
-          el("div", { style: { display: "flex" } }, "·"),
-          el("div", { style: { display: "flex", color: C.white } }, "MOUTH"),
-          el("div", { style: { display: "flex" } }, "·"),
-          el("div", { style: { display: "flex", color: C.lime } }, "EDGE"),
-        ),
-        el(
-          "div",
-          { style: { display: "flex", color: C.muted, gap: 14 } },
-          el("div", { style: { display: "flex", color: C.white } }, "PUMP.FUN"),
-          el("div", { style: { display: "flex" } }, "·"),
-          el("div", { style: { display: "flex" } }, "NO PRESALE"),
-          el("div", { style: { display: "flex" } }, "·"),
-          el(
-            "div",
-            { style: { display: "flex", color: C.lime } },
-            "JOIN WAITLIST →",
-          ),
-        ),
+        el("div", { style: { display: "flex", color: C.lime } }, "MONEY"),
+        el("div", { style: { display: "flex" } }, "·"),
+        el("div", { style: { display: "flex", color: C.white } }, "MOUTH"),
+        el("div", { style: { display: "flex" } }, "·"),
+        el("div", { style: { display: "flex", color: C.lime } }, "EDGE"),
       ),
     ),
 
