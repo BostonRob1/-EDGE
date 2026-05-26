@@ -79,23 +79,57 @@ const el = (type, props, ...children) => ({
 });
 
 // Tape source — long enough to feel "live", short enough to fit in the
-// canvas after windowing. Each frame slices a 120-char window starting at
+// canvas after windowing. Each frame slices a window starting at
 // progressively later positions (and wraps via doubled string).
 const TICKER_SRC =
   "TRUMP-2028 0.42→0.51 +21.4% · FED-PIVOT 0.18→0.14 -22.2% · CPI-JUN 0.62→0.71 +14.5% · BTC-200K 0.31→0.36 +16.1% · ETH-FLIP 0.07→0.04 -42.8% · NVDA-Q3 0.55→0.61 +10.9% · ";
-const TICKER_WINDOW = 96;
+const TICKER_WINDOW = 110;
 function tickerSlice(f) {
   const src = TICKER_SRC + TICKER_SRC; // doubled so the wrap is seamless
   const start = (f * 4) % TICKER_SRC.length; // 4 chars per frame
   return src.slice(start, start + TICKER_WINDOW);
 }
 
-// Lerp helper
+// Lerp / easing helpers
 const lerp = (a, b, t) => a + (b - a) * t;
-
-// Easing
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const clamp01 = (t) => Math.max(0, Math.min(1, t));
+
+// ── Divergence chart: line shapes (1200x56 canvas, y=0 is top) ─────────────
+// MONEY climbs from y=42 to y=6 — bullish trend (UP visually).
+// MOUTH stays flat / drifts down from y=46 to y=44 — public sentiment slipping.
+// As frames advance, both lines draw progressively from left to right; the
+// magenta gap between them widens and labels "EDGE 0.72" appears near the end.
+const MONEY_PTS = [
+  [0, 42], [80, 40], [160, 38], [240, 32], [320, 30], [400, 26],
+  [480, 22], [560, 20], [640, 16], [720, 14], [800, 12], [880, 10],
+  [960, 8],  [1040, 6], [1120, 6], [1200, 4],
+];
+const MOUTH_PTS = [
+  [0, 46], [80, 44], [160, 46], [240, 42], [320, 44], [400, 42],
+  [480, 44], [560, 42], [640, 44], [720, 42], [800, 44], [880, 42],
+  [960, 44], [1040, 44], [1120, 46], [1200, 44],
+];
+const ptsToPath = (pts) =>
+  pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
+function chartPaths(progress) {
+  const N = MONEY_PTS.length;
+  const visible = Math.max(2, Math.floor(N * progress + 0.001));
+  const money = MONEY_PTS.slice(0, visible);
+  const mouth = MOUTH_PTS.slice(0, visible);
+  const moneyPath = ptsToPath(money);
+  const mouthPath = ptsToPath(mouth);
+  const gapPath =
+    ptsToPath(money) +
+    " " +
+    mouth.slice().reverse().map((p) => `L ${p[0]} ${p[1]}`).join(" ") +
+    " Z";
+  const endX = money[money.length - 1][0];
+  const endY = money[money.length - 1][1];
+  const endYMouth = mouth[mouth.length - 1][1];
+  return { moneyPath, mouthPath, gapPath, endX, endY, endYMouth };
+}
 
 function buildFrame(f) {
   const t = f / FRAMES; // 0..1 progress through loop
@@ -350,14 +384,14 @@ function buildFrame(f) {
           display: "flex",
           alignItems: "center",
           width: "100%",
-          height: 38,
+          height: 30,
           backgroundColor: C.void2,
           borderTop: `1px solid ${C.borderBright}`,
           paddingLeft: 24,
           paddingRight: 24,
           fontFamily: "JetBrains Mono",
           fontWeight: 500,
-          fontSize: 14,
+          fontSize: 13,
           letterSpacing: "2px",
           color: C.muted,
           overflow: "hidden",
@@ -365,6 +399,123 @@ function buildFrame(f) {
         },
       },
       tape,
+    ),
+
+    // ── DIVERGENCE CHART BAND — money vs mouth, draws across frames ────────
+    chartBand(f),
+  );
+}
+
+// ── Chart band element: 1200×56 SVG showing money/mouth divergence ─────────
+// Both lines are ALWAYS fully drawn (so static-frame viewers see the full
+// composition). Animation: a scan column sweeps left → right pulsing the end
+// marker, and the "EDGE +0.72" label blinks subtly.
+function chartBand(f) {
+  const { moneyPath, mouthPath, gapPath, endX, endY, endYMouth } = chartPaths(1);
+
+  // Scan-column position eases across the chart in a slow sweep
+  const t = f / FRAMES;
+  const scanX = lerp(40, 1160, easeInOutCubic(t));
+
+  // Pulsing marker scale
+  const markerR = 3 + Math.sin(t * Math.PI * 4) * 0.6;
+
+  // Label opacity blink (in for most of the loop, brief dip at one moment)
+  const labelOpacity = (f % 12) < 10 ? 1 : 0.45;
+
+  return el(
+    "div",
+    {
+      style: {
+        display: "flex",
+        width: "100%",
+        height: 56,
+        backgroundColor: C.void,
+        position: "relative",
+      },
+    },
+    el(
+      "svg",
+      {
+        width: 1200, height: 56,
+        viewBox: "0 0 1200 56",
+        preserveAspectRatio: "none",
+        style: { display: "flex" },
+      },
+      // gridlines
+      el("line", { x1: 0, y1: 28, x2: 1200, y2: 28, stroke: "rgba(245,245,240,0.05)", strokeWidth: 1 }),
+      el("line", { x1: 0, y1: 8,  x2: 1200, y2: 8,  stroke: "rgba(245,245,240,0.04)", strokeWidth: 1 }),
+      el("line", { x1: 0, y1: 48, x2: 1200, y2: 48, stroke: "rgba(245,245,240,0.04)", strokeWidth: 1 }),
+      // gap fill
+      el("path", { d: gapPath, fill: "rgba(255,0,110,0.18)", stroke: "none" }),
+      // mouth line
+      el("path", {
+        d: mouthPath, fill: "none", stroke: "#F5F5F0", strokeWidth: 1.6,
+        strokeLinecap: "round", strokeLinejoin: "round", opacity: 0.78,
+      }),
+      // money line
+      el("path", {
+        d: moneyPath, fill: "none", stroke: "#C4FF00", strokeWidth: 2,
+        strokeLinecap: "round", strokeLinejoin: "round",
+      }),
+      // scan column — subtle vertical highlight
+      el("rect", { x: scanX, y: 0, width: 1.2, height: 56, fill: "rgba(196,255,0,0.45)" }),
+      el("rect", { x: scanX - 16, y: 0, width: 32, height: 56, fill: "rgba(196,255,0,0.04)" }),
+      // end markers
+      el("circle", { cx: endX, cy: endY, r: markerR, fill: "#C4FF00" }),
+      el("circle", { cx: endX, cy: endYMouth, r: markerR, fill: "#F5F5F0", opacity: 0.78 }),
+      // magenta connector
+      el("line", {
+        x1: endX, y1: endY, x2: endX, y2: endYMouth,
+        stroke: "#FF006E", strokeWidth: 1, strokeDasharray: "2 2", opacity: 0.85,
+      }),
+    ),
+    // EDGE +0.72 label, top-left of chart band
+    el(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top: 6,
+          left: 14,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          fontFamily: "JetBrains Mono",
+          fontWeight: 700,
+          fontSize: 11,
+          letterSpacing: "3px",
+          color: C.magenta,
+          textTransform: "uppercase",
+          opacity: labelOpacity,
+        },
+      },
+      el("div", { style: { display: "flex" } }, "EDGE"),
+      el("div", { style: { display: "flex", color: C.muted } }, "·"),
+      el("div", { style: { display: "flex" } }, "+0.72"),
+    ),
+    // Right-side caption
+    el(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top: 6,
+          right: 14,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          fontFamily: "JetBrains Mono",
+          fontWeight: 500,
+          fontSize: 10,
+          letterSpacing: "3px",
+          color: C.muted,
+          textTransform: "uppercase",
+        },
+      },
+      el("div", { style: { display: "flex" } }, "MONEY"),
+      el("div", { style: { display: "flex" } }, "VS"),
+      el("div", { style: { display: "flex" } }, "MOUTH · 24H"),
     ),
   );
 }
