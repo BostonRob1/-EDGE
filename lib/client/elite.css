@@ -70,38 +70,164 @@ button:focus:not(:focus-visible) {
   }
 }
 
-/* ── Nav: horizontal scroll on mobile, no visible scrollbar ──────────── */
-/* Pattern used by mobile X / Discord / Bloomberg Terminal. Feels native. */
+/* ── Mobile hamburger drawer (≤768px) ────────────────────────────────── */
+/*
+ * Desktop: hamburger button hidden via display:none, nav renders inline as
+ *   always.
+ * Mobile: nav transforms into a slide-in drawer triggered by hamburger.
+ *   Backdrop dims the page. Tap any link to close + navigate.
+ *
+ * elite.js injects the hamburger button + backdrop element + toggles the
+ * `elite-drawer-open` class on <html>. CSS owns the visual.
+ */
+
+.elite-hamburger { display: none; }
+.elite-backdrop { display: none; }
 
 @media (max-width: 768px) {
-  header > nav {
-    flex: 1 1 auto;
-    min-width: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    margin-left: 12px;
-    /* Fade edge to hint scrollability */
-    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-  }
-  header > nav::-webkit-scrollbar { display: none; }
-  header > nav ul {
-    flex-wrap: nowrap !important;
-    gap: 18px !important;
-    padding-right: 24px;
-  }
-  header > nav ul li {
+  /* Hamburger button — 3 bars, lime hover */
+  .elite-hamburger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid rgba(245, 245, 240, 0.12);
+    border-radius: 2px;
+    cursor: pointer;
+    margin-left: auto;
     flex-shrink: 0;
+    transition: border-color 0.15s, background 0.15s;
   }
-  header > nav a {
+  .elite-hamburger:hover,
+  .elite-hamburger:focus-visible {
+    border-color: var(--lime, #C4FF00);
+    background: rgba(196, 255, 0, 0.06);
+  }
+  .elite-hamburger-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--white, #F5F5F0);
+    border-radius: 1px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  /* X icon when drawer is open */
+  .elite-drawer-open .elite-hamburger { border-color: var(--lime, #C4FF00); }
+  .elite-drawer-open .elite-hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+    background: var(--lime, #C4FF00);
+  }
+  .elite-drawer-open .elite-hamburger-bar:nth-child(2) { opacity: 0; }
+  .elite-drawer-open .elite-hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+    background: var(--lime, #C4FF00);
+  }
+
+  /* Backdrop — dims everything behind the drawer. Filter is gated on .show
+   * so the backdrop is fully invisible (no filter chain) when drawer closed. */
+  .elite-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 7, 0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 90;
+  }
+  .elite-backdrop.show {
+    opacity: 1;
+    pointer-events: auto;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* The nav becomes a slide-in drawer. Using !important across the board
+   * because page-level CSS (dashboard especially has viewport-fit layout
+   * with overflow:hidden) tends to override sub-rules at smaller widths. */
+  header > nav#elite-drawer {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: min(85vw, 320px) !important;
+    height: 100dvh !important;
+    max-height: 100vh !important;
+    background: var(--void-2, #0c0c10) !important;
+    border-left: 1px solid var(--border-bright, rgba(196, 255, 0, 0.2)) !important;
+    box-shadow: -20px 0 40px rgba(0, 0, 0, 0.5);
+    padding: 80px 24px 32px !important;
+    margin: 0 !important;
+    mask-image: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    z-index: 95 !important;
+  }
+  /* When html.elite-drawer-open is set, override with translateX(0).
+   * Selector specificity matches the closed rule (both use #elite-drawer). */
+  html.elite-drawer-open header > nav#elite-drawer {
+    transform: translateX(0) !important;
+  }
+
+  /* Drawer items — full width, big tap targets */
+  header > nav.elite-drawer ul,
+  header > nav#elite-drawer ul {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    padding: 0 !important;
+  }
+  header > nav.elite-drawer ul li,
+  header > nav#elite-drawer ul li {
+    flex-shrink: 0;
+    width: 100%;
+  }
+  header > nav.elite-drawer a,
+  header > nav#elite-drawer a {
+    display: flex !important;
+    align-items: center;
+    padding: 14px 16px;
+    border-radius: 2px;
+    font-size: 14px !important;
+    letter-spacing: 0.1em !important;
+    border: 1px solid transparent;
+    opacity: 0.85;
     white-space: nowrap;
+    min-height: 48px;
   }
-  /* Logo stays put while nav scrolls */
+  header > nav.elite-drawer a:hover,
+  header > nav#elite-drawer a:hover,
+  header > nav.elite-drawer a.active,
+  header > nav#elite-drawer a.active {
+    background: rgba(196, 255, 0, 0.06);
+    border-color: var(--border-bright, rgba(196, 255, 0, 0.2));
+    color: var(--lime, #C4FF00);
+    opacity: 1;
+  }
+
+  /* Lock body scroll when drawer is open */
+  html.elite-drawer-open,
+  html.elite-drawer-open body {
+    overflow: hidden;
+  }
+
+  /* Header itself — make sure logo, hamburger, and CTA all fit cleanly */
   header > .logo {
     flex-shrink: 0;
   }
 }
+
+/* Reset previous mobile-nav-scroll behavior — drawer replaces it.
+ * The above rules only apply when nav has the elite-drawer class added by
+ * elite.js. Older browsers without JS still get a usable (if cramped) nav. */
 
 /* ── No horizontal page scroll ever ──────────────────────────────────── */
 
