@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Burns — Deflationary by Design</title>
+<meta name="description" content="Every dollar of $EDGE affiliate revenue buys + burns $EDGE on-chain. Three mechanisms. Public tracker. Verifiable supply reduction.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/burns.html">
+<meta property="og:title" content="$EDGE Burns — Deflationary by Design">
+<meta property="og:description" content="50% of every affiliate dollar buys + burns $EDGE on-chain. The more the product is used, the rarer the token gets.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+<script defer src="/lib/client/elite.js"></script>
+<script defer src="/lib/client/ticker.js"></script>
+<script defer src="/lib/client/palette.js"></script>
+
+<style>
+:root {
+  --void: #050507; --void-2: #0c0c10; --void-3: #141418; --void-4: #1c1c22;
+  --lime: #C4FF00; --lime-dim: #8aa800; --magenta: #FF006E; --green: #00FF85;
+  --amber: #FFB800; --orange: #FF7A00; --red: #FF3344;
+  --white: #F5F5F0; --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void); color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden; min-height: 100vh; position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime); text-decoration: none; letter-spacing: -0.02em; }
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover { opacity: 1; color: var(--lime); }
+
+/* ── HERO with massive burn counter ──────────────────────────────────── */
+.hero {
+  padding: 56px 32px 24px;
+  max-width: 1200px; margin: 0 auto; text-align: center;
+}
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; background: rgba(255, 51, 68, 0.08);
+  border: 1px solid var(--red); border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--red); letter-spacing: 0.15em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 28px;
+}
+.status-pill::before {
+  content: ''; width: 8px; height: 8px; background: var(--red);
+  border-radius: 50%; box-shadow: 0 0 12px var(--red);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 11vw, 144px); line-height: 0.9;
+  letter-spacing: -0.025em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .mag { color: var(--magenta); }
+.hero .lede {
+  font-size: 19px; color: var(--muted);
+  max-width: 720px; margin: 0 auto 40px; line-height: 1.5;
+}
+.hero .lede strong { color: var(--white); }
+.hero .lede em { font-style: normal; color: var(--lime); font-weight: 500; }
+
+/* ── BURN COUNTER (centerpiece) ──────────────────────────────────────── */
+.burn-counter {
+  max-width: 900px; margin: 0 auto;
+  background: var(--void-2);
+  border: 1px solid var(--border-bright);
+  border-radius: 2px; padding: 48px 32px;
+  position: relative; overflow: hidden;
+}
+.burn-counter::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--lime), var(--magenta));
+  box-shadow: 0 0 24px rgba(196, 255, 0, 0.5);
+}
+.burn-counter .label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.2em;
+  margin-bottom: 14px;
+}
+.burn-counter .pulse {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--red); margin-right: 8px; vertical-align: middle;
+  box-shadow: 0 0 10px var(--red); animation: pulse 1.5s infinite;
+}
+.burn-counter .number {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.9; color: var(--lime);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 36px rgba(196, 255, 0, 0.4);
+  margin-bottom: 6px;
+}
+.burn-counter .number-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--muted); letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.burn-counter .meta-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  margin-top: 24px;
+}
+.burn-counter .meta-cell {
+  background: var(--void-3); padding: 14px 16px; text-align: left;
+}
+.burn-counter .meta-lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.burn-counter .meta-val {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  color: var(--lime); line-height: 1;
+}
+.burn-counter .meta-val.draft { color: var(--amber); }
+.burn-counter .meta-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--muted); margin-top: 4px;
+}
+
+/* ── SECTIONS ────────────────────────────────────────────────────────── */
+section.block {
+  max-width: 1200px; margin: 0 auto; padding: 80px 32px 0;
+}
+.block-head { margin-bottom: 32px; }
+.block-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 10px; font-weight: 700;
+}
+.block-title {
+  font-family: 'Anton', sans-serif; font-size: clamp(40px, 6vw, 64px);
+  line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.block-title .accent { color: var(--lime); }
+.block-title .mag { color: var(--magenta); }
+.block-lede {
+  font-size: 18px; color: var(--muted); max-width: 720px; line-height: 1.5;
+}
+.block-lede strong { color: var(--white); }
+
+/* ── MECHANISM CARDS ─────────────────────────────────────────────────── */
+.mech-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+}
+.mech-cell {
+  background: var(--void-2); padding: 36px 28px;
+  display: flex; flex-direction: column; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.mech-cell::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.mech-cell.primary::before { background: var(--lime); box-shadow: 0 0 18px var(--lime); }
+.mech-cell.secondary::before { background: var(--magenta); }
+.mech-cell.tertiary::before { background: var(--amber); }
+.mech-cell .num {
+  font-family: 'Anton', sans-serif; font-size: 48px; line-height: 1;
+  color: var(--muted);
+}
+.mech-cell.primary .num { color: var(--lime); }
+.mech-cell.secondary .num { color: var(--magenta); }
+.mech-cell.tertiary .num { color: var(--amber); }
+.mech-cell .label {
+  font-family: 'Anton', sans-serif; font-size: 24px;
+  letter-spacing: -0.01em; text-transform: uppercase;
+}
+.mech-cell .figures {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.mech-cell .figure {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--void-3); padding: 4px 8px; border-radius: 2px;
+  color: var(--white);
+}
+.mech-cell .figure strong { color: var(--lime); }
+.mech-cell.secondary .figure strong { color: var(--magenta); }
+.mech-cell.tertiary .figure strong { color: var(--amber); }
+.mech-cell .desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.mech-cell .desc strong { color: var(--white); }
+
+/* ── RECENT BURNS FEED (mock for now) ───────────────────────────────── */
+.burns-list {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-radius: 2px; overflow: hidden;
+}
+.burns-list .burn-row {
+  display: grid; grid-template-columns: auto 1fr auto auto;
+  gap: 16px; align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+}
+.burns-list .burn-row:last-child { border-bottom: none; }
+.burns-list .burn-tag {
+  font-size: 9px; padding: 3px 7px; border-radius: 2px;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.burn-tag.affiliate { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.burn-tag.tier { background: rgba(255, 0, 110, 0.12); color: var(--magenta); }
+.burn-tag.premium { background: rgba(255, 184, 0, 0.12); color: var(--amber); }
+.burns-list .burn-source { color: var(--white); }
+.burns-list .burn-amount {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  color: var(--lime); letter-spacing: 0.02em;
+}
+.burns-list .burn-time {
+  color: var(--muted); white-space: nowrap; font-size: 11px;
+}
+.burns-list .placeholder-overlay {
+  padding: 20px 24px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted); letter-spacing: 0.05em;
+  border-top: 1px dashed var(--border);
+}
+.burns-list .placeholder-overlay strong { color: var(--amber); }
+
+/* ── VERIFY ON-CHAIN ─────────────────────────────────────────────────── */
+.verify-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.verify-card {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 24px; border-radius: 2px;
+}
+.verify-card .icon {
+  font-family: 'Anton', sans-serif; font-size: 36px;
+  color: var(--lime); line-height: 1; margin-bottom: 12px;
+}
+.verify-card h4 {
+  font-family: 'Anton', sans-serif; font-size: 20px;
+  letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 8px;
+}
+.verify-card p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.verify-card p strong { color: var(--white); }
+.verify-card code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--void-3); padding: 2px 6px; border-radius: 2px;
+  color: var(--lime);
+}
+
+/* ── BOTTOM CTA ──────────────────────────────────────────────────────── */
+.bottom-cta {
+  margin: 80px auto 0; padding: 60px 32px; text-align: center;
+  max-width: 800px;
+  background: var(--void-2); border: 1px solid var(--border-bright);
+  border-radius: 2px;
+}
+.bottom-cta h3 {
+  font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 52px);
+  line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.bottom-cta h3 .accent { color: var(--lime); }
+.bottom-cta p {
+  color: var(--muted); font-size: 16px; line-height: 1.5;
+  margin-bottom: 28px; max-width: 580px; margin-left: auto; margin-right: auto;
+}
+.btn {
+  padding: 14px 28px; font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-primary { background: var(--lime); color: var(--void); border: 1px solid var(--lime); }
+.btn-primary:hover { background: #d8ff33; }
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); }
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+.bottom-cta .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+footer {
+  margin-top: 60px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 960px) {
+  .mech-grid, .verify-grid { grid-template-columns: 1fr; }
+  .burn-counter .meta-grid { grid-template-columns: 1fr; }
+  .burns-list .burn-row { grid-template-columns: 1fr auto; gap: 8px; }
+  .burns-list .burn-source { grid-column: 1 / -1; }
+  .burns-list .burn-time { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/token.html">Token</a></li>
+      <li><a href="/about.html">About</a></li>
+    </ul>
+  </nav>
+  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="status-pill">Burn Tracker · Pre-Launch</div>
+    <h1>The <span class="mag">burn</span> is real.</h1>
+    <p class="lede">
+      Every dollar of <strong>affiliate revenue</strong> $EDGE earns from
+      Polymarket / Kalshi referrals buys $EDGE on the open market and burns it
+      on-chain. <em>The more the product is used, the rarer the token gets.</em>
+    </p>
+
+    <!-- BURN COUNTER -->
+    <div class="burn-counter">
+      <div class="label"><span class="pulse"></span>$EDGE burned to date · live counter</div>
+      <div class="number" id="burnedNumber">0</div>
+      <div class="number-sub">of 1,000,000,000 total supply · 0.00% reduced</div>
+
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="meta-lbl">Burns today</div>
+          <div class="meta-val">0</div>
+          <div class="meta-sub">$EDGE burned in last 24h</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-lbl">Affiliate revenue · this week</div>
+          <div class="meta-val draft">TBA</div>
+          <div class="meta-sub">activates with launch</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-lbl">Buyback wallet</div>
+          <div class="meta-val draft">TBA</div>
+          <div class="meta-sub">Squads multi-sig · on-chain</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE THREE MECHANISMS ───────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">How the supply shrinks</div>
+      <h2 class="block-title">Three burn mechanisms.<br><span class="accent">All real. All tied to usage.</span></h2>
+      <p class="block-lede">
+        No transfer tax. No scheduled gimmick burns. Just three on-chain
+        mechanisms that fire when the product gets used. <strong>The math is
+        published. The wallets are public. The burns are verifiable.</strong>
+      </p>
+    </div>
+
+    <div class="mech-grid">
+      <div class="mech-cell primary">
+        <div class="num">01</div>
+        <div class="label">Affiliate Buyback &amp; Burn</div>
+        <div class="desc">
+          <strong>Every dollar</strong> $EDGE earns from Polymarket / Kalshi
+          affiliate referrals splits 50/50: half operations, half buys $EDGE
+          on the open market and <strong>burns it on-chain</strong>. Continuous.
+          The fundamental flywheel — revenue compounds into rarity.
+        </div>
+        <div class="figures">
+          <div class="figure"><strong>50%</strong> of revenue → burn</div>
+          <div class="figure">SPL burn · on-chain</div>
+          <div class="figure">Continuous · not quarterly</div>
+        </div>
+      </div>
+
+      <div class="mech-cell secondary">
+        <div class="num">02</div>
+        <div class="label">Tier Activation Burn</div>
+        <div class="desc">
+          The first time a wallet activates a utility tier, <strong>5% of the
+          tier threshold burns</strong>. New Trader holder → 5K burned. New
+          Analyst → 50K. New Desk → 250K. One-shot per wallet — couples
+          deflation to the moment new users unlock real utility.
+        </div>
+        <div class="figures">
+          <div class="figure"><strong>5K</strong> at Trader</div>
+          <div class="figure"><strong>50K</strong> at Analyst</div>
+          <div class="figure"><strong>250K</strong> at Desk</div>
+        </div>
+      </div>
+
+      <div class="mech-cell tertiary">
+        <div class="num">03</div>
+        <div class="label">Premium Action Burns</div>
+        <div class="desc">
+          Advanced one-shot features <strong>burn $EDGE instead of charging
+          fees</strong>. Webhook alerts, PDF exports, API key generation,
+          custom backtests. Power-user activity continuously shrinks the
+          float. The token is the price of premium utility.
+        </div>
+        <div class="figures">
+          <div class="figure">Webhook · <strong>500</strong></div>
+          <div class="figure">PDF · <strong>100</strong></div>
+          <div class="figure">API key · <strong>1,000</strong></div>
+          <div class="figure">Backtest · <strong>5,000</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RECENT BURNS (placeholder) ─────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">The Ledger</div>
+      <h2 class="block-title">Recent <span class="accent">burns.</span></h2>
+      <p class="block-lede">
+        Every burn here will link to its Solana transaction. The feed activates
+        the moment the burn contract deploys. Until then —
+        <strong>this is what the feed will look like</strong>.
+      </p>
+    </div>
+
+    <div class="burns-list">
+      <div class="burn-row" style="opacity:0.4">
+        <span class="burn-tag affiliate">Affiliate</span>
+        <span class="burn-source">Iran ceasefire market · whale trade routed via $EDGE</span>
+        <span class="burn-amount">42K</span>
+        <span class="burn-time">2 mins ago</span>
+      </div>
+      <div class="burn-row" style="opacity:0.4">
+        <span class="burn-tag tier">Tier</span>
+        <span class="burn-source">New Analyst tier activation · wallet 0x6770…45fb</span>
+        <span class="burn-amount">50K</span>
+        <span class="burn-time">14 mins ago</span>
+      </div>
+      <div class="burn-row" style="opacity:0.4">
+        <span class="burn-tag premium">Premium</span>
+        <span class="burn-source">API key generation · Desk-tier holder</span>
+        <span class="burn-amount">1K</span>
+        <span class="burn-time">32 mins ago</span>
+      </div>
+      <div class="burn-row" style="opacity:0.4">
+        <span class="burn-tag affiliate">Affiliate</span>
+        <span class="burn-source">BTC $150k market · 14 trades routed this hour</span>
+        <span class="burn-amount">18K</span>
+        <span class="burn-time">1h ago</span>
+      </div>
+      <div class="burn-row" style="opacity:0.4">
+        <span class="burn-tag premium">Premium</span>
+        <span class="burn-source">Custom backtest · Desk-tier · Iran ceasefire pre-2026 lookback</span>
+        <span class="burn-amount">5K</span>
+        <span class="burn-time">2h ago</span>
+      </div>
+      <div class="placeholder-overlay">
+        <strong>Mock data</strong> · the live feed activates at token launch with
+        real on-chain burn transactions
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VERIFY ON-CHAIN ────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">Anti-FUD</div>
+      <h2 class="block-title">How to <span class="accent">verify</span>.</h2>
+      <p class="block-lede">
+        Anyone can audit the burn. Solana makes this easy — every SPL token
+        burn produces a publicly readable transaction. Don't trust us;
+        <strong>verify the chain</strong>.
+      </p>
+    </div>
+
+    <div class="verify-grid">
+      <div class="verify-card">
+        <div class="icon">01</div>
+        <h4>Watch the Buyback Wallet</h4>
+        <p>
+          Every revenue dollar arrives at the <strong>Squads multi-sig wallet</strong>
+          (address published at launch). Watch it on <code>solscan.io</code>.
+          Buys to the Raydium pool are visible. <strong>Movements are public.</strong>
+        </p>
+      </div>
+      <div class="verify-card">
+        <div class="icon">02</div>
+        <h4>Verify the SPL Burn</h4>
+        <p>
+          Each burn calls Solana's standard <code>Token::Burn</code> instruction.
+          The transaction signature is logged here. Click any burn row above
+          (once live) to open the explorer. <strong>Cryptographically immutable.</strong>
+        </p>
+      </div>
+      <div class="verify-card">
+        <div class="icon">03</div>
+        <h4>Track Supply Over Time</h4>
+        <p>
+          $EDGE total supply is queryable via any Solana RPC. As burns
+          accumulate, supply falls <strong>monotonically</strong> — no minting
+          back, ever. Mint authority renounced at launch.
+          <strong>One-way street.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ─────────────────────────────────────────────────── -->
+  <div class="bottom-cta">
+    <h3>Stack the <span class="accent">supply curve.</span></h3>
+    <p>
+      The token is deflationary by design. The product is what creates the
+      deflation. Claim a position before the curve starts compounding.
+    </p>
+    <div class="btns">
+      <a href="/waitlist.html" class="btn btn-primary">Join the Waitlist →</a>
+      <a href="/token.html" class="btn btn-secondary">Full Tokenomics</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  $EDGE on Solana · all burn percentages DRAFT · confirmed pre-launch ·
+  <a href="/">$EDGE home</a> · <a href="/token.html">Tokenomics</a> · <a href="/about.html">About</a>
+</footer>
+
+<script>
+// Animate the big "0" burned counter — at launch this will read from chain.
+// For now it's just a static 0 with mass + glow.
+(function () {
+  const el = document.getElementById("burnedNumber");
+  if (!el) return;
+  // Once on-chain data is wired, replace this with live SPL-supply diff.
+  el.textContent = "0";
+})();
+</script>
+
+</body>
+</html>

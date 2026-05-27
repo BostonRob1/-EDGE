@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE API — Public Endpoint Reference</title>
+<meta name="description" content="$EDGE public API reference. Every endpoint documented with params, examples, and live response shapes. Free tier — open access. Analyst tier — higher rate limits.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/api.html">
+<meta property="og:title" content="$EDGE API — Public Endpoint Reference">
+<meta property="og:description" content="Every prediction-market signal, one curl away. Markets · Whales · Buzz · Edge · Arb · Ticker.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+<script defer src="/lib/client/elite.js"></script>
+<script defer src="/lib/client/ticker.js"></script>
+<script defer src="/lib/client/palette.js"></script>
+
+<style>
+:root {
+  --void: #050507; --void-2: #0c0c10; --void-3: #141418; --void-4: #1c1c22;
+  --lime: #C4FF00; --lime-dim: #8aa800; --magenta: #FF006E; --green: #00FF85;
+  --amber: #FFB800; --orange: #FF7A00; --red: #FF3344;
+  --white: #F5F5F0; --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void); color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden; min-height: 100vh; position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+main, header, section { position: relative; z-index: 2; }
+
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime); text-decoration: none; letter-spacing: -0.02em; }
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover { opacity: 1; color: var(--lime); }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 64px 32px 32px;
+  max-width: 1200px; margin: 0 auto;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 14px; font-weight: 700;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(48px, 9vw, 112px); line-height: 0.9;
+  letter-spacing: -0.025em; text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .mag { color: var(--magenta); }
+.hero .lede {
+  font-size: 18px; color: var(--muted); line-height: 1.5;
+  max-width: 760px;
+}
+.hero .lede strong { color: var(--white); }
+.hero .lede code {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  background: var(--void-3); padding: 2px 7px; border-radius: 2px;
+  color: var(--lime); border: 1px solid var(--border);
+}
+
+/* Tier banner */
+.tier-banner {
+  max-width: 1200px; margin: 32px auto 0; padding: 0 32px;
+}
+.tier-row {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-left: 4px solid var(--lime);
+  padding: 18px 22px; border-radius: 2px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.tier-cell {
+  background: var(--void-2); padding: 18px 22px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.tier-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+}
+.tier-cell .val {
+  font-family: 'Anton', sans-serif; font-size: 26px; line-height: 1;
+  color: var(--lime);
+}
+.tier-cell.alt .val { color: var(--white); }
+.tier-cell .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.05em;
+}
+
+/* ── TOC ─────────────────────────────────────────────────────────────── */
+.toc {
+  max-width: 1200px; margin: 48px auto 0; padding: 0 32px;
+}
+.toc-list {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+.toc-list a {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 12px 14px; border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--white); text-decoration: none;
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 8px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.toc-list a:hover { border-color: var(--lime); color: var(--lime); }
+.toc-list a .count {
+  margin-left: auto; color: var(--muted); font-size: 10px;
+}
+
+/* ── GROUPS / ENDPOINTS ─────────────────────────────────────────────── */
+section.group {
+  max-width: 1200px; margin: 80px auto 0; padding: 0 32px;
+}
+.group-head {
+  margin-bottom: 24px; border-bottom: 1px solid var(--border-bright);
+  padding-bottom: 14px;
+}
+.group-head h2 {
+  font-family: 'Anton', sans-serif; font-size: clamp(32px, 4vw, 48px);
+  letter-spacing: -0.01em; text-transform: uppercase;
+}
+.group-head h2 .accent { color: var(--lime); }
+.group-head .group-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+.endpoint {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-radius: 2px; margin-bottom: 16px; overflow: hidden;
+}
+.endpoint-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  background: var(--void-3); border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.method {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  font-weight: 700; padding: 4px 9px; border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+.method.GET { background: rgba(196, 255, 0, 0.15); color: var(--lime); }
+.method.POST { background: rgba(0, 255, 133, 0.15); color: var(--green); }
+.endpoint-path {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  color: var(--white); font-weight: 600;
+  word-break: break-all;
+}
+.endpoint-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.08em;
+  text-transform: uppercase; margin-left: auto;
+}
+
+.endpoint-body { padding: 20px 24px; }
+.endpoint-desc {
+  font-size: 14px; color: var(--white); line-height: 1.5;
+  margin-bottom: 18px;
+}
+.endpoint-desc strong { color: var(--lime); }
+
+.params {
+  margin-bottom: 18px;
+}
+.params-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 10px; font-weight: 700;
+}
+.param-row {
+  display: grid; grid-template-columns: 160px auto 1fr;
+  gap: 16px; padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  align-items: baseline;
+}
+.param-name { color: var(--lime); font-weight: 700; }
+.param-type {
+  color: var(--muted); font-size: 10px; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.param-type.required { color: var(--magenta); }
+.param-desc { color: var(--white); line-height: 1.4; }
+
+.example {
+  background: var(--void-3); border: 1px solid var(--border);
+  border-radius: 2px; margin-bottom: 12px; overflow: hidden;
+}
+.example-head {
+  padding: 8px 14px;
+  background: var(--void-4); border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.example-lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 700;
+}
+.example-tabs { display: flex; gap: 4px; }
+.example-tab {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 3px 8px; background: transparent; border: 1px solid var(--border);
+  color: var(--muted); border-radius: 2px; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.example-tab.active { background: var(--lime); color: var(--void); border-color: var(--lime); }
+.example pre {
+  margin: 0; padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--white); line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+.example pre .str { color: var(--green); }
+.example pre .num { color: var(--lime); }
+.example pre .key { color: var(--magenta); }
+.example pre .com { color: var(--muted); font-style: italic; }
+
+/* ── BOTTOM CTA ──────────────────────────────────────────────────────── */
+.bottom-cta {
+  margin: 96px auto 0; padding: 56px 32px; text-align: center;
+  max-width: 800px;
+  background: var(--void-2); border: 1px solid var(--border-bright);
+  border-radius: 2px;
+}
+.bottom-cta h3 {
+  font-family: 'Anton', sans-serif; font-size: clamp(32px, 4vw, 48px);
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.bottom-cta h3 .accent { color: var(--lime); }
+.bottom-cta p {
+  color: var(--muted); font-size: 15px; line-height: 1.5;
+  margin-bottom: 24px;
+}
+.bottom-cta .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  padding: 14px 28px; font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: background 0.15s, border-color 0.15s, color 0.15s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-primary { background: var(--lime); color: var(--void); border: 1px solid var(--lime); }
+.btn-primary:hover { background: #d8ff33; }
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); }
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+
+footer {
+  margin-top: 80px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .param-row { grid-template-columns: 1fr; gap: 4px; }
+  .tier-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/token.html">Token</a></li>
+      <li><a href="/about.html">About</a></li>
+    </ul>
+  </nav>
+  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="eyebrow">$EDGE Public API · v0 reference</div>
+    <h1>One <span class="accent">curl</span> away.</h1>
+    <p class="lede">
+      Every prediction-market signal $EDGE surfaces is also a public API. No
+      auth required for the free tier. <strong>Base URL</strong>:
+      <code>https://edge-two-psi.vercel.app</code>. Returns JSON. Cached at the
+      edge for 10-60s depending on the endpoint. <strong>Analyst tier</strong>
+      (1M $EDGE) unlocks higher rate limits and webhook delivery.
+    </p>
+  </section>
+
+  <!-- ── TIER BANNER ────────────────────────────────────────────────── -->
+  <div class="tier-banner">
+    <div class="tier-row">
+      <div class="tier-cell">
+        <div class="lbl">Free Tier · No Auth</div>
+        <div class="val">60 / min</div>
+        <div class="sub">per IP · edge cache shared</div>
+      </div>
+      <div class="tier-cell alt">
+        <div class="lbl">Analyst Tier · 1M $EDGE</div>
+        <div class="val">600 / min</div>
+        <div class="sub">API key · soon</div>
+      </div>
+      <div class="tier-cell">
+        <div class="lbl">Desk Tier · 5M $EDGE</div>
+        <div class="val">unlimited</div>
+        <div class="sub">priority queue · webhooks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOC ────────────────────────────────────────────────────────── -->
+  <section class="toc">
+    <div class="toc-list">
+      <a href="#markets">Markets <span class="count">1</span></a>
+      <a href="#whales">Whales <span class="count">3</span></a>
+      <a href="#buzz">Buzz <span class="count">2</span></a>
+      <a href="#edge">Edge <span class="count">1</span></a>
+      <a href="#arb">Arb <span class="count">1</span></a>
+      <a href="#market-detail">Market <span class="count">1</span></a>
+      <a href="#ticker">Ticker <span class="count">1</span></a>
+      <a href="#og">OG Cards <span class="count">1</span></a>
+      <a href="#waitlist">Waitlist <span class="count">3</span></a>
+      <a href="#tracker">Tracker <span class="count">2</span></a>
+    </div>
+  </section>
+
+  <!-- ═════════════════ MARKETS ═════════════════ -->
+  <section class="group" id="markets">
+    <div class="group-head">
+      <h2><span class="accent">Markets</span></h2>
+      <div class="group-sub">Aggregated Polymarket + Kalshi market data</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/markets</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Top 200 active Polymarket markets + all open Kalshi events with nested markets.
+          Normalized to a single shape across platforms. Sorted by 24h volume desc.
+        </p>
+        <div class="example">
+          <div class="example-head"><span class="example-lbl">Request</span></div>
+          <pre><span class="com"># curl</span>
+curl https://edge-two-psi.vercel.app/api/markets
+
+<span class="com"># JavaScript</span>
+const r = <span class="key">await</span> fetch(<span class="str">"/api/markets"</span>);
+const data = <span class="key">await</span> r.json();</pre>
+        </div>
+        <div class="example">
+          <div class="example-head"><span class="example-lbl">Response</span></div>
+          <pre>{
+  <span class="key">"markets"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="str">"poly_2308197"</span>,
+      <span class="key">"source"</span>: <span class="str">"polymarket"</span>,
+      <span class="key">"title"</span>: <span class="str">"Will the Iran ceasefire continue through May 24?"</span>,
+      <span class="key">"slug"</span>: <span class="str">"will-the-iran-ceasefire-continue-through-may-24"</span>,
+      <span class="key">"yes_price"</span>: <span class="num">0.99</span>,
+      <span class="key">"no_price"</span>: <span class="num">0.01</span>,
+      <span class="key">"volume_24h"</span>: <span class="num">6217543.12</span>,
+      <span class="key">"liquidity"</span>: <span class="num">412330.5</span>,
+      <span class="key">"end_date"</span>: <span class="str">"2026-05-24T23:59:00Z"</span>,
+      <span class="key">"category"</span>: <span class="str">"Geopolitics"</span>,
+      <span class="key">"link"</span>: <span class="str">"https://polymarket.com/event/will-the-iran-ceasefire-continue-through-may-24"</span>
+    }
+  ],
+  <span class="key">"stats"</span>: {
+    <span class="key">"total_volume_24h"</span>: <span class="num">52994321.5</span>,
+    <span class="key">"total_markets"</span>: <span class="num">194</span>,
+    <span class="key">"by_source"</span>: { <span class="key">"polymarket"</span>: <span class="num">100</span>, <span class="key">"kalshi"</span>: <span class="num">94</span> }
+  },
+  <span class="key">"fetched_at"</span>: <span class="str">"2026-05-26T20:14:33.000Z"</span>
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ WHALES ═════════════════ -->
+  <section class="group" id="whales">
+    <div class="group-head">
+      <h2><span class="accent">Whales</span></h2>
+      <div class="group-sub">Polymarket whale firehose · leaderboard · per-wallet drilldown</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/whales/firehose</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Live whale trade firehose. Filters Polymarket trades by USD size (size × price).
+          Returns the most recent N trades crossing the threshold.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">min</span><span class="param-type">int · optional</span><span class="param-desc">Minimum USD size per trade. Default <strong>5000</strong>. Try <code>?min=100</code> to widen during quiet markets.</span></div>
+          <div class="param-row"><span class="param-name">limit</span><span class="param-type">int · optional</span><span class="param-desc">Max trades returned. Default <strong>40</strong>, capped at 100.</span></div>
+        </div>
+        <div class="example">
+          <div class="example-head"><span class="example-lbl">Example</span></div>
+          <pre>curl <span class="str">"https://edge-two-psi.vercel.app/api/whales/firehose?min=1000&limit=20"</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/whales/leaderboard</span>
+        <span class="endpoint-tag">Edge-cached 60s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Top active whales by recent volume. Each entry enriched with portfolio value
+          (parallel <code>/value</code> lookups on Polymarket data-api).
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">limit</span><span class="param-type">int · optional</span><span class="param-desc">Default <strong>20</strong>. Max 50.</span></div>
+          <div class="param-row"><span class="param-name">window</span><span class="param-type">int · optional</span><span class="param-desc">Trades window to aggregate over. Default <strong>500</strong>.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/whales/wallet</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Composed wallet detail: identity, summary stats, all open positions sorted by current value,
+          recent trades. Single payload for the wallet drill-down page.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">user</span><span class="param-type required">0x… · required</span><span class="param-desc">Wallet proxy address (40-hex). Returns 400 if invalid.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ BUZZ ═════════════════ -->
+  <section class="group" id="buzz">
+    <div class="group-head">
+      <h2><span class="accent">Buzz</span></h2>
+      <div class="group-sub">Real-time chatter aggregator · Reddit + Polymarket comments + HN + News RSS</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/buzz/feed</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Chronological feed across all four sources (Reddit, Polymarket comments, HN, News).
+          Each thread carries up to 3 matched markets with confidence scores.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">limit</span><span class="param-type">int · optional</span><span class="param-desc">Default 60, max 200.</span></div>
+          <div class="param-row"><span class="param-name">matched</span><span class="param-type">0|1 · optional</span><span class="param-desc"><strong>matched=1</strong> filters to only threads matched to a live market.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/buzz/markets</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Markets ranked by chatter heat. Heat = thread count × 2 + log10(upvotes+1) ×
+          1.5 + unique sources × 3 + best match confidence × 4. Sorted desc.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">limit</span><span class="param-type">int · optional</span><span class="param-desc">Default 25, max 50.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ EDGE ═════════════════ -->
+  <section class="group" id="edge">
+    <div class="group-head">
+      <h2><span class="accent">Edge</span></h2>
+      <div class="group-sub">Money vs Mouth divergence scoring · the picker algorithm</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/edge/scores</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Composite scoring per market. Returns <code>money_intensity</code> (0-100, derived
+          from volume + price velocity + whale activity), <code>mouth_intensity</code>
+          (0-100, from chatter heat), <code>divergence</code>, and an
+          <code>edge_call</code>: <strong>INSIDER FLOW</strong> ·
+          <strong>FRONT-RUNNING</strong> · <strong>ALIGNED</strong> ·
+          <strong>QUIET FLOW</strong> · <strong>LOUD ROOM</strong> · <strong>NO SIGNAL</strong>.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">limit</span><span class="param-type">int · optional</span><span class="param-desc">Default 20, max 50.</span></div>
+          <div class="param-row"><span class="param-name">min_div</span><span class="param-type">int · optional</span><span class="param-desc">Filter markets below this divergence threshold (0-100).</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ ARB ═════════════════ -->
+  <section class="group" id="arb">
+    <div class="group-head">
+      <h2><span class="accent">Arb</span></h2>
+      <div class="group-sub">Cross-platform Polymarket ↔ Kalshi arbitrage opportunities</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/arb/opportunities</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Pairs Polymarket markets to Kalshi markets via token-overlap matching, computes
+          fee-adjusted edge per pair, returns ranked arbs with both legs + suggested
+          stakes. <strong>Filters edges &gt; 12pp as likely matcher errors</strong> —
+          better honest empty than false positives.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">min_edge</span><span class="param-type">number · optional</span><span class="param-desc">Min fee-adjusted edge in pp. Default <strong>0.5</strong>.</span></div>
+          <div class="param-row"><span class="param-name">fee_buffer</span><span class="param-type">number · optional</span><span class="param-desc">Fee assumption (0-0.1). Default <strong>0.02</strong> (2pp).</span></div>
+          <div class="param-row"><span class="param-name">limit</span><span class="param-type">int · optional</span><span class="param-desc">Default 20, max 50.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ MARKET DETAIL ═════════════════ -->
+  <section class="group" id="market-detail">
+    <div class="group-head">
+      <h2><span class="accent">Market Detail</span></h2>
+      <div class="group-sub">Per-market composed view — Edge + Whales + Buzz + Affiliate</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/market/detail</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Single payload composing everything we know about one market: basic info,
+          whale trades filtered by market, buzz heat if matched, Edge score, affiliate-
+          wrapped trade URL.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">slug</span><span class="param-type required">string · required</span><span class="param-desc">Market slug from <code>/api/markets</code>. Returns 404 if not found.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ TICKER ═════════════════ -->
+  <section class="group" id="ticker">
+    <div class="group-head">
+      <h2><span class="accent">Ticker</span></h2>
+      <div class="group-sub">Live activity firehose · WHALE_TRADE · NEWS_DROP · EDGE_CALL</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/ticker</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Merged chronological feed of whale trades, news drops, and Edge calls. Used by
+          the scrolling tape that lives below the header on every page. Up to 30 events
+          newest-first.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ OG ═════════════════ -->
+  <section class="group" id="og">
+    <div class="group-head">
+      <h2><span class="accent">OG Cards</span></h2>
+      <div class="group-sub">Dynamically rendered 1200×630 PNGs for shares</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/og</span>
+        <span class="endpoint-tag">Edge-cached 24h</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Returns a 1200×630 PNG OG card. Surfaces:
+          <code>coming-soon</code> · <code>launch</code> · <code>edge</code> ·
+          <code>arb</code> · <code>market</code> · <code>whale</code> ·
+          <code>divergence</code>. Dynamic surfaces take query params for the data
+          to render.
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">surface</span><span class="param-type">string · required</span><span class="param-desc">One of the surface names above. Defaults to <code>coming-soon</code>.</span></div>
+          <div class="param-row"><span class="param-name">title, yes, no, vol, platform</span><span class="param-type">string · for market</span><span class="param-desc">Market card params. <code>?surface=market&amp;title=…&amp;yes=99&amp;no=1&amp;vol=$4.86M&amp;platform=polymarket</code></span></div>
+          <div class="param-row"><span class="param-name">name, value, positions, pnl, pnlnum</span><span class="param-type">string · for whale</span><span class="param-desc">Whale card params. Used by /whales.html per-wallet shares.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ WAITLIST ═════════════════ -->
+  <section class="group" id="waitlist">
+    <div class="group-head">
+      <h2><span class="accent">Waitlist</span></h2>
+      <div class="group-sub">Pre-launch funnel — wallet signup, prediction game, leaderboard</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/waitlist/join</span>
+        <span class="endpoint-tag">No cache</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">Add a wallet to the waitlist. Returns the position number. Idempotent — same wallet returns its existing position.</p>
+        <div class="params">
+          <div class="params-title">Body (JSON)</div>
+          <div class="param-row"><span class="param-name">wallet</span><span class="param-type required">string · required</span><span class="param-desc">Solana base58 or Ethereum 0x… address.</span></div>
+          <div class="param-row"><span class="param-name">email</span><span class="param-type">string · optional</span><span class="param-desc">Launch alerts only.</span></div>
+          <div class="param-row"><span class="param-name">referredBy</span><span class="param-type">string · optional</span><span class="param-desc">Referrer's wallet address.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/waitlist/stats</span>
+        <span class="endpoint-tag">Edge-cached 10s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">Total signups, recent additions, leaderboard, and current-wallet status (if <code>?wallet=</code> passed).</p>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/waitlist/predict</span>
+        <span class="endpoint-tag">No cache</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">Submit market predictions for the prediction game. Returns the projected score.</p>
+        <div class="params">
+          <div class="params-title">Body (JSON)</div>
+          <div class="param-row"><span class="param-name">wallet</span><span class="param-type required">string · required</span><span class="param-desc">Must already be on the waitlist.</span></div>
+          <div class="param-row"><span class="param-name">predictions</span><span class="param-type required">array · required</span><span class="param-desc">Array of <code>{ market_slug, side: "YES" | "NO", confidence: 0..1 }</code>, up to 20 items.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════════════ TRACKER ═════════════════ -->
+  <section class="group" id="tracker">
+    <div class="group-head">
+      <h2><span class="accent">Rug Radar</span></h2>
+      <div class="group-sub">Solana + Ethereum token risk analysis</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/tracker/analyze</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Full risk report for a token: weighted red flags from DexScreener, GoPlus,
+          RugCheck (Solana), Honeypot.is (ETH), and chain RPC. Returns a 0-100 risk
+          score plus categorized flags (critical / warn / info).
+        </p>
+        <div class="params">
+          <div class="params-title">Query Params</div>
+          <div class="param-row"><span class="param-name">address</span><span class="param-type required">string · required</span><span class="param-desc">Solana mint or Ethereum 0x… contract.</span></div>
+          <div class="param-row"><span class="param-name">chain</span><span class="param-type">solana|ethereum · optional</span><span class="param-desc">Auto-detected from address format if omitted.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-head">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/tracker/trending</span>
+        <span class="endpoint-tag">Edge-cached 30s</span>
+      </div>
+      <div class="endpoint-body">
+        <p class="endpoint-desc">
+          Trending tokens — DexScreener boosts enriched with per-token price /
+          liquidity / 24h volume. Solana + Ethereum only.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ─────────────────────────────────────────────────── -->
+  <div class="bottom-cta">
+    <h3>Build on the <span class="accent">edge.</span></h3>
+    <p>
+      Free for anyone. Higher rate limits + webhooks for token holders. The
+      API stays public — that's part of the contract.
+    </p>
+    <div class="btns">
+      <a href="/waitlist.html" class="btn btn-primary">Join for Tier Access →</a>
+      <a href="https://github.com/UncleLorenzo/EDGE" target="_blank" rel="noopener" class="btn btn-secondary">Read the Code ↗</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  $EDGE Public API · open access · rate-limited per IP · upgrade with $EDGE balance ·
+  <a href="/">$EDGE home</a> · <a href="/token.html">Token</a> · <a href="/about.html">About</a>
+</footer>
+
+</body>
+</html>

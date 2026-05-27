@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Manifesto — Receipts over Résumés</title>
+<meta name="description" content="The $EDGE operating philosophy. Twelve theses on anonymous building, public code, money meeting mouth, and what we owe the people who hold the token.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/manifesto.html">
+<meta property="og:title" content="$EDGE Manifesto — Receipts over Résumés">
+<meta property="og:description" content="Twelve theses. Anonymous by design. Public by code. The Operators' working philosophy.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+<script defer src="/lib/client/elite.js"></script>
+<script defer src="/lib/client/ticker.js"></script>
+<script defer src="/lib/client/palette.js"></script>
+
+<style>
+:root {
+  --void: #050507; --void-2: #0c0c10; --void-3: #141418; --void-4: #1c1c22;
+  --lime: #C4FF00; --lime-dim: #8aa800; --magenta: #FF006E; --green: #00FF85;
+  --amber: #FFB800; --orange: #FF7A00; --red: #FF3344;
+  --white: #F5F5F0; --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void); color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden; min-height: 100vh; position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+main, header, section { position: relative; z-index: 2; }
+
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime); text-decoration: none; letter-spacing: -0.02em; }
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover { opacity: 1; color: var(--lime); }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 96px 32px 32px;
+  max-width: 1100px; margin: 0 auto;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 24px; font-weight: 700;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(72px, 14vw, 200px); line-height: 0.88;
+  letter-spacing: -0.03em; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .mag { color: var(--magenta); }
+.hero .lede {
+  font-size: 24px; color: var(--white); line-height: 1.4;
+  max-width: 880px; font-weight: 400;
+}
+.hero .lede em {
+  font-style: normal; color: var(--lime); font-weight: 500;
+}
+
+/* ── DIVIDER ─────────────────────────────────────────────────────────── */
+.divider {
+  max-width: 1100px; margin: 80px auto 0; padding: 0 32px;
+}
+.divider-line {
+  display: flex; align-items: center; gap: 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase;
+}
+.divider-line::before, .divider-line::after {
+  content: ''; flex: 1 1 auto; height: 1px;
+  background: var(--border);
+}
+
+/* ── THESES ──────────────────────────────────────────────────────────── */
+.theses {
+  max-width: 1100px; margin: 64px auto 0; padding: 0 32px;
+}
+.thesis {
+  display: grid; grid-template-columns: 96px 1fr;
+  gap: 32px; align-items: start;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+}
+.thesis:last-child { border-bottom: 1px solid var(--border); }
+.thesis .num {
+  font-family: 'Anton', sans-serif; font-size: 72px; line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+}
+.thesis .body {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.thesis h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(28px, 4vw, 40px); line-height: 1.05;
+  letter-spacing: -0.01em; text-transform: uppercase;
+  color: var(--white);
+}
+.thesis h2 .accent { color: var(--lime); }
+.thesis h2 .mag { color: var(--magenta); }
+.thesis p {
+  font-size: 17px; color: var(--muted); line-height: 1.6;
+  max-width: 760px;
+}
+.thesis p strong { color: var(--white); font-weight: 500; }
+.thesis p em { font-style: normal; color: var(--lime); }
+
+/* Accent every fourth thesis with the magenta number */
+.thesis.mag .num { color: var(--magenta); }
+
+/* ── SIGNATURE ───────────────────────────────────────────────────────── */
+.signature {
+  max-width: 1100px; margin: 96px auto 0; padding: 0 32px;
+  display: flex; gap: 48px; align-items: flex-start;
+  flex-wrap: wrap;
+}
+.sig-block {
+  background: var(--void-2); border: 1px solid var(--border-bright);
+  padding: 32px; border-radius: 2px;
+  flex: 1 1 320px;
+  position: relative; overflow: hidden;
+}
+.sig-block.op-01::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--lime); box-shadow: 0 0 18px var(--lime);
+}
+.sig-block.op-02::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--magenta); box-shadow: 0 0 18px var(--magenta);
+}
+.sig-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700;
+  margin-bottom: 18px; display: inline-block;
+  padding: 5px 10px; border-radius: 2px;
+}
+.sig-block.op-01 .sig-tag { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.sig-block.op-02 .sig-tag { background: rgba(255, 0, 110, 0.12); color: var(--magenta); }
+.sig-name {
+  font-family: 'Anton', sans-serif; font-size: 48px; line-height: 1;
+  letter-spacing: -0.01em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.sig-role {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.sig-block .verify {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sig-block .verify .lime { color: var(--lime); }
+
+/* ── BOTTOM CTA ──────────────────────────────────────────────────────── */
+.bottom-cta {
+  margin: 96px auto 0; padding: 60px 32px; text-align: center;
+  max-width: 800px;
+  background: var(--void-2); border: 1px solid var(--border-bright);
+  border-radius: 2px;
+}
+.bottom-cta h3 {
+  font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 56px);
+  line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.bottom-cta h3 .accent { color: var(--lime); }
+.bottom-cta p {
+  color: var(--muted); font-size: 16px; line-height: 1.5;
+  margin-bottom: 28px;
+}
+.bottom-cta .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  padding: 14px 28px; font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-primary { background: var(--lime); color: var(--void); border: 1px solid var(--lime); }
+.btn-primary:hover { background: #d8ff33; }
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); }
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+
+footer {
+  margin-top: 80px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .thesis { grid-template-columns: 1fr; gap: 12px; padding: 36px 0; }
+  .thesis .num { font-size: 56px; }
+  .hero { padding: 56px 32px 24px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/token.html">Token</a></li>
+      <li><a href="/about.html">About</a></li>
+    </ul>
+  </nav>
+  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="eyebrow">The Manifesto · Twelve theses</div>
+    <h1>Receipts over <span class="accent">résumés.</span></h1>
+    <p class="lede">
+      This is how we work and why. <em>Twelve theses</em> the Operators wrote
+      before the first line of $EDGE got committed. They haven't changed since.
+    </p>
+  </section>
+
+  <div class="divider">
+    <div class="divider-line">— Begin —</div>
+  </div>
+
+  <!-- ── THESES ─────────────────────────────────────────────────────── -->
+  <section class="theses">
+
+    <div class="thesis">
+      <div class="num">01</div>
+      <div class="body">
+        <h2>Money is the <span class="accent">only honest signal.</span></h2>
+        <p>
+          Tweets lie. Pundits lie. Pollsters lie. Wallets don't. When a trader
+          puts $328K on the line, that bet is more honest than a thousand
+          op-eds. <strong>$EDGE starts from the money</strong> because the
+          money is where the truth lives.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">02</div>
+      <div class="body">
+        <h2>But the <span class="mag">mouth</span> moves first.</h2>
+        <p>
+          Capital is informed. Chatter is fast. Sometimes the loudest room is
+          the leading indicator; sometimes it's a noise trap. <strong>$EDGE
+          surfaces the divergence</strong> — not the consensus. The edge is
+          the gap.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis mag">
+      <div class="num">03</div>
+      <div class="body">
+        <h2>Anonymous by <span class="accent">design.</span></h2>
+        <p>
+          Your last trade should matter more than your last name. We chose to
+          stay anonymous so the work has to carry the credibility.
+          <strong>No headshots. No LinkedIns. No biographical claims.</strong>
+          Voice-only on Spaces. Code on GitHub. Tokens on-chain.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">04</div>
+      <div class="body">
+        <h2>Public by <span class="mag">code.</span></h2>
+        <p>
+          Anonymous doesn't mean opaque. <strong>Every API endpoint, every
+          algorithm, every pricing decision is in the repo</strong>. If you
+          can read JavaScript, you can audit $EDGE. Don't trust us — verify
+          the commit.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">05</div>
+      <div class="body">
+        <h2>The product comes <span class="accent">first.</span></h2>
+        <p>
+          We didn't write a whitepaper before we wrote the code. The Dashboard
+          works. The Divergence Radar fires real calls. The Arb scanner pulls
+          real spreads. <strong>You can use $EDGE today, for free, without a
+          wallet</strong>. The token only gates the deeper layers.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">06</div>
+      <div class="body">
+        <h2>The token has a <span class="accent">job.</span></h2>
+        <p>
+          $EDGE is not a meme dressed as utility. <strong>It unlocks specific,
+          named features</strong> — whale alerts, divergence radar, raw API.
+          Each tier maps to a concrete product surface. <em>If we ever can't
+          point to what your tokens do, we have failed.</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis mag">
+      <div class="num">07</div>
+      <div class="body">
+        <h2>Revenue burns the <span class="accent">supply.</span></h2>
+        <p>
+          50% of every affiliate dollar buys $EDGE on the open market and
+          burns it on-chain. <strong>The more the product is used, the rarer
+          the token gets.</strong> Not a scheduled burn. Not a vibes-based
+          burn. A revenue-driven flywheel that compounds in public.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">08</div>
+      <div class="body">
+        <h2>Every call is <span class="accent">timestamped.</span></h2>
+        <p>
+          When the algorithm surfaces a divergence — that call hits an
+          append-only on-chain log <strong>before</strong> the market resolves.
+          We can't edit it. We can't backdate it. <strong>Win or lose, the
+          receipts compound.</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">09</div>
+      <div class="body">
+        <h2>No presale. No <span class="accent">VCs.</span> No early bag.</h2>
+        <p>
+          Fair launch on pump.fun. Zero team allocation. Both Operators buy on
+          the curve like everybody else. <strong>If we hold, it's because we
+          bought it — same as you.</strong> The treasury is a Squads multi-sig.
+          Movements are public.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">10</div>
+      <div class="body">
+        <h2>Free terminal, <span class="accent">forever.</span></h2>
+        <p>
+          The base product never gets paywalled. Dashboard, Edge, Arb, Buzz,
+          Whales, Radar — all stay free. <strong>Token utility unlocks deeper
+          layers, never the floor.</strong> The free tier is the funnel,
+          not the bait.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis mag">
+      <div class="num">11</div>
+      <div class="body">
+        <h2>The community is the <span class="mag">edge.</span></h2>
+        <p>
+          We're not the smartest traders in prediction markets. The
+          <em>smartest traders</em> are. We're building the room where they
+          gather — and routing the alpha they generate back through the
+          token. <strong>Day-Zero holders steer the algorithm</strong>.
+          Governance is the long game.
+        </p>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="num">12</div>
+      <div class="body">
+        <h2>Ship every <span class="accent">week.</span></h2>
+        <p>
+          Eleven product surfaces in the first month. Receipts compound when
+          you ship in public. <strong>Velocity is the only moat that scales
+          with team size</strong> — and we're two. So we move.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="divider-line">— Signed —</div>
+  </div>
+
+  <!-- ── SIGNATURE ──────────────────────────────────────────────────── -->
+  <div class="signature">
+    <div class="sig-block op-01">
+      <div class="sig-tag">Op / 01</div>
+      <div class="sig-name">Op / 01</div>
+      <div class="sig-role">Product · Engineering · Multi-sig signer</div>
+      <div class="verify">
+        Code commits on <span class="lime">github · UncleLorenzo/EDGE</span>
+      </div>
+    </div>
+
+    <div class="sig-block op-02">
+      <div class="sig-tag">Op / 02</div>
+      <div class="sig-name">Op / 02</div>
+      <div class="sig-role">Growth · Comms · Multi-sig signer</div>
+      <div class="verify">
+        On-chain receipts at <span class="lime">@edgeops</span> launch
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BOTTOM CTA ─────────────────────────────────────────────────── -->
+  <div class="bottom-cta">
+    <h3>We meant <span class="accent">every word.</span></h3>
+    <p>
+      The product is live. The code is public. The launch is fair. The token
+      gates utility, not access. <strong>Read the manifesto. Read the code.
+      Then decide.</strong>
+    </p>
+    <div class="btns">
+      <a href="/waitlist.html" class="btn btn-primary">Join the Waitlist →</a>
+      <a href="https://github.com/UncleLorenzo/EDGE" target="_blank" rel="noopener" class="btn btn-secondary">Read the Code ↗</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  $EDGE · twelve theses · signed by the operators ·
+  <a href="/">$EDGE home</a> · <a href="/about.html">About</a> · <a href="/token.html">Token</a> · <a href="/burns.html">Burns</a>
+</footer>
+
+</body>
+</html>
