@@ -17,7 +17,7 @@ The complete enterprise-grade launch arsenal for $EDGE. Brand, accounts, social,
 | 06 | `06-launch-playbook/` | 30-day content calendar, launch-day runbook, KOL kit, press release, one-pager, pitch deck, FAQ |
 | 07 | `07-website-conversion/` | Coming-soon page, waitlist confirmation, token launch modal, 8 OG image templates |
 | 08 | `08-paid-media/` | X promoted post creative, display ads, YouTube pre-roll scripts, influencer brief, spend plan |
-| 09 | `09-press-kit/` | Fact sheet, embargo policy, founder bios, quote bank, brand asset downloads |
+| 09 | `09-press-kit/` | Fact sheet, embargo policy, spec sheet, quote bank, brand asset downloads |
 
 ## Design tokens (frozen — change requires versioning)
 

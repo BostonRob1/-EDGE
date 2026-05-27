@@ -24,7 +24,7 @@ What lives behind the frame button:
 — divergence ≥0.15 push
 — $25K+ whale alerts on Poly + Kalshi
 — picker algo calls (public hit-rate, no retcons)
-— founder DMs at higher tiers
+— backtesting + governance at higher tiers
 
 Unlock by holding $EDGE. Connect Solana wallet to the frame, it checks balance, reveals.
 ```
@@ -49,7 +49,7 @@ Follow.
 Subscribe to /edge.
 Cast a market you want covered — we'll add it to the picker corpus.
 
-Founders: @robert · @tye
+
 Builder DMs open. No GM scammers.
 ```
 
@@ -71,7 +71,7 @@ Skip:
 — shillposts
 — "wen token" (CA drops at launch)
 
-Holders unlock the gated alpha frame. Builders, DM @robert.
+Holders unlock the gated alpha frame. Builders, apply via the contribute channel in Discord.
 ```
 
 ---

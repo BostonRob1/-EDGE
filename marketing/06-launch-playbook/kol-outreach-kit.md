@@ -2,7 +2,7 @@
 
 > Marketing OS · 06.03 · Launch Playbook
 > Anchor date: launch is **2026-06-25 13:00 ET / 17:00 UTC**
-> Owner: comms lead (an Operator covers Tier S personally)
+> Owner: comms lead (an Trader covers Tier S personally)
 
 ---
 
@@ -27,10 +27,10 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 | @milesdeutscher | ~700K | Macro + crypto, technical analysis crowd | "First terminal that bridges Polymarket + Kalshi — would you take a look?" |
 | @CryptoCobain | ~1M | Sets degen attention agenda | Trade-of-value: early API key, hand him divergence calls before the timeline sees them |
 | @CL207 (Cobie's co-host) | ~330K | UpOnly host, taste-maker on infra plays | Sponsor a single UpOnly episode segment |
-| @WhalePanda | ~700K | OG, surgical with what he co-signs | Direct DM from an Operator: "we built the whale tracker you'd actually use" |
+| @WhalePanda | ~700K | OG, surgical with what he co-signs | Direct DM from an Trader: "we built the whale tracker you'd actually use" |
 | @hsakatrades | ~650K | High-velocity trading account | Pitch the picker algorithm + backtest data |
 | Orbit of @nayibbukele | varies | LATAM crypto attention | Spanish-language press release + product walkthrough |
-| @cobie | ~750K | Long shot but if it lands, defines the launch | Personal note from an Operator. No pitch. Just the link. |
+| @cobie | ~750K | Long shot but if it lands, defines the launch | Personal note from an Trader. No pitch. Just the link. |
 
 ### Tier A — 100K-500K · doable with quality outreach + small comp
 
@@ -77,11 +77,11 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 
 > hey [name], saw your [recent post about X — paraphrase, don't quote].
 >
-> i'm robert, co-founder of $EDGE. we built the first cross-platform aggregator for Polymarket + Kalshi + whale flows + sentiment. live product, free tier: edge-two-psi.vercel.app
+> reaching out from $EDGE. we built the first cross-platform aggregator for Polymarket + Kalshi + whale flows + sentiment. live product, free tier: edge-two-psi.vercel.app
 >
 > 90 seconds of context: we surface where smart money is positioning *before* the timeline catches up. example from last week: trump-powell market moved $1.2M into NO 13 mins before twitter pivoted.
 >
-> we're fairlaunching the token on pump.fun in 3 weeks (no presale, no team allocation to influencers). want to send you early access to the holder tier so you can see if it's the real thing before launch.
+> we're fairlaunching the token on pump.fun in 3 weeks (no presale, no team allocation, no allowlist). want to send you early access to the holder tier so you can see if it's the real thing before launch.
 >
 > if it clicks for you, happy to talk about a partnership. if not, no pitch — just keep using it.
 
@@ -97,7 +97,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 >
 > i'm not asking you to post about it. i'm asking you to use it for a week and tell me where it's wrong. if you find it useful afterwards, there's a holder-tier setup that's interesting.
 >
-> robert
+> — $EDGE
 
 ### 2.3 — COLD DM · Variant C (Macro/Politics Tone)
 
@@ -111,7 +111,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 >
 > if you think the product is real, we can talk about token allocation for pre-launch contributors. no obligation either way.
 >
-> robert
+> — $EDGE
 
 ### 2.4 — FOLLOW-UP (if no reply within 5 days)
 
@@ -154,9 +154,9 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 > Hey [name], we don't have a budget that matches your rate, but I want to make a serious offer:
 >
 > **What we'll give you:**
-> - 10M $EDGE allocation, 12mo linear vesting (no cliff). Direct line to founders. Insider channel access (10M tier) from T-0.
+> - 5M+ $EDGE allocation purchased on the open market on your behalf at launch (Desk tier access from T-0). 12mo linear vesting on the granted portion. Direct line to the brand operator account on Telegram.
 > - First look at every new feature ~48h before public release.
-> - Permanent founder-co-sign — we'll publicly credit your early support whenever it's earned.
+> - Permanent public credit — we'll cite your early support whenever it's earned.
 >
 > **What we ask:**
 > - One genuine post about the product on or near launch. Your voice, your call on copy. Doesn't have to be promotional.

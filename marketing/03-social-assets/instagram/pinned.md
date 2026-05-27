@@ -47,14 +47,14 @@ Caption:
 
 ## Row 3 — Team + Token
 
-**Post 7 — Founders (B&W portrait with Anton caption overlay)**
+**Post 7 — Track Record (numeric tile with Anton caption overlay)**
 Caption:
-> Built by the $EDGE Operators. We trade these markets every day. The terminal is what we wished existed.
+> Built by the $EDGE Traders. We trade these markets every day. The terminal is what we wished existed.
 
 **Post 8 — Token announcement**
 Caption:
 > $EDGE on Solana. pump.fun fairlaunch.
-> Holders unlock terminal tiers, whale-alert webhooks, divergence push, founder DMs.
+> Holders unlock terminal tiers, whale-alert webhooks, divergence push, gated alpha rooms.
 > CA drops at launch.
 
 **Post 9 — CTA / link**

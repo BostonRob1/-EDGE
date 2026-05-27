@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#050507" />
 <title>You're in — $EDGE Waitlist Confirmed</title>
-<meta name="description" content="You're on the $EDGE waitlist. Refer operators to jump the line. Launch alert hits your inbox 24h before TGE." />
+<meta name="description" content="You're on the $EDGE waitlist. Refer traders to jump the line. Launch alert hits your inbox 24h before TGE." />
 
 <!-- OG / Twitter / iMessage -->
 <meta property="og:type" content="website" />
@@ -257,7 +257,7 @@
         <div class="pos-cell">
           <div class="k">Position</div>
           <div class="v" id="position">#1,248</div>
-          <div class="sub">of <span id="total">2,914</span> operators</div>
+          <div class="sub">of <span id="total">2,914</span> traders</div>
         </div>
         <div class="pos-cell">
           <div class="k">T-Minus</div>
@@ -277,9 +277,9 @@
   <section>
     <div class="container">
       <div class="sec-head reveal">
-        <div class="eyebrow">01 · Refer Operators</div>
+        <div class="eyebrow">01 · Refer Traders</div>
         <h2>Jump the line.<br><span class="accent">Earn the alpha.</span></h2>
-        <p class="sec-lede">Every operator who signs up via your link bumps you <strong style="color:var(--lime);font-weight:700;">10 positions higher</strong> on the priority list. Three referrals puts you inside the top 1,000 even from #1,248. Whitelist closes 48h before TGE.</p>
+        <p class="sec-lede">Every trader who signs up via your link bumps you <strong style="color:var(--lime);font-weight:700;">10 positions higher</strong> on the priority list. Three referrals puts you inside the top 1,000 even from #1,248. Whitelist closes 48h before TGE.</p>
       </div>
       <div class="refer-grid">
         <div class="refer-cell reveal d1">
@@ -361,7 +361,7 @@
         <div class="step reveal d4">
           <div class="n">04 · T-0</div>
           <h4>Launch <span class="accent">alert</span></h4>
-          <p>The contract address goes live. You get the email the instant the tx confirms — with the address, the pump.fun link, and the operator stream URL.</p>
+          <p>The contract address goes live. You get the email the instant the tx confirms — with the address, the pump.fun link, and the trader stream URL.</p>
           <div class="when">Jun 09 · 09:00 ET</div>
         </div>
       </div>
@@ -392,8 +392,8 @@
         <a href="#" class="join reveal d3">
           <div class="what">03 · X</div>
           <h4>The <span style="color:var(--lime);">megaphone</span></h4>
-          <p>@edgeops — daily divergence drops, weekly recaps, launch-day Spaces. Voice only on Spaces. Anon stays anon.</p>
-          <div class="go">Follow @edgeops <span>→</span></div>
+          <p>@edgeterminal — daily divergence drops, weekly recaps, launch-day Spaces. Voice only on Spaces. Private stays private.</p>
+          <div class="go">Follow @edgeterminal <span>→</span></div>
         </a>
       </div>
     </div>
@@ -468,12 +468,12 @@
   $('copy-btn').addEventListener('click', () => copyText(refLink.value, 'Referral link copied'));
   refLink.addEventListener('click', () => refLink.select());
 
-  const msg = `Operators — $EDGE drops Jun 9. The terminal for prediction markets. Money / Mouth / Edge in one screen. Get on the waitlist before the priority window closes:\n\n${refLink.value}`;
+  const msg = `Traders — $EDGE drops Jun 9. The terminal for prediction markets. Money / Mouth / Edge in one screen. Get on the waitlist before the priority window closes:\n\n${refLink.value}`;
   $('copy-msg').addEventListener('click', () => copyText(msg, 'Message copied'));
 
   // Share to X / Telegram (open intent URLs)
-  $('share-x').href = `https://x.com/intent/post?text=${encodeURIComponent('Operators — $EDGE drops Jun 9. The terminal for prediction markets.')}&url=${encodeURIComponent(refLink.value)}`;
-  $('share-tg').href = `https://t.me/share/url?url=${encodeURIComponent(refLink.value)}&text=${encodeURIComponent('Operators — $EDGE drops Jun 9. The terminal for prediction markets.')}`;
+  $('share-x').href = `https://x.com/intent/post?text=${encodeURIComponent('Traders — $EDGE drops Jun 9. The terminal for prediction markets.')}&url=${encodeURIComponent(refLink.value)}`;
+  $('share-tg').href = `https://t.me/share/url?url=${encodeURIComponent(refLink.value)}&text=${encodeURIComponent('Traders — $EDGE drops Jun 9. The terminal for prediction markets.')}`;
 
   // Reveal-on-scroll
   if ('IntersectionObserver' in window) {

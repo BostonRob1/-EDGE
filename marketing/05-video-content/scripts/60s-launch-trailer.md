@@ -2,7 +2,7 @@
 
 **Format:** 16:9 master · 1:1 + 9:16 reframes
 **Total runtime:** 60.0s
-**VO talent:** an Operator (or ElevenLabs clone — see production-notes.md)
+**VO talent:** an Trader (or ElevenLabs clone — see production-notes.md)
 **Music:** Ambient industrial · 95–105 BPM · low sub · sparse percussion · NO drops
 **Color:** Pure Void (#050507) backgrounds throughout. Lime #C4FF00 as the only chromatic accent except for the divergence moment (Shot 06 — Magenta #FF006E).
 **SFX:** Terminal keystrokes, single bell-tick on data prints, sub-bass whump on each scene cut.

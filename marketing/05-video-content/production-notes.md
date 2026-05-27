@@ -16,19 +16,19 @@ The playbook for actually shipping the videos described in this folder. Read thi
 ### Screen recording
 - **macOS native** (Cmd+Shift+5) for the CSS teasers. Use "Record Selected Portion." Always set the marquee to the exact pixel dimensions (1080×1080, 1920×120, 1080×1920).
 - **CleanShot X** ($29) if you need a custom cursor and a moveable selection that snaps to exact dimensions.
-- **OBS Studio** if you need to record multiple sources at once (e.g. screen + face cam for founder content).
+- **OBS Studio** if you need to record multiple sources at once (e.g. screen + face cam for talking-head content).
 
 ### Audio
 - **DaVinci Resolve Fairlight** page — sufficient for VO clean-up, EQ, levels.
 - **Audacity** — if all you need is to clip a VO take.
-- **iZotope RX (Elements, $99)** — worth it for de-essing and breath removal on founder VO.
+- **iZotope RX (Elements, $99)** — worth it for de-essing and breath removal on voiceover.
 
 ---
 
 ## 02 · VOICE-OVER
 
 ### Option A — ElevenLabs voice clone (recommended for scale)
-1. Record a 20-minute clean read from an Operator (or whoever) in a quiet room, lav mic, no music.
+1. Record a 20-minute clean read from an Trader (or whoever) in a quiet room, lav mic, no music.
 2. Upload to ElevenLabs ($22/mo Starter or $99 Creator for commercial rights).
 3. Use **Eleven Multilingual v2** or **Eleven Turbo v2.5** for the voice model.
 4. **Settings:** Stability 45–55, Similarity 70–80, Style 0–15. Default voice modulation OFF.
@@ -43,7 +43,7 @@ The playbook for actually shipping the videos described in this folder. Read thi
 
 ### Voice direction notes
 - **Pace:** slow. ~140 words per minute. Crypto VO is almost always too fast.
-- **Tone:** dry, certain. an Operator is not selling — he's stating the case.
+- **Tone:** dry, certain. an Trader is not selling — he's stating the case.
 - **Mouth noises:** kill clicks and pops in post. They scream amateur.
 - **The brand tagline** ("Watch the action. Before you bet.") is always the last line. Always slowed. Always landed.
 
@@ -185,9 +185,9 @@ The playbook for actually shipping the videos described in this folder. Read thi
 
 ## 09 · WHO OWNS WHAT
 
-- **Scripts** — an Operator writes. an Operator reviews for product accuracy.
-- **Edit** — Whoever's on the cut for the week. Default: an Operator.
-- **VO** — an Operator (or the operators' ElevenLabs clone after the first 5 videos).
+- **Scripts** — an Trader writes. an Trader reviews for product accuracy.
+- **Edit** — Whoever's on the cut for the week. Default: an Trader.
+- **VO** — an Trader (or the traders' ElevenLabs clone after the first 5 videos).
 - **Color + final mix** — DaVinci-fluent contractor if hero piece. Self if cutdown.
 - **Post + caption** — whoever drafted the script also drafts the social copy.
 
@@ -202,7 +202,7 @@ The playbook for actually shipping the videos described in this folder. Read thi
 - Inter, Roboto, Arial, or Helvetica as a display face.
 - Emoji in burn-in captions.
 - "🚀" anywhere, ever, including thumbnails.
-- A founder talking head longer than 90 seconds without a product cutaway.
+- A talking head longer than 90 seconds without a product cutaway.
 - A countdown that doesn't actually count down (use the real `teaser-countdown.html`).
 
 This is the brand. Don't drift.

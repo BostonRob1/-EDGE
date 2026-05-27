@@ -15,9 +15,9 @@ $EDGE is that intelligence layer.
 
 We aggregate every Polymarket and Kalshi market into a single sortable, filterable, latency-tolerant grid. We surface whale flow in real time — the same way an FX desk watches central-bank tape. We score market prices against aggregated sentiment from X, Farcaster, and Reddit, producing a "divergence" reading that measures the gap between where the money is and what the mouth is saying. That gap is, by construction, the edge.
 
-The terminal is in early access at edge-two-psi.vercel.app. The accompanying token, $EDGE, launches on Solana and gates premium features by holding tier — webhook access, push notifications, governance over which markets get full bot coverage, direct channels to the founders.
+The terminal is in early access at edge-two-psi.vercel.app. The accompanying token, $EDGE, launches on Solana and gates premium features by holding tier — webhook access, push notifications, governance over which markets get full bot coverage, gated alpha rooms.
 
-Built by the $EDGE Operators. Headquartered remotely; data flow is the only office that matters.
+Built by the $EDGE Traders. Headquartered remotely; data flow is the only office that matters.
 
 ## Industry
 Financial Services

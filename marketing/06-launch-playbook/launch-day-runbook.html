@@ -124,10 +124,10 @@
   <section class="hero">
     <div class="eyebrow">06.02 · Launch Runbook · T-72h → T+24h</div>
     <h1>The 96-hour <span class="accent">checklist.</span></h1>
-    <p class="lede">Every owner, every action, every timestamp. P0 is "if this fails, launch fails." P1 is "if this fails, launch is degraded." Check it off as you go. Mods, founders, design, comms — find your column.</p>
+    <p class="lede">Every owner, every action, every timestamp. P0 is "if this fails, launch fails." P1 is "if this fails, launch is degraded." Check it off as you go. Mods, comms, design, eng — find your column.</p>
     <div class="meta-strip">
       <div class="meta-cell"><div class="lbl">T-0</div><div class="val lime">2026-06-25 · 13:00 ET</div><div class="sub">17:00 UTC · pump.fun create</div></div>
-      <div class="meta-cell"><div class="lbl">Founders</div><div class="val">the $EDGE Operators</div><div class="sub">Spaces co-host · @CryptoCobain</div></div>
+      <div class="meta-cell"><div class="lbl">Contact</div><div class="val">the $EDGE Traders</div><div class="sub">Spaces co-host · @CryptoCobain</div></div>
       <div class="meta-cell"><div class="lbl">War Room</div><div class="val">Discord #t-0</div><div class="sub">Mod team on rotation 24h</div></div>
       <div class="meta-cell"><div class="lbl">Backup Channel</div><div class="val">Telegram private</div><div class="sub">If X / DC outage</div></div>
     </div>
@@ -140,7 +140,7 @@
     <button class="filter-btn" data-f="p1">P0 + P1</button>
     <span class="label" style="margin-left:16px;">Owner</span>
     <button class="filter-btn" data-o="all">All</button>
-    <button class="filter-btn" data-o="founders">Founders</button>
+    <button class="filter-btn" data-o="comms">Comms</button>
     <button class="filter-btn" data-o="comms">Comms</button>
     <button class="filter-btn" data-o="mods">Mods</button>
     <button class="filter-btn" data-o="design">Design</button>
@@ -178,14 +178,14 @@ const data = [
   { time: 'T-72h', pri: 'p0', owner: 'design', h: 'Final asset audit', d: 'Confirm all launch graphics in 04-launch-graphics are sized: 1500x500, 1200x675, 1080x1080, 1080x1920. Spot-check on iPhone, desktop, dark/light.', link: '/marketing/04-launch-graphics/' },
   { time: 'T-72h', pri: 'p1', owner: 'mods', h: 'Discord scam-bot stress test', d: 'Run 5 fake "DM me for early" posts in test channel. Verify auto-ban triggers. Verify mod-roles get pinged.', link: 'Bot: Wick + Vaultree' },
   { time: 'T-72h', pri: 'p1', owner: 'eng', h: 'Vercel pre-launch deploy freeze', d: 'No commits to main from now until T+1h unless P0. Stage all features in preview branches only.', link: 'GitHub: BostonRob1/-EDGE main' },
-  { time: 'T-72h', pri: 'p1', owner: 'founders', h: 'Personal X profile lock', d: 'Both founders verify 2FA, lock DMs to followers-only, set pinned tweet to tokenomics drop.', link: 'X settings · security' },
+  { time: 'T-72h', pri: 'p1', owner: 'ops', h: 'Brand X profile lock', d: 'Brand-account 2FA verified, DMs locked to verified only, pinned tweet set to tokenomics drop.', link: 'X settings · security' },
 
   { section: 'T-48h · 2 days out · ESCALATE', sub: '2026-06-23 · 13:00 ET' },
   { time: 'T-48h', pri: 'p0', owner: 'comms', h: 'KOL outreach FINAL round', d: 'Confirm post slot, copy, and tracking link with every Tier S + Tier A KOL. Tier B + C self-coordinate. Use tracking sheet.', link: 'kol-outreach-kit.md · tracking table' },
   { time: 'T-48h', pri: 'p0', owner: 'comms', h: 'Press release embargoed send', d: 'Send press-release.md to 20 outlets (CoinDesk, The Block, Decrypt, Blockworks, etc.) with EMBARGOED UNTIL 2026-06-25 13:00 ET in subject.', link: 'press-release.md' },
-  { time: 'T-48h', pri: 'p1', owner: 'design', h: 'Twitter banner swap', d: 'Swap account banner to launch countdown variant. Both founder accounts + @edgeterminal.', link: '04-launch-graphics/banner-launch.png' },
+  { time: 'T-48h', pri: 'p1', owner: 'design', h: 'Twitter banner swap', d: 'Swap account banner to launch countdown variant. All branded accounts (X, Telegram, Discord, Farcaster).', link: '04-launch-graphics/banner-launch.png' },
   { time: 'T-48h', pri: 'p1', owner: 'mods', h: 'Discord T-48 announcement', d: '@everyone ping in #announcements. Pin. Update channel description with launch UTC time.', link: 'announcement-template.md' },
-  { time: 'T-48h', pri: 'p1', owner: 'founders', h: 'Spaces co-host confirm', d: 'Lock in 2 co-hosts for T-1h Spaces. Confirm they have schedule + audio setup tested.', link: 'X Spaces scheduler' },
+  { time: 'T-48h', pri: 'p1', owner: 'ops', h: 'Spaces co-host confirm', d: 'Lock in 2 co-hosts for T-1h Spaces. Confirm they have schedule + audio setup tested.', link: 'X Spaces scheduler' },
   { time: 'T-48h', pri: 'p2', owner: 'comms', h: 'Newsletter pre-warm', d: 'Send "48 hours" email to waitlist (~2K). One link. No fluff.', link: 'Beehiiv · launch sequence #2' },
 
   { section: 'T-24h · 1 day out · LOCK-IN', sub: '2026-06-24 · 13:00 ET' },
@@ -193,48 +193,48 @@ const data = [
   { time: 'T-24h', pri: 'p0', owner: 'mods', h: 'Discord @everyone announcement', d: 'Full launch detail post. Time. Mechanics. Contract-address-will-be-posted-here note. Auto-pin.', link: 'announcement-template.md · v2' },
   { time: 'T-24h', pri: 'p0', owner: 'comms', h: 'Pinned tweet swap', d: 'Replace tokenomics pin with T-24 countdown. Set up T-12, T-6, T-1 swap reminders.', link: 'X Studio · scheduled pins' },
   { time: 'T-24h', pri: 'p1', owner: 'eng', h: 'pump.fun dry-run', d: 'On a test wallet: walk through the entire token-create flow on devnet equivalent. Time it. Confirm we know which screens, which clicks.', link: 'pump.fun docs · creator flow' },
-  { time: 'T-24h', pri: 'p1', owner: 'founders', h: 'Personal "vouching" post', d: 'Each founder posts a personal note from their own account. Not corporate. Human. Why they built it.', link: 'See voice rules · brand-foundation' },
+  { time: 'T-24h', pri: 'p1', owner: 'ops', h: 'Brand-account vouching post', d: 'Brand-account posts a personal-tone note. Not corporate. Why this exists. Why now.', link: 'See voice rules · brand-foundation' },
   { time: 'T-24h', pri: 'p1', owner: 'design', h: 'Spaces graphic + cover', d: 'Spaces 1500x500 cover, 1080x1920 promo, 1:1 share card. All in launch palette.', link: '04-launch-graphics/spaces-*.png' },
   { time: 'T-24h', pri: 'p2', owner: 'mods', h: 'Telegram welcome bot copy refresh', d: 'Update welcome flow with launch time + anti-scam warning + correct CA-will-go-here note.', link: 'TG bot dashboard' },
 
   { section: 'T-12h · 12 hours out · FAQ + ANTI-FUD', sub: '2026-06-25 · 01:00 ET' },
   { time: 'T-12h', pri: 'p0', owner: 'comms', h: 'Final tokenomics FAQ thread', d: 'Pre-empt every question. 10 tweet thread. Why pump.fun, why fairlaunch, why no presale, where vesting is on-chain, who the team is.', link: 'faq.md · 30 questions' },
   { time: 'T-12h', pri: 'p0', owner: 'mods', h: 'Anti-scam hard mode', d: 'Lock all DMs in DC. Pin "TEAM WILL NEVER DM YOU FIRST" in every channel. Ban any account creating channels with token-like names.', link: 'anti-scam-template.md' },
-  { time: 'T-12h', pri: 'p1', owner: 'founders', h: 'Sleep 6h', d: 'Both founders sleep. Real sleep. No phones in the room. You need the next 36 hours sharp.', link: '—' },
+  { time: 'T-12h', pri: 'p1', owner: 'ops', h: 'Sleep 6h', d: 'Ops sleep. Real sleep. No phones in the room. You need the next 36 hours sharp.', link: '—' },
   { time: 'T-12h', pri: 'p1', owner: 'eng', h: 'Status page goes live', d: 'status.edgeterminal.xyz live with green checks for API, site, alerts bot, radar feed.', link: 'status page · BetterStack' },
   { time: 'T-12h', pri: 'p2', owner: 'comms', h: 'Newsletter T-12 send', d: '"This is happening in 12 hours." Email to full list. One CTA: follow X / join TG.', link: 'Beehiiv · launch sequence #3' },
 
   { section: 'T-6h · 6 hours out · DOORS OPEN', sub: '2026-06-25 · 07:00 ET' },
-  { time: 'T-6h', pri: 'p0', owner: 'mods', h: 'Livestream room opens (#t-0)', d: 'Open the war room channel. All mods online. Founders silent until T-1h Spaces.', link: 'Discord #t-0 channel' },
+  { time: 'T-6h', pri: 'p0', owner: 'mods', h: 'Livestream room opens (#t-0)', d: 'Open the war room channel. All mods online. Brand-account silent until T-1h Spaces.', link: 'Discord #t-0 channel' },
   { time: 'T-6h', pri: 'p0', owner: 'comms', h: 'T-6 countdown swap', d: 'Swap pinned tweet to T-6 graphic. Crosspost to TG, DC.', link: '04-launch-graphics/t-6.png' },
   { time: 'T-6h', pri: 'p1', owner: 'design', h: 'CA placeholder graphics primed', d: 'Have the T-0 announcement graphic with [CA HERE] placeholder ready in 3 sizes. Photoshop file open, ready to slot in.', link: '04-launch-graphics/t-0-template.psd' },
   { time: 'T-6h', pri: 'p1', owner: 'eng', h: 'pump.fun creator wallet ready', d: 'SOL funded (0.5+ SOL for create + safety). Hardware wallet plugged in. Backup wallet on standby.', link: 'wallet-checklist.md' },
 
   { section: 'T-1h · 1 hour out · GO LIVE', sub: '2026-06-25 · 12:00 ET' },
-  { time: 'T-1h', pri: 'p0', owner: 'founders', h: 'Operators go live on X Spaces (voice only)', d: 'the $EDGE Operators open Spaces (voice only, anon stays anon). 60 min. Walk product, walk tokenomics, take questions. Hand-off into the launch moment.', link: 'X Spaces · scheduled link' },
+  { time: 'T-1h', pri: 'p0', owner: 'ops', h: 'Brand-account live on X Spaces (voice only)', d: 'Brand-account opens Spaces (voice only, private stays private). 60 min. Walk product, walk tokenomics, take questions. Hand-off into the launch moment.', link: 'X Spaces · scheduled link' },
   { time: 'T-1h', pri: 'p0', owner: 'comms', h: 'T-1h countdown post', d: 'Big T-1H graphic. Pin. Quote-tweet the Spaces. CTA: "stay on the timeline".', link: '30-day-content-calendar' },
   { time: 'T-1h', pri: 'p0', owner: 'mods', h: 'War room: voice channel open', d: 'Open Discord voice for mods only. Sync calls every 15 min. No public listening.', link: 'Discord #t-0-voice' },
   { time: 'T-1h', pri: 'p1', owner: 'design', h: 'CA-template hot standby', d: 'PSD open. Three layouts ready: 1500x500, 1200x675, 1080x1080. Just slot the CA string.', link: '04-launch-graphics/t-0-template.psd' },
 
   { section: 'T-0 · LAUNCH · 13:00 ET / 17:00 UTC', sub: '2026-06-25 · GO' },
-  { time: 'T-0', pri: 'p0', owner: 'founders', h: 'Create token on pump.fun', d: 'Hardware-wallet sign. Confirm name, ticker, image, description match brand. Capture CA the instant it returns.', link: 'pump.fun/create' },
+  { time: 'T-0', pri: 'p0', owner: 'ops', h: 'Create token on pump.fun', d: 'Hardware-wallet sign. Confirm name, ticker, image, description match brand. Capture CA the instant it returns.', link: 'pump.fun/create' },
   { time: 'T+0:01', pri: 'p0', owner: 'comms', h: 'CA broadcast — synchronized', d: 'Post CA to X (single tweet, pin instantly), TG (pinned + @all), DC (#announcements + @everyone), Reddit (manual). Within 60 seconds across all channels.', link: 'launch-broadcast-template.md' },
   { time: 'T+0:02', pri: 'p0', owner: 'mods', h: 'Mod-team CA verification', d: 'Every mod posts the CA in their own voice in DC + TG. Three independent confirmations within 5 min so users can pattern-match against scammers.', link: 'mod-cross-verify-template.md' },
   { time: 'T+0:03', pri: 'p0', owner: 'design', h: 'CA-graphic deploy', d: 'Slot CA into pre-built graphics. Reply to launch tweet with the image. Update Twitter banner.', link: '04-launch-graphics/t-0-template.psd' },
   { time: 'T+0:05', pri: 'p0', owner: 'comms', h: 'KOL retweet wave 1', d: 'DM all confirmed Tier S + Tier A KOLs with the pinned tweet link. They retweet within 15 min of receipt per agreement.', link: 'kol-outreach-kit.md · launch-window' },
   { time: 'T+0:15', pri: 'p1', owner: 'mods', h: 'Anti-scam sweep', d: 'Search X for [ticker] + [scammer]. Report fake accounts en masse. Pin "ONLY OFFICIAL CA IS X" in every channel.', link: 'anti-scam-template.md · launch' },
-  { time: 'T+0:30', pri: 'p0', owner: 'founders', h: 'Livestream Q&A', d: 'Founders return to Spaces (or new room). Take live questions for 60 min. Calm energy. Show the product.', link: 'X Spaces · post-launch' },
+  { time: 'T+0:30', pri: 'p0', owner: 'ops', h: 'Livestream Q&A', d: 'Brand-account returns to Spaces. Take live questions for 60 min. Calm energy. Show the product.', link: 'X Spaces · post-launch' },
 
   { section: 'T+1h → T+24h · HOLD THE LINE', sub: 'Watch metrics. Ship the recap.' },
   { time: 'T+1h', pri: 'p0', owner: 'comms', h: 'First holder milestone tweet', d: '"We made it past 100 holders." Cite pump.fun page. Thank-you energy, not flex energy.', link: '30-day-content-calendar (T+0 row)' },
   { time: 'T+2h', pri: 'p1', owner: 'mods', h: 'Holder onboarding wave', d: 'New holders flood TG/DC. Mod team welcomes, points to FAQ, gates 10K-holder channel as soon as bot can verify.', link: 'onboarding-script.md' },
   { time: 'T+3h', pri: 'p1', owner: 'comms', h: 'KOL retweet wave 2', d: 'Tier B + Tier C KOLs activate. Different copy than wave 1 so timeline doesn\'t feel coordinated.', link: 'kol-outreach-kit.md · wave-2' },
-  { time: 'T+6h', pri: 'p0', owner: 'eng', h: 'Liquidity + Raydium graduation check', d: 'Monitor bonding curve %. If approaching 100% (Raydium graduation threshold), pre-load LP-add transaction. Coordinate with founders.', link: 'pump.fun docs · graduation' },
+  { time: 'T+6h', pri: 'p0', owner: 'eng', h: 'Liquidity + Raydium graduation check', d: 'Monitor bonding curve %. If approaching 100% (Raydium graduation threshold), pre-load LP-add transaction. Coordinate via brand-account war room.', link: 'pump.fun docs · graduation' },
   { time: 'T+6h', pri: 'p1', owner: 'comms', h: 'Mid-day status post', d: 'Holders + volume + utility-tier-progress in one short post. No fluff.', link: '30-day-content-calendar' },
   { time: 'T+12h', pri: 'p0', owner: 'eng', h: 'First holder-only utility unlock', d: 'Whale-alerts TG bot goes live. Token-gate at 10K $EDGE. Verify wallet → role flow works end-to-end.', link: 'utility-launch-checklist.md' },
   { time: 'T+12h', pri: 'p1', owner: 'comms', h: 'Utility unlock announcement', d: 'Tweet + TG + DC: "first utility live, more this week." Drives holding behavior into night-2.', link: '30-day-content-calendar (T+3 row)' },
   { time: 'T+18h', pri: 'p2', owner: 'mods', h: 'Quiet-hours handoff', d: 'Founders sleep 6h. Mod team takes Q&A. Escalation chain documented in #t-0 voice.', link: 'escalation-chain.md' },
-  { time: 'T+24h', pri: 'p0', owner: 'founders', h: '24-hour recap thread', d: '8-12 tweet thread. Holders + volume + curve % + Raydium status + utilities live + lessons. Honest about what broke.', link: '30-day-content-calendar (T+1 row)' },
+  { time: 'T+24h', pri: 'p0', owner: 'ops', h: '24-hour recap thread', d: '8-12 tweet thread. Holders + volume + curve % + Raydium status + utilities live + lessons. Honest about what broke.', link: '30-day-content-calendar (T+1 row)' },
   { time: 'T+24h', pri: 'p1', owner: 'comms', h: 'Recap crosspost everywhere', d: 'Twitter thread → TG → DC → newsletter → Reddit. Tonal anchor: gratitude + transparency, not victory lap.', link: 'recap-crosspost-template.md' },
 ];
 

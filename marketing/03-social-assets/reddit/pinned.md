@@ -62,10 +62,10 @@ This sub is for people who take prediction markets seriously: traders, researche
 
 ## FOUNDERS
 
-- u/edgeops — an Operator (product, frontend)
-- u/edgeops — an Operator (data, infra)
+- u/edgeterminal — an Trader (product, frontend)
+- u/edgeterminal — an Trader (data, infra)
 
-Flair'd as Founder. We're here daily. AMA on the last Friday of every month.
+Brand-account flair on the mod account. AMA on the last Friday of every month.
 
 Welcome aboard.
 ```
@@ -186,7 +186,7 @@ Currently covered: TRUMP-2028, FED-CUT-DEC, BTC-100K, NBA-CHAMP-2026, plus 200+ 
 - **Picker Call** — green
 - **Devlog** — muted
 - **Resolved** — bone/white
-- **Founder** — lime (auto-assigned to u/edgeops + u/edgeops)
+
 
 ## Post-flair requirements
 - All posts must have a flair.

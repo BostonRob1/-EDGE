@@ -19,7 +19,7 @@ Community chat: @edgelounge
 Site: https://edge-two-psi.vercel.app/
 Token: $EDGE on Solana — pump.fun launch.
 
-Founders: @robert + @tye
+
 We never DM you about wallets, claims, or airdrops. Anyone who does is impersonating us.
 ```
 
@@ -49,7 +49,7 @@ X: @edgeterminal
 Discord: discord.gg/edge
 
 We're early. Build with us.
-— @robert + @tye
+
 ```
 
 ---

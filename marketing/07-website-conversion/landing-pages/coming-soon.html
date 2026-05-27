@@ -622,10 +622,68 @@
   .pillars-head { display: flex; flex-direction: column; gap: 24px; margin-bottom: 64px; max-width: 880px; }
   .pillars-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
+  }
+  /* ARB feature banner — sits ABOVE the pillars grid */
+  .arb-feature {
+    margin-bottom: 36px;
+    padding: 30px 36px;
+    border: 1px solid var(--border-bright);
+    background: linear-gradient(135deg, rgba(0,255,133,0.07), transparent 70%);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 32px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .arb-feature::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--lime), var(--green));
+    background-size: 200% 100%;
+    animation: arbShimmer 3.2s linear infinite;
+  }
+  @keyframes arbShimmer { from { background-position: 0% 0%; } to { background-position: -200% 0%; } }
+  .arb-feature .new-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    background: var(--green);
+    color: var(--void);
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 11px; letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+  .arb-feature .arb-head h3 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 42px); letter-spacing: -0.018em;
+    text-transform: uppercase; line-height: 0.95;
+    margin: 12px 0 6px;
+  }
+  .arb-feature .arb-head h3 .accent { color: var(--lime); }
+  .arb-feature .arb-head h3 .green { color: var(--green); }
+  .arb-feature .arb-head p {
+    font-size: 15px; line-height: 1.55; color: var(--white); opacity: 0.82; max-width: 56ch;
+  }
+  .arb-feature .arb-stats {
+    display: grid; grid-template-columns: repeat(3, auto); gap: 22px;
+  }
+  .arb-feature .arb-stats .cell { display: flex; flex-direction: column; gap: 4px; text-align: right; }
+  .arb-feature .arb-stats .cell .k {
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 10px; letter-spacing: 0.24em; color: var(--muted); text-transform: uppercase;
+  }
+  .arb-feature .arb-stats .cell .v {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 16px; color: var(--white);
+  }
+  .arb-feature .arb-stats .cell .v.green { color: var(--green); }
+  .arb-feature .arb-stats .cell .v.lime { color: var(--lime); }
+  @media (max-width: 1024px) {
+    .arb-feature { grid-template-columns: 1fr; gap: 22px; }
+    .arb-feature .arb-stats { grid-template-columns: repeat(3, 1fr); }
   }
   .pillar {
     background: var(--void-2);
@@ -839,7 +897,7 @@
     width: 78%;
   }
 
-  /* Anonymous-by-design banner */
+  /* Trust-contract banner */
   .anon-banner {
     margin-top: 64px;
     padding: 64px 48px;
@@ -1128,7 +1186,7 @@
               <button type="submit" class="primary">Get Access →</button>
             </form>
             <div class="capture-meta">
-              <span><span class="proof" id="proof-count">1,247</span> Operators on the list</span>
+              <span><span class="proof" id="proof-count">1,247</span> Traders on the list</span>
               <span class="sep">·</span>
               <span>No spam · 1 email only · unsubscribe anytime</span>
             </div>
@@ -1362,9 +1420,24 @@
     <div class="container">
       <div class="pillars-head reveal">
         <div class="eyebrow">02 · The Terminal</div>
-        <h2>Five pillars. <span class="accent">One screen.</span></h2>
-        <p class="lede">Markets, whales, sentiment, divergence, and a public track record — fused. Every pillar is live in the v0 terminal. Every pillar is free to use without a wallet.</p>
+        <h2>Six pillars. <span class="accent">One screen.</span></h2>
+        <p class="lede">Markets, whales, sentiment, divergence, a live arbitrage scanner, and a public track record — fused. Every pillar is live in the v0 terminal. Every pillar is free to use without a wallet.</p>
       </div>
+
+      <!-- ARB FEATURE BANNER — the big new thing -->
+      <a href="https://edge-two-psi.vercel.app/arb.html" target="_blank" rel="noopener" class="arb-feature reveal" style="text-decoration:none;color:inherit;">
+        <div class="new-pill">● New · Live</div>
+        <div class="arb-head">
+          <h3>Arbitrage <span class="green">Radar.</span></h3>
+          <p>Same event. Different prices. <strong style="color:var(--lime);">The edge is in the spread.</strong> The terminal scans every Polymarket market against every Kalshi market, finds the same-event pairs, computes <strong style="color:var(--white);">YES on one side + NO on the other</strong>, and surfaces fee-adjusted opportunities ranked by edge — HIGH / MEDIUM / VERIFY. Free money, when it exists.</p>
+        </div>
+        <div class="arb-stats">
+          <div class="cell"><div class="k">Markets Scanned</div><div class="v lime">1,420</div></div>
+          <div class="cell"><div class="k">Live Opps</div><div class="v green">14</div></div>
+          <div class="cell"><div class="k">Biggest Edge</div><div class="v green">+4.2pp</div></div>
+        </div>
+      </a>
+
       <div class="pillars-grid">
 
         <div class="pillar reveal d1">
@@ -1433,7 +1506,24 @@
         </div>
 
         <div class="pillar reveal d4">
-          <div class="num">05 · Track Record</div>
+          <div class="num">05 · Edge</div>
+          <h3>Arbitrage <span style="color:var(--green);">Radar</span></h3>
+          <p>Live cross-platform scanner. Polymarket ↔ Kalshi. Surfaces fee-adjusted edges where the same event is priced differently across venues. The free-money pillar.</p>
+          <div class="viz">
+            <svg viewBox="0 0 120 48" preserveAspectRatio="none">
+              <!-- Two price curves with shaded spread between -->
+              <path d="M 0 12 L 30 18 L 60 14 L 90 22 L 120 18 L 120 32 L 90 30 L 60 36 L 30 32 L 0 36 Z" fill="rgba(0,255,133,0.15)"/>
+              <polyline fill="none" stroke="#C4FF00" stroke-width="1.6" points="0,12 30,18 60,14 90,22 120,18"/>
+              <polyline fill="none" stroke="#FF006E" stroke-width="1.4" opacity="0.85" points="0,36 30,32 60,36 90,30 120,32"/>
+              <text x="2" y="46" font-family="JetBrains Mono" font-size="6" letter-spacing="1" fill="#C4FF00">POLY</text>
+              <text x="100" y="46" font-family="JetBrains Mono" font-size="6" letter-spacing="1" fill="#FF006E">KAL</text>
+            </svg>
+            <div class="meta"><span>LIVE OPPS · 24H</span><span><b style="color:var(--green);">14</b></span></div>
+          </div>
+        </div>
+
+        <div class="pillar reveal d4">
+          <div class="num">06 · Track Record</div>
           <h3>Proven <span class="accent">Calls</span></h3>
           <p>Every divergence flag is logged the moment it fires. Append-only public ledger. We can't edit our way out of a wrong call — and the receipts are working.</p>
           <div class="viz">
@@ -1515,7 +1605,7 @@
               <div class="amt">1M</div>
               <div>
                 <div class="perk">Analyst</div>
-                <div class="sub">Divergence Radar (picker algo) · public track record dashboard · wallet watchlists (50) · API access (rate-limited) · push + webhook alerts.</div>
+                <div class="sub">Divergence Radar (picker algo) · <strong style="color:var(--green);">Arbitrage Radar (cross-platform spreads)</strong> · public track record dashboard · wallet watchlists (50) · API access (rate-limited) · push + webhook alerts.</div>
               </div>
               <div class="glyph">››</div>
             </div>
@@ -1537,7 +1627,7 @@
             <div class="spec-row"><div class="k">Curve Migration</div><div class="v">RAYDIUM @ ~$69K MCAP</div></div>
             <div class="spec-row"><div class="k">LP at Migration</div><div class="v">$12K BURNED PERMANENTLY</div></div>
             <div class="spec-row"><div class="k">Team Allocation</div><div class="v lime">0%</div></div>
-            <div class="spec-row"><div class="k">Founders Buy</div><div class="v">ON OPEN MARKET · ANON</div></div>
+
           </div>
         </div>
 
@@ -1553,7 +1643,7 @@
       <div class="receipts-head reveal">
         <div class="eyebrow">04 · The Trust Contract</div>
         <h2>Receipts<br>over <span class="accent">résumés.</span></h2>
-        <p class="lede">We're anonymous. Names are private; the work is public. Three on-record, on-chain, publicly-verifiable artifacts replace the LinkedIn bio.</p>
+        <p class="lede">Three on-record, on-chain, publicly-verifiable artifacts make every claim $EDGE puts in front of you something a stranger can check before they transact.</p>
       </div>
 
       <div class="receipts-grid">
@@ -1598,15 +1688,15 @@
 
       </div>
 
-      <!-- Anon banner -->
+      <!-- Trust banner — product-led, no team mentions -->
       <div class="anon-banner reveal">
-        <div class="eyebrow">05 · The Operators</div>
-        <h3>Anonymous by design.<br><span class="accent">Public by code.</span></h3>
-        <p>Two operators. No names. Five years each shipping crypto and prediction-market infrastructure. The trust contract is built on artifacts a stranger can verify — open code on GitHub, on-chain treasury on Solana, an append-only public track record on the terminal. Reach the team under one shared identity: <strong style="color:var(--lime);font-weight:700;">@edgeops</strong>.</p>
+        <div class="eyebrow">05 · The Contract</div>
+        <h3>The work is <span class="accent">public.</span><br>The receipts are <span class="accent">on-chain.</span></h3>
+        <p>The terminal is free. The code is open-source. The treasury sits on-chain. The track record is append-only and public. Every claim $EDGE makes is something you can verify before you transact — no résumés to read, no trust to extend, no promises that aren't a tx hash away from proof.</p>
         <div class="meta">
-          <span>Op / 01 · <b>Product + Engineering</b></span>
-          <span>Op / 02 · <b>Growth + Comms</b></span>
-          <span>Shared · <b>@edgeops</b></span>
+          <span>Code · <b>GitHub</b></span>
+          <span>Treasury · <b>On-chain</b></span>
+          <span>Track Record · <b>Public Ledger</b></span>
         </div>
       </div>
     </div>
@@ -1626,7 +1716,7 @@
           <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
         </a>
         <div class="socials">
-          <a href="#">→ X · @edgeops</a>
+          <a href="#">→ X · @edgeterminal</a>
           <a href="#">→ Telegram</a>
           <a href="#">→ Discord</a>
           <a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">→ GitHub</a>
@@ -1643,7 +1733,7 @@
       <div class="footer-grid">
         <div class="col">
           <h4>$EDGE · Terminal</h4>
-          <p class="descr">The terminal for prediction markets. Money / Mouth / Edge — fused into one screen. Built on Solana. Anonymous by design. Public by code.</p>
+          <p class="descr">The terminal for prediction markets. Money / Mouth / Edge — fused into one screen. Built on Solana. The work is public. The receipts are on-chain.</p>
           <div class="contract">CONTRACT · TBA · LAUNCHES ON PUMP.FUN · JUN 09</div>
         </div>
         <div class="col">
@@ -1659,7 +1749,7 @@
         <div class="col">
           <h4>Community</h4>
           <ul>
-            <li><a href="#">X · @edgeops</a></li>
+            <li><a href="#">X · @edgeterminal</a></li>
             <li><a href="#">Telegram</a></li>
             <li><a href="#">Discord</a></li>
             <li><a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a></li>
@@ -1670,7 +1760,7 @@
           <ul>
             <li><a href="mailto:cashbridgehomes@gmail.com">Press</a></li>
             <li><a href="mailto:cashbridgehomes@gmail.com">Partnerships</a></li>
-            <li><a href="mailto:cashbridgehomes@gmail.com">Founders</a></li>
+            <li><a href="mailto:cashbridgehomes@gmail.com">General</a></li>
           </ul>
         </div>
       </div>

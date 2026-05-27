@@ -32,4 +32,4 @@ Create 5 highlights with chevron-on-void thumbnails (use pfp.svg as template):
 - WHALES — short reels showing biggest wallet moves
 - DIVERGENCE — daily divergence drops
 - TOKEN — launch info, holder tiers, CA
-- TEAM — the $EDGE Operators, behind-the-build content
+- TEAM — the $EDGE Traders, behind-the-build content

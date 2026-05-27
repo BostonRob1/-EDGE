@@ -71,7 +71,7 @@ Holders get:
 - terminal access tiers
 - whale-alert webhooks
 - divergence push notifications
-- gated rooms with the founders (@edgeops + an Operator)
+- gated rooms with the brand-account team
 
 Follow. Mute everything else.
 

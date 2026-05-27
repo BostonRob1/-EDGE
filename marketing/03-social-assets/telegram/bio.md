@@ -12,7 +12,7 @@
 - Username: `@edgelounge`
 - Public link: `t.me/edgelounge`
 - Description (255 char):
-  > Community room for the $EDGE terminal. Bring receipts. No DM scams — we never DM about wallets. Founders: @robert + @tye. Channel: @edgeterminal.
+  > Community room for the $EDGE terminal. Bring receipts. No DM scams — we never DM about wallets. Channel: @edgeterminal.
 
 ## Bio variants (sub-80 / sub-160)
 

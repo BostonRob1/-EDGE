@@ -18,7 +18,7 @@ We honor embargoes. We also expect them honored back.
 - Strategic partners (with their explicit permission)
 - Funding announcements (when applicable)
 - Major product milestones
-- Quotes from an Operator / an Operator (attributable, on the record)
+- Quotes from an Trader / an Trader (attributable, on the record)
 
 ## What we do not share under embargo
 
@@ -40,7 +40,7 @@ We'll respond within 24 hours, almost always with yes.
 
 ## Founder availability
 
-| Window | an Operator | an Operator |
+| Window | an Trader | an Trader |
 |---|---|---|
 | US East morning (08:00–11:00 ET) | ✓ | ✓ |
 | US West afternoon (14:00–17:00 PT) | ✓ | ✓ |
@@ -51,4 +51,4 @@ Booking link: TBD — for now use cashbridgehomes@gmail.com.
 
 ## What gets you Tier-1 access
 
-We define Tier-1 outlets as those whose coverage moves traders. We give Tier-1 outlets first look, longer embargoes, and direct founder access. Tier-1 self-defines by readership — not by ad spend. If you write for traders, partners, or operators in the prediction-markets, fintech, or crypto-infrastructure space, you qualify.
+We define Tier-1 outlets as those whose coverage moves traders. We give Tier-1 outlets first look, longer embargoes, and direct founder access. Tier-1 self-defines by readership — not by ad spend. If you write for traders, partners, or traders in the prediction-markets, fintech, or crypto-infrastructure space, you qualify.

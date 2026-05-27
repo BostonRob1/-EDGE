@@ -29,7 +29,7 @@ We discuss Polymarket and Kalshi markets, surface whale activity, dissect diverg
 - Token: $EDGE on Solana (pump.fun)
 - Discord: discord.gg/edge
 
-Operators: shared u/edgeops handle (anon team) — flaired as Operator
+Traders: shared u/edgeterminal handle (anon team) — flaired as Trader
 
 ## Community type
 Public

@@ -7,7 +7,7 @@ $EDGE / Notes
 Field notes from the edge of prediction markets. Money. Mouth. Edge. Long-form essays, dossiers, and devlogs from the team building the $EDGE terminal.
 
 ## Description (short)
-Long-form prediction-market intelligence. Polymarket dossiers, Kalshi breakdowns, whale autopsies, divergence playbooks, founder devlogs.
+Long-form prediction-market intelligence. Polymarket dossiers, Kalshi breakdowns, whale autopsies, divergence playbooks, build logs.
 
 ## URL slug
 medium.com/edge-notes (or /at-edge if -notes is taken)
@@ -25,11 +25,11 @@ medium.com/edge-notes (or /at-edge if -notes is taken)
 - Data Science
 
 ## Writers
-- an $EDGE Operator — `@edgeops` (intro: "Building $EDGE — a terminal for prediction markets.")
-- an Operator — `@tye` (intro: "Data + infra at $EDGE. The market doesn't lie; the data sometimes does.")
+- an $EDGE Trader — `@edgeterminal` (intro: "Building $EDGE — a terminal for prediction markets.")
+- 
 
 ## Contributor application gate
-Closed for v1. Founders write everything for the first 90 days. Open submissions after the publication has 10+ posts and a reputation surface.
+Closed for v1. Brand-account writes everything for the first 90 days. Open submissions after the publication has 10+ posts and a reputation surface.
 
 ## SEO meta
 - Title: $EDGE / Notes — Prediction-Market Intelligence

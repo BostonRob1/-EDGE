@@ -3,10 +3,10 @@
 > **Goal:** Reserve every P0 + P1 social handle, lock all primary domains, and stand up a custom-domain email loop in **120 minutes flat.** Run end-to-end without context switches. Two people max — one driver, one verifier.
 >
 > **Pre-flight (do these 24h before sprint):**
-> 1. Create 1Password vault `EDGE-Launch`. Share with an Operator.
+> 1. Create 1Password vault `EDGE-Launch`. Share with an Trader.
 > 2. Buy a fresh SIM or Google Voice number reserved for the brand (`+1-XXX-XXX-XXXX`). Many platforms now require SMS at signup.
 > 3. Generate a 24-char password in 1Password as the **default password** for every account in this sprint. Field: `EDGE_DEFAULT_PWD`. (You'll rotate per-platform later; speed matters today.)
-> 4. Decide on the founders' Gmail as a **temporary** signup address: `edgeterminal.launch@gmail.com`. Switch all aliases to `hello@edgeterminal.xyz` once the domain is live in step 8.
+> 4. Decide on the the shared Gmail as a **temporary** signup address: `edgeterminal.launch@gmail.com`. Switch all aliases to `hello@edgeterminal.xyz` once the domain is live in step 8.
 
 ---
 
@@ -28,9 +28,9 @@
 ### Step 2 — Cloudflare Email Routing on edgeterminal.xyz  (0:08–0:14)
 - **URL:** https://dash.cloudflare.com → edgeterminal.xyz → Email → Email Routing
 - **Action:** Enable. Add destination addresses: the shared ops Gmail (currently cashbridgehomes@gmail.com until a dedicated anon address is provisioned). Verify both. Then create routing rules:
-  - `hello@` → both founders
-  - `founders@`, `press@`, `partnerships@`, `legal@`, `security@`, `abuse@`, `dmca@`, `careers@`, `support@` → both founders (split later)
-  - Catch-all → an Operator
+  - `hello@` → the team
+  - `press@`, `press@`, `partnerships@`, `legal@`, `security@`, `abuse@`, `dmca@`, `careers@`, `support@` → the team (split later)
+  - Catch-all → an Trader
 - **Gotcha:** Routing rules require MX + TXT verification records (auto-set by Cloudflare since you bought the domain there). Takes ~2 min to propagate.
 
 ### Step 3 — Resend account + verify domain  (0:14–0:20)
@@ -50,7 +50,7 @@
 - **Handle:** try `@edgeterminal` → fallback `@edgemarkets` → `@edge_terminal` → `@theedgeterminal` (in order, do NOT skip)
 - **Display name:** `$EDGE` (the dollar sign + caps — X allows this)
 - **Bio:** placeholder from `bios-master.md` 160-char variant 1
-- **Action:** Confirm email. Enable 2FA via authenticator. Apply for X Premium (an Operator pays; reimburse from treasury) — unlocks 4K char + analytics + edit.
+- **Action:** Confirm email. Enable 2FA via authenticator. Apply for X Premium (an Trader pays; reimburse from treasury) — unlocks 4K char + analytics + edit.
 - **Gotcha:** X aggressively bans new signups on shared IP. If banned at first signup, file an appeal AND try from a different IP (mobile hotspot works). Do not retry-spam.
 
 ### Step 5 — Telegram Announce + Community  (0:28–0:38)
@@ -76,7 +76,7 @@
 - **Username:** `edgeterminal`
 - **Action:**
   - Create server "$EDGE Terminal"
-  - Roles: `founder` (admin) · `mod` · `holder` · `whale` (gated later) · `bot`
+  - Roles: `admin` · `mod` · `holder` · `whale` (gated later) · `bot`
   - Channels: `#announce` (read-only) · `#general` · `#signals` · `#whales` · `#dev` · `#bugs`
   - Vanity URL: claim `discord.gg/edgeterminal` (requires Boost level 3, queue this)
   - Verification: phone-verify required for new joiners; lowest spam tier
@@ -95,7 +95,7 @@
 - **Action:**
   - Free plan to start
   - Org name: `edgeterminal`
-  - Invite Op / 01 (owner) + Op / 02 (owner)
+  - Invite  (owner) +  (owner)
   - Enforce 2FA org-wide (Settings → Authentication security)
   - Transfer `BostonRob1/-EDGE` repo → `edgeterminal` org, rename to `app`
   - Set up `CODEOWNERS` and branch protection on `main`
@@ -103,8 +103,8 @@
 
 ### Step 9 — Vercel Team  (0:58–1:02)
 - **URL:** https://vercel.com/teams/create
-- **Email:** existing Vercel account (the operators')
-- **Action:** Create Team named `edgeterminal`. Transfer the `edge-two-psi` project into the team. Add an Operator as Member. Connect custom domain `edgeterminal.xyz` once DNS propagates. Set production branch to `main`.
+- **Email:** existing Vercel account (the traders')
+- **Action:** Create Team named `edgeterminal`. Transfer the `edge-two-psi` project into the team. Add an Trader as Member. Connect custom domain `edgeterminal.xyz` once DNS propagates. Set production branch to `main`.
 - **Gotcha:** Free tier teams cap at 1 production deployment per project. Fine for launch; upgrade to Pro at week 2 for previews + analytics.
 
 ### Step 10 — pump.fun  (1:02–1:06)
@@ -140,7 +140,7 @@
 ### Step 15 — Reddit  (1:24–1:30)
 - **URL:** https://reddit.com/register
 - **User account:** `u/edgeterminal` → confirm email → build 10 karma over a week (this is why you start early)
-- **Then:** https://reddit.com/subreddits/create → `r/EdgeTerminal` (requires 30d account + karma; if blocked, use the operators' existing high-karma account to create, transfer mod)
+- **Then:** https://reddit.com/subreddits/create → `r/EdgeTerminal` (requires 30d account + karma; if blocked, use the traders' existing high-karma account to create, transfer mod)
 - **Gotcha:** Reddit shadowbans new accounts that post crypto links from day one. Lurk + comment for 48h before posting.
 
 ### Step 16 — YouTube + TikTok + Instagram  (1:30–1:36)
@@ -186,7 +186,7 @@
 ## SPRINT COMPLETE CHECKLIST
 
 - [ ] 6 domains owned, all DNS in Cloudflare
-- [ ] 10 email aliases routing to founders
+- [ ] 10 email aliases routing to a shared inbox
 - [ ] All 10 P0 accounts created + 2FA on
 - [ ] All 12 P1 accounts created (form-only listings staged, not submitted)
 - [ ] All 10 P2 squats reserved with a PFP

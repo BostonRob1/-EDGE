@@ -33,7 +33,7 @@ Token: $EDGE on Solana (pump.fun launch).
 # trade-tape          → cross-venue trade tape. Watch only.
 # dev-log             → what we shipped this week. PRs welcome.
 # lounge              → off-topic. Music, gym, life.
-# holders-only        → 🔒 token-gated. AMA, alpha, founder DMs.
+# holders-only        → 🔒 token-gated. AMA, alpha, brand-account engagement.
 # governance          → 🔒 holders-only. Vote on which markets get bot coverage.
 
 ────────────────────────────────────────
@@ -41,14 +41,14 @@ Token: $EDGE on Solana (pump.fun launch).
 **ROLES** (claim in #role-pickup)
 
 @Watcher          → default on join. Read all public rooms.
-@Builder          → contributing to data, code, content. DM @robert.
+@Builder          → contributing to data, code, content. Apply via #contribute.
 @Holder           → ≥1 $EDGE. Unlocks #holders-only.
 @Holder-1K        → ≥1,000 $EDGE. Webhook access to whale alerts.
 @Holder-10K       → ≥10,000 $EDGE. Push notifications + governance vote.
-@Holder-100K      → ≥100,000 $EDGE. Private founders channel + monthly call.
+@Trader-100K      → ≥100,000 $EDGE. Custom firehose thresholds + deep Rug scan + watchlists.
 @Whale            → ≥1M $EDGE. Direct line. Help shape the roadmap.
 @Mod              → community ops. Apply via DM.
-@Founder          → @robert + @tye. We're here every day.
+
 
 ────────────────────────────────────────
 
@@ -57,12 +57,12 @@ Token: $EDGE on Solana (pump.fun launch).
 1. Bring receipts. Screenshots, links, on-chain hashes, market IDs — not vibes.
 2. Disagree with the data, not the person. Heat is fine. Insults aren't.
 3. No shilling unrelated tokens. We're a prediction-market room, not a chain-shill room. First warning, then ban.
-4. No DM scams. We will never DM you about claiming, airdrops, or "verifying your wallet." If we DM, it's the founders, and you can verify via this channel.
+4. No DM scams. We will never DM you about claiming, airdrops, or "verifying your wallet." Anyone DMing you claiming to be from $EDGE without prior introduction in this channel is a scammer.
 5. The picker algorithm log is public and immutable. Don't ask us to edit it after a bad call. The track record is the point.
 6. English is the working language. Translation bots welcome.
 7. If a market is decided, mark the thread RESOLVED with the outcome. We're building a referenceable corpus.
 
-Founders: @robert · @tye
+
 Mods: posted in #staff-list
 
 We're early. Build with us.

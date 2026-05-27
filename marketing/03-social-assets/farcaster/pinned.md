@@ -33,7 +33,7 @@ If you're a quant, designer, or just live in markets, follow the channel.
 ```
 $EDGE is launching on Solana via pump.fun.
 
-Holders get terminal tiers, whale-alert webhooks, divergence push, founder DMs.
+Holders get terminal tiers, whale-alert webhooks, divergence push, gated alpha rooms.
 
 Frame-gated drops will be cast here. Connect a wallet that holds $EDGE to unlock.
 
@@ -60,7 +60,7 @@ Mouth says no. Money says yes. That gap is the edge.
 ```
 Follow. Subscribe to /edge. Cast a market you want us to cover.
 
-Founders: @robert + @tye
+
 
 Bloomberg-grade interface, degen-grade speed. Watch the action. Before you bet.
 ```

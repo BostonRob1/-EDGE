@@ -47,9 +47,9 @@ VO:
 "Our public picker hit 64% last quarter. All calls live. No retcons. The track record is immutable on-chain — that's the point."
 
 [36.0s — 48.0s]
-CUT to founders intro card (B&W stills of the $EDGE Operators, Anton labels).
+CUT to brand intro card (chevron mark + wordmark, Anton labels).
 VO:
-"Built by traders, for traders. the $EDGE Operators. We use this every day. The terminal is what we wished existed."
+"Built by traders, for traders. the $EDGE Traders. We use this every day. The terminal is what we wished existed."
 
 [48.0s — 60.0s]
 CUT to the channel content roadmap:
@@ -88,7 +88,7 @@ End: CTA to terminal, subscribe, $EDGE token info.
 Title: **The wallet that hit Trump-Powell first — anatomy of a Polymarket whale**
 Length: 6–9 min
 
-## Video #3 — Founder devlog #001
+## Video #3 — Build devlog #001
 Title: **Shipping $EDGE — devlog 001: divergence radar v1**
 Length: 4–6 min
 Frequency: weekly

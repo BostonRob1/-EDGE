@@ -52,10 +52,9 @@ The closed-source web terminal lives at [edge-two-psi.vercel.app](https://edge-t
 3. Keep PRs under 400 lines unless coordinated.
 4. Tests required for `divergence-kit`, `poly-tape`, `kalshi-rest`. Optional but appreciated elsewhere.
 
-## Founders
 
-- **an $EDGE Operator** — [@edgeops](https://github.com/robertnoejr) — product, frontend
-- **an Operator** — [@tye](https://github.com/tye) — data, infra
+- **an $EDGE Trader** — [@edgeterminal](https://github.com/robertnoejr) — product, frontend
+
 
 ## License
 

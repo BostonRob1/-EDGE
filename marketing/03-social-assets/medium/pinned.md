@@ -73,7 +73,7 @@ We've spent the last six months building the terminal we wanted to use for these
 ### Closing
 > The pollster era ended in 2024. We don't yet have the Bloomberg for what replaced it. We're going to build it. Field notes here every two weeks.
 >
-> — an $EDGE Operator + an Operator
+> — an $EDGE Trader + an Trader
 
 ---
 
@@ -92,7 +92,7 @@ Subscribe to $EDGE / Notes for field notes from the edge of prediction markets �
 | 2 | Anatomy of a Polymarket whale: 0xA3F2 and the Trump-Powell trade | Dossier | ~1800w |
 | 3 | Sentiment divergence: a worked playbook | Tutorial | ~2200w |
 | 4 | Kalshi vs Polymarket: how to read cross-venue arbitrage | Reference | ~1500w |
-| 5 | Devlog 001: shipping the divergence radar | Founder log | ~1200w |
+| 5 | Devlog 001: shipping the divergence radar | Build log | ~1200w |
 | 6 | What prediction markets get wrong (and why that's the trade) | Essay | ~2400w |
 
 Publish cadence: every other Tuesday. 06:00 ET (US morning + UK lunch window).
