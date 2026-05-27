@@ -56,7 +56,7 @@ function renderActiveCalls(calls) {
       const ch24 = Number(c.price_change_24h) || 0;
       const chCls = ch24 > 0 ? "pos" : ch24 < 0 ? "neg" : "";
       return `
-        <div class="call ${cls}" data-url="${escapeAttr(c.url || "#")}">
+        <div class="call ${cls}" data-url="${escapeAttr(c.slug ? "/market.html?slug=" + encodeURIComponent(c.slug) : c.url || "#")}">
           <div class="call-head">
             <div>
               <div class="call-tag">${escapeHtml(c.edge_call)}</div>
@@ -107,7 +107,8 @@ function renderAllMarkets(markets) {
     const cls = callCls(m.edge_call);
     const wrap = document.createElement("div");
     wrap.className = "market-row-wrap";
-    wrap.dataset.url = m.url || "#";
+    // Route to our internal per-market page instead of external Polymarket
+    wrap.dataset.url = m.slug ? "/market.html?slug=" + encodeURIComponent(m.slug) : m.url || "#";
     wrap.innerHTML = `
       <div class="title">${escapeHtml(m.title)}</div>
       <div class="money">
@@ -125,11 +126,17 @@ function renderAllMarkets(markets) {
   });
 }
 
-// Click delegation — any element with data-url opens external
+// Click delegation — internal links (starting with /) navigate in-tab,
+// external markets open in a new tab.
 document.addEventListener("click", (e) => {
   const el = e.target.closest("[data-url]");
-  if (el && el.dataset.url && el.dataset.url !== "#") {
-    window.open(el.dataset.url, "_blank", "noopener");
+  if (!el) return;
+  const url = el.dataset.url;
+  if (!url || url === "#") return;
+  if (url.startsWith("/")) {
+    location.href = url;
+  } else {
+    window.open(url, "_blank", "noopener");
   }
 });
 

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Market — Money Meets Mouth</title>
+<meta name="description" content="Live market analysis on $EDGE — Money flow (whale trades), Mouth signal (chatter), divergence score, and the affiliate-routed trade CTA. One screen.">
+
+<!-- OG meta defaults — overridden dynamically by market.js once the market loads -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="$EDGE Market — Money Meets Mouth" id="ogTitle">
+<meta property="og:description" content="Live market analysis. Money flow + Mouth signal + Edge divergence." id="ogDesc">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge" id="ogImage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge" id="twImage">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+<script defer src="/lib/client/elite.js"></script>
+<script defer src="/lib/client/ticker.js"></script>
+<script defer src="/lib/client/palette.js"></script>
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover { opacity: 1; color: var(--lime); }
+
+/* ── BACK LINK ─────────────────────────────────────────────────────── */
+.back-row {
+  max-width: 1200px; margin: 24px auto 0; padding: 0 32px;
+}
+.back-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-decoration: none; letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.back-link:hover { color: var(--lime); }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  max-width: 1200px; margin: 32px auto 0; padding: 0 32px;
+}
+.hero .eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 14px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.hero .eyebrow .src-poly { color: var(--magenta); }
+.hero .eyebrow .src-kalshi { color: var(--lime); }
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(40px, 6vw, 72px); line-height: 1; letter-spacing: -0.02em;
+  text-transform: uppercase; max-width: 1000px; margin-bottom: 24px;
+}
+
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1px; background: var(--border); border: 1px solid var(--border-bright);
+  margin-top: 32px;
+}
+.hero-cell { background: var(--void-2); padding: 22px 24px; }
+.hero-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.hero-cell .val {
+  font-family: 'Anton', sans-serif; font-size: 44px; line-height: 1;
+  letter-spacing: 0.02em;
+}
+.hero-cell.yes .val { color: var(--green); }
+.hero-cell.no .val { color: var(--red); }
+.hero-cell.vol .val { color: var(--lime); }
+.hero-cell.age .val { color: var(--white); }
+.hero-cell .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 6px;
+}
+
+.trade-cta {
+  max-width: 1200px; margin: 24px auto 0; padding: 0 32px;
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.btn-trade {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 28px; background: var(--lime); color: var(--void);
+  border: none; font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: background 0.15s, transform 0.05s;
+}
+.btn-trade:hover { background: #d8ff33; }
+.btn-trade:active { transform: scale(0.98); }
+.btn-trade .arrow { font-weight: 400; }
+.btn-share {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 24px; background: transparent; color: var(--white);
+  border: 1px solid var(--border-bright);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-share:hover { border-color: var(--lime); color: var(--lime); }
+
+/* ── SECTIONS ────────────────────────────────────────────────────────── */
+section.panel {
+  max-width: 1200px; margin: 64px auto 0; padding: 0 32px;
+}
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
+  gap: 12px; flex-wrap: wrap;
+}
+.section-head h2 {
+  font-family: 'Anton', sans-serif; font-size: 28px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.section-head h2 .accent { color: var(--lime); }
+.section-head h2 .mag { color: var(--magenta); }
+.section-head .meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* ── EDGE PANEL ─────────────────────────────────────────────────────── */
+.edge-panel {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 28px; border-radius: 2px;
+}
+.edge-panel .call-tag {
+  display: inline-flex; padding: 6px 14px; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; border-radius: 2px; margin-bottom: 18px;
+}
+.edge-panel .call-tag.insider { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.edge-panel .call-tag.front { background: rgba(255, 0, 110, 0.12); color: var(--magenta); }
+.edge-panel .call-tag.aligned,
+.edge-panel .call-tag.quiet,
+.edge-panel .call-tag.loud,
+.edge-panel .call-tag.no { background: var(--void-3); color: var(--muted); }
+.edge-bars { display: flex; flex-direction: column; gap: 14px; }
+.bar-row {
+  display: grid; grid-template-columns: 90px 1fr 60px;
+  align-items: center; gap: 14px;
+}
+.bar-row .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+}
+.bar-row.money .lbl { color: var(--lime); }
+.bar-row.mouth .lbl { color: var(--magenta); }
+.bar-row .bar {
+  height: 10px; background: var(--void-3); border-radius: 2px; overflow: hidden;
+  position: relative;
+}
+.bar-row .bar::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: var(--w, 0%); transition: width 0.6s ease;
+}
+.bar-row.money .bar::after { background: var(--lime); }
+.bar-row.mouth .bar::after { background: var(--magenta); }
+.bar-row .v {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  color: var(--white); font-weight: 700; text-align: right;
+}
+.edge-thesis {
+  margin-top: 18px; padding-top: 18px;
+  border-top: 1px dashed var(--border);
+  color: var(--muted); font-size: 14px; line-height: 1.6;
+}
+.edge-thesis strong { color: var(--white); }
+
+/* ── WHALES TABLE ────────────────────────────────────────────────────── */
+.whales-table {
+  display: grid;
+  grid-template-columns: 36px 1fr auto auto auto;
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.whales-table > * {
+  background: var(--void-2); padding: 10px 14px;
+  display: flex; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+}
+.whales-table .h {
+  background: var(--void-3); color: var(--muted);
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+}
+.whales-table .avatar {
+  width: 28px; height: 28px; border-radius: 50%; overflow: hidden;
+  background: var(--void-3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Anton', sans-serif; font-size: 12px; color: var(--lime);
+  padding: 0;
+}
+.whales-table .avatar img { width: 100%; height: 100%; object-fit: cover; }
+.whales-table .name { color: var(--white); font-weight: 500; }
+.whales-table .side { font-weight: 700; letter-spacing: 0.05em; }
+.whales-table .side.BUY { color: var(--green); }
+.whales-table .side.SELL { color: var(--red); }
+.whales-table .price { color: var(--muted); justify-content: flex-end; }
+.whales-table .usd { color: var(--lime); font-weight: 700; justify-content: flex-end; }
+.whale-row-link {
+  display: contents; cursor: pointer;
+}
+.whale-row-link > *:not(.h) { transition: background 0.15s; }
+.whale-row-link:hover > *:not(.h) { background: var(--void-3); }
+
+/* ── BUZZ PANEL ─────────────────────────────────────────────────────── */
+.buzz-panel {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 24px; border-radius: 2px;
+}
+.buzz-stats {
+  display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 18px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.buzz-stat .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+}
+.buzz-stat .v {
+  font-family: 'Anton', sans-serif; font-size: 24px; color: var(--lime); line-height: 1;
+}
+.buzz-top-thread {
+  font-size: 14px; color: var(--white); line-height: 1.5;
+}
+.buzz-top-thread .src {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--magenta); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* ── EMPTY / LOADING ────────────────────────────────────────────────── */
+.empty {
+  padding: 32px 24px; text-align: center; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7;
+  background: var(--void-2); border: 1px solid var(--border);
+}
+.empty strong { color: var(--white); }
+.skel {
+  background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2));
+  background-size: 200% 100%; animation: shimmer 1.4s linear infinite;
+  border-radius: 2px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+footer {
+  margin-top: 96px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .hero-grid { grid-template-columns: 1fr 1fr; }
+  .whales-table { grid-template-columns: 28px 1fr auto auto; }
+  .whales-table .price { display: none; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/token.html">Token</a></li>
+    </ul>
+  </nav>
+  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+</header>
+
+<div class="back-row">
+  <a href="/dashboard.html" class="back-link">← Back to dashboard</a>
+</div>
+
+<main id="main">
+  <div class="hero" id="hero">
+    <div class="skel" style="height:200px; max-width:1200px;"></div>
+  </div>
+</main>
+
+<footer>
+  Live market analysis · not financial advice · verify before betting · <a href="/">$EDGE home</a>
+</footer>
+
+<script type="module" src="/market.js"></script>
+</body>
+</html>

@@ -780,12 +780,297 @@ function ArbCard() {
   );
 }
 
+// --- Per-context dynamic cards ----------------------------------------------
+// These take query params from the request URL so any share of a specific
+// market / whale / divergence call lands a contextual branded card instead
+// of a generic image.
+
+function MarketCard(params) {
+  const title = (params.title || "Polymarket / Kalshi market").slice(0, 110);
+  const yes = clampInt(params.yes, 50);
+  const no = clampInt(params.no, 100 - yes);
+  const vol = params.vol || "—";
+  const platform = String(params.platform || "POLY").toUpperCase();
+  const platformColor = platform === "KALSHI" ? C.lime : C.magenta;
+  return el(
+    "div",
+    {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
+      },
+    },
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("$EDGE · MARKET"),
+    el(
+      "div",
+      { style: { display: "flex", flexDirection: "column", padding: "44px 56px 36px 56px", flex: 1 } },
+      Eyebrow(`${platform} · LIVE MARKET`, platformColor),
+      // Title — clamped to two lines for visual rhythm
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: title.length > 60 ? 72 : 96,
+            lineHeight: 0.95,
+            letterSpacing: "-2px",
+            marginTop: 28,
+            color: C.white,
+            maxWidth: 1080,
+          },
+        },
+        title,
+      ),
+      // Odds row
+      el(
+        "div",
+        { style: { display: "flex", alignItems: "center", gap: 48, marginTop: 36 } },
+        el(
+          "div",
+          { style: { display: "flex", flexDirection: "column" } },
+          el("div", { style: { display: "flex", fontFamily: "JetBrains Mono", fontSize: 16, color: C.muted, letterSpacing: "4px" } }, "YES"),
+          el("div", { style: { display: "flex", fontFamily: "Anton", fontSize: 96, lineHeight: 0.9, color: "#00FF85" } }, `${yes}¢`),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", flexDirection: "column" } },
+          el("div", { style: { display: "flex", fontFamily: "JetBrains Mono", fontSize: 16, color: C.muted, letterSpacing: "4px" } }, "NO"),
+          el("div", { style: { display: "flex", fontFamily: "Anton", fontSize: 96, lineHeight: 0.9, color: "#FF3344" } }, `${no}¢`),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", flexDirection: "column", marginLeft: "auto" } },
+          el("div", { style: { display: "flex", fontFamily: "JetBrains Mono", fontSize: 16, color: C.muted, letterSpacing: "4px" } }, "24H VOL"),
+          el("div", { style: { display: "flex", fontFamily: "Anton", fontSize: 80, lineHeight: 0.9, color: C.lime } }, String(vol)),
+        ),
+      ),
+      Hairline(),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "auto",
+            fontFamily: "JetBrains Mono",
+            fontWeight: 500,
+            fontSize: 18,
+            letterSpacing: "5px",
+            color: C.muted,
+            textTransform: "uppercase",
+          },
+        },
+        el("div", { style: { display: "flex", gap: 14 } },
+          el("div", { style: { display: "flex", color: C.lime } }, "MONEY"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.white } }, "MOUTH"),
+          el("div", { style: { display: "flex" } }, "·"),
+          el("div", { style: { display: "flex", color: C.lime } }, "EDGE"),
+        ),
+        el("div", { style: { display: "flex", color: C.lime } }, "edge.two-psi →"),
+      ),
+    ),
+  );
+}
+
+function WhaleCard(params) {
+  const name = (params.name || "ANON OPERATOR").slice(0, 36);
+  const value = params.value || "—";
+  const positions = params.positions || "—";
+  const pnl = params.pnl || "";
+  const pnlNum = Number(params.pnlnum || 0);
+  const pnlColor = pnlNum > 0 ? "#00FF85" : pnlNum < 0 ? "#FF3344" : C.white;
+  return el(
+    "div",
+    {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
+      },
+    },
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("$EDGE · WHALE WATCH"),
+    el(
+      "div",
+      { style: { display: "flex", flexDirection: "column", padding: "44px 56px 36px 56px", flex: 1 } },
+      Eyebrow("LIVE WALLET · POLYMARKET", C.lime),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: name.length > 18 ? 100 : 144,
+            lineHeight: 0.9,
+            letterSpacing: "-4px",
+            marginTop: 28,
+            color: C.white,
+          },
+        },
+        name,
+      ),
+      el(
+        "div",
+        { style: { display: "flex", gap: 48, marginTop: 40 } },
+        el(
+          "div",
+          { style: { display: "flex", flexDirection: "column" } },
+          el("div", { style: { display: "flex", fontFamily: "JetBrains Mono", fontSize: 16, color: C.muted, letterSpacing: "4px" } }, "PORTFOLIO"),
+          el("div", { style: { display: "flex", fontFamily: "Anton", fontSize: 88, lineHeight: 0.9, color: C.lime } }, String(value)),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", flexDirection: "column" } },
+          el("div", { style: { display: "flex", fontFamily: "JetBrains Mono", fontSize: 16, color: C.muted, letterSpacing: "4px" } }, "OPEN POS"),
+          el("div", { style: { display: "flex", fontFamily: "Anton", fontSize: 88, lineHeight: 0.9, color: C.white } }, String(positions)),
+        ),
+        pnl
+          ? el(
+              "div",
+              { style: { display: "flex", flexDirection: "column" } },
+              el("div", { style: { display: "flex", fontFamily: "JetBrains Mono", fontSize: 16, color: C.muted, letterSpacing: "4px" } }, "P&L"),
+              el("div", { style: { display: "flex", fontFamily: "Anton", fontSize: 88, lineHeight: 0.9, color: pnlColor } }, String(pnl)),
+            )
+          : el("div", { style: { display: "flex" } }),
+      ),
+      Hairline(),
+      el(
+        "div",
+        { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", fontFamily: "JetBrains Mono", fontWeight: 500, fontSize: 18, letterSpacing: "5px", color: C.muted, textTransform: "uppercase" } },
+        el("div", { style: { display: "flex", color: C.white } }, "FOLLOW THE SMART MONEY"),
+        el("div", { style: { display: "flex", color: C.lime } }, "/whales →"),
+      ),
+    ),
+  );
+}
+
+function DivergenceCard(params) {
+  const title = (params.title || "Live market").slice(0, 90);
+  const money = clampInt(params.money, 50);
+  const mouth = clampInt(params.mouth, 50);
+  const call = String(params.call || "INSIDER FLOW").toUpperCase();
+  const callColor = call.includes("INSIDER") ? C.lime : call.includes("FRONT") ? C.magenta : C.muted;
+  return el(
+    "div",
+    {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
+      },
+    },
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("$EDGE · DIVERGENCE CALL"),
+    el(
+      "div",
+      { style: { display: "flex", flexDirection: "column", padding: "44px 56px 36px 56px", flex: 1 } },
+      Eyebrow(call, callColor),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: title.length > 60 ? 64 : 84,
+            lineHeight: 0.95,
+            letterSpacing: "-2px",
+            marginTop: 28,
+            color: C.white,
+            maxWidth: 1080,
+          },
+        },
+        title,
+      ),
+      // Money vs Mouth bars
+      el(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 18, marginTop: 40 } },
+        ProgressBar("MONEY", money, C.lime),
+        ProgressBar("MOUTH", mouth, C.magenta),
+      ),
+      Hairline(),
+      el(
+        "div",
+        { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto", fontFamily: "JetBrains Mono", fontWeight: 500, fontSize: 18, letterSpacing: "5px", color: C.muted, textTransform: "uppercase" } },
+        el("div", { style: { display: "flex", color: C.white } }, "WHERE MONEY MEETS MOUTH"),
+        el("div", { style: { display: "flex", color: C.lime } }, "/edge →"),
+      ),
+    ),
+  );
+}
+
+// Horizontal labeled progress bar — used inside DivergenceCard
+function ProgressBar(label, value, color) {
+  const pct = Math.max(0, Math.min(100, Number(value) || 0));
+  return el(
+    "div",
+    { style: { display: "flex", flexDirection: "column", gap: 8 } },
+    el(
+      "div",
+      { style: { display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: "JetBrains Mono", fontSize: 18, letterSpacing: "4px", color: C.muted } },
+      el("div", { style: { display: "flex", color, fontWeight: 700 } }, label),
+      el("div", { style: { display: "flex", color: C.white, fontWeight: 700, fontSize: 26 } }, String(pct)),
+    ),
+    el(
+      "div",
+      {
+        style: {
+          display: "flex",
+          width: "100%",
+          height: 14,
+          backgroundColor: C.void3,
+          borderRadius: 2,
+          overflow: "hidden",
+        },
+      },
+      el("div", {
+        style: {
+          display: "flex",
+          width: `${pct}%`,
+          height: "100%",
+          backgroundColor: color,
+        },
+      }),
+    ),
+  );
+}
+
+function clampInt(v, fallback) {
+  const n = parseInt(v, 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(0, Math.min(100, n));
+}
+
 // Map of surfaces → renderers ------------------------------------------------
+// Static renderers ignore params; dynamic ones receive the parsed query.
 const cards = {
   "coming-soon": ComingSoonCard,
   launch: LaunchCard,
   edge: EdgeCard,
   arb: ArbCard,
+  market: MarketCard,
+  whale: WhaleCard,
+  divergence: DivergenceCard,
 };
 
 export default async function handler(req) {
@@ -793,9 +1078,15 @@ export default async function handler(req) {
   const surface = (url.searchParams.get("surface") || "coming-soon").toLowerCase();
   const render = cards[surface] || cards["coming-soon"];
 
+  // Collect query params for dynamic cards (excluding the surface itself)
+  const params = {};
+  for (const [k, v] of url.searchParams.entries()) {
+    if (k !== "surface") params[k] = v;
+  }
+
   const fonts = await loadFonts();
 
-  return new ImageResponse(render(), {
+  return new ImageResponse(render(params), {
     width: 1200,
     height: 630,
     fonts,

@@ -48,9 +48,10 @@ async function loadMarkets() {
 
 function renderMarketRow(m) {
   const isPoly = m.source === "polymarket";
-  const url = isPoly
-    ? `https://polymarket.com/market/${m.slug || ""}`
-    : `https://kalshi.com/markets/${m.slug || ""}`;
+  // Route through our internal /market.html so we capture intent + serve the
+  // affiliate-wrapped Trade CTA from a $EDGE-branded page rather than
+  // sending users straight off-site to Polymarket / Kalshi.
+  const url = m.slug ? `/market.html?slug=${encodeURIComponent(m.slug)}` : "#";
   const yes = (Number(m.yes_price) || 0) * 100;
   const no = (Number(m.no_price) || 0) * 100;
   return `
@@ -257,7 +258,15 @@ document.addEventListener("click", (e) => {
   const link = e.target.closest("[data-url]");
   if (link) {
     const url = link.dataset.url;
-    if (url && url !== "#") window.open(url, "_blank", "noopener");
+    if (!url || url === "#") return;
+    // Internal links (start with /) — in-tab navigation feels native.
+    // External (Polymarket / Kalshi / news articles) — new tab so the user
+    // doesn't lose the dashboard.
+    if (url.startsWith("/")) {
+      location.href = url;
+    } else {
+      window.open(url, "_blank", "noopener");
+    }
   }
 });
 

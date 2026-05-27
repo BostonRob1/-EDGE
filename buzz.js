@@ -79,7 +79,7 @@ function renderHeat(data) {
       const cold = m.heat < 6;
       const tt = m.top_threads?.[0];
       return `
-        <div class="heat-card ${cold ? "cold" : ""}" data-url="${escapeAttr(m.market_url || "#")}">
+        <div class="heat-card ${cold ? "cold" : ""}" data-url="${escapeAttr(m.slug ? "/market.html?slug=" + encodeURIComponent(m.slug) : m.market_url || "#")}">
           <div class="heat-row">
             <span class="rank">#${i + 1}</span>
             <span class="heat-score">HEAT <span class="v">${m.heat}</span></span>
@@ -115,7 +115,10 @@ function renderHeat(data) {
   $$(".heat-card", $("#heatGrid")).forEach((card) => {
     card.addEventListener("click", () => {
       const u = card.dataset.url;
-      if (u && u !== "#") window.open(u, "_blank", "noopener");
+      if (!u || u === "#") return;
+      // Internal /market.html → in-tab; external → new tab
+      if (u.startsWith("/")) location.href = u;
+      else window.open(u, "_blank", "noopener");
     });
   });
 }
