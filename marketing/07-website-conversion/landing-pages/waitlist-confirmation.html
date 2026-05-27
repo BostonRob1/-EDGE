@@ -3,321 +3,486 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>You're In — $EDGE Waitlist</title>
-<meta name="description" content="You're on the $EDGE waitlist. Refer friends to jump the line." />
+<meta name="theme-color" content="#050507" />
+<title>You're in — $EDGE Waitlist Confirmed</title>
+<meta name="description" content="You're on the $EDGE waitlist. Refer operators to jump the line. Launch alert hits your inbox 24h before TGE." />
 
+<!-- OG / Twitter / iMessage -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="You're on the $EDGE waitlist." />
-<meta property="og:description" content="Watch the action. Before you bet." />
-<meta property="og:image" content="../og-images/og-coming-soon.html" />
+<meta property="og:site_name" content="$EDGE" />
+<meta property="og:title" content="$EDGE — You're on the waitlist." />
+<meta property="og:description" content="Watch the action. Before you bet. T-minus 14 days." />
+<meta property="og:url" content="https://edge-two-psi.vercel.app/marketing/07-website-conversion/landing-pages/waitlist-confirmation.html" />
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-coming-soon.gif" />
+<meta property="og:image:type" content="image/gif" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="$EDGE — You're on the waitlist." />
+<meta name="twitter:description" content="Watch the action. Before you bet." />
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/og-coming-soon.gif" />
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23050507'/><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
-    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800; --red: #FF3344;
-    --white: #F5F5F0; --muted: #6B6B73;
-    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+    --void:#050507; --void-2:#0C0C10; --void-3:#141418; --void-4:#1C1C22;
+    --lime:#C4FF00; --lime-2:rgba(196,255,0,0.12); --lime-3:rgba(196,255,0,0.04); --lime-dim:#3F5300;
+    --magenta:#FF006E; --green:#00FF85; --amber:#FFB800; --red:#FF3344;
+    --white:#F5F5F0; --muted:#6B6B73; --muted-2:#41414A;
+    --border:rgba(245,245,240,0.08); --border-strong:rgba(245,245,240,0.16);
+    --border-bright:rgba(196,255,0,0.24); --border-lime:rgba(196,255,0,0.6);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
   input { font-family: inherit; }
   ::selection { background: var(--lime); color: var(--void); }
   :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+  svg { display: block; max-width: 100%; }
 
-  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 100;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
-  }
+  .grain { position: fixed; inset: 0; pointer-events: none; z-index: 200; opacity: 0.035; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
+  .ambient { position: fixed; pointer-events: none; z-index: -1; top: -180px; left: 50%; transform: translateX(-50%); width: 1200px; height: 800px; background: radial-gradient(ellipse at center, rgba(196,255,0,0.10), transparent 60%); filter: blur(48px); }
 
-  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(5,5,7,.78); border-bottom: 1px solid var(--border-bright); padding: 14px 32px; display:flex; align-items:center; justify-content: space-between; gap: 24px; }
+  /* TICKER */
+  .ticker-bar { position: fixed; top: 0; left: 0; right: 0; height: 28px; background: var(--void); border-bottom: 1px solid var(--border-bright); overflow: hidden; z-index: 50; display: flex; align-items: center; }
+  .ticker-bar::before, .ticker-bar::after { content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none; }
+  .ticker-bar::before { left: 0; background: linear-gradient(90deg, var(--void), transparent); }
+  .ticker-bar::after  { right: 0; background: linear-gradient(-90deg, var(--void), transparent); }
+  .ticker-track { display: inline-flex; align-items: center; gap: 28px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); animation: tickerScroll 80s linear infinite; padding-left: 24px; }
+  .ticker-track .up { color: var(--lime); } .ticker-track .down { color: var(--red); } .ticker-track .div { color: var(--magenta); } .ticker-track .sep { color: var(--muted-2); }
+  @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* HEADER */
+  header.top { position: fixed; top: 28px; left: 0; right: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; backdrop-filter: blur(20px) saturate(140%); background: rgba(5,5,7,0.65); border-bottom: 1px solid var(--border-bright); }
   .brand { display: flex; align-items: center; gap: 12px; }
   .brand svg { width: 28px; height: 28px; }
-  .brand .name { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: -.02em; }
-  .brand .name span { color: var(--lime); }
-  nav.primary { display: flex; gap: 28px; }
-  nav.primary a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
-  nav.primary a:hover, nav.primary a.active { color: var(--white); }
-  .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: -0.025em; line-height: 1; }
+  .brand .name .d { color: var(--lime); }
+  .live-pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 0.24em; color: var(--lime); text-transform: uppercase; }
   .live-pill::before { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .reveal { opacity: 0; transform: translateY(16px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
-  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-  .d1 { animation-delay: .05s; } .d2 { animation-delay: .18s; } .d3 { animation-delay: .32s; }
-  .d4 { animation-delay: .48s; } .d5 { animation-delay: .62s; } .d6 { animation-delay: .78s; }
+  /* MAIN */
+  main { padding-top: 28px; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
 
-  main { max-width: 1080px; margin: 0 auto; padding: 80px 32px 120px; position: relative; z-index: 2; }
+  /* HERO — confirmation moment */
+  .hero { padding: 160px 0 96px; text-align: center; position: relative; }
 
-  .hero { text-align: center; padding: 40px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
-  .check-mark { width: 96px; height: 96px; border: 2px solid var(--lime); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 28px; position: relative; }
-  .check-mark svg { width: 56px; height: 56px; }
-  .check-mark .check-path { stroke-dasharray: 200; stroke-dashoffset: 200; animation: draw 1s cubic-bezier(.2,.7,.2,1) forwards .4s; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  .check-mark::after { content: ''; position: absolute; inset: -8px; border: 1px solid var(--border-bright); animation: ring 1.6s ease-out 1s; }
-  @keyframes ring { 0% { opacity: 0; transform: scale(.85); } 50% { opacity: 1; } 100% { opacity: 0; transform: scale(1.4); } }
-
-  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; color: var(--lime); text-transform: uppercase; margin-bottom: 22px; }
-  h1 { font-family: 'Anton', sans-serif; font-size: clamp(64px, 12vw, 160px); letter-spacing: -.02em; text-transform: uppercase; line-height: .92; }
-  h1 .accent { color: var(--lime); }
-
-  .position-block { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 36px; padding: 22px 36px; border: 1px solid var(--border-bright); background: rgba(196,255,0,0.04); }
-  .position-block .k { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
-  .position-block .v { font-family: 'Anton', sans-serif; font-size: 64px; color: var(--lime); letter-spacing: -.02em; line-height: 1; }
-  .position-block .sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
-
-  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: 0; }
-  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
-  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
-  h2 { font-family: 'Anton', sans-serif; font-size: clamp(32px, 4.5vw, 52px); letter-spacing: -.02em; text-transform: uppercase; line-height: .96; }
-  h2 .accent { color: var(--lime); }
-
-  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .step { background: var(--void-2); padding: 24px 22px; min-height: 180px; display: flex; flex-direction: column; gap: 14px; }
-  .step .num { font-family: 'Anton', sans-serif; font-size: 36px; color: var(--lime); letter-spacing: -.02em; line-height: 1; }
-  .step .title { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--white); }
-  .step .copy { font-size: 14px; color: var(--white); opacity: .82; line-height: 1.5; }
-
-  /* REFERRAL */
-  .refer-wrap { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .refer-link { display: flex; gap: 0; border: 1px solid var(--border-bright); background: var(--void-2); }
-  .refer-link .url { flex: 1; padding: 18px 20px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--white); overflow-x: auto; white-space: nowrap; }
-  .refer-link button { padding: 0 24px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; border-left: 1px solid var(--void); transition: filter .15s; }
-  .refer-link button:hover { filter: brightness(1.08); }
-  .refer-link button.copied { background: var(--green); }
-  .share-row { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .share-btn { flex: 1; background: var(--void-2); padding: 16px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--white); display: flex; align-items: center; justify-content: center; gap: 10px; transition: background .2s; }
-  .share-btn:hover { background: var(--void-3); }
-  .share-btn .icon { width: 14px; height: 14px; }
-
-  .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 18px; }
-  .stat { background: var(--void-2); padding: 18px 22px; }
-  .stat .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
-  .stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px; color: var(--lime); margin-top: 4px; }
-
-  /* JOIN */
-  .join-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .join-cell { background: var(--void-2); padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; transition: background .2s; }
-  .join-cell:hover { background: var(--void-3); }
-  .join-cell .title { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; letter-spacing: -.01em; }
-  .join-cell .title .accent { color: var(--lime); }
-  .join-cell .copy { color: var(--white); opacity: .8; font-size: 14px; line-height: 1.5; }
-  .join-cell .cta { margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); display: inline-flex; align-items: center; gap: 8px; }
-  .join-cell .cta::after { content: '→'; }
-
-  /* FOOTER */
-  footer.bottom { padding-top: 48px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  footer a:hover { color: var(--lime); }
-
-  /* TOAST */
-  .toast { position: fixed; bottom: 32px; right: 32px; background: var(--void-2); border: 1px solid var(--border-bright); padding: 14px 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--lime); transform: translateY(20px); opacity: 0; transition: opacity .25s, transform .25s; z-index: 50; }
-  .toast.show { opacity: 1; transform: translateY(0); }
-
-  @media (max-width: 960px) { .steps { grid-template-columns: repeat(2, 1fr); } .join-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 720px) {
-    main { padding: 48px 18px 80px; }
-    header.top { padding: 12px 18px; }
-    nav.primary { display: none; }
-    h1 { font-size: clamp(52px, 16vw, 96px); }
-    .position-block { padding: 18px 24px; }
-    .position-block .v { font-size: 48px; }
-    .stats-bar { grid-template-columns: 1fr; }
+  .mark-stage {
+    width: 128px; height: 128px; margin: 0 auto 36px;
+    border: 1px solid var(--border-bright);
+    background: var(--void-2);
+    display: inline-flex; align-items: center; justify-content: center;
+    position: relative;
   }
-  @media (max-width: 480px) {
-    main { padding: 36px 14px 60px; }
+  .mark-stage svg { width: 64px; height: 64px; }
+  .mark-stage svg path { stroke-dasharray: 200; stroke-dashoffset: 200; animation: drawIn 1.2s cubic-bezier(0.2,0.7,0.1,1) forwards 0.2s; }
+  @keyframes drawIn { to { stroke-dashoffset: 0; } }
+  .mark-stage::after { content: ''; position: absolute; inset: -12px; border: 1px solid var(--border-lime); opacity: 0; animation: ringOut 2.2s ease-out 0.8s 3; }
+  @keyframes ringOut { 0% { opacity: 0; transform: scale(.88); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.4); } }
+
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.32em; color: var(--lime); text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--lime); animation: pulse 1.8s ease-in-out infinite; }
+
+  h1 {
+    font-family: 'Anton', sans-serif; font-size: clamp(64px, 12vw, 168px);
+    line-height: 0.92; letter-spacing: -0.028em; text-transform: uppercase;
+    margin: 24px 0;
+  }
+  h1 .accent { color: var(--lime); }
+  h1 .row { display: block; overflow: hidden; }
+  h1 .row .word { display: inline-block; opacity: 0; transform: translateY(36px); animation: heroRise 0.95s cubic-bezier(0.2,0.7,0.1,1) forwards; }
+  h1 .row:nth-child(1) .word { animation-delay: 0.4s; }
+  h1 .row:nth-child(2) .word { animation-delay: 0.55s; }
+  @keyframes heroRise { to { opacity: 1; transform: translateY(0); } }
+
+  .lede { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; max-width: 60ch; margin: 0 auto; color: var(--white); opacity: 0.78; }
+  .lede em { color: var(--lime); font-style: normal; font-weight: 700; }
+
+  /* Position card */
+  .pos-card {
+    display: inline-flex; align-items: stretch; margin-top: 40px;
+    border: 1px solid var(--border-bright);
+    background: linear-gradient(180deg, rgba(196,255,0,0.06), transparent 80%);
+  }
+  .pos-cell { padding: 22px 32px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .pos-cell:last-child { border-right: 0; }
+  .pos-cell .k { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; }
+  .pos-cell .v { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 56px; line-height: 1; color: var(--lime); letter-spacing: -0.022em; }
+  .pos-cell .v.small { font-size: 36px; color: var(--white); }
+  .pos-cell .sub { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase; }
+
+  /* Sections */
+  section { padding: 96px 0; border-top: 1px solid var(--border); }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 64px); letter-spacing: -0.022em; line-height: 0.95; text-transform: uppercase; }
+  h2 .accent { color: var(--lime); }
+  .sec-head { display: flex; flex-direction: column; gap: 18px; max-width: 720px; margin-bottom: 48px; }
+  .sec-head .eyebrow { color: var(--lime); }
+  .sec-lede { font-size: 17px; line-height: 1.55; color: var(--white); opacity: 0.78; }
+
+  /* Refer to jump */
+  .refer-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .refer-cell { background: var(--void-2); padding: 32px 28px; }
+  .refer-cell h3 { font-family: 'Anton', sans-serif; font-size: 26px; letter-spacing: -0.012em; text-transform: uppercase; margin-bottom: 14px; }
+  .refer-cell h3 .accent { color: var(--lime); }
+  .refer-cell p { font-size: 14.5px; line-height: 1.55; color: var(--white); opacity: 0.8; margin-bottom: 18px; }
+  .ref-link-row { display: flex; border: 1px solid var(--border-strong); background: var(--void); margin-bottom: 14px; }
+  .ref-link-row input { flex: 1; min-width: 0; padding: 14px 16px; background: transparent; border: 0; outline: none; color: var(--white); font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.05em; }
+  .ref-link-row button { padding: 0 22px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; transition: filter 0.15s ease; border-left: 1px solid var(--void); }
+  .ref-link-row button:hover { filter: brightness(1.08); }
+  .share-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .share-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--border-strong); background: var(--void-3); font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.22em; color: var(--white); text-transform: uppercase; transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease; }
+  .share-btn:hover { border-color: var(--border-lime); color: var(--lime); background: var(--void-2); }
+  .share-btn svg { width: 14px; height: 14px; }
+  .ref-stat { display: flex; flex-direction: column; gap: 14px; padding-top: 4px; }
+  .ref-stat .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .ref-stat .row:last-child { border-bottom: 0; }
+  .ref-stat .k { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.24em; color: var(--muted); text-transform: uppercase; }
+  .ref-stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; color: var(--lime); }
+  .ref-stat .v.big { font-family: 'Anton', sans-serif; font-size: 36px; line-height: 1; color: var(--lime); letter-spacing: -0.015em; }
+
+  /* What happens next */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .step { background: var(--void-2); padding: 28px 22px; display: flex; flex-direction: column; gap: 14px; min-height: 240px; }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; }
+  .step h4 { font-family: 'Anton', sans-serif; font-size: 26px; letter-spacing: -0.012em; text-transform: uppercase; line-height: 1; }
+  .step h4 .accent { color: var(--lime); }
+  .step p { font-size: 13.5px; line-height: 1.55; color: var(--white); opacity: 0.78; }
+  .step .when { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.22em; color: var(--lime); text-transform: uppercase; }
+
+  /* Join community */
+  .joins { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .join { background: var(--void-2); padding: 32px 28px; display: flex; flex-direction: column; gap: 18px; min-height: 220px; transition: background 0.22s ease; }
+  .join:hover { background: var(--void-3); }
+  .join h4 { font-family: 'Anton', sans-serif; font-size: 36px; letter-spacing: -0.012em; text-transform: uppercase; line-height: 1; }
+  .join .what { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; }
+  .join p { font-size: 14px; line-height: 1.55; color: var(--white); opacity: 0.78; }
+  .join .go { margin-top: auto; display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 0.24em; color: var(--lime); text-transform: uppercase; padding-top: 14px; border-top: 1px solid var(--border); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 28px; left: 50%; transform: translate(-50%, 80px); opacity: 0; z-index: 60; padding: 14px 22px; background: var(--lime); color: var(--void); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.2,0.7,0.1,1); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* Footer */
+  footer.bottom { padding: 64px 0 48px; border-top: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+  footer.bottom a { color: var(--muted); transition: color 0.18s ease; }
+  footer.bottom a:hover { color: var(--lime); }
+
+  /* Reveal-on-scroll */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(0.2,0.7,0.1,1), transform 0.9s cubic-bezier(0.2,0.7,0.1,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal.d1 { transition-delay: 0.05s; } .reveal.d2 { transition-delay: 0.13s; } .reveal.d3 { transition-delay: 0.21s; } .reveal.d4 { transition-delay: 0.29s; }
+
+  @media (max-width: 1024px) {
+    .refer-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .joins { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .container { padding: 0 20px; }
+    header.top { padding: 14px 20px; }
+    .hero { padding: 120px 0 64px; }
+    .pos-card { flex-direction: column; }
+    .pos-cell { border-right: 0; border-bottom: 1px solid var(--border); }
+    .pos-cell:last-child { border-bottom: 0; }
+    section { padding: 72px 0; }
     .steps { grid-template-columns: 1fr; }
-    .share-row { flex-direction: column; }
-    .refer-link { flex-direction: column; }
-    .refer-link button { border-left: 0; border-top: 1px solid var(--void); padding: 14px; }
+    h1 .row .word { white-space: nowrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
+    .ticker-track { animation: none; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
+<div class="ambient" aria-hidden="true"></div>
+
+<!-- TICKER -->
+<div class="ticker-bar" aria-hidden="true">
+  <div class="ticker-track">
+    <span><span class="sep">●</span> TRUMP-2028 <span class="up">0.51</span> <span class="up">+21.4%</span></span>
+    <span><span class="sep">●</span> FED-PIVOT <span class="down">0.14</span> <span class="down">-22.2%</span></span>
+    <span><span class="sep">●</span> CPI-JUN <span class="up">0.71</span> <span class="up">+14.5%</span></span>
+    <span><span class="sep">●</span> BTC-200K-26 <span class="up">0.36</span> <span class="up">+16.1%</span></span>
+    <span><span class="div">DIVERGENCE</span> · TRUMP-2028 <span class="div">+0.72</span></span>
+    <span><span class="sep">●</span> NVDA-Q3 <span class="up">0.61</span> <span class="up">+10.9%</span></span>
+    <span><span class="sep">●</span> OPENAI-IPO-26 <span class="down">0.22</span> <span class="down">-12.0%</span></span>
+    <span><span class="sep">●</span> SUPERBOWL-60 <span class="up">0.42</span> <span class="up">+8.1%</span></span>
+    <!-- duplicate -->
+    <span><span class="sep">●</span> TRUMP-2028 <span class="up">0.51</span> <span class="up">+21.4%</span></span>
+    <span><span class="sep">●</span> FED-PIVOT <span class="down">0.14</span> <span class="down">-22.2%</span></span>
+    <span><span class="sep">●</span> CPI-JUN <span class="up">0.71</span> <span class="up">+14.5%</span></span>
+    <span><span class="sep">●</span> BTC-200K-26 <span class="up">0.36</span> <span class="up">+16.1%</span></span>
+    <span><span class="div">DIVERGENCE</span> · TRUMP-2028 <span class="div">+0.72</span></span>
+    <span><span class="sep">●</span> NVDA-Q3 <span class="up">0.61</span> <span class="up">+10.9%</span></span>
+    <span><span class="sep">●</span> OPENAI-IPO-26 <span class="down">0.22</span> <span class="down">-12.0%</span></span>
+    <span><span class="sep">●</span> SUPERBOWL-60 <span class="up">0.42</span> <span class="up">+8.1%</span></span>
+  </div>
+</div>
 
 <header class="top">
-  <a class="brand" href="coming-soon.html" aria-label="$EDGE home">
+  <a class="brand" href="/launch">
     <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
-    <span class="name">$<span>EDGE</span></span>
+    <span class="name"><span class="d">$</span>EDGE</span>
   </a>
-  <nav class="primary" aria-label="Primary">
-    <a href="coming-soon.html#why">PRODUCT</a>
-    <a href="coming-soon.html#spec">TOKENOMICS</a>
-    <a href="#" class="active">WAITLIST</a>
-    <a href="#" aria-label="Twitter">TWITTER</a>
-    <a href="#" aria-label="Discord">DISCORD</a>
-  </nav>
-  <div class="live-pill">CONFIRMED</div>
+  <div class="live-pill">Waitlist · Confirmed</div>
 </header>
 
 <main>
-
   <section class="hero">
-    <div class="check-mark reveal d1" aria-hidden="true">
-      <svg viewBox="0 0 56 56"><path class="check-path" d="M12 28 L24 40 L44 18" fill="none" stroke="#C4FF00" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
-    </div>
-    <div class="eyebrow reveal d2">Confirmed · You're on the list</div>
-    <h1 class="reveal d3">You're <span class="accent">In.</span></h1>
-    <div class="position-block reveal d4">
-      <div class="k">Your Position</div>
-      <div class="v">#<span id="position">1,247</span></div>
-      <div class="sub">FIRST 1,000 GET WHITELIST</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <h2>What Happens <span class="accent">Next</span></h2>
-      <div class="sec-num">01 · The Sequence</div>
-    </div>
-    <div class="steps">
-      <div class="step reveal d2">
-        <div class="num">01</div>
-        <div class="title">Countdown Email</div>
-        <div class="copy">A short note from the founders inside 24h with the exact launch time + the playbook.</div>
+    <div class="container">
+      <div class="mark-stage" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/>
+        </svg>
       </div>
-      <div class="step reveal d3">
-        <div class="num">02</div>
-        <div class="title">Launch Alert</div>
-        <div class="copy">The second the contract is live, you get the address before the public ticker picks it up.</div>
-      </div>
-      <div class="step reveal d4">
-        <div class="num">03</div>
-        <div class="title">Whitelist</div>
-        <div class="copy">First 1,000 confirmed emails skip the public mempool window. Lower slippage, cleaner fill.</div>
-      </div>
-      <div class="step reveal d5">
-        <div class="num">04</div>
-        <div class="title">Claim Instructions</div>
-        <div class="copy">Step-by-step in-email guide to set up your wallet, claim, and start using the terminal.</div>
+      <div class="eyebrow">Confirmed · Pre-Launch · Solana Fairlaunch</div>
+      <h1 aria-label="You're in.">
+        <span class="row"><span class="word">You're</span></span>
+        <span class="row"><span class="word"><span class="accent">in.</span></span></span>
+      </h1>
+      <p class="lede">Your address is on the <em>$EDGE</em> waitlist. The launch alert hits your inbox <em>24h before TGE</em>. The first 1,000 wallets get priority access to the holder-only utility tiers at launch — refer below to jump the line.</p>
+      <div class="pos-card">
+        <div class="pos-cell">
+          <div class="k">Position</div>
+          <div class="v" id="position">#1,248</div>
+          <div class="sub">of <span id="total">2,914</span> operators</div>
+        </div>
+        <div class="pos-cell">
+          <div class="k">T-Minus</div>
+          <div class="v small" id="t-minus">14D · 13H</div>
+          <div class="sub">Fairlaunch · Jun 09 · 09:00 ET</div>
+        </div>
+        <div class="pos-cell">
+          <div class="k">Priority Window</div>
+          <div class="v small">Top 1,000</div>
+          <div class="sub">Closes 48h before TGE</div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- REFER -->
   <section>
-    <div class="sec-head">
-      <h2>Refer Friends, <span class="accent">Jump The Line</span></h2>
-      <div class="sec-num">02 · Climb · 1 per friend</div>
-    </div>
-    <div class="refer-wrap">
-      <div class="refer-link">
-        <div class="url" id="ref-url">https://edgeterminal.xyz/?ref=loading…</div>
-        <button id="copy-btn" type="button">COPY LINK</button>
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="eyebrow">01 · Refer Operators</div>
+        <h2>Jump the line.<br><span class="accent">Earn the alpha.</span></h2>
+        <p class="sec-lede">Every operator who signs up via your link bumps you <strong style="color:var(--lime);font-weight:700;">10 positions higher</strong> on the priority list. Three referrals puts you inside the top 1,000 even from #1,248. Whitelist closes 48h before TGE.</p>
       </div>
-      <div class="share-row">
-        <a class="share-btn" id="share-x" href="#" target="_blank" rel="noopener" aria-label="Share on X">
-          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h3l-7 8 8 12h-6l-5-7-6 7H2l8-9L2 2h6l4 6 6-6z"/></svg>
-          SHARE ON X
+      <div class="refer-grid">
+        <div class="refer-cell reveal d1">
+          <h3>Your <span class="accent">personal link</span></h3>
+          <p>Share this URL — every signup it generates jumps you forward and tags the referrer.</p>
+          <div class="ref-link-row">
+            <input type="text" id="ref-link" value="https://edge-two-psi.vercel.app/launch?ref=op-x9k2-z" readonly aria-label="Your referral link" />
+            <button id="copy-btn" type="button">Copy</button>
+          </div>
+          <div class="share-row">
+            <a class="share-btn" id="share-x" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-7.4 8.5L22 22h-6.7l-5.2-6.9L4.1 22H1.3l8-9-7.6-11h6.8l4.7 6.3L18.2 2zm-1.2 18.3h1.6L7 3.6H5.4l11.6 16.7z"/></svg>
+              Share on X
+            </a>
+            <a class="share-btn" id="share-tg" href="#" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.6 16.6l-.4 5.6c.5 0 .7-.2 1-.4l2.4-2.3 5 3.6c.9.5 1.6.2 1.8-.8L23 4.6c.3-1.2-.4-1.7-1.3-1.4L1.6 10.7c-1.2.5-1.2 1.2-.2 1.5l5.1 1.6 11.7-7.4c.6-.4 1-.2.7.2L9.6 16.6z"/></svg>
+              Share on Telegram
+            </a>
+            <button class="share-btn" id="copy-msg" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Copy message
+            </button>
+          </div>
+        </div>
+        <div class="refer-cell reveal d2">
+          <h3>Your <span class="accent">scoreboard</span></h3>
+          <div class="ref-stat">
+            <div class="row">
+              <div>
+                <div class="k">Referrals so far</div>
+                <div class="v big" id="ref-count">0</div>
+              </div>
+              <div class="v" id="ref-jump">0 spots</div>
+            </div>
+            <div class="row">
+              <div class="k">Current position</div>
+              <div class="v">#1,248</div>
+            </div>
+            <div class="row">
+              <div class="k">Top-1K window</div>
+              <div class="v">Need <span id="need">248</span> more spots</div>
+            </div>
+            <div class="row">
+              <div class="k">Refs to top-1K</div>
+              <div class="v" id="refs-needed">25</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT HAPPENS NEXT -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="eyebrow">02 · What happens next</div>
+        <h2>Four touchpoints.<br><span class="accent">No spam.</span></h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal d1">
+          <div class="n">01 · Now</div>
+          <h4>Welcome <span class="accent">email</span></h4>
+          <p>Lands in 5 minutes. Confirms your position, your referral link, and how the priority window works. Reply with feedback — we read every one.</p>
+          <div class="when">T+0 · Today</div>
+        </div>
+        <div class="step reveal d2">
+          <div class="n">02 · Weekly</div>
+          <h4>The <span class="accent">Edge</span> brief</h4>
+          <p>One email per week, every Sunday. Five biggest divergence calls. Three biggest whale moves. Zero hype, only the work the terminal did.</p>
+          <div class="when">Weekly · Sundays</div>
+        </div>
+        <div class="step reveal d3">
+          <div class="n">03 · T-48h</div>
+          <h4>Whitelist <span class="accent">closes</span></h4>
+          <p>Two days before TGE, the priority window closes. If you're in the top 1,000, you get pre-allocation access to the holder-only utility tiers at launch.</p>
+          <div class="when">Jun 07 · 09:00 ET</div>
+        </div>
+        <div class="step reveal d4">
+          <div class="n">04 · T-0</div>
+          <h4>Launch <span class="accent">alert</span></h4>
+          <p>The contract address goes live. You get the email the instant the tx confirms — with the address, the pump.fun link, and the operator stream URL.</p>
+          <div class="when">Jun 09 · 09:00 ET</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN US LIVE -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="eyebrow">03 · Join Us Live</div>
+        <h2>Watch the build.<br><span class="accent">Real time.</span></h2>
+        <p class="sec-lede">Every commit, every divergence flag, every whale move — we post them as they happen. Three rooms, no algorithm, no engagement bait.</p>
+      </div>
+      <div class="joins">
+        <a href="#" class="join reveal d1">
+          <div class="what">01 · Discord</div>
+          <h4>The <span style="color:var(--lime);">terminal</span></h4>
+          <p>Channels: #signals, #whales, #divergence, #picks, #op-questions. Live feed of every flag the system fires. Voice channels for launch day.</p>
+          <div class="go">Join Discord <span>→</span></div>
         </a>
-        <a class="share-btn" id="share-tg" href="#" target="_blank" rel="noopener" aria-label="Share on Telegram">
-          <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 3 1 11l6 2 2 7 4-4 6 5 3-18z"/></svg>
-          SHARE ON TG
+        <a href="#" class="join reveal d2">
+          <div class="what">02 · Telegram</div>
+          <h4>The <span style="color:var(--lime);">tape</span></h4>
+          <p>Announcement channel: launch updates, contract drops, holder unlocks. Community group: trader chat, alpha sharing, mod-watched.</p>
+          <div class="go">Join Telegram <span>→</span></div>
         </a>
-        <button class="share-btn" id="copy-btn-2" type="button" aria-label="Copy link">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13"/><path d="M5 15V5h10"/></svg>
-          COPY LINK
-        </button>
+        <a href="#" class="join reveal d3">
+          <div class="what">03 · X</div>
+          <h4>The <span style="color:var(--lime);">megaphone</span></h4>
+          <p>@edgeops — daily divergence drops, weekly recaps, launch-day Spaces. Voice only on Spaces. Anon stays anon.</p>
+          <div class="go">Follow @edgeops <span>→</span></div>
+        </a>
       </div>
-      <div class="stats-bar">
-        <div class="stat"><div class="k">Friends Joined</div><div class="v" id="stat-friends">0</div></div>
-        <div class="stat"><div class="k">Spots Climbed</div><div class="v" id="stat-spots">0</div></div>
-        <div class="stat"><div class="k">Current Position</div><div class="v" id="stat-pos">#1,247</div></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <h2>Join Us <span class="accent">Live</span></h2>
-      <div class="sec-num">03 · Real-time Comms</div>
-    </div>
-    <div class="join-grid">
-      <a class="join-cell reveal d2" href="#" target="_blank" rel="noopener">
-        <div class="title">Discord <span class="accent">/</span> Server</div>
-        <div class="copy">Where the alpha gets debated. Daily divergence drops, founder office hours, and the war room.</div>
-        <span class="cta">Join the Server</span>
-      </a>
-      <a class="join-cell reveal d3" href="#" target="_blank" rel="noopener">
-        <div class="title">Telegram <span class="accent">/</span> Chat</div>
-        <div class="copy">Fast-moving signal chat with the launch crew. Mobile-first, push-notification friendly.</div>
-        <span class="cta">Join the Chat</span>
-      </a>
     </div>
   </section>
 
   <footer class="bottom">
-    <div>$EDGE · CONFIRMED · NOT FINANCIAL ADVICE</div>
-    <div><a href="coming-soon.html">← BACK TO LANDING</a></div>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%;flex-wrap:wrap;gap:12px;">
+      <div>$EDGE · Waitlist Confirmed · v1.0</div>
+      <div><a href="/launch">← Back to /launch</a></div>
+    </div>
   </footer>
-
 </main>
 
-<div class="toast" id="toast" role="status" aria-live="polite">LINK COPIED TO CLIPBOARD</div>
+<div class="toast" id="toast" aria-live="polite">Copied to clipboard</div>
 
 <script>
-  // ============ REFERRAL LINK ============
-  // Generate a short pseudo-random ref code, client-side only.
-  // PRODUCTION: read from user's account record, attribute server-side.
-  function genRef() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let out = '';
-    for (let i = 0; i < 7; i++) out += chars[Math.floor(Math.random() * chars.length)];
-    return out;
-  }
-  const ref = genRef();
-  const base = 'https://edgeterminal.xyz/?ref=';
-  const url = base + ref;
-  document.getElementById('ref-url').textContent = url;
-  document.getElementById('share-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('I just got on the $EDGE waitlist — the terminal for prediction markets. Watch the action. Before you bet.') + '&url=' + encodeURIComponent(url);
-  document.getElementById('share-tg').href = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent('Get on the $EDGE waitlist before it drops.');
+(() => {
+  const $ = id => document.getElementById(id);
+  const TARGET = Date.UTC(2026, 5, 9, 13, 0, 0);
+  const pad = n => String(Math.max(0, n)).padStart(2, '0');
 
-  // ============ COPY HANDLERS ============
-  const toast = document.getElementById('toast');
-  function showToast(msg) {
-    toast.textContent = msg || 'LINK COPIED TO CLIPBOARD';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1900);
+  // T-minus
+  function tickT() {
+    const diff = Math.max(0, TARGET - Date.now());
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    $('t-minus').textContent = diff <= 0 ? 'LIVE' : `${pad(d)}D · ${pad(h)}H`;
   }
-  function copyLink(btn) {
-    navigator.clipboard.writeText(url).then(() => {
-      btn.classList.add('copied');
-      btn.textContent = 'COPIED';
-      showToast();
-      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = btn.dataset.label || 'COPY LINK'; }, 1900);
-    }).catch(() => {
-      // fallback
-      const t = document.createElement('textarea');
-      t.value = url; document.body.appendChild(t); t.select();
-      try { document.execCommand('copy'); showToast(); } catch(e){}
-      document.body.removeChild(t);
-    });
-  }
-  const copyBtn = document.getElementById('copy-btn');
-  copyBtn.dataset.label = 'COPY LINK';
-  copyBtn.addEventListener('click', () => copyLink(copyBtn));
-  const copyBtn2 = document.getElementById('copy-btn-2');
-  copyBtn2.addEventListener('click', () => copyLink(copyBtn2));
+  tickT(); setInterval(tickT, 60000);
 
-  // ============ ANIMATE NUMBERS ============
-  function animateNumber(node, from, to, dur, prefix = '') {
+  // Animate position-in-line on load
+  function animateNum(node, from, to, dur) {
     const start = performance.now();
-    function step(t) {
+    (function step(t) {
       const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const v = Math.round(from + (to - from) * eased);
-      node.textContent = prefix + v.toLocaleString('en-US');
+      const v = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+      node.textContent = (node.id === 'position' ? '#' : '') + v.toLocaleString('en-US');
       if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+    })(performance.now());
   }
-  setTimeout(() => animateNumber(document.getElementById('position'), 0, 1247, 1500), 400);
+  requestAnimationFrame(() => {
+    animateNum($('position'), 1000, 1248, 1400);
+    animateNum($('total'), 1500, 2914, 1600);
+  });
+
+  // Total counter drift
+  setInterval(() => {
+    const cur = parseInt($('total').textContent.replace(/,/g, ''), 10);
+    if (!isNaN(cur) && Math.random() < 0.5) animateNum($('total'), cur, cur + 1, 500);
+  }, 8000);
+
+  // Toast
+  let toastTimer;
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  // Copy referral link
+  const refLink = $('ref-link');
+  async function copyText(text, label) {
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) {
+      refLink.select(); refLink.setSelectionRange(0, 99999);
+      try { document.execCommand('copy'); } catch (_) {}
+    }
+    toast(label);
+  }
+  $('copy-btn').addEventListener('click', () => copyText(refLink.value, 'Referral link copied'));
+  refLink.addEventListener('click', () => refLink.select());
+
+  const msg = `Operators — $EDGE drops Jun 9. The terminal for prediction markets. Money / Mouth / Edge in one screen. Get on the waitlist before the priority window closes:\n\n${refLink.value}`;
+  $('copy-msg').addEventListener('click', () => copyText(msg, 'Message copied'));
+
+  // Share to X / Telegram (open intent URLs)
+  $('share-x').href = `https://x.com/intent/post?text=${encodeURIComponent('Operators — $EDGE drops Jun 9. The terminal for prediction markets.')}&url=${encodeURIComponent(refLink.value)}`;
+  $('share-tg').href = `https://t.me/share/url?url=${encodeURIComponent(refLink.value)}&text=${encodeURIComponent('Operators — $EDGE drops Jun 9. The terminal for prediction markets.')}`;
+
+  // Reveal-on-scroll
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+  } else {
+    document.querySelectorAll('.reveal').forEach(r => r.classList.add('in'));
+  }
+})();
 </script>
 </body>
 </html>

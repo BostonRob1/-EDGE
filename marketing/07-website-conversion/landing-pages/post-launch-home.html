@@ -3,413 +3,458 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>$EDGE — The Terminal for Prediction Markets · Live on Solana</title>
-<meta name="description" content="$EDGE is the terminal for prediction markets. Live on Solana. Watch the action. Before you bet." />
+<meta name="theme-color" content="#050507" />
+<title>$EDGE — Live on pump.fun · The terminal for prediction markets</title>
+<meta name="description" content="$EDGE is live. Solana fairlaunch on pump.fun. Hold to unlock whale alerts, divergence radar, raw API, insider channel." />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="$EDGE — The Terminal for Prediction Markets" />
-<meta property="og:description" content="Watch the action. Before you bet. Money / Mouth / Edge — in one screen." />
-<meta property="og:image" content="../og-images/og-home.html" />
-<meta property="og:url" content="https://edgeterminal.xyz" />
+<meta property="og:site_name" content="$EDGE" />
+<meta property="og:title" content="$EDGE — Live on pump.fun" />
+<meta property="og:description" content="Watch the action. Before you bet. Live on Solana." />
+<meta property="og:url" content="https://edge-two-psi.vercel.app/marketing/07-website-conversion/landing-pages/post-launch-home.html" />
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=launch" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="$EDGE — Live on pump.fun" />
+<meta name="twitter:description" content="Watch the action. Before you bet." />
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=launch" />
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23050507'/><path d='M20 10 L50 32 L20 54' fill='none' stroke='%23C4FF00' stroke-width='8' stroke-linecap='square' stroke-linejoin='miter'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --void: #050507; --void-2: #0C0C10; --void-3: #141418; --void-4: #1C1C22;
-    --lime: #C4FF00; --magenta: #FF006E; --green: #00FF85; --amber: #FFB800; --red: #FF3344;
-    --white: #F5F5F0; --muted: #6B6B73;
-    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.2);
+    --void:#050507; --void-2:#0C0C10; --void-3:#141418; --void-4:#1C1C22;
+    --lime:#C4FF00; --lime-2:rgba(196,255,0,0.12); --lime-3:rgba(196,255,0,0.04); --lime-dim:#3F5300;
+    --magenta:#FF006E; --green:#00FF85; --amber:#FFB800; --red:#FF3344;
+    --white:#F5F5F0; --muted:#6B6B73; --muted-2:#41414A;
+    --border:rgba(245,245,240,0.08); --border-strong:rgba(245,245,240,0.16);
+    --border-bright:rgba(196,255,0,0.24); --border-lime:rgba(196,255,0,0.6);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   html, body { background: var(--void); color: var(--white); font-family: 'DM Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
   ::selection { background: var(--lime); color: var(--void); }
   :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+  svg { display: block; max-width: 100%; }
 
-  .grain { position: fixed; inset: 0; pointer-events: none; opacity: .035; z-index: 100;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
-  }
+  .grain { position: fixed; inset: 0; pointer-events: none; z-index: 200; opacity: 0.035; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>"); }
 
-  header.top { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: rgba(5,5,7,.78); border-bottom: 1px solid var(--border-bright); padding: 14px 32px; display:flex; align-items:center; justify-content: space-between; gap: 24px; }
+  .ca-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 8px 24px; height: 36px; background: var(--lime); color: var(--void); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; gap: 16px; }
+  .ca-bar .live { display: inline-flex; align-items: center; gap: 8px; }
+  .ca-bar .live::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--void); animation: livePulse 1.2s ease-in-out infinite; }
+  @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .ca-bar .addr { font-weight: 500; letter-spacing: 0.06em; opacity: 0.85; flex: 1; text-align: center; cursor: pointer; }
+  .ca-bar .addr b { font-weight: 700; }
+  .ca-bar button { padding: 4px 10px; background: var(--void); color: var(--lime); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; transition: filter 0.15s ease; }
+  .ca-bar button:hover { filter: brightness(1.15); }
+
+  .ticker-bar { position: fixed; top: 36px; left: 0; right: 0; height: 28px; background: var(--void); border-bottom: 1px solid var(--border-bright); overflow: hidden; z-index: 50; display: flex; align-items: center; }
+  .ticker-bar::before, .ticker-bar::after { content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none; }
+  .ticker-bar::before { left: 0; background: linear-gradient(90deg, var(--void), transparent); }
+  .ticker-bar::after  { right: 0; background: linear-gradient(-90deg, var(--void), transparent); }
+  .ticker-track { display: inline-flex; align-items: center; gap: 28px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); animation: tickerScroll 80s linear infinite; padding-left: 24px; }
+  .ticker-track .up { color: var(--lime); } .ticker-track .down { color: var(--red); } .ticker-track .div { color: var(--magenta); } .ticker-track .sep { color: var(--muted-2); }
+  @keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  header.top { position: fixed; top: 64px; left: 0; right: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 18px 32px; backdrop-filter: blur(20px) saturate(140%); background: rgba(5,5,7,0.85); border-bottom: 1px solid var(--border-bright); }
   .brand { display: flex; align-items: center; gap: 12px; }
   .brand svg { width: 28px; height: 28px; }
-  .brand .name { font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: -.02em; }
-  .brand .name span { color: var(--lime); }
-  nav.primary { display: flex; gap: 28px; }
-  nav.primary a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
-  nav.primary a:hover { color: var(--lime); }
-  .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); }
-  .live-pill::before { content: ''; width: 7px; height: 7px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: -0.025em; line-height: 1; }
+  .brand .name .d { color: var(--lime); }
+  nav.primary { display: flex; gap: 32px; }
+  nav.primary a { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); transition: color 0.18s ease; }
+  nav.primary a:hover, nav.primary a.active { color: var(--white); }
+  .header-cta { display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; transition: filter 0.15s ease; }
+  .header-cta:hover { filter: brightness(1.08); }
 
-  .reveal { opacity: 0; transform: translateY(16px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
-  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-  .d1 { animation-delay: .05s; } .d2 { animation-delay: .18s; } .d3 { animation-delay: .32s; }
-  .d4 { animation-delay: .48s; } .d5 { animation-delay: .62s; } .d6 { animation-delay: .78s; }
+  main { padding-top: 64px; }
+  .container { max-width: 1440px; margin: 0 auto; padding: 0 32px; }
 
-  main { max-width: 1320px; margin: 0 auto; padding: 56px 32px 120px; position: relative; z-index: 2; }
+  .hero { padding: 140px 0 80px; display: flex; align-items: center; min-height: 90vh; position: relative; }
+  .hero-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; width: 100%; }
+  .hero-left { display: flex; flex-direction: column; gap: 36px; }
+  .hero-right { display: flex; flex-direction: column; gap: 20px; }
 
-  /* LIVE PILL BAR */
-  .live-bar { display: flex; align-items: stretch; border: 1px solid var(--border-bright); background: linear-gradient(180deg, rgba(196,255,0,0.04), transparent); margin-bottom: 48px; }
-  .live-bar .left { display: flex; align-items: center; gap: 12px; padding: 16px 22px; border-right: 1px solid var(--border); }
-  .live-bar .dot { width: 8px; height: 8px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
-  .live-bar .left .txt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--lime); }
-  .live-bar .addr { flex: 1; padding: 16px 22px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--white); overflow-x: auto; white-space: nowrap; display: flex; align-items: center; }
-  .live-bar .addr .lbl { color: var(--muted); margin-right: 12px; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; }
-  .live-bar button { padding: 0 24px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; border-left: 1px solid var(--void); transition: filter .15s; }
-  .live-bar button:hover { filter: brightness(1.08); }
-  .live-bar button.copied { background: var(--green); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 0.32em; color: var(--lime); text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--lime); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  /* HERO */
-  .hero { display: grid; grid-template-columns: 1fr; gap: 28px; padding: 24px 0 64px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
-  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .3em; color: var(--lime); text-transform: uppercase; }
-  h1 { font-family: 'Anton', sans-serif; font-size: clamp(72px, 12vw, 180px); line-height: .9; letter-spacing: -.02em; text-transform: uppercase; }
-  h1 .accent { color: var(--lime); }
-  h1 .strike { color: var(--muted); }
-  .lede { font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; max-width: 720px; color: var(--white); opacity: .85; }
-  .lede em { color: var(--lime); font-style: normal; }
-  .hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
-  .btn-primary { background: var(--lime); color: var(--void); padding: 16px 28px; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; transition: filter .15s; display: inline-flex; align-items: center; gap: 10px; }
+  h1.hero-head { font-family: 'Anton', sans-serif; font-size: clamp(72px, 12vw, 192px); line-height: 0.88; letter-spacing: -0.028em; text-transform: uppercase; }
+  h1.hero-head .accent { color: var(--lime); }
+  h1.hero-head .row { display: block; overflow: hidden; }
+  h1.hero-head .word { display: inline-block; opacity: 0; transform: translateY(38px); animation: heroRise 1s cubic-bezier(0.2,0.7,0.1,1) forwards; }
+  h1.hero-head .row:nth-child(1) .word { animation-delay: 0.05s; }
+  h1.hero-head .row:nth-child(2) .word { animation-delay: 0.18s; }
+  @keyframes heroRise { to { opacity: 1; transform: translateY(0); } }
+
+  .hero-lede { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; max-width: 60ch; color: var(--white); opacity: 0.78; }
+  .hero-lede em { color: var(--lime); font-style: normal; font-weight: 700; }
+
+  .cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 12px; padding: 20px 30px; background: var(--lime); color: var(--void); font-family: 'Anton', sans-serif; font-size: 20px; letter-spacing: 0.02em; text-transform: uppercase; transition: filter 0.15s ease, transform 0.06s ease; }
   .btn-primary:hover { filter: brightness(1.08); }
-  .btn-primary::after { content: '→'; }
-  .btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); padding: 16px 24px; font-family: 'Anton', sans-serif; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; transition: background .15s; }
-  .btn-secondary:hover { background: var(--void-3); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary svg { width: 18px; height: 18px; }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 12px; padding: 18px 26px; border: 1px solid var(--border-strong); background: transparent; color: var(--white); font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: 0.02em; text-transform: uppercase; transition: border-color 0.18s ease, color 0.18s ease; }
+  .btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
 
-  /* TOKEN STATS BAR */
-  .token-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 64px; }
-  .stat { background: var(--void-2); padding: 22px 24px; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: hidden; }
-  .stat .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); }
-  .stat .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: clamp(22px, 2.6vw, 32px); color: var(--white); line-height: 1; }
-  .stat .v.lime { color: var(--lime); }
-  .stat .v.green { color: var(--green); }
-  .stat .delta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); }
-  .stat .delta.neg { color: var(--red); }
-  .stat::after { content: ''; position: absolute; bottom: 0; left: 0; height: 1px; background: var(--lime); width: 0; animation: bar 4s ease-in-out infinite; }
-  .stat:nth-child(2)::after { animation-delay: 1s; }
-  .stat:nth-child(3)::after { animation-delay: 2s; }
-  .stat:nth-child(4)::after { animation-delay: 3s; }
-  @keyframes bar { 0% { width: 0; opacity: 0; } 20% { opacity: 1; } 100% { width: 100%; opacity: 0; } }
+  .token-stats { border: 1px solid var(--border-bright); background: linear-gradient(180deg, rgba(196,255,0,0.05), transparent 70%); padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; }
+  .token-stats .ts-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .token-stats .ts-tag { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; }
+  .token-stats .ts-tag .lime { color: var(--lime); font-weight: 700; }
+  .token-stats .ts-pill { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 0.24em; color: var(--lime); text-transform: uppercase; }
+  .token-stats .ts-pill::before { content: ''; width: 6px; height: 6px; background: var(--lime); border-radius: 999px; animation: pulse 1.4s ease-in-out infinite; }
+  .ts-price { display: flex; align-items: baseline; gap: 14px; }
+  .ts-price .val { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 64px; line-height: 1; color: var(--lime); letter-spacing: -0.022em; }
+  .ts-price .delta { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; color: var(--green); }
+  .ts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .ts-cell { background: var(--void-2); padding: 12px 14px; }
+  .ts-cell .k { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 9px; letter-spacing: 0.24em; color: var(--muted); text-transform: uppercase; }
+  .ts-cell .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; color: var(--white); margin-top: 4px; }
+  .ts-cell .v.lime { color: var(--lime); }
 
-  /* SECTIONS */
-  section { padding: 64px 0; border-bottom: 1px solid var(--border); }
-  section:last-of-type { border-bottom: 0; }
-  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 36px; gap: 16px; flex-wrap: wrap; }
-  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: .22em; text-transform: uppercase; }
-  h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 64px); letter-spacing: -.02em; text-transform: uppercase; line-height: .96; }
+  .live-chart { border: 1px solid var(--border); background: var(--void-2); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .live-chart .lc-tag { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.24em; color: var(--muted); text-transform: uppercase; }
+  .live-chart .lc-tag b { color: var(--white); font-weight: 700; }
+  .live-chart svg { width: 100%; height: 120px; }
+  .draw { stroke-dasharray: 2400; stroke-dashoffset: 2400; animation: draw 2.4s cubic-bezier(0.2,0.7,0.1,1) forwards 0.6s; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  section { padding: 120px 0; border-top: 1px solid var(--border); position: relative; }
+  h2 { font-family: 'Anton', sans-serif; font-size: clamp(40px, 6vw, 80px); letter-spacing: -0.022em; line-height: 0.95; text-transform: uppercase; }
   h2 .accent { color: var(--lime); }
+  .sec-head { display: flex; flex-direction: column; gap: 22px; max-width: 880px; margin-bottom: 56px; }
+  .sec-lede { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.55; color: var(--white); opacity: 0.78; max-width: 64ch; }
 
-  /* 5-PILLAR STRIP */
-  .pillars { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-  .pillar { background: var(--void-2); padding: 24px 22px; display: flex; flex-direction: column; gap: 14px; min-height: 320px; transition: background .2s; }
+  .pillars-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .pillar { background: var(--void-2); padding: 28px 24px; min-height: 280px; display: flex; flex-direction: column; gap: 14px; transition: background 0.22s ease; cursor: pointer; }
   .pillar:hover { background: var(--void-3); }
-  .pillar .num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; color: var(--muted); }
-  .pillar .name { font-family: 'Anton', sans-serif; font-size: 26px; letter-spacing: -.01em; text-transform: uppercase; line-height: .96; }
-  .pillar .name .accent { color: var(--lime); }
-  .pillar .mock { flex: 1; background: var(--void); border: 1px solid var(--border); min-height: 120px; display: flex; flex-direction: column; padding: 12px; gap: 6px; overflow: hidden; }
-  .pillar .mock .row { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); padding: 4px 0; border-bottom: 1px solid var(--border); }
-  .pillar .mock .row:last-child { border-bottom: 0; }
-  .pillar .mock .row b { color: var(--white); font-weight: 500; }
-  .pillar .mock .row .v.pos { color: var(--green); }
-  .pillar .mock .row .v.neg { color: var(--red); }
-  .pillar .mock .row .v.lime { color: var(--lime); }
-  .pillar .mock .row .v.mag { color: var(--magenta); }
-  .pillar .copy { font-size: 13px; color: var(--white); opacity: .8; line-height: 1.45; }
-  .pillar .chart { height: 80px; }
+  .pillar .num { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase; }
+  .pillar h3 { font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing: -0.012em; text-transform: uppercase; line-height: 1; }
+  .pillar h3 .accent { color: var(--lime); }
+  .pillar p { font-size: 13.5px; line-height: 1.55; color: var(--white); opacity: 0.78; }
+  .pillar .go { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 0.24em; color: var(--lime); text-transform: uppercase; }
 
-  /* CTA SECTION */
-  .cta-block { padding: 64px 40px; background: var(--void-2); border: 1px solid var(--border-bright); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; position: relative; overflow: hidden; }
-  .cta-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--lime), transparent); }
-  .cta-block h3 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 72px); letter-spacing: -.02em; text-transform: uppercase; line-height: .96; }
-  .cta-block h3 .accent { color: var(--lime); }
-  .cta-block .copy { font-size: 17px; line-height: 1.5; max-width: 560px; color: var(--white); opacity: .85; }
+  .tiers-locked { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .tier-row { display: grid; grid-template-columns: 160px 1fr auto; gap: 24px; align-items: center; padding: 22px 26px; background: var(--void-2); transition: background 0.18s ease; }
+  .tier-row:hover { background: var(--void-3); }
+  .tier-row .amt { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 38px; letter-spacing: -0.012em; color: var(--lime); line-height: 1; }
+  .tier-row .perk { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; letter-spacing: 0.2em; color: var(--white); text-transform: uppercase; margin-bottom: 4px; }
+  .tier-row .sub { font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .tier-row .status { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border: 1px solid var(--border-bright); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 0.24em; color: var(--lime); text-transform: uppercase; }
+  .tier-row .status::before { content: ''; width: 6px; height: 6px; background: var(--lime); border-radius: 999px; animation: pulse 1.6s ease-in-out infinite; }
+  .tier-row.locked .status { color: var(--muted); border-color: var(--border); }
+  .tier-row.locked .status::before { background: var(--muted); animation: none; }
 
-  /* FOOTER */
-  footer.bottom { padding-top: 56px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
-  footer .col h4 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .28em; color: var(--white); margin-bottom: 14px; }
-  footer .col ul { list-style: none; display: grid; gap: 8px; }
-  footer .col a:hover { color: var(--lime); }
-  footer .col .contract { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--white); word-break: break-all; padding: 8px 10px; border: 1px solid var(--border); background: var(--void-2); }
-  .footer-fine { grid-column: 1 / -1; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .cta-block { padding: 140px 0; border-top: 1px solid var(--border); text-align: center; }
+  .cta-block .inner { display: flex; flex-direction: column; gap: 36px; align-items: center; }
 
-  @media (max-width: 1080px) {
-    .pillars { grid-template-columns: repeat(3, 1fr); }
-    .pillar:nth-child(4), .pillar:nth-child(5) { grid-column: span 1; }
-  }
-  @media (max-width: 960px) {
-    .token-stats { grid-template-columns: repeat(2, 1fr); }
-    .pillars { grid-template-columns: repeat(2, 1fr); }
-    footer.bottom { grid-template-columns: 1fr 1fr; }
-    nav.primary a:nth-child(n+3) { display: none; }
+  footer.bottom { padding: 80px 0 56px; border-top: 1px solid var(--border); }
+  .footer-fine { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.22em; color: var(--muted-2); text-transform: uppercase; }
+  .footer-fine a { color: var(--muted); } .footer-fine a:hover { color: var(--lime); }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(0.2,0.7,0.1,1), transform 0.9s cubic-bezier(0.2,0.7,0.1,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal.d1 { transition-delay: 0.06s; } .reveal.d2 { transition-delay: 0.14s; } .reveal.d3 { transition-delay: 0.22s; } .reveal.d4 { transition-delay: 0.30s; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 80px); opacity: 0; z-index: 70; padding: 14px 22px; background: var(--lime); color: var(--void); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.2,0.7,0.1,1); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .pillars-grid { grid-template-columns: 1fr 1fr; }
+    .ca-bar .addr { display: none; }
   }
   @media (max-width: 720px) {
-    main { padding: 28px 18px 80px; }
-    header.top { padding: 12px 18px; }
+    .container { padding: 0 20px; }
+    header.top { padding: 14px 20px; }
     nav.primary { display: none; }
-    .live-bar { flex-direction: column; }
-    .live-bar .left { border-right: 0; border-bottom: 1px solid var(--border); }
-    .live-bar button { border-left: 0; border-top: 1px solid var(--void); padding: 14px; }
-    .pillars { grid-template-columns: 1fr; }
+    .hero { padding: 100px 0 64px; }
+    h1.hero-head { font-size: clamp(58px, 16vw, 96px); }
+    section { padding: 80px 0; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .tier-row { grid-template-columns: 1fr; gap: 8px; }
+    .tier-row .status { justify-self: flex-start; }
   }
-  @media (max-width: 480px) {
-    main { padding: 24px 14px 60px; }
-    .token-stats { grid-template-columns: 1fr; }
-    footer.bottom { grid-template-columns: 1fr; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
+    .ticker-track { animation: none; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
 
+<div class="ca-bar">
+  <div class="live">$EDGE · Live</div>
+  <div class="addr" id="ca-addr" title="Click to copy"><b>CA</b> · 0x0000...000000000000000000000000000000000000 · click to copy</div>
+  <button id="ca-copy" type="button">Copy CA</button>
+</div>
+
+<div class="ticker-bar" aria-hidden="true">
+  <div class="ticker-track">
+    <span><span class="sep">●</span> $EDGE <span class="up">$0.00042</span> <span class="up">+18.4%</span></span>
+    <span><span class="sep">●</span> MCAP <span class="up">$420K</span></span>
+    <span><span class="sep">●</span> HOLDERS <span class="up">1,247</span></span>
+    <span><span class="sep">●</span> 24H VOL <span class="up">$1.42M</span></span>
+    <span><span class="sep">●</span> TRUMP-2028 <span class="up">0.51</span> <span class="up">+21.4%</span></span>
+    <span><span class="div">DIVERGENCE</span> · TRUMP-2028 <span class="div">+0.72</span></span>
+    <span><span class="sep">●</span> CPI-JUN <span class="up">0.71</span> <span class="up">+14.5%</span></span>
+    <span><span class="sep">●</span> NVDA-Q3 <span class="up">0.61</span> <span class="up">+10.9%</span></span>
+    <span><span class="sep">●</span> $EDGE <span class="up">$0.00042</span> <span class="up">+18.4%</span></span>
+    <span><span class="sep">●</span> MCAP <span class="up">$420K</span></span>
+    <span><span class="sep">●</span> HOLDERS <span class="up">1,247</span></span>
+    <span><span class="sep">●</span> 24H VOL <span class="up">$1.42M</span></span>
+    <span><span class="sep">●</span> TRUMP-2028 <span class="up">0.51</span> <span class="up">+21.4%</span></span>
+    <span><span class="div">DIVERGENCE</span> · TRUMP-2028 <span class="div">+0.72</span></span>
+    <span><span class="sep">●</span> CPI-JUN <span class="up">0.71</span> <span class="up">+14.5%</span></span>
+    <span><span class="sep">●</span> NVDA-Q3 <span class="up">0.61</span> <span class="up">+10.9%</span></span>
+  </div>
+</div>
+
 <header class="top">
-  <a class="brand" href="#top" aria-label="$EDGE home">
+  <a class="brand" href="#top">
     <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
-    <span class="name">$<span>EDGE</span></span>
+    <span class="name"><span class="d">$</span>EDGE</span>
   </a>
   <nav class="primary" aria-label="Primary">
-    <a href="#pillars">PRODUCT</a>
-    <a href="coming-soon.html#spec">TOKENOMICS</a>
-    <a href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">TERMINAL</a>
-    <a href="#" aria-label="Twitter">TWITTER</a>
-    <a href="#" aria-label="Discord">DISCORD</a>
+    <a href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">Terminal</a>
+    <a href="#pillars">Pillars</a>
+    <a href="#tiers">Holder Tiers</a>
+    <a href="#" class="active">Token</a>
   </nav>
-  <div class="live-pill">LIVE</div>
+  <a href="#" class="header-cta">Buy on Pump.fun →</a>
 </header>
 
 <main id="top">
-
-  <!-- LIVE BAR -->
-  <div class="live-bar reveal d1">
-    <div class="left">
-      <span class="dot" aria-hidden="true"></span>
-      <span class="txt">LIVE ON SOLANA</span>
-    </div>
-    <div class="addr">
-      <span class="lbl">CONTRACT</span>
-      <span id="contract-addr">EdgE7r7TmnL2yQ3vK8sN9mPxR4dHfXcZbA1gJk6uW5vt</span>
-    </div>
-    <button id="copy-contract" type="button" aria-label="Copy contract address">COPY</button>
-  </div>
-
-  <!-- HERO -->
   <section class="hero">
-    <div class="eyebrow reveal d2">The terminal for prediction markets · v1 · 2026</div>
-    <h1 class="reveal d3">Watch the <span class="accent">action</span>.<br>Before you <span class="accent">bet</span>.</h1>
-    <p class="lede reveal d4">Polymarket, Kalshi, whales, sentiment — in one screen. The gap between <em>money</em> and <em>mouth</em> is your <em>edge</em>. We show it to you, live.</p>
-    <div class="hero-cta-row reveal d5">
-      <a class="btn-primary" href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">TRY THE TERMINAL</a>
-      <a class="btn-secondary" href="#pillars">SEE WHAT'S INSIDE</a>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <div class="eyebrow">Live on Solana · Pump.fun · LP Locked 12mo</div>
+          <h1 class="hero-head" aria-label="Watch the action. Before you bet.">
+            <span class="row"><span class="word">Watch the action.</span></span>
+            <span class="row"><span class="word">Before you <span class="accent">bet.</span></span></span>
+          </h1>
+          <p class="hero-lede">
+            <em>$EDGE</em> is live. The terminal is free. The token gates the alpha. Hold to unlock the whale alerts, the divergence radar, the raw API, and the insider channel. Trade prediction markets like you have a Bloomberg.
+          </p>
+          <div class="cta-row">
+            <a class="btn-primary" href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">
+              Try the Terminal
+              <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+            </a>
+            <a class="btn-secondary" href="#" target="_blank" rel="noopener">
+              Buy on Pump.fun
+              <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="2"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="token-stats">
+            <div class="ts-head">
+              <div class="ts-tag">$EDGE · <span class="lime">SOLANA</span></div>
+              <div class="ts-pill">Live</div>
+            </div>
+            <div class="ts-price">
+              <div class="val" id="ts-price">$0.00042</div>
+              <div class="delta" id="ts-delta">+18.4%</div>
+            </div>
+            <div class="ts-grid">
+              <div class="ts-cell"><div class="k">Market Cap</div><div class="v lime" id="ts-mcap">$420K</div></div>
+              <div class="ts-cell"><div class="k">24h Vol</div><div class="v" id="ts-vol">$1.42M</div></div>
+              <div class="ts-cell"><div class="k">Holders</div><div class="v lime" id="ts-holders">1,247</div></div>
+              <div class="ts-cell"><div class="k">Supply</div><div class="v">1B</div></div>
+              <div class="ts-cell"><div class="k">LP Lock</div><div class="v">12 MO</div></div>
+              <div class="ts-cell"><div class="k">Team Vest</div><div class="v">24 MO</div></div>
+            </div>
+          </div>
+
+          <div class="live-chart" aria-hidden="true">
+            <div class="ts-head" style="margin-bottom:0;">
+              <div class="lc-tag">$EDGE · <b>1H</b></div>
+              <div class="lc-tag" style="color:var(--lime);">+18.4%</div>
+            </div>
+            <svg viewBox="0 0 480 120" preserveAspectRatio="none">
+              <g stroke="rgba(245,245,240,0.05)" stroke-width="1">
+                <line x1="0" y1="30" x2="480" y2="30"/>
+                <line x1="0" y1="60" x2="480" y2="60"/>
+                <line x1="0" y1="90" x2="480" y2="90"/>
+              </g>
+              <path d="M 0 90 L 30 84 L 60 86 L 90 78 L 120 72 L 150 66 L 180 58 L 210 48 L 240 52 L 270 40 L 300 36 L 330 28 L 360 24 L 390 18 L 420 22 L 450 14 L 480 8 L 480 120 L 0 120 Z" fill="rgba(196,255,0,0.10)"/>
+              <path class="draw" d="M 0 90 L 30 84 L 60 86 L 90 78 L 120 72 L 150 66 L 180 58 L 210 48 L 240 52 L 270 40 L 300 36 L 330 28 L 360 24 L 390 18 L 420 22 L 450 14 L 480 8" fill="none" stroke="#C4FF00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- TOKEN STATS BAR -->
-  <div class="token-stats reveal d6" aria-label="Live token stats">
-    <div class="stat">
-      <div class="k">Price</div>
-      <div class="v green" id="stat-price">$0.0042</div>
-      <div class="delta" id="stat-price-delta">+18.4% 24H</div>
-    </div>
-    <div class="stat">
-      <div class="k">Market Cap</div>
-      <div class="v" id="stat-mcap">$4.2M</div>
-      <div class="delta">CIRCULATING</div>
-    </div>
-    <div class="stat">
-      <div class="k">24h Volume</div>
-      <div class="v lime" id="stat-vol">$1.84M</div>
-      <div class="delta" id="stat-vol-delta">+62% 24H</div>
-    </div>
-    <div class="stat">
-      <div class="k">Holders</div>
-      <div class="v" id="stat-holders">1,847</div>
-      <div class="delta" id="stat-holders-delta">+124 24H</div>
-    </div>
-  </div>
-
-  <!-- 5 PILLARS -->
   <section id="pillars">
-    <div class="sec-head">
-      <h2>Five Surfaces, <span class="accent">One Screen</span></h2>
-      <div class="sec-num">01 · The Product</div>
-    </div>
-    <div class="pillars">
-      <div class="pillar">
-        <div class="num">01</div>
-        <div class="name"><span class="accent">Markets</span> Hub</div>
-        <div class="mock" aria-hidden="true">
-          <div class="row"><b>TRUMP × FED</b><span class="v pos">62.4%</span></div>
-          <div class="row"><b>CPI > 3.5%</b><span class="v neg">34.0%</span></div>
-          <div class="row"><b>BTC $200K</b><span class="v pos">28.4%</span></div>
-          <div class="row"><b>SCOTUS '26</b><span class="v pos">71.6%</span></div>
-          <div class="row"><b>ETH ETF +</b><span class="v pos">66.4%</span></div>
-        </div>
-        <div class="copy">Live Polymarket + Kalshi rollup with cross-venue pricing.</div>
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="eyebrow">01 · The Terminal</div>
+        <h2>Five pillars.<br><span class="accent">Live now.</span></h2>
+        <p class="sec-lede">Free to use. No wallet connection required. Token gates the deeper signals — the more you hold, the more you see.</p>
       </div>
-      <div class="pillar">
-        <div class="num">02</div>
-        <div class="name"><span class="accent">Whale</span> Radar</div>
-        <div class="mock" aria-hidden="true">
-          <div class="row"><b>0xA3F2...</b><span class="v pos">+$324K</span></div>
-          <div class="row"><b>0xB12C...</b><span class="v pos">+$208K</span></div>
-          <div class="row"><b>0xC9D4...</b><span class="v neg">-$112K</span></div>
-          <div class="row"><b>0x7E81...</b><span class="v pos">+$96K</span></div>
-          <div class="row"><b>0x4A06...</b><span class="v neg">-$48K</span></div>
-        </div>
-        <div class="copy">Track the wallets that move markets, in real time.</div>
-      </div>
-      <div class="pillar">
-        <div class="num">03</div>
-        <div class="name"><span class="accent">Sentiment</span> Feed</div>
-        <div class="mock" aria-hidden="true">
-          <div class="row"><b>@ANON_TRADER</b><span class="v pos">+2.4K</span></div>
-          <div class="row"><b>r/PREDICT</b><span class="v lime">FIRE</span></div>
-          <div class="row"><b>@MACRO_GUY</b><span class="v neg">-440</span></div>
-          <div class="row"><b>TG:DEGEN</b><span class="v pos">+1.8K</span></div>
-          <div class="row"><b>DC:ALPHA</b><span class="v lime">SPIKE</span></div>
-        </div>
-        <div class="copy">What the loudest accounts are saying — quantified.</div>
-      </div>
-      <div class="pillar">
-        <div class="num">04</div>
-        <div class="name"><span class="accent">Edge</span> Picker</div>
-        <div class="mock" aria-hidden="true">
-          <div class="row"><b>TRUMP × FED</b><span class="v lime">+18.4</span></div>
-          <div class="row"><b>ETH ETF +</b><span class="v lime">+12.1</span></div>
-          <div class="row"><b>BTC $200K</b><span class="v pos">+8.6</span></div>
-          <div class="row"><b>CPI > 3.5%</b><span class="v neg">-7.2</span></div>
-          <div class="row"><b>SUPER BOWL</b><span class="v neg">-2.8</span></div>
-        </div>
-        <div class="copy">Algorithm-ranked opportunities with public track record.</div>
-      </div>
-      <div class="pillar">
-        <div class="num">05</div>
-        <div class="name"><span class="accent">Divergence</span> Radar</div>
-        <div class="mock" aria-hidden="true">
-          <svg viewBox="0 0 200 80" preserveAspectRatio="none" style="width:100%;height:100%;">
-            <path d="M 0 50 L 30 46 L 60 42 L 90 38 L 120 30 L 150 22 L 180 18 L 200 12" fill="none" stroke="#C4FF00" stroke-width="2"/>
-            <path d="M 0 60 L 30 58 L 60 54 L 90 52 L 120 48 L 150 44 L 180 40 L 200 38" fill="none" stroke="#F5F5F0" stroke-width="1.5" opacity=".7"/>
-            <circle cx="200" cy="12" r="3" fill="#C4FF00"/>
-            <circle cx="200" cy="38" r="3" fill="#F5F5F0"/>
-            <line x1="200" y1="12" x2="200" y2="38" stroke="#FF006E" stroke-width="1" stroke-dasharray="2,2"/>
-          </svg>
-        </div>
-        <div class="copy">Cross-venue mispricing scanner with custom alerts.</div>
+      <div class="pillars-grid">
+        <a href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener" class="pillar reveal d1">
+          <div class="num">01 · Money</div>
+          <h3>Markets <span class="accent">Hub</span></h3>
+          <p>Polymarket + Kalshi unified. Live order books, last-price ticks, 24h volume, cross-venue spreads.</p>
+          <div class="go"><span>Open</span><span>→</span></div>
+        </a>
+        <a href="https://edge-two-psi.vercel.app/whales.html" target="_blank" rel="noopener" class="pillar reveal d2">
+          <div class="num">02 · Money</div>
+          <h3>Whale <span class="accent">Tracker</span></h3>
+          <p>Live firehose. Per-wallet leaderboard. Entry/exit timestamps to the second across both venues.</p>
+          <div class="go"><span>Open</span><span>→</span></div>
+        </a>
+        <a href="https://edge-two-psi.vercel.app/buzz.html" target="_blank" rel="noopener" class="pillar reveal d3">
+          <div class="num">03 · Mouth</div>
+          <h3>Sentiment <span class="accent">Stream</span></h3>
+          <p>Per-market chatter from X, Reddit, public forums. Volume, direction, velocity — the crowd, quantified.</p>
+          <div class="go"><span>Open</span><span>→</span></div>
+        </a>
+        <a href="https://edge-two-psi.vercel.app/edge.html" target="_blank" rel="noopener" class="pillar reveal d4">
+          <div class="num">04 · Edge</div>
+          <h3>Divergence <span class="accent">Radar</span></h3>
+          <p>Where money and mouth disagree. Proprietary score 0.00–1.00. Magenta = critical. The signal that wins.</p>
+          <div class="go"><span>Open</span><span>→</span></div>
+        </a>
+        <a href="https://edge-two-psi.vercel.app/dashboard.html" target="_blank" rel="noopener" class="pillar reveal d4">
+          <div class="num">05 · Receipts</div>
+          <h3>Track <span class="accent">Record</span></h3>
+          <p>Every divergence flag logged the moment it fires. Append-only public ledger. The receipts are working.</p>
+          <div class="go"><span>Open</span><span>→</span></div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section style="border-bottom: 0;">
-    <div class="cta-block">
-      <div class="eyebrow">Live now · No signup · v1 free</div>
-      <h3>Try The <span class="accent">Terminal</span>.</h3>
-      <div class="copy">Open the live product. See the divergence radar. Find the gap.</div>
-      <a class="btn-primary" href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">OPEN TERMINAL</a>
+  <section id="tiers">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="eyebrow">02 · The Token</div>
+        <h2>Hold $EDGE.<br><span class="accent">Unlock the alpha.</span></h2>
+        <p class="sec-lede">Token gates the deeper product. The more you hold, the more you see. Wallet detection is automatic — connect at the terminal to unlock your tier in real time.</p>
+      </div>
+      <div class="tiers-locked">
+        <div class="tier-row">
+          <div class="amt">10K</div>
+          <div>
+            <div class="perk">Whale Alerts</div>
+            <div class="sub">Telegram bot + DM digest. Real-time pings when smart-money wallets enter or exit a market.</div>
+          </div>
+          <div class="status">Live</div>
+        </div>
+        <div class="tier-row">
+          <div class="amt">100K</div>
+          <div>
+            <div class="perk">Divergence Radar</div>
+            <div class="sub">Live cross-venue mispricing scanner. Custom alert thresholds. Telegram + email + webhook.</div>
+          </div>
+          <div class="status">Live</div>
+        </div>
+        <div class="tier-row locked">
+          <div class="amt">1M</div>
+          <div>
+            <div class="perk">Raw API · WebSocket</div>
+            <div class="sub">Direct normalized feed. Bring your own bots. Bring your own alpha.</div>
+          </div>
+          <div class="status">Opens T+7</div>
+        </div>
+        <div class="tier-row locked">
+          <div class="amt">10M</div>
+          <div>
+            <div class="perk">Insider Channel</div>
+            <div class="sub">Private signal room with the operators and the top 50 holders. Voice only. Anon stays anon.</div>
+          </div>
+          <div class="status">Opens T+14</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <section class="cta-block">
+    <div class="container">
+      <div class="inner reveal">
+        <div class="eyebrow">Live Now · Pump.fun · Solana</div>
+        <h2>The terminal is free.<br>The <span class="accent">edge isn't.</span></h2>
+        <p class="sec-lede" style="text-align:center;margin:0 auto;">Open the terminal. See the work. Hold the token to unlock the rest.</p>
+        <div class="cta-row" style="justify-content:center;">
+          <a class="btn-primary" href="#" target="_blank" rel="noopener">Buy on Pump.fun →</a>
+          <a class="btn-secondary" href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">Open Terminal →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer class="bottom">
-    <div class="col">
-      <h4>$EDGE</h4>
-      <p style="text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.5;color:var(--muted);max-width:340px;">The terminal for prediction markets. Money / Mouth / Edge — in one screen. Live on Solana.</p>
-      <div class="contract" style="margin-top:18px;">EdgE7r7TmnL2yQ3vK8sN9mPxR4dHfXcZbA1gJk6uW5vt</div>
-    </div>
-    <div class="col">
-      <h4>Product</h4>
-      <ul>
-        <li><a href="https://edge-two-psi.vercel.app/" target="_blank" rel="noopener">Terminal</a></li>
-        <li><a href="#pillars">Pillars</a></li>
-        <li><a href="coming-soon.html#spec">Tokenomics</a></li>
-        <li><a href="#" aria-label="API docs">API Docs</a></li>
-      </ul>
-    </div>
-    <div class="col">
-      <h4>Community</h4>
-      <ul>
-        <li><a href="#" aria-label="Twitter">Twitter / X</a></li>
-        <li><a href="#" aria-label="Discord">Discord</a></li>
-        <li><a href="#" aria-label="Telegram">Telegram</a></li>
-        <li><a href="https://github.com/BostonRob1/-EDGE" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-    </div>
-    <div class="col">
-      <h4>Contact</h4>
-      <ul>
-        <li><a href="mailto:cashbridgehomes@gmail.com">cashbridgehomes@gmail.com</a></li>
-        <li><a href="mailto:cashbridgehomes@gmail.com">cashbridgehomes@gmail.com</a></li>
-        <li><a href="mailto:cashbridgehomes@gmail.com">cashbridgehomes@gmail.com</a></li>
-      </ul>
-    </div>
-    <div class="footer-fine">
-      <div>$EDGE · LIVE · v1.0 · NOT FINANCIAL ADVICE</div>
-      <div>© 2026 EDGE TERMINAL</div>
+    <div class="container">
+      <div class="footer-fine">
+        <div>$EDGE · Live on Solana · v1.0 · Not financial advice · Markets are risk</div>
+        <div><a href="/marketing/00-master/index.html">Marketing OS ↗</a></div>
+      </div>
     </div>
   </footer>
-
 </main>
 
+<div class="toast" id="toast" aria-live="polite">Copied</div>
+
 <script>
-  // ============ COPY CONTRACT ============
-  const copyBtn = document.getElementById('copy-contract');
-  const addr = document.getElementById('contract-addr');
-  copyBtn.addEventListener('click', () => {
-    const text = addr.textContent.trim();
-    navigator.clipboard.writeText(text).then(() => {
-      copyBtn.classList.add('copied');
-      copyBtn.textContent = 'COPIED';
-      setTimeout(() => { copyBtn.classList.remove('copied'); copyBtn.textContent = 'COPY'; }, 1600);
-    }).catch(() => {
-      const t = document.createElement('textarea');
-      t.value = text; document.body.appendChild(t); t.select();
-      try { document.execCommand('copy'); } catch(e){}
-      document.body.removeChild(t);
-    });
-  });
-
-  // ============ ANIMATE STATS ============
-  // PRODUCTION: replace with live websocket / poll from Birdeye / Dexscreener / Jupiter.
-  function jitter(node, base, delta, dur) {
-    const start = performance.now();
-    function step(t) {
-      const p = Math.min(1, (t - start) / dur);
-      const v = base + Math.sin(p * Math.PI * 2) * delta * (Math.random() * 0.4 + 0.6);
-      node.textContent = '$' + (v).toFixed(4);
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+(() => {
+  const $ = id => document.getElementById(id);
+  let toastTimer;
+  function toast(msg) {
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
   }
-  const priceNode = document.getElementById('stat-price');
-  setInterval(() => {
-    jitter(priceNode, 0.0042, 0.00008, 1200);
-  }, 2400);
+  async function copyCa() {
+    const ca = '0x0000000000000000000000000000000000000000';
+    try { await navigator.clipboard.writeText(ca); } catch (_) {}
+    toast('Contract address copied');
+  }
+  $('ca-copy').addEventListener('click', copyCa);
+  $('ca-addr').addEventListener('click', copyCa);
 
-  // increment holders subtly
-  const holdersNode = document.getElementById('stat-holders');
+  function animateNum(node, from, to, dur, fmt) {
+    const start = performance.now();
+    (function step(t) {
+      const p = Math.min(1, (t - start) / dur);
+      const v = from + (to - from) * (1 - Math.pow(1 - p, 3));
+      node.textContent = fmt(v);
+      if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+  const fmtUsd = v => '$' + v.toFixed(5);
+  const fmtInt = v => Math.round(v).toLocaleString('en-US');
   setInterval(() => {
-    if (Math.random() < 0.6) {
-      const cur = parseInt(holdersNode.textContent.replace(/,/g,''), 10);
-      const next = cur + Math.floor(Math.random() * 3) + 1;
-      animateNumber(holdersNode, cur, next, 800);
+    const r = (n) => n * (0.997 + Math.random() * 0.006);
+    const price = parseFloat($('ts-price').textContent.slice(1));
+    const next = r(price);
+    animateNum($('ts-price'), price, next, 600, fmtUsd);
+    if (Math.random() < 0.3) {
+      const holders = parseInt($('ts-holders').textContent.replace(/,/g, ''), 10);
+      animateNum($('ts-holders'), holders, holders + 1, 500, fmtInt);
     }
   }, 4200);
 
-  function animateNumber(node, from, to, dur, prefix = '') {
-    const start = performance.now();
-    function step(t) {
-      const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const v = Math.round(from + (to - from) * eased);
-      node.textContent = prefix + v.toLocaleString('en-US');
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+  } else {
+    document.querySelectorAll('.reveal').forEach(r => r.classList.add('in'));
   }
+})();
 </script>
 </body>
 </html>
