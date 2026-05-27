@@ -426,6 +426,238 @@ body:has(.elite-ticker) main {
    * within an acceptable visual buffer. */
 }
 
+/* ── COMMAND PALETTE (Cmd+K) ────────────────────────────────────────── */
+
+.elite-palette-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 7, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  display: none;
+  z-index: 999;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(40px, 12vh, 120px) 16px 16px;
+}
+.elite-palette-overlay.show {
+  display: flex;
+  animation: palette-fade-in 0.15s ease-out;
+}
+@keyframes palette-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+html.elite-palette-open,
+html.elite-palette-open body {
+  overflow: hidden;
+}
+
+.elite-palette {
+  width: min(720px, 100%);
+  max-height: 70vh;
+  background: var(--void-2, #0c0c10);
+  border: 1px solid var(--border-bright, rgba(196, 255, 0, 0.2));
+  border-radius: 4px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  font-family: 'DM Sans', sans-serif;
+  animation: palette-slide-in 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+}
+@keyframes palette-slide-in {
+  from { transform: translateY(-8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.elite-palette-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  flex-shrink: 0;
+}
+.elite-palette-search-icon {
+  font-size: 18px;
+  color: var(--lime, #C4FF00);
+  font-weight: 700;
+  line-height: 1;
+}
+.elite-palette-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--white, #F5F5F0);
+  font-weight: 500;
+}
+.elite-palette-input::placeholder {
+  color: var(--muted, #6B6B73);
+  font-weight: 400;
+}
+.elite-palette-kbd,
+.elite-palette-footer kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted, #6B6B73);
+  background: var(--void-3, #141418);
+  padding: 3px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.elite-palette-results {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--void-4, #1c1c22) transparent;
+}
+.elite-palette-results::-webkit-scrollbar { width: 6px; }
+.elite-palette-results::-webkit-scrollbar-thumb {
+  background: var(--void-4, #1c1c22);
+  border-radius: 3px;
+}
+
+.elite-palette-group + .elite-palette-group {
+  border-top: 1px solid var(--border, rgba(245, 245, 240, 0.04));
+  margin-top: 4px;
+  padding-top: 4px;
+}
+.elite-palette-group-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted, #6B6B73);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 12px 18px 6px;
+}
+
+.elite-palette-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  color: var(--white, #F5F5F0);
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s ease;
+}
+.elite-palette-item:hover,
+.elite-palette-item.selected {
+  background: rgba(196, 255, 0, 0.07);
+}
+.elite-palette-item.selected {
+  background: rgba(196, 255, 0, 0.1);
+  box-shadow: inset 3px 0 0 var(--lime, #C4FF00);
+}
+
+.elite-palette-item-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: var(--void-3, #141418);
+  border: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.elite-palette-item-icon.icon-lime { color: var(--lime, #C4FF00); border-color: rgba(196, 255, 0, 0.3); }
+.elite-palette-item-icon.icon-magenta { color: var(--magenta, #FF006E); border-color: rgba(255, 0, 110, 0.3); }
+
+.elite-palette-item-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.elite-palette-item-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white, #F5F5F0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.elite-palette-item-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted, #6B6B73);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.elite-palette-item-arrow {
+  font-size: 14px;
+  color: var(--muted, #6B6B73);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease, color 0.1s ease;
+}
+.elite-palette-item.selected .elite-palette-item-arrow,
+.elite-palette-item:hover .elite-palette-item-arrow {
+  opacity: 1;
+  color: var(--lime, #C4FF00);
+}
+
+.elite-palette-empty {
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--muted, #6B6B73);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.elite-palette-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  background: var(--void-3, #141418);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted, #6B6B73);
+  flex-shrink: 0;
+}
+.elite-palette-footer kbd {
+  font-size: 9px;
+  padding: 2px 5px;
+  margin-right: 4px;
+}
+.elite-palette-brand {
+  margin-left: auto;
+  color: var(--lime, #C4FF00);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Hide footer hints on mobile (less space, fingers > kbd) */
+@media (max-width: 640px) {
+  .elite-palette-footer span:not(.elite-palette-brand) { display: none; }
+  .elite-palette-input { font-size: 16px; /* prevent iOS zoom */ }
+  .elite-palette-overlay { padding-top: 24px; }
+  .elite-palette { max-height: 85vh; }
+}
+
 /* ── JOIN WAITLIST CTA pill — added to every page header as a separate */
 /* element outside the nav <ul>. High-contrast lime, pulses subtly to */
 /* draw the eye without being annoying. Stays visible on mobile by */
