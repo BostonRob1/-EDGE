@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$EDGE — Arbitrage Radar Launch Graphic (1080×1080)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --void:#050507; --void-2:#0C0C10; --void-3:#141418; --void-4:#1C1C22;
+    --lime:#C4FF00; --lime-dim:#3F5300;
+    --magenta:#FF006E; --green:#00FF85; --amber:#FFB800; --red:#FF3344;
+    --white:#F5F5F0; --muted:#6B6B73;
+    --border: rgba(245,245,240,0.08); --border-bright: rgba(196,255,0,0.24); --border-green: rgba(0,255,133,0.4);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100vh; background: #1a1a1f;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    /* Checkered backdrop for clean screenshot framing */
+    background-image:
+      linear-gradient(45deg, #22222b 25%, transparent 25%),
+      linear-gradient(-45deg, #22222b 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #22222b 75%),
+      linear-gradient(-45deg, transparent 75%, #22222b 75%);
+    background-size: 24px 24px;
+    background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+    background-color: #141418;
+  }
+
+  /* Export hint — sits OUTSIDE the canvas */
+  .export-tag {
+    position: fixed; top: 12px; left: 12px;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 11px; letter-spacing: 0.3em; color: var(--lime);
+    text-transform: uppercase;
+    padding: 6px 10px; background: var(--void); border: 1px solid var(--border-bright);
+  }
+
+  /* The 1080×1080 canvas */
+  .canvas {
+    width: 1080px; height: 1080px;
+    background: var(--void); color: var(--white);
+    position: relative; overflow: hidden;
+    font-variant-numeric: tabular-nums;
+    display: flex; flex-direction: column;
+  }
+
+  .grain {
+    position: absolute; inset: 0; pointer-events: none; z-index: 50; opacity: .035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  }
+
+  /* Subtle grid background */
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,133,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,133,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+  /* Ambient green glow top-right */
+  .ambient { position: absolute; top: -200px; right: -200px; width: 700px; height: 700px;
+    background: radial-gradient(circle at center, rgba(0,255,133,0.10), transparent 60%);
+    filter: blur(60px); }
+  .ambient.b { top: auto; right: auto; bottom: -200px; left: -200px;
+    background: radial-gradient(circle at center, rgba(196,255,0,0.06), transparent 60%); }
+
+  /* Corner brackets */
+  .corner { position: absolute; width: 56px; height: 56px; }
+  .corner::before, .corner::after { content: ''; position: absolute; background: var(--green); }
+  .corner::before { width: 56px; height: 2px; }
+  .corner::after  { width: 2px; height: 56px; }
+  .corner.tl { top: 36px; left: 36px; }
+  .corner.tl::before { top: 0; left: 0; } .corner.tl::after { top: 0; left: 0; }
+  .corner.tr { top: 36px; right: 36px; }
+  .corner.tr::before { top: 0; right: 0; } .corner.tr::after { top: 0; right: 0; }
+  .corner.bl { bottom: 36px; left: 36px; }
+  .corner.bl::before { bottom: 0; left: 0; } .corner.bl::after { bottom: 0; left: 0; }
+  .corner.br { bottom: 36px; right: 36px; }
+  .corner.br::before { bottom: 0; right: 0; } .corner.br::after { bottom: 0; right: 0; }
+
+  /* Top bar */
+  .top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 56px; border-bottom: 1px solid var(--border-bright);
+    position: relative; z-index: 2;
+  }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand svg { width: 40px; height: 40px; }
+  .brand .name { font-family: 'Anton', sans-serif; font-size: 36px; letter-spacing: -0.025em; }
+  .brand .name .d { color: var(--lime); }
+  .ship-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 9px 16px; border: 1px solid var(--border-green); background: rgba(0,255,133,0.08);
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 14px; letter-spacing: 0.28em; color: var(--green); text-transform: uppercase;
+  }
+  .ship-pill::before { content: ''; width: 8px; height: 8px; border-radius: 999px; background: var(--green);
+    animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* Body */
+  .body {
+    flex: 1; display: flex; flex-direction: column; justify-content: space-between;
+    padding: 64px 56px 56px;
+    position: relative; z-index: 2;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 17px; letter-spacing: 0.36em; color: var(--green); text-transform: uppercase;
+  }
+  .eyebrow::before { content: ''; width: 10px; height: 10px; border-radius: 999px; background: var(--green); animation: pulse 1.8s ease-in-out infinite; }
+
+  h1 {
+    font-family: 'Anton', sans-serif; font-weight: 400;
+    font-size: 168px; line-height: 0.88; letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-top: 32px;
+  }
+  h1 .green { color: var(--green); }
+  h1 .mute  { color: var(--muted); }
+
+  .tagline {
+    font-family: 'DM Sans', sans-serif; font-weight: 400;
+    font-size: 36px; line-height: 1.3; color: var(--white); opacity: 0.85;
+    margin-top: 32px; max-width: 880px;
+  }
+  .tagline strong { color: var(--green); font-weight: 700; }
+
+  /* Mini chart card */
+  .chart-card {
+    margin-top: 40px;
+    border: 1px solid var(--border-green);
+    background: linear-gradient(180deg, rgba(0,255,133,0.06), transparent 70%);
+    padding: 22px 26px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .chart-head {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 14px; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase;
+  }
+  .chart-head .left { display: flex; gap: 18px; }
+  .chart-head .left .poly { color: var(--lime); font-weight: 700; }
+  .chart-head .left .kal  { color: var(--magenta); font-weight: 700; }
+  .chart-head .right { color: var(--green); font-weight: 700; }
+  .chart-card svg { width: 100%; height: 96px; }
+
+  /* Stats row */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    margin-top: 32px;
+  }
+  .stat-cell { background: var(--void-2); padding: 22px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .stat-cell .k { font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 12px; letter-spacing: 0.26em; color: var(--muted); text-transform: uppercase; }
+  .stat-cell .v { font-family: 'Anton', sans-serif; font-size: 42px; letter-spacing: -0.012em; line-height: 1; color: var(--white); }
+  .stat-cell .v.lime  { color: var(--lime); }
+  .stat-cell .v.green { color: var(--green); }
+  .stat-cell .v.mag   { color: var(--magenta); }
+  .stat-cell .sub { font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 11px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
+
+  /* Bottom strip — CTA + meta */
+  .footer-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 36px;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 18px; letter-spacing: 0.26em; color: var(--muted); text-transform: uppercase;
+  }
+  .footer-strip .cta { color: var(--green); font-weight: 700; }
+  .footer-strip .tier { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="export-tag">EXPORT AT 1080 × 1080</div>
+
+<div class="canvas">
+  <div class="bg-grid"></div>
+  <div class="ambient"></div>
+  <div class="ambient b"></div>
+  <div class="grain"></div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="top-bar">
+    <div class="brand">
+      <svg viewBox="0 0 64 64"><path d="M20 10 L50 32 L20 54" fill="none" stroke="#C4FF00" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      <div class="name"><span class="d">$</span>EDGE</div>
+    </div>
+    <div class="ship-pill">● JUST SHIPPED · LIVE NOW</div>
+  </div>
+
+  <div class="body">
+    <div>
+      <div class="eyebrow">Cross-Platform · Poly ↔ Kal · v0</div>
+      <h1>Arbitrage<br><span class="green">Radar.</span></h1>
+      <p class="tagline">Same event. Different prices. <strong>The edge is in the spread.</strong> The terminal scans every Polymarket market against every Kalshi market in real time and surfaces fee-adjusted opportunities ranked HIGH / MEDIUM / VERIFY.</p>
+    </div>
+
+    <div>
+      <!-- Mini chart -->
+      <div class="chart-card">
+        <div class="chart-head">
+          <div class="left">
+            <span><span class="poly">POLY 0.62</span></span>
+            <span>·</span>
+            <span><span class="kal">KAL 0.58</span></span>
+          </div>
+          <div class="right">EDGE +4.2pp · HIGH</div>
+        </div>
+        <svg viewBox="0 0 920 96" preserveAspectRatio="none">
+          <!-- Shaded spread -->
+          <path d="M 0 18 L 76 26 L 152 22 L 228 32 L 304 26 L 380 36 L 456 30 L 532 40 L 608 34 L 684 44 L 760 38 L 836 48 L 920 42 L 920 64 L 836 64 L 760 58 L 684 62 L 608 54 L 532 58 L 456 50 L 380 54 L 304 46 L 228 50 L 152 42 L 76 46 L 0 42 Z" fill="rgba(0,255,133,0.20)"/>
+          <!-- POLY line (lime) -->
+          <path d="M 0 18 L 76 26 L 152 22 L 228 32 L 304 26 L 380 36 L 456 30 L 532 40 L 608 34 L 684 44 L 760 38 L 836 48 L 920 42" fill="none" stroke="#C4FF00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- KAL line (magenta) -->
+          <path d="M 0 42 L 76 46 L 152 42 L 228 50 L 304 46 L 380 54 L 456 50 L 532 58 L 608 54 L 684 62 L 760 58 L 836 64 L 920 64" fill="none" stroke="#FF006E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <!-- End markers -->
+          <circle cx="916" cy="42" r="5" fill="#C4FF00"/>
+          <circle cx="916" cy="64" r="5" fill="#FF006E"/>
+          <line x1="916" y1="42" x2="916" y2="64" stroke="#00FF85" stroke-width="2" stroke-dasharray="3 3"/>
+        </svg>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats">
+        <div class="stat-cell">
+          <div class="k">Markets Scanned</div>
+          <div class="v lime">1,420</div>
+          <div class="sub">poly + kalshi</div>
+        </div>
+        <div class="stat-cell">
+          <div class="k">Pairs Matched</div>
+          <div class="v">217</div>
+          <div class="sub">same-event candidates</div>
+        </div>
+        <div class="stat-cell">
+          <div class="k">Live Opps</div>
+          <div class="v green">14</div>
+          <div class="sub">after fees + filters</div>
+        </div>
+        <div class="stat-cell">
+          <div class="k">Biggest Edge</div>
+          <div class="v green">+4.2pp</div>
+          <div class="sub">today's top spread</div>
+        </div>
+      </div>
+
+      <div class="footer-strip">
+        <div>UNLOCKS · <span class="tier">ANALYST · 1M $EDGE</span></div>
+        <div class="cta">EDGETERMINAL.XYZ/ARB →</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

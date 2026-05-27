@@ -7,7 +7,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "build:og": "node scripts/build-og-gif.mjs"
+    "build:og": "node scripts/build-og-gif.mjs",
+    "build:og-arb": "node scripts/build-og-arb.mjs"
   },
   "dependencies": {
     "@vercel/og": "^0.6.4"
