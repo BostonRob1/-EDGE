@@ -424,19 +424,20 @@ footer a { color: var(--lime); text-decoration: none; }
 <main>
   <!-- ── HERO ───────────────────────────────────────────────────────── -->
   <section class="hero">
-    <div class="status-pill">Pre-Launch · Coming Soon</div>
+    <div class="status-pill">Pre-Launch · Deflationary by Design</div>
     <h1>$<span class="accent">EDGE</span></h1>
-    <p class="tagline">Fair launch. Day-one utility. Solana.</p>
+    <p class="tagline">Fair launch. Day-one utility. Deflationary on Solana.</p>
     <p class="subline">
       The terminal isn't free forever. Holding $EDGE unlocks
       <strong style="color:var(--white)">whale alerts</strong>,
       <strong style="color:var(--white)">divergence radar</strong>, and
-      <strong style="color:var(--white)">raw API access</strong> — the tools
-      sophisticated traders pay for, gated by the token.
+      <strong style="color:var(--white)">raw API access</strong>. Every dollar of
+      affiliate revenue <strong style="color:var(--lime)">buys + burns $EDGE</strong>
+      — the more the product gets used, the rarer the token gets.
     </p>
     <div class="hero-ctas">
       <a href="#tiers" class="btn btn-primary">See Utility Tiers</a>
-      <a href="https://pump.fun" target="_blank" rel="noopener" class="btn btn-secondary">Launch on pump.fun ↗</a>
+      <a href="#deflation" class="btn btn-secondary">See Burn Mechanics →</a>
     </div>
 
     <!-- All hard numbers below are DRAFT — confirm before launch -->
@@ -452,9 +453,9 @@ footer a { color: var(--lime); text-decoration: none; }
         <div class="sub">solana mainnet</div>
       </div>
       <div class="stat-cell">
-        <div class="lbl">Launch Type</div>
-        <div class="val">FAIR</div>
-        <div class="sub">pump.fun bonding curve</div>
+        <div class="lbl">Buyback Burn</div>
+        <div class="val">50%</div>
+        <div class="sub">of affiliate revenue</div>
       </div>
       <div class="stat-cell alt">
         <div class="lbl">Team Allocation</div>
@@ -462,9 +463,9 @@ footer a { color: var(--lime); text-decoration: none; }
         <div class="sub">no presale · no vesting</div>
       </div>
       <div class="stat-cell">
-        <div class="lbl">Status</div>
+        <div class="lbl">Launch Date</div>
         <div class="val draft">TBA</div>
-        <div class="sub draft">launch date pending</div>
+        <div class="sub draft">pump.fun · fair launch</div>
       </div>
     </div>
   </section>
@@ -660,11 +661,12 @@ footer a { color: var(--lime); text-decoration: none; }
       </div>
       <div class="value-cell">
         <div class="icon">02</div>
-        <h4>Affiliate Buyback</h4>
+        <h4>Buyback &amp; Burn</h4>
         <p>
           Users who bet through $EDGE generate <strong>affiliate revenue from
-          Polymarket and Kalshi</strong>. A portion of every commission goes to
-          <strong>open-market $EDGE buybacks</strong>. Real cash flow → token demand.
+          Polymarket and Kalshi</strong>. <strong>50% of every dollar</strong>
+          buys $EDGE on the open market and <strong>burns it</strong>. Real cash
+          flow → permanent supply reduction. See <a href="#deflation" style="color:var(--lime);text-decoration:none;border-bottom:1px dashed var(--lime)">Deflationary mechanics</a>.
         </p>
       </div>
       <div class="value-cell">
@@ -675,6 +677,92 @@ footer a { color: var(--lime); text-decoration: none; }
           source priorities, and revenue distribution. The smartest traders steer
           the smartest tools. Skin in the game compounds.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DEFLATIONARY BY DESIGN ─────────────────────────────────────── -->
+  <section class="block" id="deflation">
+    <div class="block-head">
+      <div class="block-eyebrow">Deflationary by Design</div>
+      <h2 class="block-title">The more you <span class="accent">use it</span>,<br>the <span class="mag">rarer</span> it gets.</h2>
+      <p class="block-lede">
+        Three on-chain burn mechanisms, all tied to real product activity. No
+        scheduled gimmick burns. No transfer tax. Every $EDGE that gets burned
+        leaves a Solana transaction signature anyone can verify.
+      </p>
+    </div>
+
+    <!-- Burn Tracker stat strip — top callout -->
+    <div class="stat-strip" style="margin-top: 16px; margin-bottom: 32px">
+      <div class="stat-cell">
+        <div class="lbl">Burned to Date</div>
+        <div class="val">0</div>
+        <div class="sub draft">live counter — activates at launch</div>
+      </div>
+      <div class="stat-cell alt">
+        <div class="lbl">% of Total Supply</div>
+        <div class="val">0%</div>
+        <div class="sub draft">of 1,000,000,000</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Buyback Wallet</div>
+        <div class="val draft">TBA</div>
+        <div class="sub draft">on-chain · auditable</div>
+      </div>
+      <div class="stat-cell alt">
+        <div class="lbl">Burn Address</div>
+        <div class="val draft">TBA</div>
+        <div class="sub draft">Solana SPL burn</div>
+      </div>
+    </div>
+
+    <!-- Three deflation mechanism cards (reuse .value-grid styling) -->
+    <div class="value-grid">
+      <div class="value-cell">
+        <div class="icon">01</div>
+        <h4>Affiliate Buyback &amp; Burn</h4>
+        <p>
+          <strong>50% of every dollar</strong> $EDGE earns from Polymarket /
+          Kalshi affiliate referrals buys $EDGE on the open market and
+          <strong>burns it permanently</strong>. Continuous, not quarterly. Every
+          trader who bets through $EDGE shrinks the supply for every holder.
+          <em style="color:var(--lime);font-style:normal">"Revenue burns the token."</em>
+        </p>
+      </div>
+      <div class="value-cell">
+        <div class="icon">02</div>
+        <h4>Tier Activation Burn</h4>
+        <p>
+          When a wallet first activates a utility tier,
+          <strong>5% of the threshold</strong> burns. <strong>Trader</strong>
+          activation → 5K $EDGE burned. <strong>Analyst</strong> → 50K burned.
+          <strong>Desk</strong> → 250K burned. One-shot per wallet — couples
+          deflation to the moment new users unlock real utility.
+        </p>
+      </div>
+      <div class="value-cell">
+        <div class="icon">03</div>
+        <h4>Premium Action Burns</h4>
+        <p>
+          Advanced one-shot features burn $EDGE instead of charging fees.
+          <strong>Custom webhook alerts</strong> (500 $EDGE / 30d).
+          <strong>Track-record PDF export</strong> (100 $EDGE).
+          <strong>API key generation</strong> (1,000 $EDGE).
+          <strong>Custom backtests</strong> (5,000 $EDGE). Power-user activity
+          continuously shrinks the float.
+        </p>
+      </div>
+    </div>
+
+    <!-- "Why this matters" anti-FUD callout -->
+    <div class="callout" style="margin-top: 24px">
+      <div class="lbl">Why this is real, not narrative</div>
+      <div class="val">
+        Every burn is an on-chain SPL token-burn instruction. The buyback wallet
+        address publishes at launch. The burn tracker above will pull live
+        on-chain data — not a number $EDGE chooses to display. <strong>Verifiable
+        beats persuasive.</strong>
       </div>
     </div>
   </section>
