@@ -131,10 +131,10 @@ The tagline scrolls up frame, holding "BEFORE YOU BET" centered for 2s.
 ## SHOT 10 — 49.0s–55.0s · TOKEN UTILITY
 
 **VISUAL:** Four-column grid prints in, one column at a time, ~0.4s apart. Each column has a tier:
-- `10K $EDGE` / `WHALE ALERTS`
-- `100K $EDGE` / `DIVERGENCE RADAR`
-- `1M $EDGE` / `API ACCESS`
-- `10M $EDGE` / `INSIDER CHANNEL`
+- `100K $EDGE` / `TRADER · whale alerts`
+- `1M $EDGE` / `ANALYST · divergence + arbitrage`
+- `5M $EDGE` / `DESK · backtesting + governance`
+- 
 All mono. Last tier has a small lime border-pulse.
 
 **AUDIO / VO:** One tick per column print.

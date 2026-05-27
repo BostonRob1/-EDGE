@@ -644,52 +644,38 @@
   <div class="token-layout">
     <div class="donut-wrap">
       <svg class="donut" viewBox="0 0 100 100">
-        <!-- donut chart: 80 / 10 / 5 / 3 / 2 -->
-        <!-- Background ring -->
+        <!-- 100% fair launch — single lime ring -->
         <circle cx="50" cy="50" r="40" fill="none" stroke="#141418" stroke-width="16"/>
-        <!-- 80% Fair — lime, starts at top (angle -90deg) -->
         <circle cx="50" cy="50" r="40" fill="none" stroke="#C4FF00" stroke-width="16"
-          stroke-dasharray="201.06 251.33" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
-        <!-- 10% LP — green -->
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#00FF85" stroke-width="16"
-          stroke-dasharray="25.13 251.33" stroke-dashoffset="-201.06" transform="rotate(-90 50 50)"/>
-        <!-- 5% Treasury — amber -->
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#FFB800" stroke-width="16"
-          stroke-dasharray="12.57 251.33" stroke-dashoffset="-226.19" transform="rotate(-90 50 50)"/>
-        <!-- 3% Marketing — magenta -->
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#FF006E" stroke-width="16"
-          stroke-dasharray="7.54 251.33" stroke-dashoffset="-238.76" transform="rotate(-90 50 50)"/>
-        <!-- 2% Team — white -->
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#F5F5F0" stroke-width="16"
-          stroke-dasharray="5.03 251.33" stroke-dashoffset="-246.30" transform="rotate(-90 50 50)"/>
-        <!-- Center text -->
-        <text x="50" y="48" text-anchor="middle" fill="#F5F5F0" font-family="Anton, sans-serif" font-size="9" letter-spacing="-0.3">1B</text>
-        <text x="50" y="58" text-anchor="middle" fill="#6B6B73" font-family="JetBrains Mono, monospace" font-size="3.5" letter-spacing="0.3">SUPPLY</text>
+          stroke-dasharray="251.33 251.33" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+        <text x="50" y="46" text-anchor="middle" fill="#C4FF00" font-family="Anton, sans-serif" font-size="11" letter-spacing="-0.3">100%</text>
+        <text x="50" y="56" text-anchor="middle" fill="#F5F5F0" font-family="Anton, sans-serif" font-size="6" letter-spacing="-0.2">FAIR</text>
+        <text x="50" y="64" text-anchor="middle" fill="#6B6B73" font-family="JetBrains Mono, monospace" font-size="3" letter-spacing="0.3">1B SUPPLY</text>
       </svg>
       <div class="donut-legend">
-        <div class="lg"><div class="sw" style="background:#C4FF00"></div><div class="nm">Fair market</div><div class="pct">80%</div></div>
-        <div class="lg"><div class="sw" style="background:#00FF85"></div><div class="nm">Liquidity (locked 12m)</div><div class="pct">10%</div></div>
-        <div class="lg"><div class="sw" style="background:#FFB800"></div><div class="nm">Treasury</div><div class="pct">5%</div></div>
-        <div class="lg"><div class="sw" style="background:#FF006E"></div><div class="nm">Marketing (vest 6m)</div><div class="pct">3%</div></div>
-        <div class="lg"><div class="sw" style="background:#F5F5F0"></div><div class="nm">Team (vest 24m · 6m cliff)</div><div class="pct">2%</div></div>
+        <div class="lg"><div class="sw" style="background:#C4FF00"></div><div class="nm">Fair launch · Pump.fun curve</div><div class="pct">100%</div></div>
+        <div class="lg"><div class="sw" style="background:#6B6B73"></div><div class="nm">Team allocation</div><div class="pct" style="color:#6B6B73">0%</div></div>
+        <div class="lg"><div class="sw" style="background:#6B6B73"></div><div class="nm">Presale · private round</div><div class="pct" style="color:#6B6B73">0%</div></div>
+        <div class="lg"><div class="sw" style="background:#00FF85"></div><div class="nm">LP burned at Raydium migration</div><div class="pct" style="color:#00FF85">$12K</div></div>
+        <div class="lg"><div class="sw" style="background:#FFB800"></div><div class="nm">Migration trigger MCAP</div><div class="pct" style="color:#FFB800">~$69K</div></div>
       </div>
     </div>
     <div class="token-right">
       <h3>Utility tiers</h3>
       <div class="util-rows">
-        <div class="util-row"><div class="req">10K $EDGE</div><div class="unlock">Whale alerts</div></div>
-        <div class="util-row"><div class="req">100K $EDGE</div><div class="unlock">Divergence radar (proprietary signal)</div></div>
-        <div class="util-row"><div class="req">1M $EDGE</div><div class="unlock">Raw API access</div></div>
-        <div class="util-row"><div class="req">10M $EDGE</div><div class="unlock">Insider channel + monthly calls</div></div>
+        <div class="util-row"><div class="req">FREE</div><div class="unlock">Public dashboard · hot markets · buzz heat · whale firehose (delayed) · Rug Radar basic</div></div>
+        <div class="util-row"><div class="req">100K</div><div class="unlock">Trader · real-time whale alerts + custom thresholds + watchlists + deep Rug scan + Buzz drilldown</div></div>
+        <div class="util-row"><div class="req">1M</div><div class="unlock">Analyst · Divergence Radar + Arbitrage Radar + track record + API access + push/webhook</div></div>
+        <div class="util-row"><div class="req">5M</div><div class="unlock">Desk · backtesting + unlimited priority API + unlimited watchlists + revshare + governance</div></div>
       </div>
       <h3>Fairlaunch mechanics</h3>
       <div class="fl-mech">
         <div class="fl-cell"><div class="lbl">Venue</div><div class="v">pump.fun</div></div>
         <div class="fl-cell"><div class="lbl">Chain</div><div class="v">Solana</div></div>
+        <div class="fl-cell"><div class="lbl">Team alloc</div><div class="v" style="color:var(--lime)">0%</div></div>
         <div class="fl-cell"><div class="lbl">Presale</div><div class="v">NONE</div></div>
-        <div class="fl-cell"><div class="lbl">Private round</div><div class="v">NONE</div></div>
-        <div class="fl-cell"><div class="lbl">LP lock</div><div class="v">12 months</div></div>
-        <div class="fl-cell"><div class="lbl">Team vest</div><div class="v">24m · 6m cliff</div></div>
+        <div class="fl-cell"><div class="lbl">Migration</div><div class="v">Raydium @ ~$69K</div></div>
+        <div class="fl-cell"><div class="lbl">LP burn</div><div class="v">$12K permanent</div></div>
       </div>
     </div>
   </div>

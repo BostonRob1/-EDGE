@@ -82,11 +82,11 @@
 
 ## SHOT 07 — 23.5s–27.0s · TOKEN GATE
 
-**SCREEN:** Cursor hovers `INSIDER` nav item. A small lock badge: `10M $EDGE TIER`. Click — modal slides in with connect-wallet button.
+**SCREEN:** Cursor hovers `INSIDER` nav item. A small lock badge: `5M $EDGE TIER`. Click — modal slides in with connect-wallet button.
 
 **VO BULLET:** "Hold $EDGE. Unlock the deepest signal."
 
-**CAPTION:** `07 / TIER · 10M $EDGE` — lime mono 11px.
+**CAPTION:** `07 / TIER · 5M $EDGE` — lime mono 11px.
 
 **NOTES:** The gate IS the utility. Show it. Don't apologize for it.
 

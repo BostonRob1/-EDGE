@@ -2,7 +2,7 @@
 
 > Marketing OS · 06.03 · Launch Playbook
 > Anchor date: launch is **2026-06-25 13:00 ET / 17:00 UTC**
-> Owner: comms lead (an Trader covers Tier S personally)
+> Owner: comms lead
 
 ---
 
@@ -27,10 +27,10 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 | @milesdeutscher | ~700K | Macro + crypto, technical analysis crowd | "First terminal that bridges Polymarket + Kalshi — would you take a look?" |
 | @CryptoCobain | ~1M | Sets degen attention agenda | Trade-of-value: early API key, hand him divergence calls before the timeline sees them |
 | @CL207 (Cobie's co-host) | ~330K | UpOnly host, taste-maker on infra plays | Sponsor a single UpOnly episode segment |
-| @WhalePanda | ~700K | OG, surgical with what he co-signs | Direct DM from an Trader: "we built the whale tracker you'd actually use" |
+| @WhalePanda | ~700K | OG, surgical with what he co-signs | Direct DM: "we built the whale tracker you'd actually use" |
 | @hsakatrades | ~650K | High-velocity trading account | Pitch the picker algorithm + backtest data |
 | Orbit of @nayibbukele | varies | LATAM crypto attention | Spanish-language press release + product walkthrough |
-| @cobie | ~750K | Long shot but if it lands, defines the launch | Personal note from an Trader. No pitch. Just the link. |
+| @cobie | ~750K | Long shot but if it lands, defines the launch | Personal-tone note from the brand account. No pitch. Just the link. |
 
 ### Tier A — 100K-500K · doable with quality outreach + small comp
 
@@ -170,7 +170,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 
 | Tier | Cash range (single post) | Token range (vesting 6mo) | Token+rev-share variant |
 |---|---|---|---|
-| **S** | $8K - $25K | 15M - 40M $EDGE | 10M $EDGE + 0.25% of affiliate revenue from their tracking link, 12mo |
+| **S** | $8K - $25K | 5M - 15M $EDGE | 5M $EDGE + 0.25% of affiliate revenue from their tracking link, 12mo |
 | **A** | $2K - $8K | 4M - 12M $EDGE | 3M $EDGE + 0.10% affiliate rev, 12mo |
 | **B** | $300 - $2K | 800K - 4M $EDGE | 600K $EDGE + flat $25/conversion, 6mo |
 | **C** | $50 - $300 | 100K - 800K $EDGE | 100K $EDGE + $10/conversion, 6mo |

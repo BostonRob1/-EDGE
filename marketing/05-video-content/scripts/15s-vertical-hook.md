@@ -64,10 +64,10 @@
 ## SHOT 05 — 11.5s–13.5s · TOKEN BEAT
 
 **VISUAL:** Cut. Quick stack of mono rows:
-- `10K $EDGE → WHALE ALERTS`
-- `100K $EDGE → DIVERGENCE RADAR`
-- `1M $EDGE → API ACCESS`
-- `10M $EDGE → INSIDER CHANNEL`
+- `100K $EDGE → TRADER · whale alerts`
+- `1M $EDGE → ANALYST · divergence + arbitrage radar`
+- `5M $EDGE → DESK · backtesting + priority API
+- 
 
 Each row prints in with a 0.2s stagger. Lime tier numbers.
 

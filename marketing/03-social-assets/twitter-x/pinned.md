@@ -20,7 +20,7 @@ edge-two-psi.vercel.app
 ---
 
 ## 2 / 6 — Pillar 1 + 2 (Markets + Whales)
-The five pillars:
+The six pillars:
 
 1. Every Polymarket + Kalshi market in one grid. Sortable, filterable, live.
 2. Whale tracker. The same $40K wallet that hit Trump-Powell in 18 minutes? You see them next time, in real time.
