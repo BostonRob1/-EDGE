@@ -580,11 +580,212 @@ function EdgeCard() {
   );
 }
 
+// --- ARB (Arbitrage Radar promo) card ---------------------------------------
+function ArbCard() {
+  return el(
+    "div",
+    {
+      style: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: C.void,
+        color: C.white,
+        position: "relative",
+      },
+    },
+    BgGrid(),
+    CornerBrackets(),
+    TopBar("ARB · v0 · LIVE"),
+    el(
+      "div",
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          padding: "44px 56px 32px 56px",
+          flex: 1,
+          position: "relative",
+        },
+      },
+      // Eyebrow w/ green dot (arb = green territory)
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            fontFamily: "JetBrains Mono",
+            fontWeight: 500,
+            fontSize: 22,
+            letterSpacing: "6px",
+            color: C.green,
+            textTransform: "uppercase",
+          },
+        },
+        el("div", {
+          style: { width: 10, height: 10, borderRadius: 999, backgroundColor: C.green },
+        }),
+        el("div", { style: { display: "flex" } }, "CROSS-PLATFORM · POLY ↔ KAL"),
+      ),
+      // Headline
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 124,
+            lineHeight: 0.92,
+            letterSpacing: "-4px",
+            marginTop: 24,
+          },
+        },
+        el("div", { style: { color: C.white, display: "flex" } }, "ARBITRAGE"),
+      ),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "Anton",
+            fontSize: 124,
+            lineHeight: 0.92,
+            letterSpacing: "-4px",
+            marginTop: 0,
+          },
+        },
+        el("div", { style: { color: C.green, display: "flex" } }, "RADAR."),
+      ),
+      // Tagline
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            fontFamily: "DM Sans",
+            fontWeight: 400,
+            fontSize: 28,
+            lineHeight: 1.3,
+            color: C.white,
+            opacity: 0.85,
+            marginTop: 22,
+          },
+        },
+        "Same event. Different prices. The edge is in the spread.",
+      ),
+      // Mini chart band — two-curve divergence (lime vs magenta) with green shaded spread
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            marginTop: 24,
+            border: `1px solid ${C.border}`,
+            background: C.void2,
+            padding: 16,
+            flexDirection: "column",
+            gap: 10,
+          },
+        },
+        el(
+          "div",
+          {
+            style: {
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontFamily: "JetBrains Mono",
+              fontWeight: 500,
+              fontSize: 12,
+              letterSpacing: "3px",
+              color: C.muted,
+              textTransform: "uppercase",
+            },
+          },
+          el(
+            "div",
+            { style: { display: "flex", gap: 14 } },
+            el("div", { style: { display: "flex", color: C.lime } }, "POLY 0.62"),
+            el("div", { style: { display: "flex" } }, "·"),
+            el("div", { style: { display: "flex", color: C.magenta } }, "KAL 0.58"),
+          ),
+          el("div", { style: { display: "flex", color: C.green, fontWeight: 700 } }, "EDGE +4.2pp · HIGH"),
+        ),
+        el(
+          "svg",
+          { width: 1088, height: 48, viewBox: "0 0 1088 48", style: { display: "flex" } },
+          // shaded spread between the two curves (green)
+          el("path", {
+            d: "M 0 12 L 90 18 L 180 14 L 270 22 L 360 18 L 450 26 L 540 22 L 630 28 L 720 24 L 810 30 L 900 26 L 990 32 L 1088 28 L 1088 40 L 990 38 L 900 34 L 810 38 L 720 32 L 630 36 L 540 30 L 450 34 L 360 28 L 270 32 L 180 26 L 90 30 L 0 28 Z",
+            fill: "rgba(0,255,133,0.18)",
+            stroke: "none",
+          }),
+          // POLY line (lime)
+          el("path", {
+            d: "M 0 12 L 90 18 L 180 14 L 270 22 L 360 18 L 450 26 L 540 22 L 630 28 L 720 24 L 810 30 L 900 26 L 990 32 L 1088 28",
+            fill: "none", stroke: C.lime, strokeWidth: 2,
+            strokeLinecap: "round", strokeLinejoin: "round",
+          }),
+          // KAL line (magenta)
+          el("path", {
+            d: "M 0 28 L 90 30 L 180 26 L 270 32 L 360 28 L 450 34 L 540 30 L 630 36 L 720 32 L 810 38 L 900 34 L 990 38 L 1088 40",
+            fill: "none", stroke: C.magenta, strokeWidth: 1.8,
+            strokeLinecap: "round", strokeLinejoin: "round", opacity: 0.85,
+          }),
+        ),
+      ),
+      // Bottom row — stats + CTA
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "auto",
+            paddingTop: 18,
+            fontFamily: "JetBrains Mono",
+            fontWeight: 500,
+            fontSize: 16,
+            letterSpacing: "5px",
+            textTransform: "uppercase",
+          },
+        },
+        el(
+          "div",
+          { style: { display: "flex", gap: 22, color: C.muted } },
+          el("div", { style: { display: "flex" } },
+            el("div", { style: { display: "flex", color: C.white, marginRight: 6 } }, "1,420"),
+            el("div", { style: { display: "flex" } }, "SCANNED"),
+          ),
+          el("div", { style: { display: "flex" } },
+            el("div", { style: { display: "flex", color: C.green, marginRight: 6 } }, "14"),
+            el("div", { style: { display: "flex" } }, "LIVE OPPS"),
+          ),
+          el("div", { style: { display: "flex" } },
+            el("div", { style: { display: "flex", color: C.green, marginRight: 6 } }, "+4.2pp"),
+            el("div", { style: { display: "flex" } }, "BIGGEST"),
+          ),
+        ),
+        el(
+          "div",
+          { style: { display: "flex", color: C.green } },
+          "EDGETERMINAL.XYZ/ARB →",
+        ),
+      ),
+    ),
+  );
+}
+
 // Map of surfaces → renderers ------------------------------------------------
 const cards = {
   "coming-soon": ComingSoonCard,
   launch: LaunchCard,
   edge: EdgeCard,
+  arb: ArbCard,
 };
 
 export default async function handler(req) {
