@@ -261,8 +261,169 @@ html, body {
 
 @media print {
   body::before, body::after { display: none; }
-  header, footer, nav { display: none; }
+  header, footer, nav, .elite-ticker { display: none; }
   main { padding: 0; }
+}
+
+/* ── LIVE ACTIVITY TICKER ───────────────────────────────────────────── */
+/* Bloomberg-style scrolling tape that lives directly under the page header
+ * on every page. Auto-injected by ticker.js. Whale trades · news drops ·
+ * Edge calls merge into a single chronological strip.
+ */
+
+.elite-ticker {
+  position: sticky;
+  top: var(--header-h, 71px);
+  display: flex;
+  align-items: stretch;
+  background: var(--void-2, #0c0c10);
+  border-bottom: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  height: 36px;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', monospace;
+  z-index: 50;
+}
+
+.elite-ticker-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  background: var(--void-3, #141418);
+  border-right: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--lime, #C4FF00);
+  flex-shrink: 0;
+}
+
+.elite-ticker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime, #C4FF00);
+  box-shadow: 0 0 10px var(--lime, #C4FF00);
+  animation: ticker-pulse 1.2s infinite;
+}
+@keyframes ticker-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.7); }
+}
+
+.elite-ticker-viewport {
+  flex: 1 1 auto;
+  overflow: hidden;
+  position: relative;
+  min-width: 0;
+  /* Soft edge fades to hint endless scroll */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 16px,
+    black calc(100% - 32px),
+    transparent 100%
+  );
+}
+
+.elite-ticker-track {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  white-space: nowrap;
+  animation: ticker-scroll 80s linear infinite;
+  will-change: transform;
+}
+.elite-ticker:hover .elite-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.elite-ticker-placeholder {
+  padding: 0 18px;
+  font-size: 11px;
+  color: var(--muted, #6B6B73);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.elite-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 22px;
+  font-size: 12px;
+  color: var(--white, #F5F5F0);
+  text-decoration: none;
+  border-right: 1px solid var(--border, rgba(245, 245, 240, 0.06));
+  height: 100%;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.elite-ticker-item:hover {
+  background: var(--void-3, #141418);
+  color: var(--lime, #C4FF00);
+}
+
+.elite-ticker-icon {
+  font-size: 11px;
+  line-height: 1;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.elite-ticker-WHALE_TRADE .elite-ticker-icon { color: var(--lime, #C4FF00); }
+.elite-ticker-NEWS_DROP .elite-ticker-icon { color: var(--green, #00FF85); }
+.elite-ticker-EDGE_CALL .elite-ticker-icon {
+  color: var(--magenta, #FF006E);
+  text-shadow: 0 0 8px var(--magenta, #FF006E);
+}
+
+.elite-ticker-amount {
+  font-weight: 700;
+  color: var(--lime, #C4FF00);
+  letter-spacing: 0.02em;
+}
+.elite-ticker-NEWS_DROP .elite-ticker-amount { color: var(--green, #00FF85); }
+.elite-ticker-EDGE_CALL .elite-ticker-amount { color: var(--magenta, #FF006E); }
+
+.elite-ticker-text {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Don't pause on hover for touch devices — the pause is for cursor users */
+@media (hover: none) {
+  .elite-ticker:hover .elite-ticker-track {
+    animation-play-state: running;
+  }
+}
+
+/* Reduced motion: hold the ticker still rather than animate forever */
+@media (prefers-reduced-motion: reduce) {
+  .elite-ticker-track {
+    animation: none !important;
+  }
+  .elite-ticker-viewport {
+    overflow-x: auto;
+    mask-image: none;
+  }
+}
+
+/* On the dashboard specifically, the page uses a fixed viewport-fit layout.
+ * The ticker adds 36px; we let the dashboard's main grid recalculate by
+ * being a standard flow element. The dashboard's `main` height calc accounts
+ * for header + strip, so the ticker effectively becomes another row. The
+ * inline page CSS reads --header-h / --strip-h; we leave those alone and
+ * let body scroll if needed on the dashboard specifically.
+ */
+body:has(.elite-ticker) main {
+  /* No-op: present for documentation. The dashboard's main has its own
+   * height calc; adding the ticker pushes the grid down by 36px which is
+   * within an acceptable visual buffer. */
 }
 
 /* ── JOIN WAITLIST CTA pill — added to every page header as a separate */
