@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Waitlist — Join the Early Ops</title>
+<meta name="description" content="Pre-launch waitlist for $EDGE. Connect your Solana wallet, predict markets, earn Day-Zero allocation. Anonymous by design. Public by code.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/waitlist.html">
+<meta property="og:title" content="$EDGE Waitlist — Join the Early Ops">
+<meta property="og:description" content="Connect wallet. Predict markets. Earn Day-Zero allocation. The terminal isn't free forever.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=coming-soon">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=coming-soon">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; background: var(--lime);
+  border-radius: 50%; margin-right: 6px; box-shadow: 0 0 10px var(--lime);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 64px 32px 24px; max-width: 1100px; margin: 0 auto; text-align: center;
+}
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; background: rgba(196, 255, 0, 0.1);
+  border: 1px solid var(--lime); border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.15em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 28px;
+}
+.status-pill::before {
+  content: ''; width: 8px; height: 8px; background: var(--lime);
+  border-radius: 50%; box-shadow: 0 0 10px var(--lime);
+  animation: pulse 1.5s infinite;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 11vw, 144px); line-height: 0.9;
+  letter-spacing: -0.025em; text-transform: uppercase; margin-bottom: 14px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero .tagline {
+  font-size: 20px; color: var(--white); margin-bottom: 12px;
+  font-weight: 500; letter-spacing: -0.005em;
+}
+.hero .subline {
+  font-size: 15px; color: var(--muted); max-width: 580px;
+  margin: 0 auto 36px; line-height: 1.5;
+}
+.hero .subline strong { color: var(--white); }
+
+/* ── COUNTER ─────────────────────────────────────────────────────────── */
+.counter {
+  max-width: 700px; margin: 32px auto 0;
+  background: var(--void-2); border: 1px solid var(--border-bright);
+  padding: 28px 24px; text-align: center; border-radius: 2px;
+  position: relative;
+}
+.counter .label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.2em;
+  margin-bottom: 10px;
+}
+.counter .number {
+  font-family: 'Anton', sans-serif; font-size: clamp(72px, 12vw, 120px);
+  line-height: 0.9; color: var(--lime); letter-spacing: 0.02em;
+}
+.counter .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); margin-top: 8px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.counter .pulse {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--lime); margin-right: 6px; vertical-align: middle;
+  animation: pulse 1.5s infinite;
+}
+
+/* ── SIGNUP FORM ─────────────────────────────────────────────────────── */
+.signup {
+  max-width: 700px; margin: 40px auto 0;
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 32px; border-radius: 2px;
+}
+.signup h2 {
+  font-family: 'Anton', sans-serif; font-size: 28px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  margin-bottom: 24px; text-align: center;
+}
+.signup h2 .accent { color: var(--lime); }
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%; padding: 14px 16px;
+  background: var(--void-3); border: 1px solid var(--border);
+  border-radius: 2px; color: var(--white);
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  outline: none; transition: border-color 0.15s;
+}
+.field input:focus { border-color: var(--lime); }
+.field input::placeholder { color: var(--muted); }
+.wallet-row { display: flex; gap: 8px; }
+.wallet-row input { flex: 1 1 auto; min-width: 0; }
+.btn-connect {
+  padding: 0 18px; background: transparent; border: 1px solid var(--border-bright);
+  color: var(--lime); font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+  cursor: pointer; border-radius: 2px; white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-connect:hover { background: var(--lime); color: var(--void); }
+.btn-submit {
+  width: 100%; padding: 16px 24px; background: var(--lime); color: var(--void);
+  border: none; font-family: 'Anton', sans-serif; font-size: 20px;
+  letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+  border-radius: 2px; transition: background 0.15s, transform 0.05s;
+  margin-top: 8px;
+}
+.btn-submit:hover { background: #d8ff33; }
+.btn-submit:active { transform: scale(0.99); }
+.btn-submit:disabled { opacity: 0.5; cursor: wait; background: var(--lime-dim); }
+
+.signup-msg {
+  margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  text-align: center; min-height: 18px; letter-spacing: 0.05em;
+}
+.signup-msg.error { color: var(--red); }
+.signup-msg.ok { color: var(--green); }
+
+/* ── POSITION CARD (after signup) ────────────────────────────────────── */
+.position-card {
+  max-width: 700px; margin: 40px auto 0;
+  background: var(--void-2); border: 1px solid var(--lime);
+  border-left: 4px solid var(--lime);
+  padding: 32px; border-radius: 2px;
+  display: none;
+}
+.position-card.show { display: block; }
+.position-card .label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 10px; font-weight: 700;
+}
+.position-card .pos-num {
+  font-family: 'Anton', sans-serif; font-size: clamp(56px, 10vw, 96px);
+  line-height: 0.9; color: var(--white); letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+.position-card .pos-num .hash { color: var(--lime); }
+.position-card .pos-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--muted); margin-bottom: 22px;
+}
+.position-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-share {
+  padding: 12px 18px; background: var(--void-3); border: 1px solid var(--border);
+  color: var(--white); font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;
+  border-radius: 2px; text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-share:hover { border-color: var(--lime); color: var(--lime); }
+
+/* ── PREDICTION GAME ─────────────────────────────────────────────────── */
+section.panel { max-width: 1100px; margin: 80px auto 0; padding: 0 32px; }
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
+  gap: 12px; flex-wrap: wrap;
+}
+.section-head h2 {
+  font-family: 'Anton', sans-serif; font-size: 28px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.section-head h2 .accent { color: var(--lime); }
+.section-head .meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+.game-intro {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-left: 3px solid var(--lime);
+  padding: 20px 24px; border-radius: 2px; margin-bottom: 20px;
+  font-size: 14px; color: var(--muted); line-height: 1.6;
+}
+.game-intro strong { color: var(--white); }
+
+.predictions-grid {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.prediction {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 16px 18px; border-radius: 2px;
+  display: grid; grid-template-columns: 1fr auto auto;
+  gap: 14px; align-items: center;
+}
+.prediction .market-info { min-width: 0; }
+.prediction .market-title {
+  color: var(--white); font-size: 14px; font-weight: 500; line-height: 1.4;
+  margin-bottom: 4px;
+}
+.prediction .market-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); display: flex; gap: 10px;
+}
+.prediction .live-odds {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  white-space: nowrap; color: var(--muted);
+}
+.prediction .live-odds .y { color: var(--green); }
+.prediction .live-odds .n { color: var(--red); }
+.pred-buttons { display: flex; gap: 4px; }
+.pred-btn {
+  padding: 8px 14px; background: var(--void-3); border: 1px solid var(--border);
+  color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  font-weight: 700; cursor: pointer; border-radius: 2px;
+  transition: all 0.15s; min-width: 50px;
+}
+.pred-btn:hover { border-color: var(--white); color: var(--white); }
+.pred-btn.active.YES { background: var(--green); color: var(--void); border-color: var(--green); }
+.pred-btn.active.NO { background: var(--red); color: var(--void); border-color: var(--red); }
+
+.submit-predictions {
+  margin-top: 20px; width: 100%; padding: 16px 24px;
+  background: var(--lime); color: var(--void); border: none;
+  font-family: 'Anton', sans-serif; font-size: 20px;
+  letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+  border-radius: 2px;
+}
+.submit-predictions:hover { background: #d8ff33; }
+.submit-predictions:disabled { opacity: 0.5; cursor: not-allowed; background: var(--lime-dim); }
+
+/* ── LEADERBOARD ────────────────────────────────────────────────────── */
+.lb-table {
+  display: grid; grid-template-columns: 60px 1fr auto;
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.lb-table > * {
+  background: var(--void-2); padding: 12px 16px;
+  font-size: 13px; display: flex; align-items: center;
+}
+.lb-table .h {
+  background: var(--void-3); color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.lb-rank { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--lime); justify-content: center; }
+.lb-wallet { color: var(--white); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.lb-score { font-family: 'JetBrains Mono', monospace; color: var(--lime); justify-content: flex-end; font-weight: 700; }
+
+/* ── EMPTY / NOTICES ────────────────────────────────────────────────── */
+.notice {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  padding: 18px 22px; border-radius: 2px; margin: 24px auto;
+  max-width: 700px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted); line-height: 1.6;
+}
+.notice strong { color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; }
+
+footer {
+  margin-top: 96px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .prediction { grid-template-columns: 1fr; gap: 8px; }
+  .prediction .live-odds { font-size: 11px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/token.html">Token</a></li>
+      <li><a href="/waitlist.html" class="active"><span class="live-dot"></span>Waitlist</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="status-pill">Pre-Launch · Day-Zero Allocation</div>
+    <h1>JOIN THE <span class="accent">EARLY OPS</span></h1>
+    <p class="tagline">Connect wallet. Predict markets. Earn Day-Zero allocation.</p>
+    <p class="subline">
+      The terminal isn't free forever. <strong>Top scorers from the prediction game
+      claim Day-Zero status</strong> — permanent badge, priority access to every
+      future tier, and a piece of the affiliate buyback pool.
+      Anonymous by design. Public by code.
+    </p>
+
+    <div class="counter">
+      <div class="label"><span class="pulse"></span>Operators on the waitlist</div>
+      <div class="number" id="counter">—</div>
+      <div class="sub" id="counterSub">loading…</div>
+    </div>
+  </section>
+
+  <!-- ── SIGNUP ─────────────────────────────────────────────────────── -->
+  <section>
+    <div class="signup">
+      <h2>Claim Your <span class="accent">Position</span></h2>
+      <form id="signupForm" autocomplete="off">
+        <div class="field">
+          <label for="walletInput">Solana wallet · required for airdrop</label>
+          <div class="wallet-row">
+            <input
+              id="walletInput"
+              type="text"
+              placeholder="paste Solana wallet or 0x… ETH"
+              spellcheck="false"
+              autocapitalize="off"
+              autocorrect="off"
+              required
+            />
+            <button type="button" class="btn-connect" id="connectBtn">Connect Phantom</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="emailInput">Email · optional, launch alerts only</label>
+          <input id="emailInput" type="email" placeholder="op@edge.example" spellcheck="false">
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Claim Position</button>
+      </form>
+      <div class="signup-msg" id="signupMsg"></div>
+    </div>
+
+    <!-- Position card shown after successful join -->
+    <div class="position-card" id="positionCard">
+      <div class="label">✓ You're In</div>
+      <div class="pos-num"><span class="hash">#</span><span id="posNumber">—</span></div>
+      <div class="pos-sub">on the $EDGE waitlist · Day-Zero candidate</div>
+      <div class="actions">
+        <a class="btn-share" id="shareX" target="_blank" rel="noopener">Share on X →</a>
+        <a class="btn-share" id="shareTg" target="_blank" rel="noopener">Telegram →</a>
+        <button class="btn-share" id="copyLink" type="button">Copy referral link</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PREDICTION GAME ────────────────────────────────────────────── -->
+  <section class="panel" id="gameSection" style="display:none">
+    <div class="section-head">
+      <h2>Prediction <span class="accent">Game</span></h2>
+      <div class="meta" id="gameMeta">5 top markets · pick a side, set confidence</div>
+    </div>
+    <div class="game-intro">
+      <strong>How it scores.</strong> Pick YES or NO on each market. Score is based on
+      conviction — confident picks earn more if right, but cost more if wrong. Top scorers
+      claim <strong>Day-Zero badges</strong> redeemable post-launch for extra tier perks.
+      Predictions lock when markets resolve.
+    </div>
+    <div class="predictions-grid" id="predictionsGrid">
+      <div class="notice">Loading top markets…</div>
+    </div>
+    <button class="submit-predictions" id="submitPredictions" disabled>Submit Predictions</button>
+    <div class="signup-msg" id="gameMsg"></div>
+  </section>
+
+  <!-- ── LEADERBOARD ───────────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="section-head">
+      <h2>Top <span class="accent">Ops</span></h2>
+      <div class="meta" id="lbMeta">projected scores · finalize at launch</div>
+    </div>
+    <div class="lb-table" id="lbTable">
+      <div class="h">#</div>
+      <div class="h">Wallet</div>
+      <div class="h" style="justify-content:flex-end">Score</div>
+    </div>
+  </section>
+
+  <!-- ── PERSISTENCE NOTICE ─────────────────────────────────────────── -->
+  <div class="notice" id="persistenceNotice" style="display:none">
+    <strong>Setup pending</strong> · Waitlist storage is in-memory until Vercel KV is
+    provisioned (1-click in the Vercel dashboard → Storage → Create KV). Until then,
+    counter + leaderboard reset on cold starts. Code is live; flip persistence on when
+    ready.
+  </div>
+</main>
+
+<footer>
+  $EDGE on Solana · fair launch via pump.fun · day-one utility · not financial advice<br>
+  <a href="/">$EDGE home</a> · <a href="/token.html">Tokenomics</a> ·
+  <a href="/edge.html">Divergence Radar</a>
+</footer>
+
+<script type="module" src="/waitlist.js"></script>
+</body>
+</html>
