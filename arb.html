@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Arbitrage Radar — Cross-Platform Edge Detection</title>
+<meta name="description" content="Live cross-platform arbitrage scanner. Polymarket ↔ Kalshi. Surfaces fee-adjusted edges where the same event prices differently.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/arb.html">
+<meta property="og:title" content="$EDGE Arbitrage Radar — Cross-Platform Edge Detection">
+<meta property="og:description" content="When the same event prices differently across Polymarket and Kalshi, the edge surfaces. Live scanner.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; background: var(--amber);
+  border-radius: 50%; margin-right: 6px; box-shadow: 0 0 10px var(--amber);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 72px 32px 24px; max-width: 1400px; margin: 0 auto; text-align: center;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 11vw, 144px); line-height: 0.9;
+  letter-spacing: -0.025em; text-transform: uppercase; margin-bottom: 16px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero .tagline {
+  font-size: 19px; color: var(--muted); margin-bottom: 14px;
+  max-width: 680px; margin-left: auto; margin-right: auto;
+}
+.hero .tagline strong { color: var(--white); font-weight: 500; }
+.hero .thesis {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--amber); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.stat-strip {
+  max-width: 1100px; margin: 32px auto 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border-bright);
+}
+.stat-cell { background: var(--void-2); padding: 16px 20px; text-align: left; }
+.stat-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px;
+}
+.stat-cell .val {
+  font-family: 'Anton', sans-serif; font-size: 28px; line-height: 1;
+  color: var(--lime); letter-spacing: 0.02em;
+}
+.stat-cell.amber .val { color: var(--amber); }
+.stat-cell.white .val { color: var(--white); }
+.stat-cell .sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 4px;
+}
+
+/* ── DISCLAIMER BANNER ──────────────────────────────────────────────── */
+.warn-banner {
+  max-width: 1100px; margin: 32px auto 0;
+  background: var(--void-2); border: 1px solid var(--amber);
+  border-left: 4px solid var(--amber);
+  padding: 16px 24px; border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--muted); line-height: 1.6;
+}
+.warn-banner strong { color: var(--amber); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ── SECTIONS ───────────────────────────────────────────────────────── */
+section.panel {
+  max-width: 1400px; margin: 56px auto 0; padding: 0 32px;
+}
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;
+  gap: 12px; flex-wrap: wrap;
+}
+.section-head h2 {
+  font-family: 'Anton', sans-serif; font-size: 28px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.section-head h2 .accent { color: var(--lime); }
+.section-head h2 .amber { color: var(--amber); }
+.section-head .meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* ── ARB CARDS ──────────────────────────────────────────────────────── */
+.arb-grid {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.arb {
+  background: var(--void-2); border: 1px solid var(--border);
+  border-radius: 2px; overflow: hidden;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  position: relative;
+}
+.arb::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.arb.conf-HIGH::before { background: var(--green); box-shadow: 0 0 16px var(--green); }
+.arb.conf-MEDIUM::before { background: var(--lime); }
+.arb.conf-VERIFY::before { background: var(--amber); }
+
+/* Each leg */
+.leg {
+  padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  min-width: 0;
+}
+.leg-platform {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-weight: 700;
+}
+.leg-platform.poly { color: var(--magenta); }
+.leg-platform.kalshi { color: var(--lime); }
+.leg-platform .dot {
+  width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+}
+.leg-platform.poly .dot { background: var(--magenta); }
+.leg-platform.kalshi .dot { background: var(--lime); }
+.leg-action {
+  font-family: 'Anton', sans-serif; font-size: 32px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  display: flex; gap: 14px; align-items: baseline;
+}
+.leg-action .side.YES { color: var(--green); }
+.leg-action .side.NO { color: var(--red); }
+.leg-action .price {
+  color: var(--white); font-size: 28px;
+}
+.leg-title {
+  font-size: 14px; color: var(--white); line-height: 1.4;
+  font-weight: 500;
+}
+.leg-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap;
+  margin-top: auto;
+}
+.leg-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); text-decoration: none; letter-spacing: 0.08em;
+  text-transform: uppercase; padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+.leg-link:hover { color: var(--white); }
+
+/* Center divider with edge metrics */
+.arb-edge {
+  background: var(--void-3); border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 16px 24px; min-width: 200px;
+  text-align: center;
+}
+.arb-edge .pp {
+  font-family: 'Anton', sans-serif; font-size: 48px; line-height: 1;
+  letter-spacing: 0.02em;
+}
+.arb.conf-HIGH .arb-edge .pp { color: var(--green); }
+.arb.conf-MEDIUM .arb-edge .pp { color: var(--lime); }
+.arb.conf-VERIFY .arb-edge .pp { color: var(--amber); }
+.arb-edge .pp-lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em;
+  margin-top: 4px;
+}
+.arb-edge .conf-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  font-weight: 700; padding: 4px 10px; border-radius: 100px;
+  margin-top: 12px; letter-spacing: 0.1em;
+}
+.arb.conf-HIGH .conf-pill { background: rgba(0, 255, 133, 0.15); color: var(--green); }
+.arb.conf-MEDIUM .conf-pill { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.arb.conf-VERIFY .conf-pill { background: rgba(255, 184, 0, 0.15); color: var(--amber); }
+.arb-edge .stake-row {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); margin-top: 16px; line-height: 1.5;
+}
+.arb-edge .stake-row strong { color: var(--white); }
+
+/* ── EMPTY / LOADING ────────────────────────────────────────────────── */
+.empty {
+  padding: 56px 28px; text-align: center; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7;
+  background: var(--void-2); border: 1px solid var(--border);
+  border-radius: 2px;
+}
+.empty strong { color: var(--white); }
+.empty .pulse {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--amber); margin-right: 8px; vertical-align: middle;
+  animation: pulse 1.5s infinite;
+}
+.skel-arb {
+  background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2));
+  background-size: 200% 100%; animation: shimmer 1.4s linear infinite;
+  height: 180px; border-radius: 2px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── HOW IT WORKS ───────────────────────────────────────────────────── */
+.how {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 32px; border-radius: 2px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+.how-step .num {
+  font-family: 'Anton', sans-serif; font-size: 48px;
+  color: var(--lime); line-height: 1; margin-bottom: 12px;
+}
+.how-step h4 {
+  font-family: 'Anton', sans-serif; font-size: 20px;
+  letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 8px;
+}
+.how-step p {
+  color: var(--muted); font-size: 13px; line-height: 1.6;
+}
+.how-step p strong { color: var(--white); }
+
+footer {
+  margin-top: 96px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 900px) {
+  .arb { grid-template-columns: 1fr; }
+  .arb-edge { border-left: 0; border-right: 0;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    min-width: 0;
+  }
+  .how { grid-template-columns: 1fr; gap: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html" class="active"><span class="live-dot"></span>Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/token.html">Token</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="thesis">Same event. Different prices. The edge is in the spread.</div>
+    <h1>ARBITRAGE <span class="accent">RADAR</span></h1>
+    <p class="tagline">
+      Live cross-platform scanner. When
+      <strong style="color:var(--magenta)">Polymarket</strong> and
+      <strong style="color:var(--lime)">Kalshi</strong> price the same event differently,
+      the gap surfaces — fee-adjusted, ranked, executable.
+    </p>
+
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="lbl">Markets Scanned</div><div class="val" id="statScanned">—</div><div class="sub" id="statScannedSub">poly + kalshi</div></div>
+      <div class="stat-cell amber"><div class="lbl">Pairs Matched</div><div class="val" id="statPairs">—</div><div class="sub">same-event candidates</div></div>
+      <div class="stat-cell"><div class="lbl">Opportunities</div><div class="val" id="statOpps">—</div><div class="sub">after fees + filters</div></div>
+      <div class="stat-cell white"><div class="lbl">Biggest Edge</div><div class="val" id="statBiggest">—</div><div class="sub">today's top spread</div></div>
+      <div class="stat-cell"><div class="lbl">Fee Buffer</div><div class="val" id="statBuffer">—</div><div class="sub">applied to every leg</div></div>
+    </div>
+
+    <div class="warn-banner">
+      <strong>v0 Honest Notice</strong> · Match scoring is token-overlap. Some pairs may
+      look similar but cover different events (e.g. "Will Trump pardon Tiger Woods?" vs
+      "Who will Trump pardon?"). Always verify titles match BEFORE executing. Real arbs
+      in liquid markets are typically <strong style="color:var(--white)">1-5%</strong>;
+      higher edges are flagged <strong style="color:var(--amber)">VERIFY</strong> for a
+      reason. Slippage on $500+ stakes is real.
+    </div>
+  </section>
+
+  <!-- ── OPPORTUNITIES ──────────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="section-head">
+      <h2>Live <span class="accent">Opportunities</span></h2>
+      <div class="meta" id="oppsMeta">scanning…</div>
+    </div>
+    <div class="arb-grid" id="arbGrid">
+      <div class="skel-arb"></div>
+      <div class="skel-arb"></div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ───────────────────────────────────────────────── -->
+  <section class="panel">
+    <div class="section-head">
+      <h2>How It <span class="accent">Works</span></h2>
+      <div class="meta">v0 · token-overlap matching</div>
+    </div>
+    <div class="how">
+      <div class="how-step">
+        <div class="num">01</div>
+        <h4>Match Pairs</h4>
+        <p>
+          Scan every active Polymarket + Kalshi market. Token-overlap algorithm finds
+          candidate pairs about the <strong>same real-world event</strong>. Date alignment
+          boosts the score; mismatched timeframes penalize it.
+        </p>
+      </div>
+      <div class="how-step">
+        <div class="num">02</div>
+        <h4>Compute Edge</h4>
+        <p>
+          For each pair, compute <strong>YES on one side + NO on the other</strong>. If
+          the combined cost is under $1.00 after a <strong>2% fee buffer</strong> (covers
+          Kalshi fees + Polymarket frictions), an arb exists.
+        </p>
+      </div>
+      <div class="how-step">
+        <div class="num">03</div>
+        <h4>Rank by Edge</h4>
+        <p>
+          Surface ranked by fee-adjusted edge. Confidence badges:
+          <strong style="color:var(--green)">HIGH</strong> (≤5pp),
+          <strong style="color:var(--lime)">MEDIUM</strong> (5-8pp),
+          <strong style="color:var(--amber)">VERIFY</strong> (8-12pp). Anything ≥12pp is
+          filtered as a likely matching error.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Arb radar v0 · informational only · not financial advice · execution risk is real ·
+  <a href="/token.html">Tier 2 utility on launch</a><br>
+  <a href="/">$EDGE home</a> · <a href="/dashboard.html">Dashboard</a> ·
+  <a href="/edge.html">Divergence Radar</a>
+</footer>
+
+<script type="module" src="/arb.js"></script>
+</body>
+</html>

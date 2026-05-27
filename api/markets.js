@@ -2,8 +2,11 @@
 // Polymarket has open CORS; Kalshi rejects browser Origin headers, so this proxy is required.
 // Vercel caches the response (see vercel.json) — clients can poll without hammering upstream.
 
+// Limit bumped 30 → 200 to give cross-product matchers (arb radar, divergence
+// radar, buzz heat) a wider surface. Per-page consumers can still slice their
+// own top-N from the response.
 const POLY_URL =
-  "https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=30&order=volume24hr&ascending=false";
+  "https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=200&order=volume24hr&ascending=false";
 const KALSHI_URL =
   "https://api.elections.kalshi.com/trade-api/v2/events?status=open&with_nested_markets=true&limit=200";
 
