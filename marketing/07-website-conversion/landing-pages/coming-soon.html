@@ -1468,96 +1468,76 @@
             <div class="supply">1,000,000,000</div>
           </div>
           <svg class="donut-svg" id="donut" viewBox="0 0 200 200" aria-hidden="true">
-            <!-- Background ring -->
             <circle cx="100" cy="100" r="78" stroke="var(--void-3)" stroke-width="22"/>
-            <!-- Segments — start at -90deg (top), go clockwise.
-                 Circumference = 2 * pi * 78 ≈ 490.
-                 80% = 392, 10% = 49, 5% = 24.5, 3% = 14.7, 2% = 9.8 -->
+            <!-- 100% FAIR LAUNCH via pump.fun bonding curve. No team allocation.
+                 Single lime ring = full circumference. -->
             <g transform="rotate(-90 100 100)" fill="none">
-              <!-- 80% FAIR — lime -->
               <circle cx="100" cy="100" r="78" stroke="#C4FF00" stroke-width="22"
-                      stroke-dasharray="392 490" stroke-dashoffset="0"
-                      class="seg" data-len="392"/>
-              <!-- 10% LP — green -->
-              <circle cx="100" cy="100" r="78" stroke="#00FF85" stroke-width="22"
-                      stroke-dasharray="49 490" stroke-dashoffset="-392"
-                      class="seg" data-len="49"/>
-              <!-- 5% TREASURY — amber -->
-              <circle cx="100" cy="100" r="78" stroke="#FFB800" stroke-width="22"
-                      stroke-dasharray="24.5 490" stroke-dashoffset="-441"
-                      class="seg" data-len="24.5"/>
-              <!-- 3% MARKETING — white -->
-              <circle cx="100" cy="100" r="78" stroke="#F5F5F0" stroke-width="22"
-                      stroke-dasharray="14.7 490" stroke-dashoffset="-465.5"
-                      class="seg" data-len="14.7"/>
-              <!-- 2% TEAM — muted -->
-              <circle cx="100" cy="100" r="78" stroke="#6B6B73" stroke-width="22"
-                      stroke-dasharray="9.8 490" stroke-dashoffset="-480.2"
-                      class="seg" data-len="9.8"/>
+                      stroke-dasharray="490 490" stroke-dashoffset="0"
+                      class="seg"/>
             </g>
-            <!-- center label -->
             <text x="100" y="94" font-family="JetBrains Mono" font-weight="500"
                   font-size="9" letter-spacing="2" fill="#6B6B73"
                   text-anchor="middle">FAIRLAUNCH</text>
             <text x="100" y="118" font-family="Anton" font-weight="400"
                   font-size="30" letter-spacing="-0.02em" fill="#C4FF00"
-                  text-anchor="middle">80%</text>
+                  text-anchor="middle">100%</text>
           </svg>
           <div class="donut-legend">
-            <div class="lg-row"><div class="sw" style="background:#C4FF00"></div><div>Fair Launch · Pump.fun</div><div class="pct">80%</div></div>
-            <div class="lg-row"><div class="sw" style="background:#00FF85"></div><div>LP · Locked 12mo</div><div class="pct" style="color:#00FF85">10%</div></div>
-            <div class="lg-row"><div class="sw" style="background:#FFB800"></div><div>Treasury · Multi-sig</div><div class="pct" style="color:#FFB800">5%</div></div>
-            <div class="lg-row"><div class="sw" style="background:#F5F5F0"></div><div>Marketing · Vested 6mo</div><div class="pct" style="color:#F5F5F0">3%</div></div>
-            <div class="lg-row"><div class="sw" style="background:#6B6B73"></div><div>Team · Vested 24mo / 6mo cliff</div><div class="pct" style="color:#6B6B73">2%</div></div>
+            <div class="lg-row"><div class="sw" style="background:#C4FF00"></div><div>Fair Launch · Pump.fun Curve</div><div class="pct">100%</div></div>
+            <div class="lg-row"><div class="sw" style="background:#6B6B73"></div><div>Team Allocation</div><div class="pct" style="color:#6B6B73">0%</div></div>
+            <div class="lg-row"><div class="sw" style="background:#6B6B73"></div><div>Presale · Private Round</div><div class="pct" style="color:#6B6B73">0%</div></div>
+            <div class="lg-row"><div class="sw" style="background:#00FF85"></div><div>LP Burned at Raydium Migration</div><div class="pct" style="color:#00FF85">$12K</div></div>
+            <div class="lg-row"><div class="sw" style="background:#FFB800"></div><div>Migration Trigger · Market Cap</div><div class="pct" style="color:#FFB800">~$69K</div></div>
           </div>
         </div>
 
-        <!-- TIERS -->
+        <!-- TIERS — matches product /token.html canonical ladder -->
         <div class="reveal d2">
           <div class="tiers">
             <div class="tier-row">
-              <div class="amt">10K</div>
+              <div class="amt" style="color:var(--muted);">Free</div>
               <div>
-                <div class="perk">Whale Alerts</div>
-                <div class="sub">Real-time DM pings when smart-money wallets enter or exit a market.</div>
+                <div class="perk">Public Tier</div>
+                <div class="sub">Public dashboard · hot markets feed · buzz heat index · whale firehose (delayed) · Rug Radar basic scan.</div>
               </div>
-              <div class="glyph">›</div>
+              <div class="glyph">·</div>
             </div>
             <div class="tier-row">
               <div class="amt">100K</div>
               <div>
-                <div class="perk">Divergence Radar</div>
-                <div class="sub">Live cross-venue mispricing scanner. Custom alert thresholds. Telegram + email.</div>
+                <div class="perk">Trader</div>
+                <div class="sub">Real-time whale alerts · custom firehose thresholds · wallet watchlists (10) · Rug Radar deep scan · Buzz market drilldown.</div>
               </div>
-              <div class="glyph">››</div>
+              <div class="glyph">›</div>
             </div>
             <div class="tier-row">
               <div class="amt">1M</div>
               <div>
-                <div class="perk">Raw API · WebSocket</div>
-                <div class="sub">Direct normalized feed. Bring your own bots. Bring your own alpha.</div>
+                <div class="perk">Analyst</div>
+                <div class="sub">Divergence Radar (picker algo) · public track record dashboard · wallet watchlists (50) · API access (rate-limited) · push + webhook alerts.</div>
               </div>
-              <div class="glyph">›››</div>
+              <div class="glyph">››</div>
             </div>
             <div class="tier-row">
-              <div class="amt">10M</div>
+              <div class="amt" style="color:var(--magenta);">5M</div>
               <div>
-                <div class="perk">Insider Channel</div>
-                <div class="sub">Private signal room with the operators and the top 50 holders. Voice only. Anon stays anon.</div>
+                <div class="perk" style="color:var(--magenta);">Desk</div>
+                <div class="sub">Custom backtesting · unlimited API + priority · unlimited watchlists · affiliate revenue share · governance vote weight.</div>
               </div>
-              <div class="glyph">››››</div>
+              <div class="glyph">›››</div>
             </div>
           </div>
 
           <div class="spec-grid">
             <div class="spec-row"><div class="k">Venue</div><div class="v lime">PUMP.FUN</div></div>
             <div class="spec-row"><div class="k">Chain</div><div class="v">SOLANA</div></div>
-            <div class="spec-row"><div class="k">Launch</div><div class="v">FAIRLAUNCH · NO PRESALE</div></div>
-            <div class="spec-row"><div class="k">Supply</div><div class="v">1,000,000,000</div></div>
-            <div class="spec-row"><div class="k">LP Lock</div><div class="v">12 MONTHS</div></div>
-            <div class="spec-row"><div class="k">Team Cliff</div><div class="v">6 MONTHS</div></div>
-            <div class="spec-row"><div class="k">Team Vest</div><div class="v">24 MONTHS</div></div>
-            <div class="spec-row"><div class="k">Treasury</div><div class="v">SQUADS MULTI-SIG</div></div>
+            <div class="spec-row"><div class="k">Launch</div><div class="v">FAIR · NO PRESALE · NO TEAM ALLOC</div></div>
+            <div class="spec-row"><div class="k">Supply</div><div class="v">1,000,000,000 · FIXED</div></div>
+            <div class="spec-row"><div class="k">Curve Migration</div><div class="v">RAYDIUM @ ~$69K MCAP</div></div>
+            <div class="spec-row"><div class="k">LP at Migration</div><div class="v">$12K BURNED PERMANENTLY</div></div>
+            <div class="spec-row"><div class="k">Team Allocation</div><div class="v lime">0%</div></div>
+            <div class="spec-row"><div class="k">Founders Buy</div><div class="v">ON OPEN MARKET · ANON</div></div>
           </div>
         </div>
 
@@ -1608,11 +1588,11 @@
         <div class="receipt reveal d3">
           <div class="rk">03 · Track Record</div>
           <div class="rh">Append<br>only.</div>
-          <div class="rb">Every divergence call timestamped and stored at the moment it fires. No editing the past, no deleting the misses, no cherry-picking the wins. Live ledger on launch day.</div>
-          <div class="tr-bar" aria-hidden="true"><div class="fill"></div></div>
+          <div class="rb">Every divergence call timestamps the moment it fires. No editing the past, no deleting the misses. Persistence layer ships with the Analyst (1M) tier — public ledger goes live in lockstep.</div>
+          <div class="tr-bar" aria-hidden="true"><div class="fill" style="width:18%;background:linear-gradient(90deg,var(--muted),var(--lime-dim));"></div></div>
           <div class="stat">
-            <div><div class="lbl">30d hit-rate</div><div class="big">78%</div></div>
-            <div><div class="lbl">Avg ROI</div><div class="big">+23.4%</div></div>
+            <div><div class="lbl">Ledger</div><div class="big" style="font-size:13px;letter-spacing:.12em;font-weight:500;color:var(--amber);text-transform:uppercase">Pending KV</div></div>
+            <div><div class="lbl">Unlocks at</div><div class="big" style="font-size:18px;">1M $EDGE</div></div>
           </div>
         </div>
 
