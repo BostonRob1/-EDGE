@@ -240,6 +240,32 @@ async function loadWallet(wallet) {
   }
 }
 
+// Update <title>, og:image, og:title etc so every share of a specific wallet
+// URL renders the branded whale OG card with this wallet's stats baked in.
+function updateMetaForWallet(data, { name }) {
+  const { wallet, summary } = data;
+  const value = fmtUsd(summary.total_value);
+  const positions = summary.open_positions ?? 0;
+  const pnl = summary.total_unrealized_pnl ?? 0;
+  const pnlStr = pnl > 0 ? `+${fmtUsd(pnl)}` : pnl < 0 ? fmtUsd(pnl) : "$0";
+  const title = `${name} · $EDGE Whale`;
+  document.title = title;
+  const ogUrl =
+    `${location.origin}/api/og?surface=whale` +
+    `&name=${encodeURIComponent(name)}` +
+    `&value=${encodeURIComponent(value)}` +
+    `&positions=${positions}` +
+    `&pnl=${encodeURIComponent(pnlStr)}` +
+    `&pnlnum=${Math.round(pnl)}`;
+  document.getElementById("ogTitle")?.setAttribute("content", title);
+  document.getElementById("ogImage")?.setAttribute("content", ogUrl);
+  document.getElementById("twImage")?.setAttribute("content", ogUrl);
+  document.getElementById("ogDesc")?.setAttribute(
+    "content",
+    `${value} portfolio · ${positions} open positions · ${pnlStr} unrealized · live on Polymarket`
+  );
+}
+
 function renderWallet(data) {
   const { wallet, identity, summary, positions, trades, errors } = data;
   const name = identity?.name || short(wallet, 8);
@@ -253,6 +279,10 @@ function renderWallet(data) {
     summary.open_positions > 0
       ? Math.round((summary.winning_positions / summary.open_positions) * 100)
       : null;
+
+  // Update page metadata so every share of this wallet URL gets the branded
+  // whale OG card with this specific wallet's stats baked in.
+  updateMetaForWallet(data, { name, winRate });
 
   $("#walletBody").innerHTML = `
     ${errors ? `<div class="empty" style="border-color:var(--red);color:var(--red);margin-bottom:16px">Partial data — failed sources: ${escapeHtml(Object.keys(errors).join(", "))}</div>` : ""}

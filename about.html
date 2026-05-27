@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About $EDGE — Anonymous by Design. Public by Code.</title>
+<meta name="description" content="$EDGE is the connective tissue between Polymarket / Kalshi market money and the conversations driving them. Built by anonymous operators. Public on GitHub. Receipts over résumés.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://edge-two-psi.vercel.app/about.html">
+<meta property="og:title" content="About $EDGE — Anonymous by Design. Public by Code.">
+<meta property="og:description" content="Money meets Mouth. Where they disagree, the Edge lives. Built by Op/01 and Op/02. Receipts over résumés.">
+<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+<script defer src="/lib/client/elite.js"></script>
+<script defer src="/lib/client/ticker.js"></script>
+<script defer src="/lib/client/palette.js"></script>
+
+<style>
+:root {
+  --void: #050507;
+  --void-2: #0c0c10;
+  --void-3: #141418;
+  --void-4: #1c1c22;
+  --lime: #C4FF00;
+  --lime-dim: #8aa800;
+  --magenta: #FF006E;
+  --green: #00FF85;
+  --amber: #FFB800;
+  --orange: #FF7A00;
+  --red: #FF3344;
+  --white: #F5F5F0;
+  --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05);
+  --border: rgba(245, 245, 240, 0.08);
+  --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.6;
+}
+main, header, section { position: relative; z-index: 2; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border-bright);
+  padding: 18px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(20px); background: rgba(5, 5, 7, 0.85);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  font-family: 'Anton', sans-serif; font-size: 32px; color: var(--lime);
+  text-decoration: none; letter-spacing: -0.02em;
+}
+.logo .ticker { color: var(--white); }
+nav ul { list-style: none; display: flex; gap: 22px; align-items: center; }
+nav a {
+  color: var(--white); text-decoration: none; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; background: var(--lime);
+  border-radius: 50%; margin-right: 6px; box-shadow: 0 0 10px var(--lime);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.hero {
+  padding: 80px 32px 32px; max-width: 1200px; margin: 0 auto;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 18px; font-weight: 700;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 11vw, 144px); line-height: 0.9;
+  letter-spacing: -0.025em; text-transform: uppercase; margin-bottom: 24px;
+  max-width: 1100px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero h1 .mag { color: var(--magenta); }
+.hero .lede {
+  font-size: 22px; color: var(--white); line-height: 1.5;
+  max-width: 760px; font-weight: 400; margin-bottom: 18px;
+}
+.hero .lede strong { color: var(--white); font-weight: 600; }
+.hero .lede em {
+  font-style: normal; color: var(--lime); font-weight: 500;
+}
+
+/* ── SECTIONS ────────────────────────────────────────────────────────── */
+section.block {
+  max-width: 1200px; margin: 0 auto; padding: 80px 32px 0;
+}
+.block-head {
+  margin-bottom: 32px;
+}
+.block-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--lime); letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 10px; font-weight: 700;
+}
+.block-title {
+  font-family: 'Anton', sans-serif; font-size: clamp(40px, 6vw, 64px);
+  line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.block-title .accent { color: var(--lime); }
+.block-title .mag { color: var(--magenta); }
+.block-lede {
+  font-size: 18px; color: var(--muted); max-width: 720px; line-height: 1.5;
+}
+.block-lede strong { color: var(--white); }
+
+/* ── MONEY / MOUTH / EDGE ────────────────────────────────────────────── */
+.trio {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+}
+.trio-cell {
+  background: var(--void-2); padding: 36px 28px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.trio-cell .num {
+  font-family: 'Anton', sans-serif; font-size: 48px; line-height: 1;
+}
+.trio-cell.money .num { color: var(--lime); }
+.trio-cell.mouth .num { color: var(--white); }
+.trio-cell.edge .num { color: var(--magenta); }
+.trio-cell .label {
+  font-family: 'Anton', sans-serif; font-size: 28px; letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.trio-cell .desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.trio-cell .desc strong { color: var(--white); }
+.trio-cell .live {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--green);
+  margin-top: auto;
+}
+.trio-cell .live::before { content: '● '; }
+
+/* ── OPERATORS ───────────────────────────────────────────────────────── */
+.ops-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.op-card {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 32px; border-radius: 2px;
+  position: relative; overflow: hidden;
+}
+.op-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.op-card.op-01::before { background: var(--lime); box-shadow: 0 0 20px var(--lime); }
+.op-card.op-02::before { background: var(--magenta); box-shadow: 0 0 20px var(--magenta); }
+.op-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700;
+  padding: 6px 12px; border-radius: 2px; display: inline-block;
+  margin-bottom: 18px;
+}
+.op-01 .op-tag { background: rgba(196, 255, 0, 0.12); color: var(--lime); }
+.op-02 .op-tag { background: rgba(255, 0, 110, 0.12); color: var(--magenta); }
+.op-handle {
+  font-family: 'Anton', sans-serif; font-size: 56px; line-height: 1;
+  letter-spacing: -0.01em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.op-role {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--muted); letter-spacing: 0.05em;
+  text-transform: uppercase; margin-bottom: 22px;
+}
+.op-bio {
+  color: var(--white); font-size: 14px; line-height: 1.7;
+}
+.op-bio strong { color: var(--lime); }
+.op-card.op-02 .op-bio strong { color: var(--magenta); }
+.op-footer {
+  margin-top: 22px; padding-top: 18px;
+  border-top: 1px dashed var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--muted); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.op-footer .handle { color: var(--lime); }
+
+/* ── TRUST CONTRACT ──────────────────────────────────────────────────── */
+.contract-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.contract-cell {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 24px; border-radius: 2px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.contract-icon {
+  font-family: 'Anton', sans-serif; font-size: 40px;
+  color: var(--lime); line-height: 1;
+}
+.contract-cell h4 {
+  font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.contract-cell p {
+  color: var(--muted); font-size: 13px; line-height: 1.5;
+}
+.contract-cell p strong { color: var(--white); }
+
+/* ── SHIPPED ─────────────────────────────────────────────────────────── */
+.shipped-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.shipped-card {
+  background: var(--void-2); border: 1px solid var(--border);
+  padding: 20px 22px; border-radius: 2px; text-decoration: none;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.shipped-card:hover { border-color: var(--lime); transform: translateY(-2px); }
+.shipped-icon {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+  color: var(--lime); letter-spacing: 0.15em; text-transform: uppercase;
+}
+.shipped-card h5 {
+  font-family: 'Anton', sans-serif; font-size: 22px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  color: var(--white);
+}
+.shipped-card p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+/* ── BOTTOM CTA ──────────────────────────────────────────────────────── */
+.bottom-cta {
+  margin: 80px auto; padding: 60px 32px; text-align: center;
+  max-width: 800px;
+  background: var(--void-2); border: 1px solid var(--border-bright);
+  border-radius: 2px;
+}
+.bottom-cta h3 {
+  font-family: 'Anton', sans-serif; font-size: clamp(36px, 5vw, 52px);
+  line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.bottom-cta h3 .accent { color: var(--lime); }
+.bottom-cta p {
+  color: var(--muted); font-size: 16px; line-height: 1.5;
+  margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto;
+}
+.bottom-cta .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  padding: 14px 28px; font-family: 'Anton', sans-serif; font-size: 18px;
+  letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none;
+  border-radius: 2px; transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.05s;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-primary { background: var(--lime); color: var(--void); border: 1px solid var(--lime); }
+.btn-primary:hover { background: #d8ff33; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border-bright); }
+.btn-secondary:hover { border-color: var(--lime); color: var(--lime); }
+
+footer {
+  margin-top: 60px; padding: 32px;
+  border-top: 1px solid var(--border); text-align: center;
+  color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 960px) {
+  .trio, .ops-grid { grid-template-columns: 1fr; }
+  .contract-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .contract-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html">Whales</a></li>
+      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/token.html">Token</a></li>
+      <li><a href="/about.html" class="active"><span class="live-dot"></span>About</a></li>
+    </ul>
+  </nav>
+  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+</header>
+
+<main>
+  <!-- ── HERO ───────────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="eyebrow">About $EDGE · The Operating Thesis</div>
+    <h1>Anonymous by <span class="accent">design.</span><br>Public by <span class="mag">code.</span></h1>
+    <p class="lede">
+      <strong>$EDGE</strong> is the connective tissue between Polymarket / Kalshi
+      market <em>money</em> and the conversations driving them. We
+      surface where capital and sentiment <em>disagree</em> — because that's
+      where the edge lives.
+    </p>
+    <p class="lede" style="color:var(--muted);font-size:18px">
+      Built by two operators who chose to stay anonymous. The product is open
+      on GitHub. The treasury will be on-chain via Squads multi-sig. Every
+      algorithmic call gets timestamped and graded against the outcome.
+      <strong>Receipts over résumés.</strong>
+    </p>
+  </section>
+
+  <!-- ── THE MOAT ───────────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">The Moat</div>
+      <h2 class="block-title">Money <span class="accent">meets</span> Mouth.</h2>
+      <p class="block-lede">
+        Polymarket and Kalshi show you <strong>where the money is</strong>.
+        They don't show you <strong>why</strong>. $EDGE is the connective tissue.
+        Three pillars, one product.
+      </p>
+    </div>
+
+    <div class="trio">
+      <div class="trio-cell money">
+        <div class="num">01</div>
+        <div class="label">The Money</div>
+        <div class="desc">
+          On-chain bet volume. <strong>Real-time odds movement</strong>. Top
+          positions per market. Polymarket whale firehose. Kalshi events.
+          Every dollar accounted for, every wallet trackable.
+        </div>
+        <div class="live">Live · /whales · /dashboard</div>
+      </div>
+      <div class="trio-cell mouth">
+        <div class="num">02</div>
+        <div class="label">The Mouth</div>
+        <div class="desc">
+          What people are saying. Reddit. Polymarket native comments.
+          Hacker News front page. Seven news outlets. Matched to markets
+          with <strong>confidence scoring</strong>. Sentiment-aware.
+        </div>
+        <div class="live">Live · /buzz</div>
+      </div>
+      <div class="trio-cell edge">
+        <div class="num">03</div>
+        <div class="label">The Edge</div>
+        <div class="desc">
+          Divergence score where money and sentiment <strong>disagree</strong>.
+          Picker algorithm ranks markets by edge. Public track record
+          proves the calls. <strong>Name on the box.</strong>
+        </div>
+        <div class="live">Live · /edge · receipts pending</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── OPERATORS ──────────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">The Operators</div>
+      <h2 class="block-title">Two <span class="accent">operators.</span><br>No <span class="mag">faces.</span></h2>
+      <p class="block-lede">
+        We built $EDGE because we wanted a real terminal for prediction markets
+        and nobody had built one. Then we decided to stay anonymous because in
+        this space, <strong>your last trade should matter more than your last name</strong>.
+        Voice-only on Spaces. No headshots. Code on GitHub. Treasury on-chain.
+      </p>
+    </div>
+
+    <div class="ops-grid">
+      <div class="op-card op-01">
+        <div class="op-tag">Op / 01</div>
+        <div class="op-handle">Op / 01</div>
+        <div class="op-role">Product · Engineering</div>
+        <div class="op-bio">
+          Built the data plane. Wrote the matchers, the divergence algorithm,
+          the whale firehose, the chatter aggregator, the arb scanner. Every
+          push to the GitHub repo with the "product" label is <strong>Op / 01's</strong>.
+          Treats the product as the credential.
+        </div>
+        <div class="op-footer">
+          Multi-sig signer · <span class="handle">@edgeops</span>
+        </div>
+      </div>
+
+      <div class="op-card op-02">
+        <div class="op-tag">Op / 02</div>
+        <div class="op-handle">Op / 02</div>
+        <div class="op-role">Growth · Comms · Audience</div>
+        <div class="op-bio">
+          Runs the funnel. The marketing OS, the launch playbook, the social
+          presence, the KOL relationships, the press kit. Every public-facing
+          word that isn't code review is <strong>Op / 02's</strong>. Knows the
+          difference between a thesis and a tweet.
+        </div>
+        <div class="op-footer">
+          Multi-sig signer · <span class="handle">@edgeops</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRUST CONTRACT ─────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">The Trust Contract</div>
+      <h2 class="block-title">Anon doesn't mean <span class="accent">opaque.</span></h2>
+      <p class="block-lede">
+        We don't have names to put on the box. So we put everything else there
+        instead. Four commitments that replace the credential.
+      </p>
+    </div>
+
+    <div class="contract-grid">
+      <div class="contract-cell">
+        <div class="contract-icon">01</div>
+        <h4>Public Code</h4>
+        <p>
+          The product is <strong>open on GitHub</strong>. Every API endpoint,
+          every algorithm, every UI surface. Audit before you trust.
+        </p>
+      </div>
+      <div class="contract-cell">
+        <div class="contract-icon">02</div>
+        <h4>On-Chain Treasury</h4>
+        <p>
+          Token-related funds held in a <strong>Squads multi-sig</strong> on
+          Solana. Both operators are signers. Movements are public.
+        </p>
+      </div>
+      <div class="contract-cell">
+        <div class="contract-icon">03</div>
+        <h4>Append-Only Receipts</h4>
+        <p>
+          Every algorithm call gets <strong>timestamped on creation</strong> and
+          graded against the outcome. Public, immutable, no edits.
+        </p>
+      </div>
+      <div class="contract-cell">
+        <div class="contract-icon">04</div>
+        <h4>Free Terminal</h4>
+        <p>
+          The base product stays free <strong>forever</strong>. Token utility
+          unlocks deeper layers — it doesn't gate the floor.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SHIPPED ────────────────────────────────────────────────────── -->
+  <section class="block">
+    <div class="block-head">
+      <div class="block-eyebrow">What's Shipped</div>
+      <h2 class="block-title">Built. <span class="accent">Live.</span> Free to use.</h2>
+      <p class="block-lede">
+        Eleven surfaces, all live, all free. Click any of them. Bring your own
+        eye for value.
+      </p>
+    </div>
+
+    <div class="shipped-grid">
+      <a href="/dashboard.html" class="shipped-card">
+        <div class="shipped-icon">01 · Dashboard</div>
+        <h5>Command Center</h5>
+        <p>4-panel live view of Markets · Whales · Buzz · News.</p>
+      </a>
+      <a href="/edge.html" class="shipped-card">
+        <div class="shipped-icon">02 · Edge</div>
+        <h5>Divergence Radar</h5>
+        <p>Money vs Mouth scored per market. INSIDER FLOW calls.</p>
+      </a>
+      <a href="/arb.html" class="shipped-card">
+        <div class="shipped-icon">03 · Arb</div>
+        <h5>Arbitrage Radar</h5>
+        <p>Cross-platform Poly ↔ Kalshi edge detection.</p>
+      </a>
+      <a href="/buzz.html" class="shipped-card">
+        <div class="shipped-icon">04 · Buzz</div>
+        <h5>Chatter Aggregator</h5>
+        <p>Reddit · Polymarket comments · HN · 7 news outlets.</p>
+      </a>
+      <a href="/whales.html" class="shipped-card">
+        <div class="shipped-icon">05 · Whales</div>
+        <h5>Smart Money Tracker</h5>
+        <p>Live firehose · active leaderboard · per-wallet drilldown.</p>
+      </a>
+      <a href="/tracker.html" class="shipped-card">
+        <div class="shipped-icon">06 · Radar</div>
+        <h5>Rug Radar</h5>
+        <p>Solana + Ethereum meme coin risk analyzer.</p>
+      </a>
+      <a href="/market.html?slug=will-bitcoin-hit-150k-by-june-30-2026" class="shipped-card">
+        <div class="shipped-icon">07 · Markets</div>
+        <h5>Per-Market Detail</h5>
+        <p>Edge score + whales + chatter, one screen per market.</p>
+      </a>
+      <a href="/token.html" class="shipped-card">
+        <div class="shipped-icon">08 · Token</div>
+        <h5>$EDGE Tokenomics</h5>
+        <p>Fair launch on Solana. Tier-gated utility from day one.</p>
+      </a>
+      <a href="/waitlist.html" class="shipped-card">
+        <div class="shipped-icon">09 · Waitlist</div>
+        <h5>Day-Zero Allocation</h5>
+        <p>Predict 5 markets. Top scorers earn the permanent badge.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ─────────────────────────────────────────────────── -->
+  <div class="bottom-cta">
+    <h3>Read the code.<br>Claim a <span class="accent">position.</span></h3>
+    <p>
+      Receipts over résumés. The product is open. The launch is fair. The token
+      gates utility, not access.
+    </p>
+    <div class="btns">
+      <a href="/waitlist.html" class="btn btn-primary">Join the Waitlist →</a>
+      <a href="https://github.com/UncleLorenzo/EDGE" target="_blank" rel="noopener" class="btn btn-secondary">Read the Code ↗</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  $EDGE on Solana · fair launch via pump.fun · anonymous by design · public by code<br>
+  <a href="/">$EDGE home</a> · <a href="/dashboard.html">Dashboard</a> · <a href="/token.html">Token</a> · <a href="https://github.com/UncleLorenzo/EDGE" target="_blank" rel="noopener">GitHub ↗</a>
+</footer>
+
+</body>
+</html>
