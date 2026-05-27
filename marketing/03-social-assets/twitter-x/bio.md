@@ -7,13 +7,13 @@ $EDGE
 @edgeterminal
 
 ## Bio — 160 char (primary)
-The terminal for prediction markets. Money (whales) · Mouth (sentiment) · Edge (the gap). Polymarket + Kalshi + Twitter in one screen.
+The terminal for prediction markets. Money (whales) · Mouth (sentiment) · Edge (divergence + live cross-platform arbitrage). Polymarket + Kalshi in one screen.
 
 ## Bio — alt v1 (140 char, punchier)
-Watch the action. Before you bet. Polymarket + Kalshi + whales + sentiment divergence, one screen.
+Watch the action. Before you bet. Polymarket + Kalshi + whales + sentiment + cross-platform arbitrage in one screen.
 
 ## Bio — alt v2 (with ticker)
-$EDGE on Solana. Real-time aggregator for Polymarket + Kalshi. Whales, sentiment, divergence. Watch the action. Before you bet.
+ on Solana. Real-time aggregator for Polymarket + Kalshi. Whales, sentiment, divergence, arbitrage. Watch the action. Before you bet.
 
 ## Location
 On-chain / off-chain.
