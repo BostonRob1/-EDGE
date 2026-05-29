@@ -806,3 +806,89 @@ header.elite-nav.is-scrolled {
 @media (max-width: 768px) {
   .elite-cmdk { display: none; } /* keyboard-less context — Cmd+K shortcut still global */
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   FLOATING ISLAND + FULL FEATURE RAIL + ELITE MOBILE DRAWER
+   ──────────────────────────────────────────────────────────────────── */
+
+/* On scroll the header detaches into a floating glass slab (margins + radius).
+   Only triggers on pages that actually scroll, so the dashboard's fixed
+   viewport-fit header (never scrolls) stays full-width and untouched. */
+header.elite-nav {
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease,
+              margin 0.4s cubic-bezier(.2,.7,.2,1), border-radius 0.35s ease;
+}
+header.elite-nav.is-scrolled {
+  margin: 10px 16px;
+  border: 1px solid rgba(196, 255, 0, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.6);
+}
+header.elite-nav.is-scrolled::before { opacity: 0; }                 /* flush top-line off when floating */
+header.elite-nav.is-scrolled::after { bottom: 0; border-radius: 0 0 16px 16px; }
+
+/* Dashboard = the app / home-base button (▤ glyph) */
+.btn-app::before { content: "\25A4"; margin-right: 7px; font-size: 0.9em; line-height: 1; }
+
+/* Feature glyphs — hidden on the desktop rail, shown as icon rows in the drawer */
+.nav-ico { display: none; }
+
+/* Primary actions block — only rendered inside the mobile drawer */
+.elite-drawer-cta { display: none; }
+
+/* Keep the full feature rail fitting before the drawer takes over */
+@media (max-width: 1024px) { header.elite-nav .elite-cmdk { display: none; } }
+@media (max-width: 900px)  { header.elite-nav .nav-right .live-pill { display: none; } }
+
+/* ── Elite mobile: minimal bar, rich drawer ──────────────────────────── */
+@media (max-width: 768px) {
+  /* Bar stays clean — logo + hamburger; the actions move into the drawer */
+  header.elite-nav .nav-right .btn { display: none; }
+  header.elite-nav.is-scrolled { margin: 8px 10px; border-radius: 14px; }
+
+  /* Glyph icons lead each drawer row */
+  header > nav.elite-drawer a .nav-ico,
+  header > nav#elite-drawer a .nav-ico {
+    display: inline-flex;
+    justify-content: center;
+    width: 22px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    color: var(--lime, #C4FF00);
+    font-size: 14px;
+  }
+
+  /* Pinned primary actions at the foot of the drawer */
+  header > nav.elite-drawer .elite-drawer-cta,
+  header > nav#elite-drawer .elite-drawer-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 16px 8px;
+    margin-top: 14px;
+    border-top: 1px solid var(--border, rgba(245, 245, 240, 0.08));
+  }
+  .elite-drawer-cta .elite-drawer-live {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green, #00FF85); margin-bottom: 2px;
+  }
+  .elite-drawer-cta .elite-drawer-live .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green, #00FF85); box-shadow: 0 0 8px var(--green, #00FF85);
+  }
+  .elite-drawer-cta a {
+    display: flex; align-items: center; justify-content: center;
+    padding: 15px; border-radius: 10px; text-decoration: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .elite-drawer-cta a:active { transform: scale(0.98); }
+  .elite-drawer-cta .cta-dash { background: var(--lime, #C4FF00); color: var(--void, #050507); }
+  .elite-drawer-cta .cta-buy {
+    background: transparent; color: var(--white, #F5F5F0);
+    border: 1px solid var(--border-bright, rgba(196, 255, 0, 0.3));
+  }
+}
