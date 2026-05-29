@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.classList.add('has-js');</script>
 <title>$EDGE — Watch the Action.</title>
 <meta name="description" content="Every Polymarket bet. Every Kalshi market. One screen. No signup.">
 
@@ -173,34 +174,6 @@ nav a:hover { opacity: 1; color: var(--lime); }
 .btn:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(196, 255, 0, 0.4); }
 .btn-ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
 .btn-ghost:hover { border-color: var(--lime); color: var(--lime); }
-
-/* TICKER */
-.ticker-wrap {
-  background: var(--lime);
-  color: var(--void);
-  overflow: hidden;
-  border-bottom: 1px solid rgba(0,0,0,0.2);
-}
-.ticker {
-  display: flex;
-  white-space: nowrap;
-  animation: tick 60s linear infinite;
-  padding: 10px 0;
-}
-.ticker-item {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 0 32px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.ticker-item .arrow-up { color: #006c3a; }
-.ticker-item .arrow-dn { color: #8b1c2b; }
-@keyframes tick {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
 
 /* HERO */
 .hero {
@@ -834,6 +807,9 @@ footer a:hover { color: var(--lime); }
   .panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
   .live-section { grid-template-columns: 1fr; }
   .token-perks { grid-template-columns: repeat(2, 1fr); }
+}
+/* Inline nav hides only where the elite.js hamburger drawer takes over (≤768) */
+@media (max-width: 768px) {
   nav ul { display: none; }
 }
 @media (max-width: 600px) {
@@ -850,6 +826,101 @@ footer a:hover { color: var(--lime); }
 .num-tick { transition: color 0.4s; }
 .num-tick.flash-up { color: var(--green); }
 .num-tick.flash-dn { color: var(--red); }
+
+/* ════════════════════════════════════════════════════════════════
+   ELITE LAYER — entrance orchestration, cursor-reactive hero light,
+   scroll reveal, drawn sparklines, button shine, hover depth.
+   Progressive-enhancement + reduced-motion safe.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Buttons usable as <a>, with a light sweep on hover */
+.btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; position: relative; overflow: hidden; }
+.btn::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.45) 50%, transparent 65%);
+  transform: translateX(-170%); transition: transform 0.6s ease;
+}
+.btn:hover::after { transform: translateX(170%); }
+.btn-ghost::after { background: linear-gradient(120deg, transparent 35%, rgba(196,255,0,0.20) 50%, transparent 65%); }
+.edge-cta { display: block; text-align: center; text-decoration: none; }
+
+/* Hero depth + cursor-following spotlight */
+.hero { overflow: hidden; }
+.hero > div { position: relative; z-index: 2; }
+.hero::before {
+  content: ''; position: absolute; left: -6%; top: 20%; width: 56%; height: 62%;
+  background: radial-gradient(ellipse at center, rgba(196,255,0,0.10), transparent 70%);
+  filter: blur(52px); pointer-events: none; z-index: 0;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(560px circle at var(--mx, 28%) var(--my, 38%), rgba(196,255,0,0.07), transparent 45%);
+  transition: background 0.15s ease;
+}
+.hero h1 .accent { text-shadow: 0 0 50px rgba(196,255,0,0.35); }
+
+/* Page-load entrance — CSS-only via animation backwards-fill (no FOUC, reduced-motion shows final state) */
+@keyframes riseIn { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+.hero h1 .line { display: block; animation: riseIn 0.7s cubic-bezier(.2,.7,.2,1) backwards; }
+.hero h1 .line:nth-child(1) { animation-delay: 0.05s; }
+.hero h1 .line:nth-child(2) { animation-delay: 0.15s; }
+.hero h1 .line:nth-child(3) { animation-delay: 0.25s; }
+.hero-tagline { animation: riseIn 0.7s ease 0.38s backwards; }
+.hero-cta { animation: riseIn 0.7s ease 0.50s backwards; }
+.hero-stats .stat-block { animation: riseIn 0.7s ease backwards; }
+.hero-stats .stat-block:nth-child(1) { animation-delay: 0.46s; }
+.hero-stats .stat-block:nth-child(2) { animation-delay: 0.58s; }
+.hero-stats .stat-block:nth-child(3) { animation-delay: 0.70s; }
+
+/* Scroll reveal — only engages when JS present; default state stays visible */
+html.has-js :is(.section-title, .markets-grid > .market-card, .featured, .live-section > .live-panel, .token-section) {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1);
+}
+html.has-js :is(.section-title, .markets-grid > .market-card, .featured, .live-section > .live-panel, .token-section).in {
+  opacity: 1; transform: none;
+}
+html.has-js .markets-grid > .market-card:nth-child(2) { transition-delay: 0.08s; }
+html.has-js .markets-grid > .market-card:nth-child(3) { transition-delay: 0.16s; }
+html.has-js .markets-grid > .market-card:nth-child(4) { transition-delay: 0.24s; }
+html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; }
+
+/* Micro-interactions */
+.market-card { transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+.market-card:hover { border-color: var(--lime); transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.55), 0 0 0 1px rgba(196,255,0,0.25); }
+.market-card.hot:hover { box-shadow: 0 16px 44px rgba(0,0,0,0.55), 0 0 30px rgba(255,0,110,0.28); }
+.odd-pill { transition: background 0.2s ease, border-color 0.2s ease; }
+.market-card:hover .odd-pill { border-color: rgba(255,255,255,0.18); }
+.spark polyline { stroke-dasharray: 130; transition: stroke-dashoffset 0.8s ease; }
+.market-card:hover .spark polyline { animation: sparkDraw 0.85s cubic-bezier(.4,0,.2,1); }
+@keyframes sparkDraw { from { stroke-dashoffset: 130; } to { stroke-dashoffset: 0; } }
+
+.stat-block { transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease; }
+.stat-block:hover { border-color: var(--lime); transform: translateY(-2px); background: rgba(196,255,0,0.06); }
+
+.perk { transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease; }
+.perk:hover { border-color: rgba(196,255,0,0.35); transform: translateY(-3px); background: rgba(0,0,0,0.55); }
+
+.feed-row { transition: background 0.2s ease; }
+.feed-row:hover { background: var(--void-3); }
+
+/* Crafted header glyphs (replaces emoji slop; matches ticker icon language) */
+.t-ico { font-size: 12px; margin-right: 7px; }
+.t-ico.money { color: var(--lime); }
+.t-ico.edge { color: var(--magenta); text-shadow: 0 0 8px rgba(255,0,110,0.5); }
+
+/* Token section conversion CTAs */
+.token-cta-wrap { margin-top: 44px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+.token-cta-wrap .btn { padding: 16px 34px; font-size: 13px; }
+
+/* Reduced-motion: reveal everything, kill movement + reactive light */
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 .line, .hero-tagline, .hero-cta, .hero-stats .stat-block,
+  html.has-js :is(.section-title, .markets-grid > .market-card, .featured, .live-section > .live-panel, .token-section) {
+    opacity: 1 !important; transform: none !important; animation: none !important;
+  }
+  .hero::after, .btn::after { display: none; }
+}
 
 </style>
 </head>
@@ -872,45 +943,25 @@ footer a:hover { color: var(--lime); }
   </nav>
   <div class="nav-right">
     <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
-    <button class="btn">Connect</button>
+    <a class="btn" href="/token.html">Buy $EDGE</a>
   </div>
 </header>
-
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker">
-    <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
-    <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
-    <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
-    <div class="ticker-item">↘ <span class="arrow-dn">BITCOIN $200K EOY · 41→33%</span> · 12m</div>
-    <div class="ticker-item">⚡ $89K bet · YES · US-IRAN peace deal Dec 31</div>
-    <div class="ticker-item">⚠ DIVERGENCE · Twitter 78% YES · Money 31% YES</div>
-    <div class="ticker-item">↗ <span class="arrow-up">CHIEFS Super Bowl 22→27%</span> · 1h</div>
-    <div class="ticker-item">⚡ WHALE BET · $127K on NO · TRUMP IMPEACHED 2026</div>
-    <div class="ticker-item">↗ <span class="arrow-up">LAKERS -3.5 moved 62→71%</span> · 4m</div>
-    <div class="ticker-item">⚡ NEW MARKET · "Fed cuts rates June FOMC"</div>
-    <div class="ticker-item">↘ <span class="arrow-dn">BITCOIN $200K EOY · 41→33%</span> · 12m</div>
-    <div class="ticker-item">⚡ $89K bet · YES · US-IRAN peace deal Dec 31</div>
-    <div class="ticker-item">⚠ DIVERGENCE · Twitter 78% YES · Money 31% YES</div>
-    <div class="ticker-item">↗ <span class="arrow-up">CHIEFS Super Bowl 22→27%</span> · 1h</div>
-  </div>
-</div>
 
 <!-- HERO -->
 <section class="hero">
   <div>
     <h1>
-      Watch<br>
-      the <span class="accent">action.</span><br>
-      <span class="strike">Before</span> you bet.
+      <span class="line">Watch</span>
+      <span class="line">the <span class="accent">action.</span></span>
+      <span class="line"><span class="strike">Before</span> you bet.</span>
     </h1>
     <p class="hero-tagline">
-      Every market on Polymarket and Kalshi. Every whale move. Every Twitter argument. 
+      Every market on Polymarket and Kalshi. Every whale move. Every Twitter argument.
       <strong>One screen.</strong> No signup. No wallet. Just the action.
     </p>
     <div class="hero-cta">
-      <button class="btn">Enter the Floor →</button>
-      <button class="btn btn-ghost">Buy $EDGE</button>
+      <a class="btn" href="/dashboard.html">Enter the Floor →</a>
+      <a class="btn btn-ghost" href="/token.html">Buy $EDGE</a>
     </div>
   </div>
   <div class="hero-stats">
@@ -996,7 +1047,7 @@ footer a:hover { color: var(--lime); }
 <div class="featured">
   <div class="featured-header">
     <div>
-      <div class="featured-tag">⚡ Featured · Highest Divergence</div>
+      <div class="featured-tag"><span class="t-ico edge">▲</span>Featured · Highest Divergence</div>
       <div class="featured-title">US × Iran Peace Deal by Dec 31</div>
     </div>
     <div class="featured-meta">
@@ -1088,7 +1139,7 @@ footer a:hover { color: var(--lime); }
         </div>
       </div>
 
-      <button class="edge-cta">Trade on Polymarket →</button>
+      <a class="edge-cta" href="https://polymarket.com" target="_blank" rel="noopener">Trade on Polymarket →</a>
     </div>
 
   </div>
@@ -1098,7 +1149,7 @@ footer a:hover { color: var(--lime); }
 <div class="live-section">
   <div class="live-panel">
     <div class="live-panel-header">
-      <div class="live-panel-title">📡 Live Bet Feed</div>
+      <div class="live-panel-title"><span class="t-ico money">◆</span>Live Bet Feed</div>
       <div class="live-pill"><span class="live-dot"></span> LIVE</div>
     </div>
     <div class="feed-list" id="bet-feed">
@@ -1149,7 +1200,7 @@ footer a:hover { color: var(--lime); }
 
   <div class="live-panel">
     <div class="live-panel-header">
-      <div class="live-panel-title">⚠ Divergence Alerts</div>
+      <div class="live-panel-title"><span class="t-ico edge">▲</span>Divergence Alerts</div>
       <div class="live-pill" style="color: var(--magenta);"><span class="live-dot" style="background: var(--magenta); box-shadow: 0 0 10px var(--magenta);"></span> 4 ACTIVE</div>
     </div>
     <div class="feed-list">
@@ -1216,15 +1267,20 @@ footer a:hover { color: var(--lime); }
       <div class="perk-text">Vote on featured markets, new platforms, payouts. Token = voice.</div>
     </div>
   </div>
+
+  <div class="token-cta-wrap">
+    <a class="btn" href="/token.html">Buy $EDGE →</a>
+    <a class="btn btn-ghost" href="/whales.html">See What You Unlock</a>
+  </div>
 </div>
 
 <footer>
   <div>© 2026 EDGE · Not financial advice · Markets data from Polymarket + Kalshi public APIs</div>
   <div>
-    <a href="#">X</a>
+    <a href="https://x.com/edgeops" target="_blank" rel="noopener">X</a>
     <a href="#">Telegram</a>
     <a href="#">Discord</a>
-    <a href="#">Docs</a>
+    <a href="/about.html">Docs</a>
   </div>
 </footer>
 
@@ -1286,6 +1342,47 @@ setInterval(() => {
   // Trim
   if (feed.children.length > 8) feed.removeChild(feed.lastChild);
 }, 4200);
+</script>
+
+<script>
+/* Elite scroll-reveal + hero cursor spotlight */
+(function () {
+  var sel = '.section-title, .markets-grid > .market-card, .featured, .live-section > .live-panel, .token-section';
+  var els = document.querySelectorAll(sel);
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  try {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  } catch (err) {
+    els.forEach(function (el) { el.classList.add('in'); });
+  }
+})();
+
+(function () {
+  var hero = document.querySelector('.hero');
+  if (!hero) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var raf = null, mx = '28%', my = '38%';
+  hero.addEventListener('mousemove', function (e) {
+    var r = hero.getBoundingClientRect();
+    mx = ((e.clientX - r.left) / r.width) * 100 + '%';
+    my = ((e.clientY - r.top) / r.height) * 100 + '%';
+    if (raf) return;
+    raf = requestAnimationFrame(function () {
+      hero.style.setProperty('--mx', mx);
+      hero.style.setProperty('--my', my);
+      raf = null;
+    });
+  });
+})();
 </script>
 
 </body>
