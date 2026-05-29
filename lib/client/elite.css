@@ -815,17 +815,14 @@ header.elite-nav.is-scrolled {
    Only triggers on pages that actually scroll, so the dashboard's fixed
    viewport-fit header (never scrolls) stays full-width and untouched. */
 header.elite-nav {
-  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease,
-              margin 0.4s cubic-bezier(.2,.7,.2,1), border-radius 0.35s ease;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
+/* "Floating" = a rock-solid PINNED glass bar that simply gains depth on scroll.
+   No detach / margin / resize motion — that movement is what read as "jumpy".
+   The bar stays stationary and full-width; only its shadow + glass deepen. */
 header.elite-nav.is-scrolled {
-  margin: 10px 16px;
-  border: 1px solid rgba(196, 255, 0, 0.16);
-  border-radius: 16px;
-  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
 }
-header.elite-nav.is-scrolled::before { opacity: 0; }                 /* flush top-line off when floating */
-header.elite-nav.is-scrolled::after { bottom: 0; border-radius: 0 0 16px 16px; }
 
 /* Dashboard = the app / home-base button (▤ glyph) */
 .btn-app::before { content: "\25A4"; margin-right: 7px; font-size: 0.9em; line-height: 1; }
@@ -844,7 +841,6 @@ header.elite-nav.is-scrolled::after { bottom: 0; border-radius: 0 0 16px 16px; }
 @media (max-width: 768px) {
   /* Bar stays clean — logo + hamburger; the actions move into the drawer */
   header.elite-nav .nav-right .btn { display: none; }
-  header.elite-nav.is-scrolled { margin: 8px 10px; border-radius: 14px; }
 
   /* Glyph icons lead each drawer row */
   header > nav.elite-drawer a .nav-ico,
@@ -891,4 +887,88 @@ header.elite-nav.is-scrolled::after { bottom: 0; border-radius: 0 0 16px 16px; }
     background: transparent; color: var(--white, #F5F5F0);
     border: 1px solid var(--border-bright, rgba(196, 255, 0, 0.3));
   }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   UNIFIED SITE HEADER ("command rail") — identical on every marketing page
+   so navigating between features never shifts the bar. Component layout lives
+   here, class-scoped to beat per-page inline header CSS. `site-nav` is baked
+   into the static markup (no JS flash-in). Dashboard keeps its own app header.
+   ──────────────────────────────────────────────────────────────────── */
+:root { --header-h: 64px; }   /* ticker sits flush under the 64px bar; dashboard overrides to 60 */
+
+header.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 64px;
+  padding: 0 28px;
+}
+header.site-nav .logo {
+  font-family: 'Anton', sans-serif;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+header.site-nav .logo .dollar { color: var(--lime, #C4FF00); }
+header.site-nav .logo .word { color: var(--white, #F5F5F0); }
+header.site-nav > nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+header.site-nav nav ul {
+  display: flex;
+  gap: 26px;
+  list-style: none;
+  margin: 0; padding: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+header.site-nav nav a {
+  color: rgba(245, 245, 240, 0.66);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+header.site-nav nav a:hover { color: var(--lime, #C4FF00); }
+header.site-nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+header.site-nav .live-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--green, #00FF85); white-space: nowrap;
+}
+header.site-nav .live-pill .live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green, #00FF85); box-shadow: 0 0 8px var(--green, #00FF85);
+  animation: ticker-pulse 1.4s infinite;
+}
+header.site-nav .nav-right .btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 9px 16px; border: 1px solid transparent; border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+header.site-nav .nav-right .btn-app { background: var(--lime, #C4FF00); color: var(--void, #050507); }
+header.site-nav .nav-right .btn-app:hover { box-shadow: 0 0 26px rgba(196, 255, 0, 0.45); transform: translateY(-1px); }
+header.site-nav .nav-right .btn-ghost { background: transparent; color: var(--white, #F5F5F0); border-color: rgba(245, 245, 240, 0.2); }
+header.site-nav .nav-right .btn-ghost:hover { border-color: var(--lime, #C4FF00); color: var(--lime, #C4FF00); }
+
+@media (max-width: 768px) {
+  header.site-nav { gap: 12px; padding: 0 18px; }
 }
