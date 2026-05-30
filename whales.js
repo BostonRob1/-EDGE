@@ -2,6 +2,7 @@
 //   /whales.html          → firehose + leaderboard
 //   /whales.html?wallet=… → wallet detail
 import { fmtUsd, fmtUsdExact, fmtPct, fmtAgo, short, escapeHtml, escapeAttr } from "/lib/client/format.js";
+import { liveList, liveLoop } from "/lib/client/live.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const main = $("#main");
@@ -10,49 +11,254 @@ const polymarketMarketUrl = (slug) => (slug ? `https://polymarket.com/market/${s
 
 // ── state ─────────────────────────────────────────────────────────────
 const state = {
+  tab: "smart",
   threshold: 5000,
   seenTradeKeys: new Set(),
   refreshTimer: null,
+  stopSmart: null,
+  smart: { data: null, window: "all", minTape: 0 },
 };
 
 // ── ROUTING ───────────────────────────────────────────────────────────
 function route() {
   const params = new URLSearchParams(location.search);
   const wallet = params.get("wallet");
-  if (state.refreshTimer) clearInterval(state.refreshTimer);
+  clearTimers();
   state.seenTradeKeys = new Set();
 
   if (wallet && /^0x[a-fA-F0-9]{40}$/.test(wallet)) {
     renderWalletShell(wallet);
     loadWallet(wallet);
   } else {
+    state.tab = params.get("tab") === "live" ? "live" : "smart";
     renderListShell();
-    loadFirehose();
-    loadLeaderboard();
-    state.refreshTimer = setInterval(() => {
-      loadFirehose();
-      loadLeaderboard();
-    }, 30_000);
+    activateTab(state.tab);
   }
 }
 
-// ── LIST PAGE ─────────────────────────────────────────────────────────
+function clearTimers() {
+  if (state.refreshTimer) { clearInterval(state.refreshTimer); state.refreshTimer = null; }
+  if (state.stopSmart) { state.stopSmart(); state.stopSmart = null; }
+}
+
+// ── LIST PAGE (tabbed: Smart Money / Live Action) ─────────────────────
 function renderListShell() {
   main.innerHTML = `
-    <section class="hero">
-      <h1>WHALE <span class="accent">RADAR</span></h1>
-      <p class="tagline">
-        Every <strong>>$${(state.threshold).toLocaleString()}</strong> Polymarket trade. Live.
-        Plus a leaderboard of <strong>active whales</strong> right now. Click any wallet to drill into their book.
-      </p>
-      <div class="stat-strip" id="statStrip">
-        <div class="stat-cell"><div class="lbl">Active Wallets</div><div class="val" id="statActive">—</div></div>
-        <div class="stat-cell alt"><div class="lbl">Whale Volume / window</div><div class="val" id="statVol">—</div></div>
-        <div class="stat-cell"><div class="lbl">Biggest Trade</div><div class="val" id="statBiggest">—</div></div>
-        <div class="stat-cell alt"><div class="lbl">Refreshes</div><div class="val" id="statRefresh">30s</div></div>
+    <section class="hero" id="whaleHero"></section>
+    <div class="whale-tabs">
+      <button class="whale-tab" data-tab="smart"><span class="tico">🏆</span> Smart Money <span class="tnew">NEW</span></button>
+      <button class="whale-tab" data-tab="live"><span class="tico">⚡</span> Live Action</button>
+    </div>
+    <div id="tabHost"></div>
+  `;
+  document.querySelectorAll(".whale-tab").forEach((b) => {
+    b.addEventListener("click", () => {
+      if (b.dataset.tab === state.tab) return;
+      history.replaceState({}, "", b.dataset.tab === "live" ? "?tab=live" : location.pathname);
+      activateTab(b.dataset.tab);
+    });
+  });
+}
+
+function activateTab(tab) {
+  clearTimers();
+  state.tab = tab;
+  state.seenTradeKeys = new Set();
+  document.querySelectorAll(".whale-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === tab));
+  if (tab === "live") renderLiveTab();
+  else renderSmartTab();
+}
+
+// money formatting for P&L (always signed): +$22.1M / -$340K
+function pnlUsd(n) {
+  const a = Math.abs(Number(n) || 0);
+  const s =
+    a >= 1e9 ? `$${(a / 1e9).toFixed(1)}B`
+    : a >= 1e6 ? `$${(a / 1e6).toFixed(1)}M`
+    : a >= 1e3 ? `$${(a / 1e3).toFixed(0)}K`
+    : `$${Math.round(a)}`;
+  return (n < 0 ? "−" : "+") + s;
+}
+const WIN_LABEL = { "1d": "last 24h", "7d": "last 7 days", "30d": "last 30 days", all: "all-time" };
+const WIN_SHORT = { "1d": "24h", "7d": "7d", "30d": "30d", all: "all-time" };
+
+// ── SMART MONEY TAB ───────────────────────────────────────────────────
+function renderSmartTab() {
+  $("#whaleHero").innerHTML = `
+    <h1>SMART <span class="accent">MONEY</span></h1>
+    <p class="tagline">
+      The <strong>most profitable wallets</strong> on Polymarket — ranked by real, settled profit —
+      and every bet they place, <strong>the second they place it</strong>.
+    </p>
+    <div class="stat-strip">
+      <div class="stat-cell pnl"><div class="lbl">#1 · <span id="smTopName">—</span></div><div class="val" id="smTop">—</div></div>
+      <div class="stat-cell pnl"><div class="lbl">Top 50 Combined P&L</div><div class="val" id="smCombined">—</div></div>
+      <div class="stat-cell alt"><div class="lbl">Profitable Wallets Tracked</div><div class="val" id="smTracked">—</div></div>
+      <div class="stat-cell alt"><div class="lbl"><span class="live-pulse"><span class="dot"></span>Live Now</span></div><div class="val" id="smLive">—</div></div>
+    </div>
+  `;
+  $("#tabHost").innerHTML = `
+    <section class="panel">
+      <div class="section-head">
+        <h2>Most <span class="accent">Profitable</span> Wallets</h2>
+        <div class="threshold-toggle" id="smWindowToggle">
+          <button data-w="1d">24H</button>
+          <button data-w="7d">7D</button>
+          <button data-w="30d">30D</button>
+          <button data-w="all" class="active">All-Time</button>
+        </div>
+        <div class="meta" id="smBoardMeta">loading…</div>
+      </div>
+      <div class="sm-board" id="smBoard">
+        <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
+      </div>
+      <div class="kalshi-note">
+        <b>Why Polymarket only?</b> It settles on-chain, so every wallet's profit is public and verifiable —
+        that's how we can rank who is actually winning. Kalshi keeps trader identities and P&L private, so an
+        honest leaderboard isn't possible there. We'd rather show real, provable names than fake a list.
       </div>
     </section>
 
+    <section class="panel">
+      <div class="section-head">
+        <h2>Smart Money <span class="accent">Moving Now</span></h2>
+        <div class="threshold-toggle" id="smTapeToggle">
+          <button data-min="0" class="active">All</button>
+          <button data-min="1000">$1K+</button>
+          <button data-min="10000">$10K+</button>
+          <button data-min="50000">$50K+</button>
+        </div>
+        <div class="meta" id="smTapeMeta">loading…</div>
+      </div>
+      <div class="sm-tape" id="smTape">
+        <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
+      </div>
+      <div class="sm-note">
+        Live trades placed by any of the tracked profitable wallets, newest first. Each badge shows that
+        wallet's <b>standing</b>. Polymarket clears hundreds of trades a minute — this refreshes every few seconds.
+      </div>
+    </section>
+  `;
+  document.querySelectorAll("#smWindowToggle button").forEach((b) => {
+    b.addEventListener("click", () => {
+      state.smart.window = b.dataset.w;
+      document.querySelectorAll("#smWindowToggle button").forEach((x) => x.classList.toggle("active", x === b));
+      renderSmartBoard();
+    });
+  });
+  document.querySelectorAll("#smTapeToggle button").forEach((b) => {
+    b.addEventListener("click", () => {
+      state.smart.minTape = Number(b.dataset.min);
+      document.querySelectorAll("#smTapeToggle button").forEach((x) => x.classList.toggle("active", x === b));
+      renderSmartTape();
+    });
+  });
+  state.stopSmart = liveLoop(loadSmart, 6_000);
+}
+
+async function loadSmart() {
+  try {
+    const r = await fetch("/api/whales/smart-money");
+    const data = await r.json();
+    if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
+    state.smart.data = data;
+    renderSmartStats(data.stats);
+    renderSmartBoard();
+    renderSmartTape();
+  } catch (err) {
+    const meta = $("#smBoardMeta"); if (meta) meta.textContent = "feed error";
+    const b = $("#smBoard");
+    if (b && !b.querySelector(".sm-row")) b.innerHTML = `<div class="empty"><strong>Smart-money feed offline.</strong><br>${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function renderSmartStats(s) {
+  if (!s) return;
+  const set = (id, v) => { const el = $("#" + id); if (el) el.textContent = v; };
+  set("smTopName", s.top_name || "—");
+  set("smTop", pnlUsd(s.top_pnl));
+  set("smCombined", pnlUsd(s.top50_combined_pnl));
+  set("smTracked", (s.tracked_wallets || 0).toLocaleString());
+  set("smLive", (s.tape_matches || 0).toLocaleString());
+}
+
+function renderSmartBoard() {
+  const data = state.smart.data; if (!data) return;
+  const win = state.smart.window;
+  const rows = data.windows?.[win] || [];
+  const meta = $("#smBoardMeta");
+  if (meta) meta.textContent = `top ${rows.length} by profit · ${WIN_LABEL[win]}`;
+  const board = $("#smBoard"); if (!board) return;
+  if (!rows.length) { board.innerHTML = `<div class="empty">No ranked wallets for this window yet.</div>`; return; }
+  liveList(board, rows, { key: (w) => w.wallet, render: smRow });
+}
+
+function smRow(w) {
+  const top = w.rank <= 3 ? ` top${w.rank}` : "";
+  const av = w.image
+    ? `<img src="${escapeAttr(w.image)}" alt="" loading="lazy">`
+    : escapeHtml((w.name || w.wallet || "?")[0].toUpperCase());
+  return `<a class="sm-row${top}" href="?wallet=${escapeAttr(w.wallet)}">
+    <div class="sm-rank">${w.rank}</div>
+    <div class="sm-av">${av}</div>
+    <div class="sm-id"><div class="n">${escapeHtml(w.name || short(w.wallet, 8))}</div><div class="w">${short(w.wallet, 8)}</div></div>
+    <div class="sm-pnl"><div class="v">${pnlUsd(w.pnl_usd)}</div><div class="l">profit</div></div>
+  </a>`;
+}
+
+function renderSmartTape() {
+  const data = state.smart.data; if (!data) return;
+  const min = state.smart.minTape;
+  const rows = (data.tape || []).filter((t) => (t.usd || 0) >= min);
+  const meta = $("#smTapeMeta");
+  if (meta) {
+    meta.innerHTML = `<span class="live-pulse"><span class="dot"></span></span> ${rows.length} sharp trade${rows.length === 1 ? "" : "s"} · ${new Date(data.fetched_at).toLocaleTimeString()}`;
+  }
+  const tape = $("#smTape"); if (!tape) return;
+  if (!rows.length) {
+    tape.innerHTML = `<div class="empty">No tracked sharp has traded ${min ? `above ${fmtUsd(min)} ` : ""}in the last ${data.firehose_window} market trades.<br>They move constantly — sit tight${min ? `, or drop the filter` : ""}.</div>`;
+    return;
+  }
+  liveList(tape, rows, {
+    key: (t) => `${t.tx_hash || ""}-${t.timestamp}-${t.wallet}`,
+    render: smTapeRow,
+    max: 40,
+  });
+}
+
+function smTapeRow(t) {
+  const dir = t.side === "BUY" ? "buy" : "sell";
+  const av = t.image
+    ? `<img src="${escapeAttr(t.image)}" alt="" loading="lazy">`
+    : escapeHtml((t.name || t.wallet || "?")[0].toUpperCase());
+  const cred = `<span class="rk">#${t.cred_rank} ${WIN_SHORT[t.cred_window] || ""}</span> · <span class="pnl">${pnlUsd(t.cred_pnl)}</span>`;
+  return `<a class="sm-tape-row" href="?wallet=${escapeAttr(t.wallet)}">
+    <div class="sm-tw">
+      <div class="sm-tav">${av}</div>
+      <div class="sm-tid"><div class="n">${escapeHtml(t.name || short(t.wallet, 6))}</div><div class="sm-cred">${cred}</div></div>
+    </div>
+    <div class="sm-tmkt" title="${escapeAttr(t.market_title || "")}">${escapeHtml((t.market_title || "").slice(0, 72))}</div>
+    <div class="sm-tact ${dir}">${t.side} ${escapeHtml(t.outcome || "")}</div>
+    <div class="sm-tamt"><div class="v">${fmtUsd(t.usd)}</div><div class="t">${fmtAgo(t.timestamp)} ago · ${(t.price * 100).toFixed(0)}¢</div></div>
+  </a>`;
+}
+
+// ── LIVE ACTION TAB (firehose + active-whale leaderboard) ─────────────
+function renderLiveTab() {
+  $("#whaleHero").innerHTML = `
+    <h1>WHALE <span class="accent">RADAR</span></h1>
+    <p class="tagline">
+      Every <strong>>$${(state.threshold).toLocaleString()}</strong> Polymarket trade. Live.
+      Plus a leaderboard of <strong>active whales</strong> right now. Click any wallet to drill into their book.
+    </p>
+    <div class="stat-strip" id="statStrip">
+      <div class="stat-cell"><div class="lbl">Active Wallets</div><div class="val" id="statActive">—</div></div>
+      <div class="stat-cell alt"><div class="lbl">Whale Volume / window</div><div class="val" id="statVol">—</div></div>
+      <div class="stat-cell"><div class="lbl">Biggest Trade</div><div class="val" id="statBiggest">—</div></div>
+      <div class="stat-cell alt"><div class="lbl">Refreshes</div><div class="val" id="statRefresh">30s</div></div>
+    </div>
+  `;
+  $("#tabHost").innerHTML = `
     <section class="panel">
       <div class="section-head">
         <h2>Live <span class="accent">Firehose</span></h2>
@@ -65,9 +271,7 @@ function renderListShell() {
         <div class="meta" id="fhMeta">loading…</div>
       </div>
       <div class="firehose-list" id="fhList">
-        <div class="skel-row"></div>
-        <div class="skel-row"></div>
-        <div class="skel-row"></div>
+        <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
       </div>
     </section>
 
@@ -87,6 +291,7 @@ function renderListShell() {
     </section>
   `;
   document.querySelectorAll("#thresholdToggle button").forEach((b) => {
+    b.classList.toggle("active", Number(b.dataset.min) === state.threshold);
     b.addEventListener("click", () => {
       state.threshold = Number(b.dataset.min);
       document.querySelectorAll("#thresholdToggle button").forEach((x) => x.classList.toggle("active", x === b));
@@ -95,6 +300,9 @@ function renderListShell() {
       loadFirehose();
     });
   });
+  loadFirehose();
+  loadLeaderboard();
+  state.refreshTimer = setInterval(() => { loadFirehose(); loadLeaderboard(); }, 30_000);
 }
 
 async function loadFirehose() {
