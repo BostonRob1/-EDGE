@@ -25,7 +25,7 @@ Dune is a credibility surface. Don't post one giant kitchen-sink dashboard — p
 - Date range
 - Minimum entry size
 
-**Cross-link:** "Watch these wallets in real time on $EDGE → edge-two-psi.vercel.app/whales"
+**Cross-link:** "Watch these wallets in real time on $EDGE → www.thepolyedge.com/whales"
 
 ---
 
@@ -51,7 +51,7 @@ Dune is a credibility surface. Don't post one giant kitchen-sink dashboard — p
 
 **Note:** Kalshi doesn't expose chain data; this dashboard pulls from Kalshi's public REST API into a Dune-uploaded table, refreshed every 5 minutes.
 
-**Cross-link:** "Get Kalshi alerts via $EDGE → edge-two-psi.vercel.app/kalshi"
+**Cross-link:** "Get Kalshi alerts via $EDGE → www.thepolyedge.com/kalshi"
 
 ---
 
@@ -74,7 +74,7 @@ Dune is a credibility surface. Don't post one giant kitchen-sink dashboard — p
 - Divergence threshold
 - Whale-flow filter (only show markets with ≥$25K whale entry in last 24h)
 
-**Cross-link:** "Live divergence radar → edge-two-psi.vercel.app/divergence"
+**Cross-link:** "Live divergence radar → www.thepolyedge.com/divergence"
 
 ---
 
@@ -92,7 +92,7 @@ Dune is a credibility surface. Don't post one giant kitchen-sink dashboard — p
 4. Sentiment heat over time: X / Farcaster / Reddit sentiment vs price (overlaid)
 5. Cross-venue arbitrage table: rows = market, cols = max gap last 7d, time since gap >0.05, current gap
 
-**Cross-link:** "Open the live grid → edge-two-psi.vercel.app/election-2028"
+**Cross-link:** "Open the live grid → www.thepolyedge.com/election-2028"
 
 ---
 
@@ -111,7 +111,7 @@ Dune is a credibility surface. Don't post one giant kitchen-sink dashboard — p
 5. New holders per day vs net token outflow from the LP (dual-axis line)
 6. Holder cohort retention: % of wallets that held N days after first acquisition (cohort chart)
 
-**Cross-link:** "Token page → edge-two-psi.vercel.app/token"
+**Cross-link:** "Token page → www.thepolyedge.com/token"
 
 ---
 

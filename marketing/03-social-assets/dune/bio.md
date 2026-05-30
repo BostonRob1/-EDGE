@@ -19,7 +19,7 @@ dune.com/edge
 `pfp.svg` — 512×512 circle-clipped
 
 ## Links to display
-- Site: edge-two-psi.vercel.app
+- Site: www.thepolyedge.com
 - X: x.com/edgeterminal
 - GitHub (open-source queries): github.com/edgeterminal
 

@@ -13,7 +13,7 @@ A terminal for prediction markets that reads like Bloomberg, ships like a frame,
 
 Polymarket + Kalshi + onchain whale flow + sentiment.
 
-edge-two-psi.vercel.app · /edge channel · $EDGE on Solana.
+www.thepolyedge.com · /edge channel · $EDGE on Solana.
 ```
 
 ## 2 / 4 — Frame-gated value

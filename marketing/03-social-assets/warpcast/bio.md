@@ -9,7 +9,7 @@ Warpcast is a Farcaster client, so the wire-level profile is the same FID. This 
 $EDGE
 
 ## Bio — primary (256 char)
-$EDGE: prediction-market terminal. Solana. Frame-gated alpha for holders. Whale tape + divergence radar live on /edge. Watch the action. Before you bet. edge-two-psi.vercel.app
+$EDGE: prediction-market terminal. Solana. Frame-gated alpha for holders. Whale tape + divergence radar live on /edge. Watch the action. Before you bet. www.thepolyedge.com
 
 ## Bio — alt v1 (terse)
 The Bloomberg for prediction markets — onchain. /edge channel. $EDGE on Solana.

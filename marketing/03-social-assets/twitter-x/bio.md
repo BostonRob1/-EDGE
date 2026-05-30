@@ -19,7 +19,7 @@ Watch the action. Before you bet. Polymarket + Kalshi + whales + sentiment + cro
 On-chain / off-chain.
 
 ## Website
-edge-two-psi.vercel.app
+www.thepolyedge.com
 
 ## Joined-date pinning
 Set "Joined" visible. New account credibility comes from velocity of signal, not seniority.

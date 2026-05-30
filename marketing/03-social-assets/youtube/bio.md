@@ -17,7 +17,7 @@ We publish:
 
 Built by the $EDGE Traders. We trade these markets every day. The terminal is what we wished existed.
 
-Site: https://edge-two-psi.vercel.app/
+Site: https://www.thepolyedge.com/
 Token: $EDGE on Solana (pump.fun launch)
 X: @edgeterminal
 Discord: discord.gg/edge
@@ -25,7 +25,7 @@ Discord: discord.gg/edge
 Watch the action. Before you bet.
 
 ## Channel links (max 5, shown on banner)
-1. Terminal — edge-two-psi.vercel.app
+1. Terminal — www.thepolyedge.com
 2. X — x.com/edgeterminal
 3. Discord — discord.gg/edge
 4. Telegram — t.me/edgeterminal

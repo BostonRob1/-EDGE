@@ -1,0 +1,7 @@
+# $EDGE — https://www.thepolyedge.com
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /marketing/
+
+Sitemap: https://www.thepolyedge.com/sitemap.xml

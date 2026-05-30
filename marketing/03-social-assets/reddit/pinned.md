@@ -53,7 +53,7 @@ This sub is for people who take prediction markets seriously: traders, researche
 
 ## TOOLS
 
-- Terminal: https://edge-two-psi.vercel.app/
+- Terminal: https://www.thepolyedge.com/
 - Discord: discord.gg/edge
 - X: @edgeterminal
 - Token: $EDGE on Solana (CA drops at launch)
@@ -115,7 +115,7 @@ Methodology:
 2. Entry is recorded at the moment of flag. No edits.
 3. Resolution is the market's settled outcome.
 
-All historical picks are publicly viewable on the terminal at edge-two-psi.vercel.app/picker.
+All historical picks are publicly viewable on the terminal at www.thepolyedge.com/picker.
 
 Discuss this week's calls below. If you think the algo got something wrong, explain — we revise the model in the open.
 ```

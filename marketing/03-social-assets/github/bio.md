@@ -10,7 +10,7 @@ $EDGE — Prediction-Market Terminal
 Open-source SDKs, scrapers, dashboards, and frames for prediction-market builders. Tools behind the $EDGE terminal.
 
 ## URL
-https://edge-two-psi.vercel.app/
+https://www.thepolyedge.com/
 
 ## Twitter / X
 @edgeterminal

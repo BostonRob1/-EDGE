@@ -25,7 +25,7 @@ TikTok lets you pin 3 videos. The pinned slate is the cold-traffic billboard. Bu
 
 **Caption:**
 > The first time the chart in your group chat is wrong about the market — this is why.
-> Try the terminal: edge-two-psi.vercel.app
+> Try the terminal: www.thepolyedge.com
 > #predictionmarkets #polymarket #kalshi #trading
 
 ---
@@ -66,7 +66,7 @@ TikTok lets you pin 3 videos. The pinned slate is the cold-traffic billboard. Bu
 > **[30.0s]**
 
 **Caption:**
-> Divergence explained in 30 seconds. Save this. Try the playbook on the terminal: edge-two-psi.vercel.app
+> Divergence explained in 30 seconds. Save this. Try the playbook on the terminal: www.thepolyedge.com
 
 ---
 
@@ -75,8 +75,8 @@ TikTok lets you pin 3 videos. The pinned slate is the cold-traffic billboard. Bu
 TikTok hides the bio link until 1K. Until then:
 
 1. Cover the URL in every video's **on-screen text** at second 14+.
-2. End every caption with `edge-two-psi.vercel.app`.
-3. Park a comment from the account itself on each video: `Link → edge-two-psi.vercel.app`. Pin that comment.
+2. End every caption with `www.thepolyedge.com`.
+3. Park a comment from the account itself on each video: `Link → www.thepolyedge.com`. Pin that comment.
 4. Use the @edgeterminal handle as the alt-route (people search the handle on web).
 
 ## Bio-link strategy (post-1K followers)

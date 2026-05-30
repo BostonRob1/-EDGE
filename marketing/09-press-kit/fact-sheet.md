@@ -12,7 +12,7 @@
 | **Markets covered** | Polymarket · Kalshi |
 | **Signal layers** | Money (whales + order flow + **cross-platform arbitrage**) · Mouth (sentiment) · Edge (divergence) |
 | **Stack** | Static HTML/SVG · Vercel · Polymarket Gamma + CLOB API · Kalshi API · Solana RPC (Helius) |
-| **Live product** | https://edge-two-psi.vercel.app/ |
+| **Live product** | https://www.thepolyedge.com/ |
 | **GitHub** | https://github.com/BostonRob1/-EDGE |
 | **Pre-launch waitlist** | edgeterminal.xyz (coming) |
 | **Token** | $EDGE — Solana — fairlaunch via pump.fun |

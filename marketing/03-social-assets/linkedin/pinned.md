@@ -14,7 +14,7 @@ In 2024, prediction markets out-called every major pollster — Polymarket's Tru
 
 We built the terminal we wanted to use.
 
-What's in v1 (live now at edge-two-psi.vercel.app):
+What's in v1 (live now at www.thepolyedge.com):
 
 • Every Polymarket and Kalshi market in one sortable grid, with cross-venue arbitrage flagged at the row level.
 • Whale-flow tape — wallet-level entries ≥$25K, surfaced in real time with historical hit-rate per wallet.
@@ -28,7 +28,7 @@ What's coming in v2:
 
 We're a two-person team: an Trader (frontend / product) and an Trader (data / infra). We use this every day for our own trading. If you're a quant, a market researcher, a trader, or a fintech trader who has wanted to take prediction markets seriously and couldn't find the right surface — you're who we're building for.
 
-Try the terminal: https://edge-two-psi.vercel.app/
+Try the terminal: https://www.thepolyedge.com/
 Follow this page for product updates, market notes, and the occasional public divergence dossier.
 
 The token, $EDGE, gates premium tiers — webhooks, push, governance. Launching on Solana via pump.fun. Details on the site.
@@ -54,7 +54,7 @@ In our framework this is a high-conviction trade signal: large gap + whale flow 
 
 The picker is calling it.
 
-Live: edge-two-psi.vercel.app
+Live: www.thepolyedge.com
 
 (Not investment advice. Public record of the call is timestamped on the picker page — when this resolves, you'll see whether we were right.)
 ```
@@ -73,7 +73,7 @@ Why we're betting on prediction markets:
 
 The opportunity isn't to build another exchange. It's to be the intelligence layer that sits above the exchanges.
 
-$EDGE: edge-two-psi.vercel.app
+$EDGE: www.thepolyedge.com
 ```
 
 ---

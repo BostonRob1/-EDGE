@@ -16,7 +16,7 @@ This is the control room for traders who watch prediction markets the same way f
 — Mouth: aggregated sentiment from X, Farcaster, Reddit.
 — Edge: the live gap between the two. That's where you bet.
 
-Site: https://edge-two-psi.vercel.app/
+Site: https://www.thepolyedge.com/
 Token: $EDGE on Solana (pump.fun launch).
 
 ────────────────────────────────────────

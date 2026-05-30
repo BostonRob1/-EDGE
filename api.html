@@ -7,15 +7,19 @@
 <meta name="description" content="$EDGE public API reference. Every endpoint documented with params, examples, and live response shapes. Free tier — open access. Analyst tier — higher rate limits.">
 
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://edge-two-psi.vercel.app/api.html">
+<meta property="og:url" content="https://www.thepolyedge.com/api.html">
+<link rel="canonical" href="https://www.thepolyedge.com/api.html">
 <meta property="og:title" content="$EDGE API — Public Endpoint Reference">
 <meta property="og:description" content="Every prediction-market signal, one curl away. Markets · Whales · Buzz · Edge · Arb · Ticker.">
-<meta property="og:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta property="og:image" content="https://www.thepolyedge.com/api/og?surface=edge">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://edge-two-psi.vercel.app/api/og?surface=edge">
+<meta name="twitter:image" content="https://www.thepolyedge.com/api/og?surface=edge">
 <meta name="theme-color" content="#050507">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -332,7 +336,7 @@ footer a { color: var(--lime); text-decoration: none; }
     <p class="lede">
       Every prediction-market signal $EDGE surfaces is also a public API. No
       auth required for the free tier. <strong>Base URL</strong>:
-      <code>https://edge-two-psi.vercel.app</code>. Returns JSON. Cached at the
+      <code>https://www.thepolyedge.com</code>. Returns JSON. Cached at the
       edge for 10-60s depending on the endpoint. <strong>Analyst tier</strong>
       (1M $EDGE) unlocks higher rate limits and webhook delivery.
     </p>
@@ -396,7 +400,7 @@ footer a { color: var(--lime); text-decoration: none; }
         <div class="example">
           <div class="example-head"><span class="example-lbl">Request</span></div>
           <pre><span class="com"># curl</span>
-curl https://edge-two-psi.vercel.app/api/markets
+curl https://www.thepolyedge.com/api/markets
 
 <span class="com"># JavaScript</span>
 const r = <span class="key">await</span> fetch(<span class="str">"/api/markets"</span>);
@@ -457,7 +461,7 @@ const data = <span class="key">await</span> r.json();</pre>
         </div>
         <div class="example">
           <div class="example-head"><span class="example-lbl">Example</span></div>
-          <pre>curl <span class="str">"https://edge-two-psi.vercel.app/api/whales/firehose?min=1000&limit=20"</span></pre>
+          <pre>curl <span class="str">"https://www.thepolyedge.com/api/whales/firehose?min=1000&limit=20"</span></pre>
         </div>
       </div>
     </div>

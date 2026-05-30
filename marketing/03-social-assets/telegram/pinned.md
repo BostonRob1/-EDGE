@@ -16,7 +16,7 @@ This is broadcast-only. Real-time signals:
 • product drops + token updates
 
 Community chat: @edgelounge
-Site: https://edge-two-psi.vercel.app/
+Site: https://www.thepolyedge.com/
 Token: $EDGE on Solana — pump.fun launch.
 
 
@@ -44,7 +44,7 @@ CHANNELS YOU SHOULD JOIN
 • @edgelounge — this room
 
 LINKS
-Site: https://edge-two-psi.vercel.app/
+Site: https://www.thepolyedge.com/
 X: @edgeterminal
 Discord: discord.gg/edge
 
@@ -66,7 +66,7 @@ DIVERGENCE  {delta}
 WHALE  {wallet 0xABCD} → {amount} {direction}  {time}
 MOUTH  {sentiment %} on {platform}  {timeframe}
 
-Read: edge-two-psi.vercel.app/m/{slug}
+Read: www.thepolyedge.com/m/{slug}
 ```
 
 Use sparingly. Two to four posts per day max. The channel value collapses if it becomes noise.

@@ -10,7 +10,7 @@
 
 1. **No paid placement masquerades as organic.** Every paid post carries the disclosure boilerplate (see §6). The brand survives long-tail. Lying about it does not.
 2. **Trade of value first, payment second.** Most quality KOLs accept early access + an allocation over a one-time USDC bag. We push for token + vesting in 80% of deals.
-3. **The product does the convincing.** Send the live URL — `https://edge-two-psi.vercel.app/` — *before* the pitch. If they don't open it, they're not the right partner.
+3. **The product does the convincing.** Send the live URL — `https://www.thepolyedge.com/` — *before* the pitch. If they don't open it, they're not the right partner.
 4. **No DMs that read like a copy-paste.** Templates below are *starting points*. Every send is personalized in the first sentence (we reference something they posted in the last 14 days).
 5. **Track every send.** Tracking sheet at the bottom is the source of truth. If it isn't in the sheet, it didn't happen.
 
@@ -77,7 +77,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 
 > hey [name], saw your [recent post about X — paraphrase, don't quote].
 >
-> reaching out from $EDGE. we built the first cross-platform aggregator for Polymarket + Kalshi + whale flows + sentiment. live product, free tier: edge-two-psi.vercel.app
+> reaching out from $EDGE. we built the first cross-platform aggregator for Polymarket + Kalshi + whale flows + sentiment. live product, free tier: www.thepolyedge.com
 >
 > 90 seconds of context: we surface where smart money is positioning *before* the timeline catches up. example from last week: trump-powell market moved $1.2M into NO 13 mins before twitter pivoted.
 >
@@ -93,7 +93,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 >
 > $EDGE: we read the Polymarket + Kalshi books in real time and cross them against the loudest takes on the timeline. when those disagree by N%, the divergence is the alpha.
 >
-> live product: edge-two-psi.vercel.app
+> live product: www.thepolyedge.com
 >
 > i'm not asking you to post about it. i'm asking you to use it for a week and tell me where it's wrong. if you find it useful afterwards, there's a holder-tier setup that's interesting.
 >
@@ -105,7 +105,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 >
 > you've been one of the most accurate voices on [specific topic — Powell, election odds, fed cuts, whatever]. wanted to share something we built that you might actually use.
 >
-> $EDGE pulls every Polymarket and Kalshi market + every whale wallet + sentiment scoring into one screen. the gap between price and sentiment is graphable, in real time. live URL: edge-two-psi.vercel.app
+> $EDGE pulls every Polymarket and Kalshi market + every whale wallet + sentiment scoring into one screen. the gap between price and sentiment is graphable, in real time. live URL: www.thepolyedge.com
 >
 > would value 10 minutes of your honest reaction — what's missing, what's wrong. happy to do it on your terms (DM, call, voice note, whatever).
 >
@@ -117,7 +117,7 @@ We're targeting **prediction-market voices**, **Solana-crypto voices**, and **fi
 
 > hey [name] — circling back once. understand if it's not a fit.
 >
-> if you want context without a DM, the product is at edge-two-psi.vercel.app and the playbook is at [link to one-pager].
+> if you want context without a DM, the product is at www.thepolyedge.com and the playbook is at [link to one-pager].
 >
 > if i don't hear from you i'll stop reaching out. genuinely no offense taken.
 

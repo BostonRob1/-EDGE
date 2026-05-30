@@ -5,7 +5,7 @@
 - Username: `@edgeterminal`
 - Public link: `t.me/edgeterminal`
 - Description (255 char):
-  > $EDGE — the terminal for prediction markets. Polymarket + Kalshi + whales + sentiment divergence in one screen. Watch the action. Before you bet. Site: edge-two-psi.vercel.app
+  > $EDGE — the terminal for prediction markets. Polymarket + Kalshi + whales + sentiment divergence in one screen. Watch the action. Before you bet. Site: www.thepolyedge.com
 
 ## Group (community chat)
 - Name: `$EDGE LOUNGE`
@@ -20,4 +20,4 @@
 Prediction-market terminal. Polymarket + Kalshi, in one screen.
 
 ### 160 char
-$EDGE — terminal for prediction markets. Money · Mouth · Edge. Polymarket + Kalshi + whales. Site: edge-two-psi.vercel.app
+$EDGE — terminal for prediction markets. Money · Mouth · Edge. Polymarket + Kalshi + whales. Site: www.thepolyedge.com

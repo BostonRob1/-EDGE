@@ -24,7 +24,7 @@ The Bloomberg for prediction markets.
 $EDGE on Solana | pump.fun launch
 
 ## Link in bio
-edge-two-psi.vercel.app (use linktree-style splash if running launch campaign — see pinned.md)
+www.thepolyedge.com (use linktree-style splash if running launch campaign — see pinned.md)
 
 ## Highlights covers
 Create 5 highlights with chevron-on-void thumbnails (use pfp.svg as template):

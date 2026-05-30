@@ -13,7 +13,7 @@ Money (whales) · Mouth (sentiment) · Edge (the gap).
 
 Polymarket + Kalshi + onchain flow + X chatter — one screen.
 
-edge-two-psi.vercel.app
+www.thepolyedge.com
 ```
 
 ## 2 / 5 — Why this channel
@@ -82,7 +82,7 @@ Post here if you're casting:
 
 No shilling. No GM. Receipts in every claim.
 
-edge-two-psi.vercel.app
+www.thepolyedge.com
 ```
 
 ---

@@ -31,7 +31,7 @@ Caption:
 
 ## Row 2 — Product (terminal screenshots)
 
-**Post 4 — Hero screenshot of edge-two-psi.vercel.app/markets**
+**Post 4 — Hero screenshot of www.thepolyedge.com/markets**
 Caption:
 > The grid. Every Polymarket + Kalshi market, sortable by volume, divergence, or whale activity. Live.
 
@@ -60,7 +60,7 @@ Caption:
 **Post 9 — CTA / link**
 Caption:
 > Link in bio.
-> Site: edge-two-psi.vercel.app
+> Site: www.thepolyedge.com
 > X: @edgeterminal · Discord: discord.gg/edge · TG: @edgeterminal
 > Watch the action. Before you bet.
 

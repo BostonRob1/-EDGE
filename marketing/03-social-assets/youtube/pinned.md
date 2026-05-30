@@ -66,7 +66,7 @@ VO:
 CUT to terminal hero with the URL on screen.
 VO:
 "Open the terminal. Mute everything else."
-ON-SCREEN: "edge-two-psi.vercel.app"
+ON-SCREEN: "www.thepolyedge.com"
 
 [68.0s — 75.0s]
 END CARD: lime chevron mark, "$EDGE — SUBSCRIBE", subscribe button cue, related-video thumbnails right side.
@@ -97,5 +97,5 @@ Frequency: weekly
 
 ## Shorts cadence
 - 1/day. 30s max. Cover image = a single banner-style still with the day's biggest divergence.
-- Each Short ends with "Open the terminal. edge-two-psi.vercel.app"
+- Each Short ends with "Open the terminal. www.thepolyedge.com"
 - Re-cut TikTok pinned videos #1, #2, #3 as YouTube Shorts on launch day.

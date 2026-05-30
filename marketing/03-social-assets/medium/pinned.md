@@ -64,7 +64,7 @@ We've spent the last six months building the terminal we wanted to use for these
 ### V. What we built (the product mention — keep this short)
 - The terminal: Polymarket + Kalshi grid, whale tape, divergence radar, picker
 - Token: $EDGE on Solana — gates real-time webhooks and push, not the basic terminal
-- Where to start: edge-two-psi.vercel.app
+- Where to start: www.thepolyedge.com
 
 ### VI. What we're not (defensive paragraph)
 - Not a brokerage. Not a custodian. Not an advisor.

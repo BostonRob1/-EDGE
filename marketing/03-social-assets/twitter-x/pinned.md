@@ -15,7 +15,7 @@ $EDGE shows you the gap between them.
 
 That gap is where you bet.
 
-edge-two-psi.vercel.app
+www.thepolyedge.com
 
 ---
 
@@ -75,7 +75,7 @@ Holders get:
 
 Follow. Mute everything else.
 
-Site: edge-two-psi.vercel.app
+Site: www.thepolyedge.com
 CA: drops at launch.
 
 ---

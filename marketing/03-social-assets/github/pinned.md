@@ -15,7 +15,7 @@ Lives at `edgeterminal/.github/profile/README.md`. Renders as the landing page a
 
 Money. Mouth. Edge.
 
-[**Site →**](https://edge-two-psi.vercel.app/) · [**X →**](https://x.com/edgeterminal) · [**Discord →**](https://discord.gg/edge) · [**Dune →**](https://dune.com/edge)
+[**Site →**](https://www.thepolyedge.com/) · [**X →**](https://x.com/edgeterminal) · [**Discord →**](https://discord.gg/edge) · [**Dune →**](https://dune.com/edge)
 
 </div>
 
@@ -25,7 +25,7 @@ Money. Mouth. Edge.
 
 Open-source tooling for prediction-market builders. SDKs, scrapers, scoring libraries, Farcaster frames, and the SQL behind every $EDGE Dune dashboard.
 
-The closed-source web terminal lives at [edge-two-psi.vercel.app](https://edge-two-psi.vercel.app/). The data plumbing under it is here.
+The closed-source web terminal lives at [www.thepolyedge.com](https://www.thepolyedge.com/). The data plumbing under it is here.
 
 ## Pinned repositories
 
@@ -66,7 +66,7 @@ MIT across all public repos unless explicitly stated otherwise. Issues, ideas, a
 
 **Watch the action. Before you bet.**
 
-[edge-two-psi.vercel.app](https://edge-two-psi.vercel.app/)
+[www.thepolyedge.com](https://www.thepolyedge.com/)
 
 </div>
 ```

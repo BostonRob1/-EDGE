@@ -25,7 +25,7 @@ We discuss Polymarket and Kalshi markets, surface whale activity, dissect diverg
 - Speculation without receipts
 
 **Tools:**
-- Terminal: [edge-two-psi.vercel.app](https://edge-two-psi.vercel.app/)
+- Terminal: [www.thepolyedge.com](https://www.thepolyedge.com/)
 - Token: $EDGE on Solana (pump.fun)
 - Discord: discord.gg/edge
 
@@ -51,4 +51,4 @@ No
 Prediction-market community. Polymarket + Kalshi. Receipts in every post.
 
 ### 160 char
-r/EdgeTerminal — community for the $EDGE terminal. Polymarket + Kalshi + whales + sentiment divergence. No vibes-only posts. edge-two-psi.vercel.app
+r/EdgeTerminal — community for the $EDGE terminal. Polymarket + Kalshi + whales + sentiment divergence. No vibes-only posts. www.thepolyedge.com

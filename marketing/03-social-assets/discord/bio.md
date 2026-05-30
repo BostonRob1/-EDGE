@@ -10,7 +10,7 @@ discord.gg/edge (claim when boost level 3 hits)
 The control room for prediction-market traders. Polymarket + Kalshi + whales + sentiment, in real time.
 
 ## About me / banner subtitle
-Money. Mouth. Edge. — edge-two-psi.vercel.app
+Money. Mouth. Edge. — www.thepolyedge.com
 
 ## System channel
 #welcome (default for joins & boosts)
