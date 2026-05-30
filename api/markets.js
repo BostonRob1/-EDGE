@@ -9,6 +9,11 @@ const POLY_URL =
   "https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=200&order=volume24hr&ascending=false";
 const KALSHI_URL =
   "https://api.elections.kalshi.com/trade-api/v2/events?status=open&with_nested_markets=true&limit=200";
+const KALSHI_BASE = "https://api.elections.kalshi.com/trade-api/v2";
+// High-volume recurring series the default /events listing under-surfaces.
+// Crypto + macro dominate Kalshi volume (BTC daily price alone trades ~$1M/24h)
+// but the unsorted feed buries them under novelty markets, so pull explicitly.
+const KALSHI_SERIES = ["KXBTCD", "KXETHD", "KXBTC", "KXETH", "KXBTCMAXY", "KXETHMAXY", "KXFED", "KXCPIYOY"];
 
 export default async function handler(req, res) {
   try {
@@ -72,15 +77,30 @@ async function fetchPolymarket() {
 }
 
 async function fetchKalshi() {
-  const r = await fetch(KALSHI_URL, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (edge-aggregator)",
-      Accept: "application/json",
-    },
-  });
-  if (!r.ok) throw new Error(`kalshi ${r.status}`);
-  const data = await r.json();
-  const events = data.events || [];
+  const headers = { "User-Agent": "Mozilla/5.0 (edge-aggregator)", Accept: "application/json" };
+  const urls = [
+    KALSHI_URL,
+    ...KALSHI_SERIES.map((s) => `${KALSHI_BASE}/events?series_ticker=${s}&status=open&with_nested_markets=true`),
+  ];
+  // Fetch the general feed + each hot series in parallel; tolerate any single
+  // failure (a retired series ticker shouldn't sink the whole response).
+  const results = await Promise.allSettled(
+    urls.map((u) => fetch(u, { headers }).then((r) => (r.ok ? r.json() : { events: [] }))),
+  );
+  if (results[0].status === "rejected") throw new Error("kalshi general feed failed");
+
+  // Merge + dedupe by event_ticker (general feed and series overlap).
+  const seen = new Set();
+  const events = [];
+  for (const res of results) {
+    if (res.status !== "fulfilled") continue;
+    for (const e of res.value.events || []) {
+      if (e.event_ticker && !seen.has(e.event_ticker)) {
+        seen.add(e.event_ticker);
+        events.push(e);
+      }
+    }
+  }
 
   const out = [];
   for (const e of events) {
@@ -97,10 +117,17 @@ async function fetchKalshi() {
     const last = num(top.last_price_dollars);
     const prev = num(top.previous_price_dollars);
 
+    // Strike ladders + multi-outcome events are ambiguous from the event title
+    // alone ("BTC price on May 30?"). Append the leading contract's strike or
+    // candidate so the row is meaningful — and so matchers see the threshold.
+    const sub = (top.yes_sub_title || "").trim();
+    const title =
+      sub && !/^(yes|no)$/i.test(sub) ? `${e.title} — ${sub}` : e.title || top.title || "";
+
     out.push({
       id: `kalshi_${e.event_ticker}`,
       source: "kalshi",
-      title: e.title || top.title || "",
+      title,
       category: e.category || "Other",
       slug: e.event_ticker,
       yes_price: clampPrice(yes),
