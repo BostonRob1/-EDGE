@@ -41,7 +41,8 @@ function route() {
     renderWalletShell(wallet);
     loadWallet(wallet);
   } else {
-    state.tab = params.get("tab") === "live" ? "live" : "smart";
+    const t = params.get("tab");
+    state.tab = t === "live" || t === "eagle" ? t : "smart";
     renderListShell();
     activateTab(state.tab);
   }
@@ -57,7 +58,8 @@ function renderListShell() {
   main.innerHTML = `
     <section class="hero" id="whaleHero"></section>
     <div class="whale-tabs">
-      <button class="whale-tab" data-tab="smart"><span class="tico">🏆</span> Smart Money <span class="tnew">NEW</span></button>
+      <button class="whale-tab" data-tab="smart"><span class="tico">🏆</span> Smart Money</button>
+      <button class="whale-tab" data-tab="eagle"><span class="tico">🦅</span> Eagle Eye <span class="tnew">NEW</span></button>
       <button class="whale-tab" data-tab="live"><span class="tico">⚡</span> Live Action</button>
     </div>
     <div id="tabHost"></div>
@@ -65,7 +67,7 @@ function renderListShell() {
   document.querySelectorAll(".whale-tab").forEach((b) => {
     b.addEventListener("click", () => {
       if (b.dataset.tab === state.tab) return;
-      history.replaceState({}, "", b.dataset.tab === "live" ? "?tab=live" : location.pathname);
+      history.replaceState({}, "", b.dataset.tab === "smart" ? location.pathname : `?tab=${b.dataset.tab}`);
       activateTab(b.dataset.tab);
     });
   });
@@ -77,7 +79,100 @@ function activateTab(tab) {
   state.seenTradeKeys = new Set();
   document.querySelectorAll(".whale-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === tab));
   if (tab === "live") renderLiveTab();
+  else if (tab === "eagle") renderEagleTab();
   else renderSmartTab();
+}
+
+// ── EAGLE EYE TAB — off-Polymarket on-chain moves ─────────────────────
+function renderEagleTab() {
+  state.eagle = { window: "24h" };
+  $("#whaleHero").innerHTML = `
+    <h1>EAGLE <span class="accent">EYE</span></h1>
+    <p class="tagline">
+      Every move these wallets make <strong>off Polymarket</strong> — deposits, cash-outs, swaps, transfers to other
+      wallets — tracked <strong>across chains, by the second</strong>. Nothing gets by the EDGE.
+    </p>
+  `;
+  $("#tabHost").innerHTML = `
+    <section class="panel">
+      <div class="ee-statusbar armed" id="eeStatus">arming…</div>
+      <div class="section-head">
+        <h2>Off-Poly <span class="accent">Moves</span></h2>
+        <div class="threshold-toggle" id="eeWindow">
+          <button data-w="6h">6H</button>
+          <button data-w="12h">12H</button>
+          <button data-w="24h" class="active">24H</button>
+          <button data-w="7d">7D</button>
+          <button data-w="30d">30D</button>
+          <button data-w="60d">60D</button>
+        </div>
+        <div class="meta" id="eeMeta">loading…</div>
+      </div>
+      <div class="ee-board" id="eeBoard">
+        <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
+      </div>
+      <div class="sm-note">
+        EAGLE EYE watches the tracked profitable wallets <b>everywhere on-chain</b>, not just Polymarket. Each
+        counterparty is a lead — the first thread of wallet-to-wallet lineage. Full multichain history + a real-time
+        feed unlock with an on-chain data key (see the bar above).
+      </div>
+    </section>
+  `;
+  document.querySelectorAll("#eeWindow button").forEach((b) =>
+    b.addEventListener("click", () => {
+      state.eagle.window = b.dataset.w;
+      document.querySelectorAll("#eeWindow button").forEach((x) => x.classList.toggle("active", x === b));
+      loadEagle();
+    }));
+  state.stopSmart = liveLoop(loadEagle, 12_000);
+}
+
+async function loadEagle() {
+  try {
+    const r = await fetch(`/api/whales/eagle-eye?window=${state.eagle.window}`);
+    const d = await r.json();
+    if (!r.ok) throw new Error(d?.detail || `HTTP ${r.status}`);
+    renderEagleStatus(d);
+    const meta = $("#eeMeta");
+    if (meta) meta.innerHTML = `<span class="live-pulse"><span class="dot"></span></span> ${d.count} move${d.count === 1 ? "" : "s"} · ${d.persistent ? "persistent" : "live scan"}`;
+    const board = $("#eeBoard"); if (!board) return;
+    if (!d.events.length) {
+      board.innerHTML = `<div class="empty"><strong>Global feed is armed.</strong><br>${escapeHtml(d.note || "Connect the on-chain data keys to populate the live cross-chain feed.")}</div>`;
+      return;
+    }
+    liveList(board, d.events, { key: (e) => `${e.hash}-${e.direction}-${e.counterparty}`, render: eagleRow, max: 60 });
+  } catch (err) {
+    const s = $("#eeStatus"); if (s) s.textContent = "feed error: " + err.message;
+  }
+}
+
+function renderEagleStatus(d) {
+  const el = $("#eeStatus"); if (!el) return;
+  if (d.etherscan && d.persistent) {
+    el.className = "ee-statusbar full";
+    el.innerHTML = `<b>● FULL POWER</b> — multichain on-chain tracking live, persistent real-time feed active. Nothing gets by.`;
+    return;
+  }
+  const need = [];
+  if (!d.etherscan) need.push("a free <b>Etherscan API key</b> (one key = all chains)");
+  if (!d.persistent) need.push("<b>Vercel KV</b> (persistent real-time feed)");
+  el.className = "ee-statusbar armed";
+  el.innerHTML = `<b>⚡ ARMED</b> — running the key-free Polygon fallback (USDC.e deposits / cash-outs, ~5h). Connect ${need.join(" + ")} to track every move across every chain in real time.`;
+}
+
+function eagleRow(e) {
+  const dir = e.direction === "in" ? "in" : "out";
+  const amt = (e.amount || 0) >= 1000 ? fmtUsd(e.amount) : (e.amount || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+  const cp = e.counterparty ? `→ <span class="ee-cp">${short(e.counterparty, 5)}</span>` : "";
+  const venue = e.venue_label || e.venue || "transfer";
+  const when = e.timestamp ? `${fmtAgo(e.timestamp)} ago` : e.block ? `blk ${e.block}` : "recent";
+  return `<a class="ee-row" href="?wallet=${escapeAttr(e.wallet)}">
+    <span class="ee-chain c-${escapeAttr(e.chain || "polygon")}">${escapeHtml(e.chain_sym || "POL")}</span>
+    <div class="ee-who"><div class="n">${escapeHtml(e.name || short(e.wallet, 6))}</div><div class="w">${short(e.wallet, 8)}</div></div>
+    <div class="ee-act"><b class="${dir}">${dir.toUpperCase()}</b> ${amt} ${escapeHtml(e.token || "")}</div>
+    <div class="ee-venue">${escapeHtml(venue)} ${cp}</div>
+    <div class="ee-time">${when}</div>
+  </a>`;
 }
 
 // money formatting for P&L (always signed): +$22.1M / -$340K
@@ -646,6 +741,27 @@ async function loadWallet(wallet) {
   }
 }
 
+// EAGLE EYE for a single wallet — its recent off-Polymarket on-chain moves.
+async function loadWalletEagle(wallet) {
+  const board = $("#eeWalletBoard");
+  const meta = $("#eeWalletMeta");
+  try {
+    const r = await fetch(`/api/whales/eagle-eye?wallet=${encodeURIComponent(wallet)}`);
+    const d = await r.json();
+    if (!board) return;
+    if (!r.ok) throw new Error(d?.detail || `HTTP ${r.status}`);
+    if (meta) meta.textContent = `${d.count} move${d.count === 1 ? "" : "s"} · ${d.etherscan ? "multichain" : "Polygon USDC.e scan"}`;
+    if (!d.events.length) {
+      board.innerHTML = `<div class="empty">No off-Polymarket moves detected${d.etherscan ? "" : " in the key-free Polygon scan"}.</div>`;
+      return;
+    }
+    board.innerHTML = d.events.map(eagleRow).join("");
+  } catch (err) {
+    if (meta) meta.textContent = "scan unavailable";
+    if (board) board.innerHTML = `<div class="empty">On-chain scan unavailable right now.</div>`;
+  }
+}
+
 // Update <title>, og:image, og:title etc so every share of a specific wallet
 // URL renders the branded whale OG card with this wallet's stats baked in.
 function updateMetaForWallet(data, { name }) {
@@ -773,7 +889,17 @@ function renderWallet(data) {
         `).join("")}
       </div>
     ` : `<div class="empty">No recent trades.</div>`}
+
+    <div class="section-head" style="margin-top:32px">
+      <h2>🦅 Eagle <span class="accent">Eye</span> · Off-Polymarket</h2>
+      <div class="meta" id="eeWalletMeta">scanning chain…</div>
+    </div>
+    <div class="ee-board" id="eeWalletBoard">
+      <div class="skel-row"></div><div class="skel-row"></div>
+    </div>
   `;
+
+  loadWalletEagle(wallet);
 
   document.querySelectorAll(".btn-copy").forEach((b) => {
     b.addEventListener("click", async () => {
