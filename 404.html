@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — No edge here · $EDGE</title>
+<meta name="description" content="This page didn't resolve. Head back to the action on $EDGE.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#050507">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050507'/%3E%3Ctext x='50' y='78' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23C4FF00'%3E%24%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--void:#050507;--lime:#C4FF00;--magenta:#FF006E;--white:#F5F5F0;--muted:#6B6B73;--grid:rgba(196,255,0,0.05);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--void);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;text-align:center;padding:24px;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);}
+.wrap{position:relative;z-index:2;max-width:640px;}
+.code{font-family:'Anton',sans-serif;font-size:clamp(120px,28vw,260px);line-height:.8;letter-spacing:-.02em;color:var(--lime);text-shadow:0 0 60px rgba(196,255,0,.25);}
+.code span{color:var(--magenta);}
+.tag{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-top:10px;}
+h1{font-family:'Anton',sans-serif;font-size:clamp(28px,5vw,44px);text-transform:uppercase;letter-spacing:-.01em;margin-top:28px;}
+p{color:var(--muted);font-size:16px;line-height:1.55;margin-top:14px;}
+.actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:34px;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background .15s,border-color .15s,color .15s;}
+.btn-primary{background:var(--lime);color:var(--void);}
+.btn-primary:hover{background:#d8ff33;}
+.btn-ghost{border:1px solid rgba(196,255,0,.25);color:var(--white);}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime);}
+.links{margin-top:30px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.links a{color:var(--muted);text-decoration:none;margin:0 8px;transition:color .15s;}
+.links a:hover{color:var(--lime);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="code">4<span>0</span>4</div>
+<div class="tag">Position not found</div>
+<h1>No edge here.</h1>
+<p>This page took a position that never resolved. Let's get you back to where the money meets the mouth.</p>
+<div class="actions">
+<a class="btn btn-primary" href="/">← Back to $EDGE</a>
+<a class="btn btn-ghost" href="/dashboard.html">Open Dashboard</a>
+</div>
+<div class="links">
+<a href="/whales.html">Whales</a>·<a href="/arb.html">Arb</a>·<a href="/buzz.html">Buzz</a>·<a href="/token.html">Token</a>
+</div>
+</div>
+</body>
+</html>
