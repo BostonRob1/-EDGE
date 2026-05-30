@@ -8,6 +8,7 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const main = $("#main");
 
 const polymarketMarketUrl = (slug) => (slug ? `https://polymarket.com/market/${slug}` : "#");
+const PREFS_KEY = "edge_sharp_prefs"; // hoisted: loadSharpPrefs() runs during state init
 
 // ── state ─────────────────────────────────────────────────────────────
 const state = {
@@ -16,7 +17,17 @@ const state = {
   seenTradeKeys: new Set(),
   refreshTimer: null,
   stopSmart: null,
-  smart: { data: null, window: "all", minTape: 0 },
+  smart: {
+    data: null,
+    window: "all",
+    alerts: new Map(),
+    seen: new Set(),
+    firstLoad: true,
+    feedWindow: "live",
+    kvTrades: null,
+    kvPersistent: false,
+    prefs: loadSharpPrefs(),
+  },
 };
 
 // ── ROUTING ───────────────────────────────────────────────────────────
@@ -126,21 +137,43 @@ function renderSmartTab() {
 
     <section class="panel">
       <div class="section-head">
-        <h2>Smart Money <span class="accent">Moving Now</span></h2>
-        <div class="threshold-toggle" id="smTapeToggle">
-          <button data-min="0" class="active">All</button>
-          <button data-min="1000">$1K+</button>
-          <button data-min="10000">$10K+</button>
-          <button data-min="50000">$50K+</button>
-        </div>
+        <h2>Sharp <span class="accent">Alerts</span></h2>
         <div class="meta" id="smTapeMeta">loading…</div>
+      </div>
+      <div class="sm-alertbar">
+        <div class="sm-ctls">
+          <button class="sm-ctl" id="ctlBell" type="button">🔔 Pop-ups <b id="bellState">On</b></button>
+          <button class="sm-ctl" id="ctlDesktop" type="button">🖥️ Desktop <b id="deskState">Off</b></button>
+          <button class="sm-ctl" id="ctlSound" type="button">🔊 Sound <b id="soundState">Off</b></button>
+        </div>
+        <div class="sm-thresh">
+          <span class="sm-ctl-lbl">Pop when ≥</span>
+          <div class="threshold-toggle" id="smPopToggle">
+            <button data-min="0">Any</button>
+            <button data-min="1000">$1K</button>
+            <button data-min="10000">$10K</button>
+            <button data-min="50000">$50K</button>
+          </div>
+        </div>
+      </div>
+      <div class="sm-windowbar">
+        <span class="sm-ctl-lbl">Window</span>
+        <div class="threshold-toggle" id="smFeedWindow">
+          <button data-w="live" class="active">● Live</button>
+          <button data-w="6h">6H</button>
+          <button data-w="12h">12H</button>
+          <button data-w="24h">24H</button>
+          <button data-w="7d">7D</button>
+          <button data-w="30d">30D</button>
+          <button data-w="60d">60D</button>
+        </div>
       </div>
       <div class="sm-tape" id="smTape">
         <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
       </div>
       <div class="sm-note">
-        Live trades placed by any of the tracked profitable wallets, newest first. Each badge shows that
-        wallet's <b>standing</b>. Polymarket clears hundreds of trades a minute — this refreshes every few seconds.
+        Every trade by a tracked profitable wallet, newest first — with a <b>pop-up the instant it lands</b>.
+        Switch the window to replay the last 6h → 60d (full history fills in once the persistent store is connected).
       </div>
     </section>
   `;
@@ -151,13 +184,14 @@ function renderSmartTab() {
       renderSmartBoard();
     });
   });
-  document.querySelectorAll("#smTapeToggle button").forEach((b) => {
-    b.addEventListener("click", () => {
-      state.smart.minTape = Number(b.dataset.min);
-      document.querySelectorAll("#smTapeToggle button").forEach((x) => x.classList.toggle("active", x === b));
-      renderSmartTape();
-    });
-  });
+  // fresh live-alert session for this tab activation
+  state.smart.alerts = new Map();
+  state.smart.seen = new Set();
+  state.smart.firstLoad = true;
+  state.smart.feedWindow = "live";
+  state.smart.kvTrades = null;
+  ensureToastWrap();
+  wireAlertControls();
   state.stopSmart = liveLoop(loadSmart, 6_000);
 }
 
@@ -169,7 +203,8 @@ async function loadSmart() {
     state.smart.data = data;
     renderSmartStats(data.stats);
     renderSmartBoard();
-    renderSmartTape();
+    processAlerts(data.tape || []);
+    renderAlertsFeed();
   } catch (err) {
     const meta = $("#smBoardMeta"); if (meta) meta.textContent = "feed error";
     const b = $("#smBoard");
@@ -211,24 +246,182 @@ function smRow(w) {
   </a>`;
 }
 
-function renderSmartTape() {
-  const data = state.smart.data; if (!data) return;
-  const min = state.smart.minTape;
-  const rows = (data.tape || []).filter((t) => (t.usd || 0) >= min);
+// ── Sharp-alert engine ────────────────────────────────────────────────
+const WINDOW_MS = { "6h": 216e5, "12h": 432e5, "24h": 864e5, "7d": 6048e5, "30d": 2592e6, "60d": 5184e6 };
+
+function loadSharpPrefs() {
+  const dflt = { enabled: true, sound: false, desktop: false, popMin: 1000 };
+  try { return { ...dflt, ...(JSON.parse(localStorage.getItem(PREFS_KEY)) || {}) }; }
+  catch { return dflt; }
+}
+function saveSharpPrefs() {
+  try { localStorage.setItem(PREFS_KEY, JSON.stringify(state.smart.prefs)); } catch {}
+}
+const tradeKey = (t) => `${t.tx_hash || ""}-${t.timestamp}-${t.wallet}`;
+
+// On each poll: fold new sharp trades into the session log, and fire pop-ups
+// for any fresh trade at/above the chosen threshold. First load seeds silently.
+function processAlerts(tape) {
+  const sm = state.smart;
+  const fresh = [];
+  for (const t of tape) {
+    const k = tradeKey(t);
+    if (!sm.alerts.has(k)) sm.alerts.set(k, t);
+    if (!sm.seen.has(k)) { sm.seen.add(k); fresh.push(t); }
+  }
+  if (sm.alerts.size > 500) {
+    const sorted = [...sm.alerts.entries()].sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0));
+    for (let i = 0; i < sorted.length - 500; i++) sm.alerts.delete(sorted[i][0]);
+  }
+  if (sm.firstLoad) { sm.firstLoad = false; return; }
+  if (!sm.prefs.enabled) return;
+  const pops = fresh
+    .filter((t) => (t.usd || 0) >= sm.prefs.popMin)
+    .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  if (!pops.length) return;
+  if (sm.prefs.sound) ping();
+  pops.slice(0, 3).forEach((t) => { fireToast(t); fireDesktop(t); });
+  if (pops.length > 3) fireToastMore(pops.length - 3);
+}
+
+function renderAlertsFeed() {
+  const sm = state.smart;
+  const w = sm.feedWindow;
+  let rows;
+  if (w === "live") {
+    rows = [...sm.alerts.values()];
+  } else {
+    const cutoff = Date.now() - (WINDOW_MS[w] || 864e5);
+    const map = new Map();
+    for (const t of sm.kvTrades || []) map.set(tradeKey(t), t);
+    for (const t of sm.alerts.values()) map.set(tradeKey(t), t);
+    rows = [...map.values()].filter((t) => (Number(t.timestamp) || 0) * 1000 >= cutoff);
+  }
+  rows.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
   const meta = $("#smTapeMeta");
   if (meta) {
-    meta.innerHTML = `<span class="live-pulse"><span class="dot"></span></span> ${rows.length} sharp trade${rows.length === 1 ? "" : "s"} · ${new Date(data.fetched_at).toLocaleTimeString()}`;
+    const src = w === "live" ? "live session" : sm.kvPersistent ? "stored history" : "session only";
+    meta.innerHTML = `<span class="live-pulse"><span class="dot"></span></span> ${rows.length} sharp bet${rows.length === 1 ? "" : "s"} · ${src}`;
   }
   const tape = $("#smTape"); if (!tape) return;
   if (!rows.length) {
-    tape.innerHTML = `<div class="empty">No tracked sharp has traded ${min ? `above ${fmtUsd(min)} ` : ""}in the last ${data.firehose_window} market trades.<br>They move constantly — sit tight${min ? `, or drop the filter` : ""}.</div>`;
+    const extra = w !== "live" && !sm.kvPersistent
+      ? "<br><span style='opacity:.7'>Connect Vercel KV to replay the full window.</span>" : "";
+    tape.innerHTML = `<div class="empty">No sharp bets in this window yet. They move constantly — sit tight.${extra}</div>`;
     return;
   }
-  liveList(tape, rows, {
-    key: (t) => `${t.tx_hash || ""}-${t.timestamp}-${t.wallet}`,
-    render: smTapeRow,
-    max: 40,
+  liveList(tape, rows.slice(0, 60), { key: tradeKey, render: smTapeRow });
+}
+
+function selectFeedWindow(w) {
+  state.smart.feedWindow = w;
+  document.querySelectorAll("#smFeedWindow button").forEach((x) => x.classList.toggle("active", x.dataset.w === w));
+  if (w === "live") { state.smart.kvTrades = null; renderAlertsFeed(); return; }
+  const meta = $("#smTapeMeta"); if (meta) meta.textContent = "loading window…";
+  fetch(`/api/whales/sharp-feed?window=${w}`)
+    .then((r) => r.json())
+    .then((d) => { state.smart.kvTrades = d.trades || []; state.smart.kvPersistent = !!d.persistent; renderAlertsFeed(); })
+    .catch(() => { state.smart.kvTrades = []; state.smart.kvPersistent = false; renderAlertsFeed(); });
+}
+
+function wireAlertControls() {
+  const sm = state.smart;
+  $("#ctlBell")?.addEventListener("click", () => { sm.prefs.enabled = !sm.prefs.enabled; saveSharpPrefs(); syncControlUI(); });
+  $("#ctlSound")?.addEventListener("click", () => { sm.prefs.sound = !sm.prefs.sound; saveSharpPrefs(); syncControlUI(); if (sm.prefs.sound) ping(); });
+  $("#ctlDesktop")?.addEventListener("click", async () => {
+    if (!("Notification" in window)) { alert("This browser doesn't support desktop notifications."); return; }
+    if (!sm.prefs.desktop) {
+      const perm = await Notification.requestPermission();
+      sm.prefs.desktop = perm === "granted";
+      if (perm !== "granted") alert("Allow notifications for this site to get desktop pop-ups.");
+    } else {
+      sm.prefs.desktop = false;
+    }
+    saveSharpPrefs(); syncControlUI();
   });
+  document.querySelectorAll("#smPopToggle button").forEach((b) =>
+    b.addEventListener("click", () => { sm.prefs.popMin = Number(b.dataset.min); saveSharpPrefs(); syncControlUI(); }));
+  document.querySelectorAll("#smFeedWindow button").forEach((b) =>
+    b.addEventListener("click", () => selectFeedWindow(b.dataset.w)));
+  syncControlUI();
+}
+
+function syncControlUI() {
+  const p = state.smart.prefs;
+  $("#ctlBell")?.classList.toggle("on", p.enabled);
+  $("#ctlDesktop")?.classList.toggle("on", p.desktop);
+  $("#ctlSound")?.classList.toggle("on", p.sound);
+  const t = (id, v) => { const el = $("#" + id); if (el) el.textContent = v; };
+  t("bellState", p.enabled ? "On" : "Off");
+  t("deskState", p.desktop ? "On" : "Off");
+  t("soundState", p.sound ? "On" : "Off");
+  document.querySelectorAll("#smPopToggle button").forEach((b) => b.classList.toggle("active", Number(b.dataset.min) === p.popMin));
+}
+
+// ── pop-up toasts + desktop notifications + sound ─────────────────────
+function ensureToastWrap() {
+  let w = document.getElementById("toastWrap");
+  if (!w) { w = document.createElement("div"); w.id = "toastWrap"; w.className = "toast-wrap"; document.body.appendChild(w); }
+  return w;
+}
+function toastEl(html) { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; }
+function fireToast(t) {
+  const wrap = ensureToastWrap();
+  const av = t.image ? `<img src="${escapeAttr(t.image)}" alt="">` : escapeHtml((t.name || t.wallet || "?")[0].toUpperCase());
+  const dir = t.side === "BUY" ? "buy" : "sell";
+  const el = toastEl(`
+    <div class="toast">
+      <div class="toast-av">${av}</div>
+      <div class="toast-body">
+        <div class="toast-top"><span class="toast-name">${escapeHtml(t.name || short(t.wallet, 6))}</span><span class="toast-cred">#${t.cred_rank} ${WIN_SHORT[t.cred_window] || ""}</span></div>
+        <div class="toast-act"><b class="${dir}">${t.side} ${escapeHtml(t.outcome || "")}</b> · ${fmtUsd(t.usd)}</div>
+        <div class="toast-mkt">${escapeHtml((t.market_title || "").slice(0, 64))}</div>
+      </div>
+      <button class="toast-x" type="button" aria-label="dismiss">×</button>
+    </div>`);
+  const dismiss = () => { el.classList.remove("in"); el.classList.add("out"); setTimeout(() => el.remove(), 320); };
+  el.querySelector(".toast-x").addEventListener("click", (e) => { e.stopPropagation(); dismiss(); });
+  el.addEventListener("click", () => { location.href = `/whales.html?wallet=${t.wallet}`; });
+  wrap.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("in"));
+  setTimeout(dismiss, 9000);
+  while (wrap.children.length > 5) wrap.firstElementChild.remove();
+}
+function fireToastMore(n) {
+  const wrap = ensureToastWrap();
+  const el = toastEl(`<div class="toast toast-more">+${n} more sharp bet${n === 1 ? "" : "s"} just landed</div>`);
+  el.addEventListener("click", () => el.remove());
+  wrap.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("in"));
+  setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 320); }, 6000);
+}
+function fireDesktop(t) {
+  const sm = state.smart;
+  if (!sm.prefs.desktop || !("Notification" in window) || Notification.permission !== "granted") return;
+  try {
+    const n = new Notification(`🐋 ${t.name || short(t.wallet, 6)} · #${t.cred_rank} ${WIN_SHORT[t.cred_window] || ""}`, {
+      body: `${t.side} ${t.outcome || ""} · ${fmtUsd(t.usd)}\n${(t.market_title || "").slice(0, 80)}`,
+      icon: t.image || "/favicon.svg",
+      tag: tradeKey(t),
+      silent: true,
+    });
+    n.onclick = () => { window.focus(); location.href = `/whales.html?wallet=${t.wallet}`; };
+  } catch {}
+}
+let _audioCtx = null;
+function ping() {
+  try {
+    _audioCtx = _audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (_audioCtx.state === "suspended") _audioCtx.resume();
+    const o = _audioCtx.createOscillator(), g = _audioCtx.createGain();
+    o.type = "sine"; o.frequency.value = 880;
+    o.connect(g); g.connect(_audioCtx.destination);
+    g.gain.setValueAtTime(0.0001, _audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.09, _audioCtx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, _audioCtx.currentTime + 0.22);
+    o.start(); o.stop(_audioCtx.currentTime + 0.22);
+  } catch {}
 }
 
 function smTapeRow(t) {

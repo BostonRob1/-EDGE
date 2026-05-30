@@ -1,4 +1,5 @@
 import { fetchTrades, tradeUsd } from "../../lib/whales/polymarket-data.js";
+import { persistSharp } from "../../lib/whales/sharp.js";
 
 // SMART MONEY — the most profitable wallets on Polymarket, and their trades in
 // real time. Two data layers, one request:
@@ -103,6 +104,10 @@ export default async function handler(req, res) {
       });
     }
     tape.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+    // Log these sharp trades to the persistent feed so the Sharp Alerts panel
+    // can replay arbitrary time windows (6h…60d). Best-effort, no-op without KV.
+    await persistSharp(tape);
 
     // Headline stats off the all-time board.
     const allTime = windows.all;
