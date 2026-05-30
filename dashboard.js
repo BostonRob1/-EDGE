@@ -21,7 +21,33 @@ const DEAD_AFTER = 180_000; // turn red after this
 
 const lastFetchedAt = { markets: 0, whales: 0, buzz: 0, news: 0 };
 
-// ── HOT MARKETS ───────────────────────────────────────────────────────
+// ── HOT MARKETS (cross-platform, filterable, movement-aware) ──────────
+let allMarkets = [];
+let marketFilter = "all"; // all | movers | poly | kalshi
+
+function renderMarkets() {
+  const body = $("#bodyMarkets");
+  if (!body) return;
+  let list = allMarkets.slice();
+  if (marketFilter === "poly") list = list.filter((m) => m.source === "polymarket");
+  else if (marketFilter === "kalshi") list = list.filter((m) => m.source === "kalshi");
+  else if (marketFilter === "movers")
+    list.sort((a, b) => Math.abs(b.price_change_24h || 0) - Math.abs(a.price_change_24h || 0));
+  list = list.slice(0, marketFilter === "movers" ? 16 : 14);
+  body.innerHTML = list.length
+    ? list.map(renderMarketRow).join("")
+    : `<div class="empty">No markets in this view.</div>`;
+}
+
+// Filter chips — switch the market lens (delegated; chips are static markup)
+document.addEventListener("click", (e) => {
+  const chip = e.target.closest(".mkt-chip");
+  if (!chip) return;
+  marketFilter = chip.dataset.f || "all";
+  document.querySelectorAll(".mkt-chip").forEach((c) => c.classList.toggle("active", c === chip));
+  renderMarkets();
+});
+
 async function loadMarkets() {
   const dot = $("#dotMarkets");
   const meta = $("#metaMarkets");
@@ -32,13 +58,9 @@ async function loadMarkets() {
     if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
 
     lastFetchedAt.markets = Date.now();
-    const markets = (data.markets || []).slice(0, 12);
-    if (!markets.length) {
-      body.innerHTML = `<div class="empty">No active markets returned.</div>`;
-    } else {
-      body.innerHTML = markets.map(renderMarketRow).join("");
-    }
-    meta.textContent = `${markets.length} · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
+    allMarkets = data.markets || [];
+    renderMarkets();
+    meta.textContent = `${allMarkets.length} · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
     updateGlobalStats(data);
   } catch (err) {
     meta.textContent = "error";
@@ -61,6 +83,7 @@ function renderMarketRow(m) {
         <div class="market-meta">
           <span class="badge ${isPoly ? "poly" : "kalshi"}">${isPoly ? "POLY" : "KALSHI"}</span>
           <span>${escapeHtml(m.category || "")}</span>
+          ${renderMove(m.price_change_24h)}
         </div>
       </div>
       <div class="market-odds">
@@ -70,6 +93,14 @@ function renderMarketRow(m) {
       <div class="market-vol">${fmtUsd(m.volume_24h)}<span class="v">vol 24h</span></div>
     </div>
   `;
+}
+
+// 24h price movement chip — the alpha signal traders scan for.
+function renderMove(ch) {
+  const pp = Math.abs(Number(ch) || 0) * 100;
+  if (pp < 0.5) return "";
+  const up = (Number(ch) || 0) > 0;
+  return `<span class="mv ${up ? "up" : "dn"}">${up ? "▲" : "▼"}${pp.toFixed(pp >= 10 ? 0 : 1)}</span>`;
 }
 
 // ── WHALE FIREHOSE ────────────────────────────────────────────────────

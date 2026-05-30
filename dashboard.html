@@ -212,6 +212,21 @@ main {
 }
 .market-meta .badge.poly { color: var(--magenta); }
 .market-meta .badge.kalshi { color: var(--lime); }
+.market-meta .mv { font-weight: 700; letter-spacing: 0.02em; }
+.market-meta .mv.up { color: var(--green); }
+.market-meta .mv.dn { color: var(--red); }
+.mkt-filterbar {
+  display: flex; gap: 6px; padding: 7px 14px; flex-shrink: 0;
+  border-bottom: 1px solid var(--border); background: var(--void-2);
+}
+.mkt-chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  background: transparent; border: 1px solid var(--border); border-radius: 3px;
+  padding: 3px 9px; cursor: pointer; transition: all 0.15s;
+}
+.mkt-chip:hover { color: var(--white); border-color: var(--border-bright); }
+.mkt-chip.active { color: var(--void); background: var(--lime); border-color: var(--lime); }
 .market-odds {
   display: flex; gap: 8px;
   font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
@@ -424,6 +439,12 @@ main .panel:nth-child(4) .panel-head::before { background: var(--amber);   box-s
     <div class="panel-head">
       <div class="panel-title">Hot <span class="accent">Markets</span></div>
       <div class="panel-meta"><span class="refresh-dot" id="dotMarkets"></span><span id="metaMarkets">loading…</span></div>
+    </div>
+    <div class="mkt-filterbar" id="mktFilters">
+      <button class="mkt-chip active" data-f="all" type="button">All</button>
+      <button class="mkt-chip" data-f="movers" type="button">↕ Movers</button>
+      <button class="mkt-chip" data-f="poly" type="button">Poly</button>
+      <button class="mkt-chip" data-f="kalshi" type="button">Kalshi</button>
     </div>
     <div class="panel-body" id="bodyMarkets">
       <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>

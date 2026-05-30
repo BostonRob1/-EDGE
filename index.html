@@ -35,6 +35,31 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 
+<!-- Structured data (Organization + WebSite) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.thepolyedge.com/#org",
+      "name": "$EDGE",
+      "url": "https://www.thepolyedge.com/",
+      "logo": "https://www.thepolyedge.com/icon-512.png",
+      "description": "Every Polymarket bet. Every Kalshi market. One screen. No signup."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.thepolyedge.com/#website",
+      "url": "https://www.thepolyedge.com/",
+      "name": "$EDGE",
+      "publisher": { "@id": "https://www.thepolyedge.com/#org" },
+      "description": "Watch the action before you bet — a real-time Polymarket and Kalshi prediction-market aggregator."
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap">
