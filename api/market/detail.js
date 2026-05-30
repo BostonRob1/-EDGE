@@ -1,4 +1,5 @@
 import { fetchTrades } from "../../lib/whales/polymarket-data.js";
+import { withKalshiRef } from "../../lib/kalshi-link.js";
 
 // Per-market detail endpoint. Composes everything we know about a single
 // market into one payload for /market.html?slug=… to render without further
@@ -149,7 +150,6 @@ export default async function handler(req, res) {
 function buildAffiliateLink(market) {
   if (!market?.link) return null;
   const polyRef = process.env.POLY_AFFILIATE_REF;
-  const kalshiRef = process.env.KALSHI_AFFILIATE_REF;
   if (market.source === "polymarket") {
     if (polyRef) {
       const sep = market.link.includes("?") ? "&" : "?";
@@ -158,11 +158,12 @@ function buildAffiliateLink(market) {
     return { url: market.link, platform: "polymarket", has_ref: false };
   }
   if (market.source === "kalshi") {
-    if (kalshiRef) {
-      const sep = market.link.includes("?") ? "&" : "?";
-      return { url: `${market.link}${sep}referral=${encodeURIComponent(kalshiRef)}`, platform: "kalshi", has_ref: true };
-    }
-    return { url: market.link, platform: "kalshi", has_ref: false };
+    // market.link already carries the $EDGE referral (see lib/kalshi-link.js).
+    // withKalshiRef is idempotent — it stamps the code if a raw link slips
+    // through, and never double-stamps. The referral always rides along now,
+    // regardless of whether KALSHI_AFFILIATE_REF is set in the environment.
+    const url = withKalshiRef(market.link);
+    return { url, platform: "kalshi", has_ref: /[?&]referral=/i.test(url || "") };
   }
   return { url: market.link, platform: market.source, has_ref: false };
 }

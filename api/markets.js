@@ -6,6 +6,7 @@
 // radar, buzz heat) a wider surface. Per-page consumers can still slice their
 // own top-N from the response.
 import { polyEventUrl } from "../lib/poly-link.js";
+import { kalshiMarketUrl } from "../lib/kalshi-link.js";
 
 const POLY_URL =
   "https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=200&order=volume24hr&ascending=false";
@@ -144,11 +145,7 @@ async function fetchKalshi() {
       price_change_24h: prev ? last - prev : 0,
       price_change_1h: 0,
       last_trade_price: last,
-      link: e.series_ticker
-        ? `https://kalshi.com/markets/${e.series_ticker.toLowerCase()}/${String(
-            e.event_ticker,
-          ).toLowerCase()}`
-        : null,
+      link: kalshiMarketUrl(e.series_ticker, e.event_ticker),
       image: null,
     });
   }
