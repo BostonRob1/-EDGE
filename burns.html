@@ -341,22 +341,25 @@ footer a { color: var(--lime); text-decoration: none; }
 
 <body>
 
-<header>
-  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+<header class="elite-nav site-nav">
+  <a class="logo" href="/"><span class="dollar">$</span><span class="word">EDGE</span></a>
   <nav>
     <ul>
-      <li><a href="/dashboard.html">Dashboard</a></li>
       <li><a href="/edge.html">Edge</a></li>
-      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/arb.html">ARB</a></li>
       <li><a href="/buzz.html">Buzz</a></li>
       <li><a href="/whales.html">Whales</a></li>
-      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/tracker.html">Rug Radar</a></li>
       <li><a href="/token.html">Token</a></li>
-      <li><a href="/about.html">About</a></li>
     </ul>
   </nav>
-  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+  <div class="nav-right">
+    <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
+    <a class="btn btn-app" href="/dashboard.html">Dashboard</a>
+    <a class="btn btn-ghost" href="/token.html">Buy $EDGE</a>
+  </div>
 </header>
+
 
 <main>
   <!-- ── HERO ───────────────────────────────────────────────────────── -->
