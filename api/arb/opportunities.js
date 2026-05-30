@@ -1,5 +1,6 @@
-import { matchPairs } from "../../lib/arb/match.js";
+import { matchWinners } from "../../lib/arb/match.js";
 import { computeArb } from "../../lib/arb/compute.js";
+import { fetchCrossPlatform } from "../../lib/arb/fetch.js";
 
 // Cross-platform Polymarket ↔ Kalshi radar.
 //
@@ -19,21 +20,12 @@ export default async function handler(req, res) {
   const minDivergence = clampNum(url.searchParams.get("min_divergence"), 0, 0, 1); // pp/100
   const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 24));
 
-  const proto =
-    req.headers["x-forwarded-proto"] || (req.connection?.encrypted ? "https" : "http");
-  const host = req.headers["x-forwarded-host"] || req.headers.host;
-  const base = `${proto}://${host}`;
-
   try {
-    const marketsRes = await fetch(`${base}/api/markets`);
-    if (!marketsRes.ok) throw new Error(`markets ${marketsRes.status}`);
-    const data = await marketsRes.json();
-    const all = Array.isArray(data.markets) ? data.markets : [];
+    // Candidate/strike-level cross-platform surface (see lib/arb/fetch.js) —
+    // this is what makes Poly "Will X win 2028?" pair with Kalshi "2028 — X".
+    const { poly, kalshi } = await fetchCrossPlatform();
 
-    const poly = all.filter((m) => m.source === "polymarket");
-    const kalshi = all.filter((m) => m.source === "kalshi");
-
-    const pairs = matchPairs(poly, kalshi);
+    const pairs = matchWinners(poly, kalshi);
 
     const signals = pairs
       .map((p) => {
@@ -92,9 +84,10 @@ export default async function handler(req, res) {
     // Always-on cross-platform landscape: the hottest live markets on each
     // platform side by side. Keeps the radar valuable even when no two
     // contracts align — and showcases what's actually trading.
+    const byVol = (a, b) => (b.volume_24h || 0) - (a.volume_24h || 0);
     const landscape = {
-      polymarket: poly.slice(0, 8).map(lite),
-      kalshi: kalshi.slice(0, 8).map(lite),
+      polymarket: [...poly].sort(byVol).slice(0, 8).map(lite),
+      kalshi: [...kalshi].sort(byVol).slice(0, 8).map(lite),
     };
 
     res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=120");
