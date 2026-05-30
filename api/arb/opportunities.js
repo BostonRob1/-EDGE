@@ -90,7 +90,7 @@ export default async function handler(req, res) {
       kalshi: [...kalshi].sort(byVol).slice(0, 8).map(lite),
     };
 
-    res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=120");
+    res.setHeader("Cache-Control", "public, s-maxage=10, stale-while-revalidate=60");
     res.status(200).json({
       signals,
       landscape,

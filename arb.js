@@ -5,6 +5,7 @@
 // Empty is a valid, honest state: it means the platforms aren't listing
 // comparable contracts right now — shown transparently, not apologetically.
 import { fmtUsd, escapeHtml, escapeAttr } from "/lib/client/format.js";
+import { liveList, liveLoop } from "/lib/client/live.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -42,7 +43,7 @@ function renderSignals(signals, stats) {
     el.innerHTML = renderEmpty(stats);
     return;
   }
-  el.innerHTML = signals.map(renderSignal).join("");
+  liveList(el, signals, { key: (s) => `${s.poly.title}|${s.kalshi.title}`, render: renderSignal });
 }
 
 // Confident, transparent empty state — shows the scanner IS working hard.
@@ -121,17 +122,15 @@ function fillHeat(sel, arr) {
   const el = $(sel);
   if (!el) return;
   if (!arr.length) { el.innerHTML = `<div class="heat-empty">waiting for feed…</div>`; return; }
-  el.innerHTML = arr
-    .map(
-      (m) => `
-    <a class="heat-row"${m.link ? ` href="${escapeAttr(m.link)}" target="_blank" rel="noopener"` : ""}>
+  liveList(el, arr, { key: (m) => m.title, render: heatRow });
+}
+function heatRow(m) {
+  return `<a class="heat-row"${m.link ? ` href="${escapeAttr(m.link)}" target="_blank" rel="noopener"` : ""}>
       <span class="heat-title">${escapeHtml(m.title)}</span>
       <span class="heat-num"><b>${Math.round((m.yes_price || 0) * 100)}¢</b><span>yes</span></span>
       <span class="heat-num heat-vol"><b>${fmtUsd(m.volume_24h)}</b><span>24h</span></span>
-    </a>`,
-    )
-    .join("");
+    </a>`;
 }
 
-load();
-setInterval(load, 30_000);
+// Live loop — 8s cadence (heavier scan), paused while the tab is hidden.
+liveLoop(load, 8_000);

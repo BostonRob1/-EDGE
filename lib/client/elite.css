@@ -989,3 +989,14 @@ header.site-nav .nav-right .btn-ghost:hover { border-color: var(--lime, #C4FF00)
 @media (max-width: 768px) {
   header.site-nav { gap: 12px; padding: 0 18px; }
 }
+
+/* ── Real-time flash on live updates (lib/client/live.js) ─────────────────
+   A row whose data ticked flashes; green/red when the leading number moved. */
+@keyframes live-flash-kf { 0% { background: rgba(196, 255, 0, 0.16); } 100% { background: transparent; } }
+@keyframes live-up-kf    { 0% { background: rgba(0, 255, 133, 0.18); } 100% { background: transparent; } }
+@keyframes live-dn-kf    { 0% { background: rgba(255, 51, 68, 0.18); } 100% { background: transparent; } }
+@keyframes live-in-kf    { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.live-flash    { animation: live-flash-kf 0.9s ease-out; }
+.live-flash-up { animation: live-up-kf 0.9s ease-out; }
+.live-flash-dn { animation: live-dn-kf 0.9s ease-out; }
+.live-in       { animation: live-in-kf 0.4s ease-out; }

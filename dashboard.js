@@ -1,6 +1,7 @@
 // $EDGE Dashboard — command center frontend.
 // Four panels, each refreshing independently from its own endpoint.
 import { fmtUsd, fmtAgo, short, escapeHtml, escapeAttr } from "/lib/client/format.js";
+import { liveList, liveLoop } from "/lib/client/live.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -10,10 +11,10 @@ const $ = (sel, root = document) => root.querySelector(sel);
 //   buzz       — chatter rolls in slower; 45s
 //   news       — RSS feeds publish hourly-ish; 60s
 const INTERVALS = {
-  markets: 25_000,
-  whales: 20_000,
-  buzz: 45_000,
-  news: 60_000,
+  markets: 5_000, // prices tick fast — poll every 5s
+  whales: 5_000,  // firehose flashes constantly
+  buzz: 15_000,
+  news: 45_000,
 };
 
 const STALE_AFTER = 90_000; // turn refresh dot amber after this many ms
@@ -34,9 +35,8 @@ function renderMarkets() {
   else if (marketFilter === "movers")
     list.sort((a, b) => Math.abs(b.price_change_24h || 0) - Math.abs(a.price_change_24h || 0));
   list = list.slice(0, marketFilter === "movers" ? 16 : 14);
-  body.innerHTML = list.length
-    ? list.map(renderMarketRow).join("")
-    : `<div class="empty">No markets in this view.</div>`;
+  if (!list.length) { body.innerHTML = `<div class="empty">No markets in this view.</div>`; return; }
+  liveList(body, list, { key: (m) => m.id, render: renderMarketRow });
 }
 
 // Filter chips — switch the market lens (delegated; chips are static markup)
@@ -134,7 +134,7 @@ async function loadWhales() {
       meta.textContent = "0 trades";
       return;
     }
-    body.innerHTML = trades.map(renderWhaleRow).join("");
+    liveList(body, trades, { key: (t) => `${t.wallet}|${t.market_title}|${t.side}|${t.usd}`, render: renderWhaleRow });
     meta.textContent = `${trades.length} · ${activeLabel} · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
   } catch (err) {
     meta.textContent = "error";
@@ -181,7 +181,7 @@ async function loadBuzz() {
       meta.textContent = "0 markets";
       return;
     }
-    body.innerHTML = markets.map(renderBuzzRow).join("");
+    liveList(body, markets, { key: (m) => m.market_url || m.title, render: renderBuzzRow });
     meta.textContent = `${markets.length} · ${data.counts.threads_matched}/${data.counts.threads_total} matched`;
     $("#globalBuzz").textContent = data.counts.threads_matched.toLocaleString();
     $("#globalBuzzSub").textContent = `of ${data.counts.threads_total} threads`;
@@ -223,7 +223,7 @@ async function loadNews() {
       meta.textContent = "0";
       return;
     }
-    body.innerHTML = news.map(renderNewsRow).join("");
+    liveList(body, news, { key: (t) => t.url || t.title, render: renderNewsRow });
     meta.textContent = `${news.length} · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
   } catch (err) {
     meta.textContent = "error";
@@ -302,15 +302,11 @@ document.addEventListener("click", (e) => {
 });
 
 // ── boot + schedule ───────────────────────────────────────────────────
-loadMarkets();
-loadWhales();
-loadBuzz();
-loadNews();
-
-setInterval(loadMarkets, INTERVALS.markets);
-setInterval(loadWhales, INTERVALS.whales);
-setInterval(loadBuzz, INTERVALS.buzz);
-setInterval(loadNews, INTERVALS.news);
+// Live loops — poll on cadence, pause while the tab is hidden, refresh on return.
+liveLoop(loadMarkets, INTERVALS.markets);
+liveLoop(loadWhales, INTERVALS.whales);
+liveLoop(loadBuzz, INTERVALS.buzz);
+liveLoop(loadNews, INTERVALS.news);
 setInterval(updateRefreshDots, 1_000);
 
 // Whales count from the leaderboard (separate, lower-freq)
