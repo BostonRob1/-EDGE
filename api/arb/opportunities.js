@@ -89,9 +89,18 @@ export default async function handler(req, res) {
       categories: categoryBreakdown(kalshi),
     };
 
+    // Always-on cross-platform landscape: the hottest live markets on each
+    // platform side by side. Keeps the radar valuable even when no two
+    // contracts align — and showcases what's actually trading.
+    const landscape = {
+      polymarket: poly.slice(0, 8).map(lite),
+      kalshi: kalshi.slice(0, 8).map(lite),
+    };
+
     res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=120");
     res.status(200).json({
       signals,
+      landscape,
       stats,
       disclaimer:
         "DIVERGENCE = same question, different price across platforms — a research edge, not risk-free money. ARB = contracts genuinely align and the gap clears fees; verify settlement terms before executing. Kalshi requires US KYC.",
@@ -100,6 +109,16 @@ export default async function handler(req, res) {
   } catch (err) {
     res.status(502).json({ error: "arb_scan_failed", detail: String(err?.message || err) });
   }
+}
+
+function lite(m) {
+  return {
+    title: m.title,
+    yes_price: round(Number(m.yes_price) || 0),
+    volume_24h: m.volume_24h || 0,
+    category: m.category || "",
+    link: m.link || null,
+  };
 }
 
 function side(m, yes) {

@@ -15,6 +15,7 @@ async function load() {
     if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
     renderStats(data.stats);
     renderSignals(data.signals || [], data.stats || {});
+    renderLandscape(data.landscape || {});
     const arbs = (data.signals || []).filter((s) => s.type === "ARB").length;
     $("#oppsMeta").textContent =
       `${(data.signals || []).length} signals · ${arbs} arb${arbs === 1 ? "" : "s"} · ` +
@@ -108,6 +109,28 @@ function renderSignal(s) {
         ${s.kalshi.link ? `<a href="${escapeAttr(s.kalshi.link)}" target="_blank" rel="noopener" class="leg-link">Open on Kalshi ↗</a>` : ""}
       </div>
     </div>`;
+}
+
+// Always-on cross-platform heat board — the hottest live markets on each
+// platform, side by side. Makes the radar valuable every second of the day.
+function renderLandscape(l) {
+  fillHeat("#heatPoly", l.polymarket || []);
+  fillHeat("#heatKalshi", l.kalshi || []);
+}
+function fillHeat(sel, arr) {
+  const el = $(sel);
+  if (!el) return;
+  if (!arr.length) { el.innerHTML = `<div class="heat-empty">waiting for feed…</div>`; return; }
+  el.innerHTML = arr
+    .map(
+      (m) => `
+    <a class="heat-row"${m.link ? ` href="${escapeAttr(m.link)}" target="_blank" rel="noopener"` : ""}>
+      <span class="heat-title">${escapeHtml(m.title)}</span>
+      <span class="heat-num"><b>${Math.round((m.yes_price || 0) * 100)}¢</b><span>yes</span></span>
+      <span class="heat-num heat-vol"><b>${fmtUsd(m.volume_24h)}</b><span>24h</span></span>
+    </a>`,
+    )
+    .join("");
 }
 
 load();
