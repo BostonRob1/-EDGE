@@ -287,7 +287,7 @@ function renderSmartTab() {
   state.smart.kvTrades = null;
   ensureToastWrap();
   wireAlertControls();
-  state.stopSmart = liveLoop(loadSmart, 6_000);
+  state.stopSmart = liveLoop(loadSmart, 4_000);
 }
 
 async function loadSmart() {

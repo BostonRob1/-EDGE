@@ -304,6 +304,45 @@ nav a:hover { opacity: 1; color: var(--lime); }
   letter-spacing: 0.1em;
 }
 
+/* SMART MONEY — homepage hero feed */
+.smh-head { padding-top: 40px; }
+.sm-live-tag {
+  display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; margin-right: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--green); letter-spacing: 0.1em;
+}
+.sm-live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); animation: smhpulse 1.5s infinite; }
+@keyframes smhpulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.85); } }
+.smh-wrap { padding: 0 32px 52px; }
+.smh-feed { border: 1px solid rgba(196,255,0,0.18); background: var(--void-2); display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(196,255,0,0.04); }
+.smh-row {
+  display: grid; grid-template-columns: 46px minmax(140px,1.1fr) auto 2fr auto; gap: 18px; align-items: center;
+  padding: 16px 22px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none; cursor: pointer; transition: background 0.15s;
+}
+.smh-row:last-child { border-bottom: none; }
+.smh-row:hover { background: var(--void-3); }
+.smh-rank { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--lime); text-align: center; }
+.smh-who { min-width: 0; }
+.smh-name { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--white); text-transform: uppercase; letter-spacing: 0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.smh-cred { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); }
+.smh-act { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; white-space: nowrap; }
+.smh-act .buy { color: var(--green); }
+.smh-act .sell { color: var(--red); }
+.smh-mkt { color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.smh-amt { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--white); white-space: nowrap; text-align: right; }
+.smh-row.live-in { animation: smh-flash 0.85s ease-out; }
+@keyframes smh-flash { 0% { background: rgba(196,255,0,0.16); } 100% { background: transparent; } }
+.smh-skel { height: 58px; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.smh-empty { padding: 42px 24px; text-align: center; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.smh-cta { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+@media (max-width: 820px) {
+  .smh-row { grid-template-columns: 34px 1fr auto; gap: 9px 12px; padding: 14px; }
+  .smh-act { grid-column: 1 / -1; order: 3; }
+  .smh-mkt { grid-column: 1 / -1; order: 4; font-size: 13px; }
+  .smh-name { font-size: 16px; }
+  .smh-amt { font-size: 19px; }
+}
+
 /* MARKET CARDS */
 .markets-grid {
   padding: 0 32px 40px;
@@ -1020,6 +1059,25 @@ html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; 
   </div>
 </section>
 
+<!-- SMART MONEY — front and center -->
+<div class="section-title smh-head">
+  <h2><span class="sm-live-tag"><span class="sm-live-dot"></span>LIVE</span> Smart <span class="accent">Money</span></h2>
+  <div class="ts">Most profitable wallets · moving by the second</div>
+</div>
+<div class="smh-wrap">
+  <div class="smh-feed" id="smHomeFeed">
+    <div class="skel-card smh-skel"></div>
+    <div class="skel-card smh-skel"></div>
+    <div class="skel-card smh-skel"></div>
+    <div class="skel-card smh-skel"></div>
+    <div class="skel-card smh-skel"></div>
+  </div>
+  <div class="smh-cta">
+    <a class="btn" href="/whales.html?tab=smart">Open Smart Money Terminal →</a>
+    <a class="btn btn-ghost" href="/whales.html?tab=eagle">🦅 Eagle Eye — every on-chain move</a>
+  </div>
+</div>
+
 <!-- HOT MARKETS -->
 <div class="section-title">
   <h2>Hot <span class="accent">Now</span></h2>
@@ -1358,6 +1416,30 @@ function feedRow(t) {
     <div class="amount">${fmtUsd(t.usd)}</div>
   </div>`;
 }
+// SMART MONEY — the most profitable wallets, moving live (front and center).
+function smhPnl(n) { const a = Math.abs(Number(n) || 0); const s = a >= 1e9 ? `$${(a/1e9).toFixed(1)}B` : a >= 1e6 ? `$${(a/1e6).toFixed(1)}M` : a >= 1e3 ? `$${(a/1e3).toFixed(0)}K` : `$${Math.round(a)}`; return (n < 0 ? "−" : "+") + s; }
+const SMH_WIN = { all: "all-time", "30d": "30d", "7d": "7d", "1d": "24h" };
+function smhRow(t) {
+  const dir = t.side === "BUY" ? "buy" : "sell";
+  return `<a class="smh-row" href="/whales.html?wallet=${escapeAttr(t.wallet)}">
+    <div class="smh-rank">#${t.cred_rank}</div>
+    <div class="smh-who"><div class="smh-name">${escapeHtml(t.name || short(t.wallet, 6))}</div><div class="smh-cred">${smhPnl(t.cred_pnl)} ${SMH_WIN[t.cred_window] || ""}</div></div>
+    <div class="smh-act"><b class="${dir}">${t.side} ${escapeHtml(t.outcome || "")}</b></div>
+    <div class="smh-mkt">${escapeHtml((t.market_title || "").slice(0, 60))}</div>
+    <div class="smh-amt">${fmtUsd(t.usd)}</div>
+  </a>`;
+}
+async function loadSmart() {
+  try {
+    const d = await (await fetch("/api/whales/smart-money")).json();
+    const feed = document.getElementById("smHomeFeed");
+    if (!feed) return;
+    const tape = (d.tape || []).slice(0, 6);
+    if (tape.length) liveList(feed, tape, { key: (t) => `${t.tx_hash || ""}-${t.timestamp}-${t.wallet}`, render: smhRow });
+    else if (!feed.querySelector(".smh-row")) feed.innerHTML = `<div class="smh-empty">Watching the sharps… a move will surface any second.</div>`;
+  } catch {}
+}
+liveLoop(loadSmart, 4000);
 if (grid) liveLoop(load, 5000);
 liveLoop(loadFeed, 5000);
 </script>

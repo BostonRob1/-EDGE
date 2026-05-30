@@ -35,7 +35,7 @@
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, s-maxage=5, stale-while-revalidate=30" },
+        { "key": "Cache-Control", "value": "public, s-maxage=3, stale-while-revalidate=20" },
         { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     },
