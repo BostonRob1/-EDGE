@@ -85,7 +85,7 @@ function activateTab(tab) {
 
 // ── EAGLE EYE TAB — off-Polymarket on-chain moves ─────────────────────
 function renderEagleTab() {
-  state.eagle = { window: "24h" };
+  state.eagle = { window: "7d" };
   $("#whaleHero").innerHTML = `
     <h1>EAGLE <span class="accent">EYE</span></h1>
     <p class="tagline">
@@ -101,8 +101,8 @@ function renderEagleTab() {
         <div class="threshold-toggle" id="eeWindow">
           <button data-w="6h">6H</button>
           <button data-w="12h">12H</button>
-          <button data-w="24h" class="active">24H</button>
-          <button data-w="7d">7D</button>
+          <button data-w="24h">24H</button>
+          <button data-w="7d" class="active">7D</button>
           <button data-w="30d">30D</button>
           <button data-w="60d">60D</button>
         </div>
