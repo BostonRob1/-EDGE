@@ -2,6 +2,7 @@
 // Four panels, each refreshing independently from its own endpoint.
 import { fmtUsd, fmtAgo, short, escapeHtml, escapeAttr } from "/lib/client/format.js";
 import { liveList, liveLoop } from "/lib/client/live.js";
+import { createPolyStream } from "/lib/client/polyws.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -48,6 +49,36 @@ document.addEventListener("click", (e) => {
   renderMarkets();
 });
 
+// ── Polymarket live price stream (sub-second WebSocket) ───────────────
+// Patches market prices between 5s polls and flashes the changed row, so the
+// odds tick in real time instead of every 5s. Polling stays the source of truth.
+const tokenIndex = new Map(); // token id -> { market, side }
+let _renderQueued = false;
+function queueMarketRender() {
+  if (_renderQueued) return;
+  _renderQueued = true;
+  setTimeout(() => { _renderQueued = false; renderMarkets(); }, 250);
+}
+const polyStream = createPolyStream((token, price) => {
+  const hit = tokenIndex.get(token);
+  if (!hit) return;
+  const m = hit.market;
+  const cur = hit.side === "yes" ? m.yes_price : m.no_price;
+  if (Math.abs((Number(cur) || 0) - price) < 0.002) return; // ignore micro-noise
+  if (hit.side === "yes") { m.yes_price = price; m.no_price = 1 - price; }
+  else { m.no_price = price; m.yes_price = 1 - price; }
+  queueMarketRender();
+});
+function refreshStream() {
+  tokenIndex.clear();
+  const tokens = [];
+  for (const m of allMarkets.filter((x) => x.source === "polymarket").slice(0, 25)) {
+    if (m.yes_token) { tokenIndex.set(String(m.yes_token), { market: m, side: "yes" }); tokens.push(String(m.yes_token)); }
+    if (m.no_token) { tokenIndex.set(String(m.no_token), { market: m, side: "no" }); tokens.push(String(m.no_token)); }
+  }
+  polyStream.setTokens(tokens);
+}
+
 async function loadMarkets() {
   const dot = $("#dotMarkets");
   const meta = $("#metaMarkets");
@@ -60,6 +91,7 @@ async function loadMarkets() {
     lastFetchedAt.markets = Date.now();
     allMarkets = data.markets || [];
     renderMarkets();
+    refreshStream();
     meta.textContent = `${allMarkets.length} · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
     updateGlobalStats(data);
   } catch (err) {

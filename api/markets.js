@@ -54,12 +54,15 @@ async function fetchPolymarket() {
       const no = parseFloat(prices[yesIdx >= 0 ? 1 - yesIdx : 1]);
       const v24 = num(m.volume24hr ?? m.volume24hrClob);
       const vTotal = num(m.volume ?? m.volumeNum);
+      const clobIds = safeParseArray(m.clobTokenIds);
       return {
         id: `poly_${m.id}`,
         source: "polymarket",
         title: m.question,
         category: deriveCategory(m.question, m.slug),
         slug: m.slug,
+        yes_token: clobIds[yesIdx >= 0 ? yesIdx : 0] || null,
+        no_token: clobIds[yesIdx >= 0 ? 1 - yesIdx : 1] || null,
         yes_price: clampPrice(yes),
         no_price: clampPrice(Number.isFinite(no) ? no : 1 - yes),
         volume_24h: v24,
