@@ -922,6 +922,14 @@ html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; 
 .market-card:hover .odd-pill { border-color: rgba(255,255,255,0.18); }
 .spark polyline { stroke-dasharray: 130; transition: stroke-dashoffset 0.8s ease; }
 .market-card:hover .spark polyline { animation: sparkDraw 0.85s cubic-bezier(.4,0,.2,1); }
+/* Real live "Hot Now" cards (clickable links) */
+.markets-grid .market-card { text-decoration: none; color: var(--white); display: block; }
+.markets-grid .market-card .market-title { color: var(--white); }
+.market-footer .cmv { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 11px; letter-spacing: 0.02em; }
+.market-footer .cmv.up { color: var(--green); }
+.market-footer .cmv.dn { color: var(--red); }
+.skel-card { min-height: 168px; background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2)); background-size: 200% 100%; animation: cardShimmer 1.4s linear infinite; }
+@keyframes cardShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @keyframes sparkDraw { from { stroke-dashoffset: 130; } to { stroke-dashoffset: 0; } }
 
 .stat-block { transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease; }
@@ -1018,58 +1026,11 @@ html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; 
   <div class="ts">Refreshed <span id="refresh-ts">2s ago</span> · auto</div>
 </div>
 
-<div class="markets-grid">
-  <div class="market-card hot">
-    <div class="market-cat">Politics · Polymarket</div>
-    <div class="market-title">Will Trump be impeached again in 2026?</div>
-    <div class="odds-row">
-      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">14¢</div></div>
-      <div class="odd-pill no"><div class="side">No</div><div class="price">86¢</div></div>
-    </div>
-    <div class="market-footer">
-      <div class="vol">Vol <b>$8.2M</b></div>
-      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,18 10,14 20,16 30,11 40,8 50,10 60,6" fill="none" stroke="#00FF85" stroke-width="1.5"/></svg>
-    </div>
-  </div>
-
-  <div class="market-card">
-    <div class="market-cat">Sports · Polymarket</div>
-    <div class="market-title">Lakers cover -3.5 vs Celtics tonight?</div>
-    <div class="odds-row">
-      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">71¢</div></div>
-      <div class="odd-pill no"><div class="side">No</div><div class="price">29¢</div></div>
-    </div>
-    <div class="market-footer">
-      <div class="vol">Vol <b>$2.4M</b></div>
-      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,16 10,15 20,12 30,14 40,9 50,7 60,5" fill="none" stroke="#00FF85" stroke-width="1.5"/></svg>
-    </div>
-  </div>
-
-  <div class="market-card">
-    <div class="market-cat">Crypto · Kalshi</div>
-    <div class="market-title">Bitcoin closes above $200K by Dec 31?</div>
-    <div class="odds-row">
-      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">33¢</div></div>
-      <div class="odd-pill no"><div class="side">No</div><div class="price">67¢</div></div>
-    </div>
-    <div class="market-footer">
-      <div class="vol">Vol <b>$5.1M</b></div>
-      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,5 10,8 20,11 30,9 40,14 50,16 60,18" fill="none" stroke="#FF3344" stroke-width="1.5"/></svg>
-    </div>
-  </div>
-
-  <div class="market-card hot">
-    <div class="market-cat">Geopolitics · Polymarket</div>
-    <div class="market-title">US × Iran permanent peace deal by Dec 31?</div>
-    <div class="odds-row">
-      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">31¢</div></div>
-      <div class="odd-pill no"><div class="side">No</div><div class="price">69¢</div></div>
-    </div>
-    <div class="market-footer">
-      <div class="vol">Vol <b>$4.2M</b></div>
-      <svg class="spark" viewBox="0 0 60 24"><polyline points="0,12 10,14 20,11 30,10 40,9 50,11 60,7" fill="none" stroke="#FF006E" stroke-width="1.5"/></svg>
-    </div>
-  </div>
+<div class="markets-grid" id="hotMarkets">
+  <div class="market-card skel-card"></div>
+  <div class="market-card skel-card"></div>
+  <div class="market-card skel-card"></div>
+  <div class="market-card skel-card"></div>
 </div>
 
 <!-- FEATURED -->
@@ -1412,6 +1373,60 @@ setInterval(() => {
     });
   });
 })();
+</script>
+
+<script type="module">
+/* Hot Now — real live markets: 5s poll + Polymarket WebSocket sub-second ticks. */
+import { fmtUsd, escapeHtml, escapeAttr } from "/lib/client/format.js";
+import { liveList, liveLoop } from "/lib/client/live.js";
+import { createPolyStream } from "/lib/client/polyws.js";
+
+const grid = document.getElementById("hotMarkets");
+let mkts = [];
+const tokenMap = new Map();
+let q = false;
+const queueRender = () => { if (q) return; q = true; setTimeout(() => { q = false; render(); }, 250); };
+function render() {
+  if (grid && mkts.length) liveList(grid, mkts.slice(0, 8), { key: (m) => m.id, render: card });
+}
+const stream = createPolyStream((token, price) => {
+  const m = tokenMap.get(token);
+  if (!m || Math.abs((Number(m.yes_price) || 0) - price) < 0.003) return;
+  m.yes_price = price; m.no_price = 1 - price;
+  queueRender();
+});
+async function load() {
+  try {
+    const d = await (await fetch("/api/markets")).json();
+    mkts = (d.markets || []).filter((m) => m.title && Number.isFinite(Number(m.yes_price)));
+    render();
+    tokenMap.clear();
+    const tokens = [];
+    for (const m of mkts.slice(0, 12)) {
+      if (m.source === "polymarket" && m.yes_token) { tokenMap.set(String(m.yes_token), m); tokens.push(String(m.yes_token)); }
+    }
+    stream.setTokens(tokens);
+  } catch {}
+}
+function card(m) {
+  const isP = m.source === "polymarket";
+  const yes = Math.round((Number(m.yes_price) || 0) * 100);
+  const no = Math.round((Number(m.no_price) || 0) * 100);
+  const hot = (m.volume_24h || 0) >= 2_000_000 ? " hot" : "";
+  const ch = Number(m.price_change_24h) || 0, pp = Math.abs(ch) * 100;
+  const mv = pp >= 0.5 ? `<span class="cmv ${ch > 0 ? "up" : "dn"}">${ch > 0 ? "▲" : "▼"}${pp.toFixed(pp >= 10 ? 0 : 1)}</span>` : "";
+  const url = isP && m.slug ? `/market.html?slug=${encodeURIComponent(m.slug)}` : (m.link || "#");
+  return `<a class="market-card${hot} in" href="${escapeAttr(url)}"${isP ? "" : ' target="_blank" rel="noopener"'}>
+    <div class="market-cat">${escapeHtml(m.category || "Market")} · ${isP ? "Polymarket" : "Kalshi"}</div>
+    <div class="market-title">${escapeHtml(m.title)}</div>
+    <div class="odds-row">
+      <div class="odd-pill yes"><div class="side">Yes</div><div class="price">${yes}¢</div></div>
+      <div class="odd-pill no"><div class="side">No</div><div class="price">${no}¢</div></div>
+    </div>
+    <div class="market-footer"><div class="vol">Vol <b>${fmtUsd(m.volume_24h)}</b></div>${mv}</div>
+  </a>`;
+}
+if (grid) liveLoop(load, 5000);
 </script>
 
 </body>
