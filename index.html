@@ -1004,18 +1004,18 @@ html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; 
   <div class="hero-stats">
     <div class="stat-block">
       <div class="stat-label">Live Volume · 24H</div>
-      <div class="stat-value mono num-tick" id="stat-volume">$42.7M</div>
-      <div class="stat-meta">↑ +$1.2M last hour</div>
+      <div class="stat-value mono num-tick" id="stat-volume">—</div>
+      <div class="stat-meta">Polymarket + Kalshi</div>
     </div>
     <div class="stat-block">
-      <div class="stat-label">Active Bettors</div>
-      <div class="stat-value mono num-tick" id="stat-bettors">127,341</div>
-      <div class="stat-meta">↑ +843 in last 5 min</div>
+      <div class="stat-label">Whales Tracked</div>
+      <div class="stat-value mono num-tick" id="stat-bettors">—</div>
+      <div class="stat-meta">active 24h</div>
     </div>
     <div class="stat-block">
-      <div class="stat-label">Tracked Markets</div>
-      <div class="stat-value mono">8,341</div>
-      <div class="stat-meta">across 4 platforms</div>
+      <div class="stat-label">Live Markets</div>
+      <div class="stat-value mono" id="stat-markets">—</div>
+      <div class="stat-meta">top by volume</div>
     </div>
   </div>
 </section>
@@ -1143,48 +1143,7 @@ html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; 
       <div class="live-pill"><span class="live-dot"></span> LIVE</div>
     </div>
     <div class="feed-list" id="bet-feed">
-      <div class="feed-row whale yes">
-        <div class="left">
-          <div class="market">Trump impeached 2026 · YES @ 14¢</div>
-          <div class="meta">WHALE · 0x83a...4f1 · 8s ago</div>
-        </div>
-        <div class="amount">$127K</div>
-      </div>
-      <div class="feed-row no">
-        <div class="left">
-          <div class="market">Iran peace deal Dec 31 · NO @ 69¢</div>
-          <div class="meta">0xa3b...e21 · 24s ago</div>
-        </div>
-        <div class="amount">$45K</div>
-      </div>
-      <div class="feed-row yes">
-        <div class="left">
-          <div class="market">Lakers -3.5 · YES @ 71¢</div>
-          <div class="meta">0x12d...88c · 41s ago</div>
-        </div>
-        <div class="amount">$8.2K</div>
-      </div>
-      <div class="feed-row no">
-        <div class="left">
-          <div class="market">BTC $200K EOY · NO @ 67¢</div>
-          <div class="meta">0x55e...3b9 · 1m ago</div>
-        </div>
-        <div class="amount">$11K</div>
-      </div>
-      <div class="feed-row yes">
-        <div class="left">
-          <div class="market">Fed cut June FOMC · YES @ 58¢</div>
-          <div class="meta">0x77c...112 · 2m ago</div>
-        </div>
-        <div class="amount">$4.5K</div>
-      </div>
-      <div class="feed-row whale no">
-        <div class="left">
-          <div class="market">Chiefs Super Bowl LX · NO @ 73¢</div>
-          <div class="meta">WHALE · 0x9aa...ddc · 3m ago</div>
-        </div>
-        <div class="amount">$62K</div>
-      </div>
+      <div class="feed-row" style="opacity:.5"><div class="left"><div class="meta">Connecting to live feed…</div></div></div>
     </div>
   </div>
 
@@ -1274,65 +1233,8 @@ html.has-js .live-section > .live-panel:nth-child(2) { transition-delay: 0.10s; 
   </div>
 </footer>
 
-<script>
-// Live ticker — fake the volume number updating
-const volEl = document.getElementById('stat-volume');
-const bettorsEl = document.getElementById('stat-bettors');
-const refreshEl = document.getElementById('refresh-ts');
-let vol = 42.7;
-let bettors = 127341;
-let refresh = 2;
-
-setInterval(() => {
-  // Volume drift up
-  const change = (Math.random() * 0.15);
-  vol += change;
-  volEl.textContent = `$${vol.toFixed(1)}M`;
-  volEl.classList.add('flash-up');
-  setTimeout(() => volEl.classList.remove('flash-up'), 400);
-}, 3500);
-
-setInterval(() => {
-  bettors += Math.floor(Math.random() * 12);
-  bettorsEl.textContent = bettors.toLocaleString();
-  bettorsEl.classList.add('flash-up');
-  setTimeout(() => bettorsEl.classList.remove('flash-up'), 400);
-}, 2000);
-
-setInterval(() => {
-  refresh = refresh + 1;
-  if (refresh > 9) refresh = 1;
-  refreshEl.textContent = `${refresh}s ago`;
-}, 1000);
-
-// Inject new bet rows occasionally
-const feed = document.getElementById('bet-feed');
-const sampleBets = [
-  { market: 'Trump impeached 2026 · YES @ 14¢', meta: '0x83a...4f1', amount: '$3.4K', cls: 'yes' },
-  { market: 'Iran peace deal · NO @ 69¢', meta: '0xa3b...e21', amount: '$8.1K', cls: 'no' },
-  { market: 'Lakers -3.5 · YES @ 71¢', meta: '0x12d...88c', amount: '$2.2K', cls: 'yes' },
-  { market: 'BTC $200K EOY · YES @ 33¢', meta: '0x55e...3b9', amount: '$5.6K', cls: 'yes' },
-  { market: 'Fed cut June · NO @ 42¢', meta: '0x77c...112', amount: '$1.8K', cls: 'no' },
-  { market: 'Chiefs SB LX · NO @ 73¢', meta: '0x9aa...ddc', amount: '$24K', cls: 'no whale' },
-  { market: 'Powell ousted by July · YES @ 9¢', meta: '0x44f...e88', amount: '$890', cls: 'yes' },
-];
-
-setInterval(() => {
-  const bet = sampleBets[Math.floor(Math.random() * sampleBets.length)];
-  const row = document.createElement('div');
-  row.className = `feed-row ${bet.cls}`;
-  row.innerHTML = `
-    <div class="left">
-      <div class="market">${bet.market}</div>
-      <div class="meta">${bet.cls.includes('whale') ? 'WHALE · ' : ''}${bet.meta} · just now</div>
-    </div>
-    <div class="amount">${bet.amount}</div>
-  `;
-  feed.insertBefore(row, feed.firstChild);
-  // Trim
-  if (feed.children.length > 8) feed.removeChild(feed.lastChild);
-}, 4200);
-</script>
+<!-- Live data (Hot Now cards, bet feed, hero stats) is driven by the real-time
+     module before </body> — no more fake numbers. -->
 
 <script>
 /* Elite scroll-reveal + hero cursor spotlight */
@@ -1377,9 +1279,11 @@ setInterval(() => {
 
 <script type="module">
 /* Hot Now — real live markets: 5s poll + Polymarket WebSocket sub-second ticks. */
-import { fmtUsd, escapeHtml, escapeAttr } from "/lib/client/format.js";
+import { fmtUsd, escapeHtml, escapeAttr, short } from "/lib/client/format.js";
 import { liveList, liveLoop } from "/lib/client/live.js";
 import { createPolyStream } from "/lib/client/polyws.js";
+
+function setText(id, v) { const el = document.getElementById(id); if (el && v != null) el.textContent = v; }
 
 const grid = document.getElementById("hotMarkets");
 let mkts = [];
@@ -1400,6 +1304,10 @@ async function load() {
     const d = await (await fetch("/api/markets")).json();
     mkts = (d.markets || []).filter((m) => m.title && Number.isFinite(Number(m.yes_price)));
     render();
+    const s = d.stats || {};
+    setText("stat-volume", fmtUsd(s.total_volume_24h));
+    setText("stat-markets", (s.total_markets || 0).toLocaleString());
+    setText("refresh-ts", "live");
     tokenMap.clear();
     const tokens = [];
     for (const m of mkts.slice(0, 12)) {
@@ -1426,7 +1334,32 @@ function card(m) {
     <div class="market-footer"><div class="vol">Vol <b>${fmtUsd(m.volume_24h)}</b></div>${mv}</div>
   </a>`;
 }
+async function loadFeed() {
+  try {
+    const d = await (await fetch("/api/whales/firehose?min=0&limit=12")).json();
+    const feed = document.getElementById("bet-feed");
+    const trades = d.trades || [];
+    if (feed && trades.length) liveList(feed, trades, { key: (t) => `${t.wallet}|${t.market_title}|${t.usd}`, render: feedRow });
+  } catch {}
+  try {
+    const d = await (await fetch("/api/whales/leaderboard?limit=1")).json();
+    if (d.total_active_wallets) setText("stat-bettors", d.total_active_wallets.toLocaleString());
+  } catch {}
+}
+function feedRow(t) {
+  const whale = (Number(t.usd) || 0) >= 10000;
+  const side = String(t.side || "").toUpperCase();
+  const cls = side === "SELL" ? "no" : "yes";
+  return `<div class="feed-row ${whale ? "whale " : ""}${cls}">
+    <div class="left">
+      <div class="market">${escapeHtml((t.market_title || "").slice(0, 52))}</div>
+      <div class="meta">${whale ? "WHALE · " : ""}${escapeHtml(t.name && !/^0x/i.test(t.name) ? t.name : short(t.wallet || t.name || ""))} · ${escapeHtml(side)} ${escapeHtml(t.outcome || "")}</div>
+    </div>
+    <div class="amount">${fmtUsd(t.usd)}</div>
+  </div>`;
+}
 if (grid) liveLoop(load, 5000);
+liveLoop(loadFeed, 5000);
 </script>
 
 </body>
