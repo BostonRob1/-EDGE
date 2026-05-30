@@ -43,7 +43,7 @@
   --grid: rgba(196, 255, 0, 0.05);
   --border: rgba(245, 245, 240, 0.08);
   --border-bright: rgba(196, 255, 0, 0.2);
-  --header-h: 60px;
+  --header-h: 64px;
   --strip-h: 56px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -98,7 +98,7 @@ nav a:hover, nav a.active { opacity: 1; color: var(--lime); }
 /* ── STAT STRIP ──────────────────────────────────────────────────────── */
 .stat-strip {
   height: var(--strip-h);
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(6, 1fr);
   border-bottom: 1px solid var(--border);
   background: rgba(5, 5, 7, 0.6);
   position: relative; z-index: 40;
@@ -320,25 +320,89 @@ main {
   .stat-cell { border-bottom: 1px solid var(--border); }
   nav ul { gap: 14px; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   ELITE HOME-BASE ELEVATION — premium chrome over the live terminal.
+   Purely visual (no size changes) so the viewport-fit grid math holds.
+   ──────────────────────────────────────────────────────────────────── */
+/* Atmosphere — lit-from-within vignette behind the panels */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -10%, rgba(196, 255, 0, 0.045), transparent 55%),
+    radial-gradient(ellipse at 50% 110%, transparent 55%, rgba(0, 0, 0, 0.5));
+}
+
+/* Stat strip → a premium command readout */
+.stat-strip { background: linear-gradient(180deg, rgba(14, 14, 18, 0.92), rgba(5, 5, 7, 0.72)); }
+.stat-cell { transition: background 0.2s ease; }
+.stat-cell:hover { background: rgba(196, 255, 0, 0.035); }
+.stat-cell .val { text-shadow: 0 0 20px rgba(196, 255, 0, 0.28); }
+.stat-cell.alt .val { text-shadow: none; }
+.stat-cell .clock {
+  font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700;
+  color: var(--white); letter-spacing: 0.04em; line-height: 1;
+}
+
+/* Panels → glass, depth, and a live hover glow */
+.panel {
+  background: linear-gradient(180deg, rgba(15, 15, 19, 0.92), rgba(10, 10, 13, 0.92));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.panel:hover {
+  border-color: rgba(196, 255, 0, 0.22);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(196, 255, 0, 0.1);
+}
+.panel-head { position: relative; background: linear-gradient(180deg, var(--void-3), var(--void-2)); }
+/* Color-coded accent bar per panel — instrument identity */
+.panel-head::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--lime); box-shadow: 0 0 12px var(--lime);
+}
+main .panel:nth-child(2) .panel-head::before { background: var(--green);   box-shadow: 0 0 12px var(--green); }
+main .panel:nth-child(3) .panel-head::before { background: var(--magenta); box-shadow: 0 0 12px var(--magenta); }
+main .panel:nth-child(4) .panel-head::before { background: var(--amber);   box-shadow: 0 0 12px var(--amber); }
+
+/* Rows → refined hover with a lime sweep + left accent */
+.row { position: relative; }
+.row::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+  background: var(--lime); transition: width 0.14s ease;
+}
+.row:hover { background: linear-gradient(90deg, rgba(196, 255, 0, 0.06), transparent 60%); }
+.row:hover::after { width: 2px; }
+
+/* Data numbers carry a faint glow — terminal liveness */
+.market-vol, .whale-amount, .buzz-heat { text-shadow: 0 0 14px rgba(196, 255, 0, 0.22); }
+
+/* Premium empty state */
+.empty::before {
+  content: '◇'; display: block; font-size: 20px; color: var(--lime);
+  opacity: 0.5; margin-bottom: 10px;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-  <a href="/" class="logo">$<span class="ticker">EDGE</span></a>
+<header class="elite-nav site-nav">
+  <a class="logo" href="/"><span class="dollar">$</span><span class="word">EDGE</span></a>
   <nav>
     <ul>
-      <li><a href="/dashboard.html" class="active"><span class="live-dot"></span>Dashboard</a></li>
       <li><a href="/edge.html">Edge</a></li>
-      <li><a href="/arb.html">Arb</a></li>
+      <li><a href="/arb.html">ARB</a></li>
       <li><a href="/buzz.html">Buzz</a></li>
       <li><a href="/whales.html">Whales</a></li>
-      <li><a href="/tracker.html">Radar</a></li>
+      <li><a href="/tracker.html">Rug Radar</a></li>
       <li><a href="/token.html">Token</a></li>
     </ul>
   </nav>
-  <a href="/waitlist.html" class="cta-waitlist">Join Waitlist <span class="arrow">→</span></a>
+  <div class="nav-right">
+    <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
+    <a class="btn btn-app" href="/dashboard.html">Dashboard</a>
+    <a class="btn btn-ghost" href="/token.html">Buy $EDGE</a>
+  </div>
 </header>
 
 <div class="stat-strip" id="statStrip">
@@ -347,6 +411,7 @@ main {
   <div class="stat-cell"><div class="lbl">Whales Tracked</div><div class="val" id="globalWhales">—</div><div class="sub" id="globalWhalesSub">active 24h</div></div>
   <div class="stat-cell alt"><div class="lbl">Buzz Threads</div><div class="val" id="globalBuzz">—</div><div class="sub" id="globalBuzzSub">matched</div></div>
   <div class="stat-cell"><div class="lbl">Last Pulse</div><div class="val" id="lastPulse">—</div><div class="sub">auto · 30s</div></div>
+  <div class="stat-cell alt"><div class="lbl">Session</div><div class="clock" id="sessionClock">—</div><div class="sub" id="sessionDate">markets · 24/7</div></div>
 </div>
 
 <main>
@@ -396,5 +461,19 @@ main {
 </main>
 
 <script type="module" src="/dashboard.js"></script>
+<script>
+/* Live session clock — anchors the dashboard as "your desk" */
+(function () {
+  function tick() {
+    var c = document.getElementById('sessionClock');
+    var d = document.getElementById('sessionDate');
+    var now = new Date();
+    if (c) c.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    if (d) d.textContent = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
 </body>
 </html>
