@@ -5,6 +5,8 @@
 // Limit bumped 30 → 200 to give cross-product matchers (arb radar, divergence
 // radar, buzz heat) a wider surface. Per-page consumers can still slice their
 // own top-N from the response.
+import { polyEventUrl } from "../lib/poly-link.js";
+
 const POLY_URL =
   "https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=200&order=volume24hr&ascending=false";
 const KALSHI_URL =
@@ -72,7 +74,7 @@ async function fetchPolymarket() {
         price_change_24h: num(m.oneDayPriceChange),
         price_change_1h: num(m.oneHourPriceChange),
         last_trade_price: num(m.lastTradePrice),
-        link: m.slug ? `https://polymarket.com/event/${m.slug}` : null,
+        link: polyEventUrl(m),
         image: m.image || m.icon || null,
       };
     })
