@@ -255,12 +255,15 @@ function renderSmartTab() {
         <span class="sm-ctl-lbl">Window</span>
         <div class="threshold-toggle" id="smFeedWindow">
           <button data-w="live" class="active">● Live</button>
+          <button data-w="1m">1M</button>
+          <button data-w="5m">5M</button>
+          <button data-w="15m">15M</button>
+          <button data-w="30m">30M</button>
+          <button data-w="1h">1H</button>
           <button data-w="6h">6H</button>
-          <button data-w="12h">12H</button>
           <button data-w="24h">24H</button>
           <button data-w="7d">7D</button>
           <button data-w="30d">30D</button>
-          <button data-w="60d">60D</button>
         </div>
       </div>
       <div class="sm-tape" id="smTape">
@@ -342,7 +345,7 @@ function smRow(w) {
 }
 
 // ── Sharp-alert engine ────────────────────────────────────────────────
-const WINDOW_MS = { "6h": 216e5, "12h": 432e5, "24h": 864e5, "7d": 6048e5, "30d": 2592e6, "60d": 5184e6 };
+const WINDOW_MS = { "1m": 6e4, "5m": 3e5, "15m": 9e5, "30m": 18e5, "1h": 36e5, "6h": 216e5, "12h": 432e5, "24h": 864e5, "7d": 6048e5, "30d": 2592e6, "60d": 5184e6 };
 
 function loadSharpPrefs() {
   const dflt = { enabled: true, sound: false, desktop: false, popMin: 1000 };

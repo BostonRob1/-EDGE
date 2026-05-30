@@ -684,7 +684,14 @@ footer a { color: var(--lime); text-decoration: none; }
 .sm-thresh, .sm-windowbar { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
 .sm-windowbar { margin-bottom: 12px; }
 .sm-ctl-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+#smFeedWindow { flex-wrap: wrap; gap: 5px; }
+#smFeedWindow button { min-width: 46px; justify-content: center; text-align: center; padding: 6px 11px; transition: border-color .15s, color .15s, background .15s; }
+#smFeedWindow button[data-w="live"] { color: var(--green); }
+#smFeedWindow button[data-w="live"]:hover { border-color: var(--green); }
 #smFeedWindow button[data-w="live"].active { background: var(--green); border-color: var(--green); color: var(--void); }
+/* subtle group separator: a touch more space where real-time (minutes) meets history */
+#smFeedWindow button[data-w="6h"] { margin-left: 9px; position: relative; }
+#smFeedWindow button[data-w="6h"]::before { content: ""; position: absolute; left: -7px; top: 18%; height: 64%; width: 1px; background: var(--border); }
 
 .toast-wrap {
   position: fixed; top: 78px; right: 18px; z-index: 9999;
