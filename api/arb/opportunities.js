@@ -111,6 +111,7 @@ function lite(m) {
     volume_24h: m.volume_24h || 0,
     category: m.category || "",
     link: m.link || null,
+    yes_token: m.yes_token || null,
   };
 }
 

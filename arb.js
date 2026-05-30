@@ -6,6 +6,7 @@
 // comparable contracts right now — shown transparently, not apologetically.
 import { fmtUsd, escapeHtml, escapeAttr } from "/lib/client/format.js";
 import { liveList, liveLoop } from "/lib/client/live.js";
+import { createPolyStream } from "/lib/client/polyws.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -114,9 +115,29 @@ function renderSignal(s) {
 
 // Always-on cross-platform heat board — the hottest live markets on each
 // platform, side by side. Makes the radar valuable every second of the day.
+// Live-stream the Polymarket heat rows off the same WebSocket as the dashboard.
+let heatPoly = [];
+const heatTokenMap = new Map();
+let _heatQueued = false;
+function queueHeatRender() {
+  if (_heatQueued) return;
+  _heatQueued = true;
+  setTimeout(() => { _heatQueued = false; fillHeat("#heatPoly", heatPoly); }, 300);
+}
+const arbStream = createPolyStream((token, price) => {
+  const m = heatTokenMap.get(token);
+  if (!m || Math.abs((Number(m.yes_price) || 0) - price) < 0.003) return;
+  m.yes_price = price;
+  queueHeatRender();
+});
 function renderLandscape(l) {
-  fillHeat("#heatPoly", l.polymarket || []);
+  heatPoly = l.polymarket || [];
+  fillHeat("#heatPoly", heatPoly);
   fillHeat("#heatKalshi", l.kalshi || []);
+  heatTokenMap.clear();
+  const tokens = [];
+  for (const m of heatPoly) if (m.yes_token) { heatTokenMap.set(String(m.yes_token), m); tokens.push(String(m.yes_token)); }
+  arbStream.setTokens(tokens);
 }
 function fillHeat(sel, arr) {
   const el = $(sel);
