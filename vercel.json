@@ -5,7 +5,8 @@
     { "path": "/api/cron/eagle-scan", "schedule": "*/10 * * * *" }
   ],
   "redirects": [
-    { "source": "/marketing/:path*", "destination": "/", "permanent": false }
+    { "source": "/marketing/:path*", "destination": "/", "permanent": false },
+    { "source": "/copytrade/:path*", "destination": "/", "permanent": false }
   ],
   "rewrites": [
     {
