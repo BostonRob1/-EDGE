@@ -112,6 +112,11 @@ function renderSmartTab() {
       <div class="sm-board" id="smBoard">
         <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
       </div>
+      <a class="hof-cta" href="/hall-of-fame.html">
+        <span class="hof-cta-tag">🏛️ Hall of Fame</span>
+        <span class="hof-cta-txt">The permanent all-time record — every profitable wallet, ranked &amp; remembered forever</span>
+        <span class="hof-cta-arr">→</span>
+      </a>
       <div class="kalshi-note">
         <b>Why Polymarket only?</b> It settles on-chain, so every wallet's profit is public and verifiable —
         that's how we can rank who is actually winning. Kalshi keeps trader identities and P&L private, so an

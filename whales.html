@@ -642,8 +642,23 @@ footer a { color: var(--lime); text-decoration: none; }
 }
 .kalshi-note b { color: var(--white); }
 
+.hof-cta {
+  margin-top: 14px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 15px 18px; text-decoration: none;
+  background: linear-gradient(90deg, rgba(196,255,0,.06), var(--void-2) 60%);
+  border: 1px solid var(--border-bright); border-radius: 4px;
+  transition: border-color .18s, background .18s, transform .18s;
+}
+.hof-cta:hover { border-color: var(--lime); background: linear-gradient(90deg, rgba(196,255,0,.12), var(--void-2) 60%); transform: translateY(-1px); }
+.hof-cta-tag { font-family: 'Anton', sans-serif; font-size: 17px; color: var(--lime); letter-spacing: .01em; white-space: nowrap; }
+.hof-cta-txt { flex: 1; color: var(--white); font-size: 13px; }
+.hof-cta-arr { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--lime); }
+
 @media (max-width: 720px) {
   .whale-tabs { padding: 0 16px; }
+  .hof-cta { flex-wrap: wrap; gap: 8px; }
+  .hof-cta-txt { flex-basis: 100%; order: 3; font-size: 12px; }
   .whale-tab { padding: 11px 15px; font-size: 16px; }
   .sm-row { grid-template-columns: 34px 32px 1fr auto; gap: 11px; padding: 12px 12px; }
   .sm-pnl .v { font-size: 20px; }

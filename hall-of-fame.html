@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$EDGE Hall of Fame — Most Profitable Wallets of All Time</title>
+<meta name="description" content="The all-time record of the most profitable wallets on Polymarket, ranked by real on-chain profit. Tracked forever by $EDGE.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.thepolyedge.com/hall-of-fame.html">
+<link rel="canonical" href="https://www.thepolyedge.com/hall-of-fame.html">
+<meta property="og:title" content="$EDGE Hall of Fame — Most Profitable Wallets of All Time" id="ogTitle">
+<meta property="og:description" content="The all-time record of the smartest money on Polymarket. Ranked by real profit. On-chain. Forever." id="ogDesc">
+<meta property="og:image" content="https://www.thepolyedge.com/og-share-c.png?v=2" id="ogImage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.thepolyedge.com/og-share-c.png?v=2" id="twImage">
+<meta name="theme-color" content="#050507">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/lib/client/elite.css">
+<script defer src="/lib/client/elite.js"></script>
+<script defer src="/lib/client/ticker.js"></script>
+<script defer src="/lib/client/palette.js"></script>
+
+<style>
+:root {
+  --void: #050507; --void-2: #0c0c10; --void-3: #141418; --void-4: #1c1c22;
+  --lime: #C4FF00; --lime-dim: #8aa800; --magenta: #FF006E; --green: #00FF85;
+  --amber: #FFB800; --orange: #FF7A00; --red: #FF3344; --white: #F5F5F0; --muted: #6B6B73;
+  --grid: rgba(196, 255, 0, 0.05); --border: rgba(245, 245, 240, 0.08); --border-bright: rgba(196, 255, 0, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void); color: var(--white);
+  font-family: 'DM Sans', sans-serif; font-variant-numeric: tabular-nums;
+  overflow-x: hidden; min-height: 100vh; position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+main, header, section { position: relative; z-index: 2; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* hero */
+.hero { padding: 56px 32px 8px; max-width: 1400px; margin: 0 auto; text-align: center; }
+.hero .eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--lime); margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Anton', sans-serif; font-size: clamp(46px, 8.5vw, 104px); line-height: 0.9;
+  letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 14px;
+}
+.hero h1 .accent { color: var(--lime); }
+.hero .tagline { font-size: 17px; color: var(--muted); max-width: 660px; margin: 0 auto 8px; line-height: 1.5; }
+.hero .tagline strong { color: var(--white); font-weight: 500; }
+
+.stat-strip {
+  max-width: 1100px; margin: 30px auto 0; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border-bright);
+}
+.stat-cell { background: var(--void-2); padding: 16px 20px; text-align: left; }
+.stat-cell .lbl {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px;
+}
+.stat-cell .val { font-family: 'Anton', sans-serif; font-size: 28px; line-height: 1; color: var(--lime); letter-spacing: 0.02em; }
+.stat-cell.alt .val { color: var(--white); }
+.stat-cell.pnl .val { color: var(--green); }
+.live-pulse { display: inline-flex; align-items: center; gap: 6px; }
+.live-pulse .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.9); } }
+
+section.panel { max-width: 1400px; margin: 40px auto 0; padding: 0 32px; }
+.controls {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.controls h2 { font-family: 'Anton', sans-serif; font-size: 26px; text-transform: uppercase; letter-spacing: 0.01em; }
+.controls h2 .accent { color: var(--lime); }
+.hof-search {
+  flex: 1 1 240px; max-width: 360px; background: var(--void-2);
+  border: 1px solid var(--border); color: var(--white); border-radius: 3px;
+  padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+}
+.hof-search::placeholder { color: var(--muted); }
+.hof-search:focus { outline: none; border-color: var(--lime); }
+.hof-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+.statusbar {
+  max-width: 1400px; margin: 0 auto; padding: 0 32px;
+}
+.statusbar .inner {
+  margin-top: 14px; padding: 11px 16px; border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.5;
+  display: flex; align-items: center; gap: 10px;
+}
+.statusbar .inner.live { border: 1px dashed var(--amber); background: rgba(255,184,0,.05); color: var(--amber); }
+.statusbar .inner.persistent { border: 1px solid var(--border-bright); background: rgba(196,255,0,.04); color: var(--lime); }
+.statusbar .inner b { color: var(--white); }
+.statusbar .badge { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+.hof-board { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.hof-row {
+  background: var(--void-2); display: grid;
+  grid-template-columns: 60px 42px 1fr auto auto; gap: 16px; align-items: center;
+  padding: 13px 18px 13px 14px; cursor: pointer; text-decoration: none; transition: background .15s;
+}
+.hof-row:hover { background: var(--void-3); }
+.hof-rank { font-family: 'Anton', sans-serif; font-size: 22px; color: var(--muted); text-align: center; }
+.hof-row.top1 { background: linear-gradient(90deg, rgba(255,210,74,.09), var(--void-2) 42%); }
+.hof-row.top2 { background: linear-gradient(90deg, rgba(201,210,218,.07), var(--void-2) 42%); }
+.hof-row.top3 { background: linear-gradient(90deg, rgba(224,136,58,.08), var(--void-2) 42%); }
+.hof-row.top1 .hof-rank { color: #FFD24A; }
+.hof-row.top2 .hof-rank { color: #C9D2DA; }
+.hof-row.top3 .hof-rank { color: #E0883A; }
+.hof-av {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--void-3); overflow: hidden;
+  border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+  font-family: 'Anton', sans-serif; font-size: 15px; color: var(--lime);
+}
+.hof-av img { width: 100%; height: 100%; object-fit: cover; }
+.hof-id { min-width: 0; }
+.hof-id .n { color: var(--white); font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hof-id .w { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+.hof-since { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; white-space: nowrap; }
+.hof-pnl { text-align: right; white-space: nowrap; }
+.hof-pnl .v { font-family: 'Anton', sans-serif; font-size: 24px; color: var(--green); letter-spacing: .01em; }
+.hof-pnl .l { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; }
+
+.empty { padding: 56px 24px; text-align: center; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--void-2); border: 1px solid var(--border); }
+.empty strong { color: var(--white); }
+.skel-row { background: linear-gradient(90deg, var(--void-2), var(--void-3), var(--void-2)); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; height: 66px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+footer { max-width: 1400px; margin: 56px auto 0; padding: 28px 32px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+footer a { color: var(--lime); text-decoration: none; }
+
+@media (max-width: 720px) {
+  .hof-row { grid-template-columns: 38px 32px 1fr auto; gap: 11px; padding: 12px 12px; }
+  .hof-since { display: none; }
+  .hof-pnl .v { font-size: 20px; }
+  .hof-rank { font-size: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="elite-nav site-nav">
+  <a class="logo" href="/"><span class="dollar">$</span><span class="word">EDGE</span></a>
+  <nav>
+    <ul>
+      <li><a href="/edge.html">Edge</a></li>
+      <li><a href="/arb.html">ARB</a></li>
+      <li><a href="/buzz.html">Buzz</a></li>
+      <li><a href="/whales.html" class="active">Whales</a></li>
+      <li><a href="/tracker.html">Rug Radar</a></li>
+      <li><a href="/token.html">Token</a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <div class="live-pill"><span class="live-dot"></span> LIVE · 8,341 markets</div>
+    <a class="btn btn-app" href="/dashboard.html">Dashboard</a>
+    <a class="btn btn-ghost" href="/token.html">Buy $EDGE</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="eyebrow">◆ The Permanent Record</div>
+    <h1>HALL OF <span class="accent">FAME</span></h1>
+    <p class="tagline">
+      Every <strong>profitable wallet</strong> $EDGE tracks on Polymarket, ranked by <strong>real, settled profit</strong> —
+      remembered forever. On-chain. The all-time record of the smartest money in prediction markets.
+    </p>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="lbl">Wallets In The Record</div><div class="val" id="hofTotal">—</div></div>
+      <div class="stat-cell pnl"><div class="lbl">#1 · <span id="hofTopName">—</span></div><div class="val" id="hofTop">—</div></div>
+      <div class="stat-cell pnl"><div class="lbl">Combined Tracked Profit</div><div class="val" id="hofCombined">—</div></div>
+      <div class="stat-cell alt"><div class="lbl"><span class="live-pulse"><span class="dot"></span>Status</span></div><div class="val" id="hofMode" style="font-size:20px">—</div></div>
+    </div>
+  </section>
+
+  <div class="statusbar"><div class="inner" id="statusInner" style="display:none"></div></div>
+
+  <section class="panel">
+    <div class="controls">
+      <h2>The <span class="accent">Leaderboard</span></h2>
+      <input class="hof-search" id="hofSearch" type="text" placeholder="Search name or 0x wallet…" autocomplete="off" spellcheck="false">
+      <div class="hof-meta" id="hofListMeta">loading…</div>
+    </div>
+    <div class="hof-board" id="hofBoard">
+      <div class="skel-row"></div><div class="skel-row"></div><div class="skel-row"></div>
+      <div class="skel-row"></div><div class="skel-row"></div>
+    </div>
+  </section>
+
+  <footer>
+    Source: Polymarket on-chain leaderboard + $EDGE persistent index · Profit is settled USDC P&L · Not financial advice. ·
+    <a href="/whales.html">← Back to Whales</a> · <a href="/">$EDGE home</a>
+  </footer>
+</main>
+
+<script type="module" src="/hall-of-fame.js"></script>
+</body>
+</html>
