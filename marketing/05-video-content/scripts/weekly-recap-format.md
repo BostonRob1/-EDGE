@@ -89,7 +89,7 @@ Plus a **COLD OPEN** before segment 1 and a **CLOSE** after segment 3.
 
 **SHOT 1 (10s):** Host on cam. "That was your Edge of the Week. New episode every Sunday."
 
-**SHOT 2 (9s):** End card — standard $EDGE end card + `SUBSCRIBE · edgeterminal.xyz/weekly` mono 14px lime.
+**SHOT 2 (9s):** End card — standard $EDGE end card + `SUBSCRIBE · thepolyedge.com/weekly` mono 14px lime.
 
 ---
 

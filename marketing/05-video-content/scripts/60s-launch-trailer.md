@@ -163,7 +163,7 @@ All mono. Last tier has a small lime border-pulse.
 
 **VISUAL:** Black.
 - Top: $EDGE mark (lime, 64px).
-- Center: `edgeterminal.xyz` — Anton 56px, bone.
+- Center: `thepolyedge.com` — Anton 56px, bone.
 - Below center: `CA: [CONTRACT ADDRESS]` — JetBrains Mono 14px, muted. *(Insert at launch — leave as placeholder until then.)*
 - Bottom-right corner: `$EDGE · v1` — mono 10px, muted.
 

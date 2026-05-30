@@ -6,7 +6,7 @@
 > 1. Create 1Password vault `EDGE-Launch`. Share with an Trader.
 > 2. Buy a fresh SIM or Google Voice number reserved for the brand (`+1-XXX-XXX-XXXX`). Many platforms now require SMS at signup.
 > 3. Generate a 24-char password in 1Password as the **default password** for every account in this sprint. Field: `EDGE_DEFAULT_PWD`. (You'll rotate per-platform later; speed matters today.)
-> 4. Decide on the the shared Gmail as a **temporary** signup address: `edgeterminal.launch@gmail.com`. Switch all aliases to `hello@edgeterminal.xyz` once the domain is live in step 8.
+> 4. Decide on the the shared Gmail as a **temporary** signup address: `edgeterminal.launch@gmail.com`. Switch all aliases to `hello@thepolyedge.com` once the domain is live in step 8.
 
 ---
 
@@ -17,7 +17,7 @@
 - **Email:** `edgeterminal.launch@gmail.com`
 - **Password:** `EDGE_DEFAULT_PWD` from vault
 - **Action:** Sign up → enable 2FA via authenticator (NOT SMS, for the org account) → Domains → Register → buy in one cart:
-  - `edgeterminal.xyz` (primary)
+  - `thepolyedge.com` (primary)
   - `edgeterminal.io`
   - `edge.markets`
   - `getedge.xyz`
@@ -25,8 +25,8 @@
   - Add `edgeterminal.com` if not premium-priced; otherwise queue manual sniping later
 - **Gotcha:** Cloudflare Registrar passes through ICANN price at cost — cheaper than Namecheap. But `.markets` is third-party-resold; expect ~$50/yr.
 
-### Step 2 — Cloudflare Email Routing on edgeterminal.xyz  (0:08–0:14)
-- **URL:** https://dash.cloudflare.com → edgeterminal.xyz → Email → Email Routing
+### Step 2 — Cloudflare Email Routing on thepolyedge.com  (0:08–0:14)
+- **URL:** https://dash.cloudflare.com → thepolyedge.com → Email → Email Routing
 - **Action:** Enable. Add destination addresses: the shared ops Gmail (currently cashbridgehomes@gmail.com until a dedicated anon address is provisioned). Verify both. Then create routing rules:
   - `hello@` → the team
   - `press@`, `press@`, `partnerships@`, `legal@`, `security@`, `abuse@`, `dmca@`, `careers@`, `support@` → the team (split later)
@@ -35,8 +35,8 @@
 
 ### Step 3 — Resend account + verify domain  (0:14–0:20)
 - **URL:** https://resend.com/signup
-- **Email:** `hello@edgeterminal.xyz` (now live from step 2)
-- **Action:** Add domain `edgeterminal.xyz`. Copy the SPF, DKIM, DMARC records → paste into Cloudflare DNS. Use subdomain `mail.edgeterminal.xyz` for sending so the apex stays clean.
+- **Email:** `hello@thepolyedge.com` (now live from step 2)
+- **Action:** Add domain `thepolyedge.com`. Copy the SPF, DKIM, DMARC records → paste into Cloudflare DNS. Use subdomain `mail.thepolyedge.com` for sending so the apex stays clean.
 - **Gotcha:** DMARC requires `p=none` for the first 7 days to avoid mass-bouncing your early sends. Bump to `quarantine` later.
 
 ---
@@ -45,7 +45,7 @@
 
 ### Step 4 — X / Twitter  (0:20–0:28)
 - **URL:** https://x.com/i/flow/signup
-- **Email:** `hello@edgeterminal.xyz`
+- **Email:** `hello@thepolyedge.com`
 - **Phone:** burner SIM or Google Voice
 - **Handle:** try `@edgeterminal` → fallback `@edgemarkets` → `@edge_terminal` → `@theedgeterminal` (in order, do NOT skip)
 - **Display name:** `$EDGE` (the dollar sign + caps — X allows this)
@@ -72,7 +72,7 @@
 
 ### Step 6 — Discord  (0:38–0:46)
 - **URL:** https://discord.com/register
-- **Email:** `hello@edgeterminal.xyz`
+- **Email:** `hello@thepolyedge.com`
 - **Username:** `edgeterminal`
 - **Action:**
   - Create server "$EDGE Terminal"
@@ -85,13 +85,13 @@
 
 ### Step 7 — Farcaster / Warpcast  (0:46–0:52)
 - **URL:** Warpcast iOS / Android app → Sign up
-- **Action:** Sign up with email `hello@edgeterminal.xyz`. Pay $7 onboarding fee (one-time). Claim handle `@edgeterminal`. Connect Solana + ETH wallets (use the marketing wallet, NOT cold storage).
+- **Action:** Sign up with email `hello@thepolyedge.com`. Pay $7 onboarding fee (one-time). Claim handle `@edgeterminal`. Connect Solana + ETH wallets (use the marketing wallet, NOT cold storage).
 - **Bio:** 80-char variant
 - **Gotcha:** Farcaster handles are tied to a "FID" on-chain. Recover only via the recovery wallet — set this to a multisig you control, NOT a hot wallet.
 
 ### Step 8 — GitHub Org  (0:52–0:58)
 - **URL:** https://github.com/organizations/new
-- **Email:** `hello@edgeterminal.xyz`
+- **Email:** `hello@thepolyedge.com`
 - **Action:**
   - Free plan to start
   - Org name: `edgeterminal`
@@ -104,7 +104,7 @@
 ### Step 9 — Vercel Team  (0:58–1:02)
 - **URL:** https://vercel.com/teams/create
 - **Email:** existing Vercel account (the traders')
-- **Action:** Create Team named `edgeterminal`. Transfer the `edge-two-psi` project into the team. Add an Trader as Member. Connect custom domain `edgeterminal.xyz` once DNS propagates. Set production branch to `main`.
+- **Action:** Create Team named `edgeterminal`. Transfer the `edge-two-psi` project into the team. Add an Trader as Member. Connect custom domain `thepolyedge.com` once DNS propagates. Set production branch to `main`.
 - **Gotcha:** Free tier teams cap at 1 production deployment per project. Fine for launch; upgrade to Pro at week 2 for previews + analytics.
 
 ### Step 10 — pump.fun  (1:02–1:06)
@@ -114,7 +114,7 @@
 
 ### Step 11 — Dexscreener · Birdeye · Solscan  (1:06–1:10)
 - **URLs:** dexscreener.com · birdeye.so · solscan.io
-- **Action:** Create accounts (email `hello@edgeterminal.xyz`). Each will show "Update Token Info" once your contract is live — bookmark the forms now. Pre-stage logo + social URLs + audit URL in a doc so you can paste in seconds at T+0.
+- **Action:** Create accounts (email `hello@thepolyedge.com`). Each will show "Update Token Info" once your contract is live — bookmark the forms now. Pre-stage logo + social URLs + audit URL in a doc so you can paste in seconds at T+0.
 - **Gotcha:** Dexscreener charges $300 for "Enhanced Token Info." Budget for it at T+0; visibility delta is real.
 
 ---
@@ -122,7 +122,7 @@
 ## BLOCK 3 — SOCIAL P1  (1:10–1:40)
 
 ### Step 12 — Substack + Medium  (1:10–1:16)
-- Substack: https://substack.com/signup → publication name "Edge Brief" at `edgeterminal.substack.com`. Custom domain `read.edgeterminal.xyz` post-DNS.
+- Substack: https://substack.com/signup → publication name "Edge Brief" at `edgeterminal.substack.com`. Custom domain `read.thepolyedge.com` post-DNS.
 - Medium: https://medium.com → sign up → publication "Edge Terminal" → reserve `@edgeterminal` handle.
 - **Gotcha:** Substack custom domain is $50 one-time. Worth it.
 

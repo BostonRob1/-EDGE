@@ -16,7 +16,7 @@ $EDGE is the terminal for prediction markets. It pulls live Polymarket and Kalsh
 Yes. The core terminal — markets hub and whale tracker — is free, requires no signup, and requires no wallet connection. We believe the base layer should be open so traders can actually see what we built before they decide if they want the premium signal layer. Premium features (whale alerts, divergence radar, raw API, insider channel) are gated by $EDGE token holdings.
 
 ### 3. Do I need a wallet to use it?
-Not for the free terminal. You can hit edgeterminal.xyz right now and see live Polymarket + Kalshi data, whale wallet positions, and recent flow without connecting anything. A wallet is only needed once you want to hold $EDGE for premium tier unlocks — and even then, we read your balance, we never request signatures or move funds.
+Not for the free terminal. You can hit thepolyedge.com right now and see live Polymarket + Kalshi data, whale wallet positions, and recent flow without connecting anything. A wallet is only needed once you want to hold $EDGE for premium tier unlocks — and even then, we read your balance, we never request signatures or move funds.
 
 ### 4. What's the difference between $EDGE and Polymarket itself?
 Polymarket is a venue — you place trades there. $EDGE is a terminal that sits *above* Polymarket (and Kalshi, and on-chain whales, and public sentiment) and gives you the cross-platform view none of the individual venues provide. We don't compete with Polymarket. We make Polymarket users smarter before they bet.

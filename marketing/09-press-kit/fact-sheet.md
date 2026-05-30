@@ -14,7 +14,7 @@
 | **Stack** | Static HTML/SVG · Vercel · Polymarket Gamma + CLOB API · Kalshi API · Solana RPC (Helius) |
 | **Live product** | https://www.thepolyedge.com/ |
 | **GitHub** | https://github.com/BostonRob1/-EDGE |
-| **Pre-launch waitlist** | edgeterminal.xyz (coming) |
+| **Pre-launch waitlist** | thepolyedge.com (coming) |
 | **Token** | $EDGE — Solana — fairlaunch via pump.fun |
 | **Token supply** | 1,000,000,000 (fixed) |
 | **Token distribution** | **100% fair launch** on pump.fun bonding curve · 0% team allocation · no presale · no private round · migrates to Raydium at ~$69K MCAP · $12K LP burned permanently at migration |

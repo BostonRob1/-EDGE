@@ -6,7 +6,7 @@ EMBARGOED UNTIL: [LAUNCH DATE] 12:00 UTC
 
 **Free, no-signup terminal fuses Polymarket and Kalshi data with on-chain whale tracking and a proprietary divergence score.**
 
-**BOSTON, MASSACHUSETTS — May 26, 2026** — $EDGE today launched the first cross-platform terminal for the prediction-markets era, alongside the public fairlaunch of its native token ($EDGE) on pump.fun. The web product — live at **edgeterminal.xyz** — aggregates real-time market data from Polymarket and Kalshi, tracks on-chain whale positions, and surfaces a proprietary divergence score that flags when smart money and public sentiment disagree. The terminal is free to use, requires no signup or wallet connection, and ships on launch day with the markets hub and whale tracker live.
+**BOSTON, MASSACHUSETTS — May 26, 2026** — $EDGE today launched the first cross-platform terminal for the prediction-markets era, alongside the public fairlaunch of its native token ($EDGE) on pump.fun. The web product — live at **thepolyedge.com** — aggregates real-time market data from Polymarket and Kalshi, tracks on-chain whale positions, and surfaces a proprietary divergence score that flags when smart money and public sentiment disagree. The terminal is free to use, requires no signup or wallet connection, and ships on launch day with the markets hub and whale tracker live.
 
 Prediction markets are the fastest-growing alternative-asset surface in finance. Polymarket recorded **over $9 billion in trading volume in 2024** and now routinely sits in the top three apps by Solana-bridged USDC flow. Kalshi — the only CFTC-regulated US prediction-market venue — was greenlit by the New York Stock Exchange in late 2025 to list event contracts directly. Election cycles, sports outcomes, macro prints, and even Fed-decision odds are all now traded by retail and institutions in real time. Yet the traders trading these venues — the ones doing real size — currently fly blind across six browser tabs. There is no Bloomberg for this. $EDGE is building it.
 
@@ -18,7 +18,7 @@ The $EDGE token launches today via **fairlaunch on pump.fun**, with a fixed supp
 
 ## ABOUT $EDGE
 
-$EDGE is the terminal for prediction markets. Built by traders for traders, $EDGE aggregates Polymarket and Kalshi market data, tracks on-chain whale positions, and surfaces public sentiment divergence — in real time, in one screen. Watch the action. Before you bet. **edgeterminal.xyz**
+$EDGE is the terminal for prediction markets. Built by traders for traders, $EDGE aggregates Polymarket and Kalshi market data, tracks on-chain whale positions, and surfaces public sentiment divergence — in real time, in one screen. Watch the action. Before you bet. **thepolyedge.com**
 
 ---
 
@@ -27,7 +27,7 @@ $EDGE is the terminal for prediction markets. Built by traders for traders, $EDG
 **Press:** cashbridgehomes@gmail.com
 **Partnerships:** cashbridgehomes@gmail.com
 
-**Live product:** https://edgeterminal.xyz
+**Live product:** https://thepolyedge.com
 **GitHub:** https://github.com/BostonRob1/-EDGE
 **X / Twitter:** @edgeterminal
 **Discord:** discord.gg/edgeterminal

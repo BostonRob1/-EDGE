@@ -77,7 +77,7 @@ KOL or editor picks two cutaways from this pack based on the beat they chose.
 
 ### SHOT 05 — 28.0s–30.0s · END CARD
 
-**VISUAL:** Standard $EDGE end card (matches all other video deliverables) — mark + wordmark + `edgeterminal.xyz`. KOL handle in corner: `IN PARTNERSHIP WITH @[handle]` mono 11px muted.
+**VISUAL:** Standard $EDGE end card (matches all other video deliverables) — mark + wordmark + `thepolyedge.com`. KOL handle in corner: `IN PARTNERSHIP WITH @[handle]` mono 11px muted.
 
 **KOL SAYS:** Silent.
 
@@ -101,4 +101,4 @@ Send each partner:
 3. The B-roll pack (5 × 5s clips, .mp4 + .mov)
 4. The end-card .mp4 (2s)
 5. The brand colors + fonts (one-page)
-6. Their unique referral URL: `edgeterminal.xyz/r/[handle]` for tracking
+6. Their unique referral URL: `thepolyedge.com/r/[handle]` for tracking

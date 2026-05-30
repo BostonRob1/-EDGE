@@ -82,7 +82,7 @@ Each row prints in with a 0.2s stagger. Lime tier numbers.
 
 ## SHOT 06 — 13.5s–15.0s · CTA
 
-**VISUAL:** Cut. $EDGE mark draws (lime). Below: `edgeterminal.xyz` Anton 64px bone. Below: `LINK IN BIO →` mono 24px lime.
+**VISUAL:** Cut. $EDGE mark draws (lime). Below: `thepolyedge.com` Anton 64px bone. Below: `LINK IN BIO →` mono 24px lime.
 
 **AUDIO / VO:** Music resolves.
 

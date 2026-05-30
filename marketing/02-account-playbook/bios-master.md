@@ -174,7 +174,7 @@ The platform aggregates live order-book data from Polymarket (Polygon-based) and
 
 $EDGE, the platform's native token, fair-launched on pump.fun (Solana). The token gates tier access to real-time whale alerts, the raw event-streaming API, and historical divergence data sets. The protocol takes no execution fees, holds no user funds, offers no investment advice, and does not route orders. It is a data and signal product, full stop.
 
-The team is led by an Trader (operations) and an Trader (engineering), with a public roadmap and open-source dashboards on GitHub. Press kit, brand assets, and spec sheet at edgeterminal.xyz/press. Watch the action. Before you bet.
+The team is led by an Trader (operations) and an Trader (engineering), with a public roadmap and open-source dashboards on GitHub. Press kit, brand assets, and spec sheet at thepolyedge.com/press. Watch the action. Before you bet.
 ```
 *(1186 char)*
 
@@ -186,7 +186,7 @@ Edge Terminal puts both layers — money and mouth — on the same screen, and h
 
 Our coverage includes every active market on Polymarket and Kalshi, the top thousand wallets moving size on either venue, and a curated sentiment stream calibrated against years of historical divergence data. The product is built for traders who already read tape; we ship density, not coaching.
 
-$EDGE, the platform's native token, fair-launched on Solana via pump.fun and gates tier access to whale alerts, the raw API, and the historical archive. We take no execution fees, hold no user funds, and offer no investment advice. Read more, audit the code, and watch the action — before you bet. edgeterminal.xyz.
+$EDGE, the platform's native token, fair-launched on Solana via pump.fun and gates tier access to whale alerts, the raw API, and the historical archive. We take no execution fees, hold no user funds, and offer no investment advice. Read more, audit the code, and watch the action — before you bet. thepolyedge.com.
 ```
 *(1129 char)*
 

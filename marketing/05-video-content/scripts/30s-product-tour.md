@@ -94,9 +94,9 @@
 
 ## SHOT 08 — 27.0s–30.0s · END CARD
 
-**SCREEN:** Cut to black. $EDGE mark draws in (lime). Below: `edgeterminal.xyz` Anton 48px bone. Below that: `LAUNCHING ON PUMP.FUN` mono 12px lime.
+**SCREEN:** Cut to black. $EDGE mark draws in (lime). Below: `thepolyedge.com` Anton 48px bone. Below that: `LAUNCHING ON PUMP.FUN` mono 12px lime.
 
-**VO BULLET:** "edgeterminal.xyz."
+**VO BULLET:** "thepolyedge.com."
 
 **CAPTION:** None.
 
