@@ -333,8 +333,150 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ── SMART MONEY DECK (leads the dashboard) ────────────────────────────
+const smState = { alerts: new Map(), seen: new Set(), first: true };
+const POP_MIN = 1000; // only toast bets ≥ $1K so the dashboard isn't spammed
+const SMD_WIN = { all: "all-time", "30d": "30d", "7d": "7d", "1d": "24h" };
+function smPnl(n) {
+  const a = Math.abs(Number(n) || 0);
+  const s = a >= 1e9 ? `$${(a / 1e9).toFixed(1)}B` : a >= 1e6 ? `$${(a / 1e6).toFixed(1)}M` : a >= 1e3 ? `$${(a / 1e3).toFixed(0)}K` : `$${Math.round(a)}`;
+  return (n < 0 ? "−" : "+") + s;
+}
+const smKey = (t) => `${t.tx_hash || ""}-${t.timestamp}-${t.wallet}`;
+function setSmd(id, v) { const el = $("#" + id); if (el) el.textContent = v; }
+
+async function loadSmartMoney() {
+  try {
+    const r = await fetch("/api/whales/smart-money");
+    const d = await r.json();
+    if (!r.ok) throw new Error(d?.detail || `HTTP ${r.status}`);
+    const s = d.stats || {};
+    setSmd("smdTopName", s.top_name || "—");
+    setSmd("smdTop", smPnl(s.top_pnl));
+    setSmd("smdCombined", smPnl(s.top50_combined_pnl));
+    setSmd("smdTracked", (s.tracked_wallets || 0).toLocaleString());
+    setSmd("smdLive", (s.tape_matches || 0).toLocaleString());
+    renderSmWallets((d.windows?.all || []).slice(0, 10));
+    processSmAlerts(d.tape || []);
+    renderSmTape();
+    const meta = $("#smdTapeMeta");
+    if (meta) meta.innerHTML = `<span class="refresh-dot"></span>${(d.tape || []).length} live · ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`;
+  } catch (err) {
+    const meta = $("#smdTapeMeta"); if (meta) meta.textContent = "feed error";
+  }
+}
+
+function processSmAlerts(tape) {
+  const fresh = [];
+  for (const t of tape) {
+    const k = smKey(t);
+    if (!smState.alerts.has(k)) smState.alerts.set(k, t);
+    if (!smState.seen.has(k)) { smState.seen.add(k); fresh.push(t); }
+  }
+  if (smState.alerts.size > 60) {
+    const sorted = [...smState.alerts.entries()].sort((a, b) => (a[1].timestamp || 0) - (b[1].timestamp || 0));
+    for (let i = 0; i < sorted.length - 60; i++) smState.alerts.delete(sorted[i][0]);
+  }
+  if (smState.first) { smState.first = false; return; } // seed silently on first load
+  fresh.filter((t) => (t.usd || 0) >= POP_MIN).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 3).forEach(fireToast);
+}
+
+function renderSmTape() {
+  const body = $("#smdTape"); if (!body) return;
+  const rows = [...smState.alerts.values()].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 30);
+  if (!rows.length) {
+    if (!body.querySelector(".smt-row")) body.innerHTML = `<div class="empty" style="padding:24px;text-align:center;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px">Watching the sharps…</div>`;
+    return;
+  }
+  liveList(body, rows, { key: smKey, render: smTapeRow });
+}
+function smTapeRow(t) {
+  const dir = t.side === "BUY" ? "buy" : "sell";
+  const av = t.image ? `<img src="${escapeAttr(t.image)}" alt="">` : escapeHtml((t.name || t.wallet || "?")[0].toUpperCase());
+  return `<a class="smt-row" data-wallet="${escapeAttr(t.wallet)}">
+    <div class="smt-av">${av}</div>
+    <div class="smt-who"><div class="n">${escapeHtml(t.name || short(t.wallet, 6))}</div><div class="c">#${t.cred_rank} ${SMD_WIN[t.cred_window] || ""} · ${smPnl(t.cred_pnl)}</div></div>
+    <div class="smt-act ${dir}">${t.side} ${escapeHtml(t.outcome || "")}</div>
+    <div class="smt-amt">${fmtUsd(t.usd)}</div>
+  </a>`;
+}
+
+function renderSmWallets(wallets) {
+  const body = $("#smdWallets"); if (!body || !wallets.length) return;
+  liveList(body, wallets, { key: (w) => w.wallet, render: smWalletRow });
+}
+function smWalletRow(w) {
+  const top = w.rank <= 3 ? ` t${w.rank}` : "";
+  const av = w.image ? `<img src="${escapeAttr(w.image)}" alt="">` : escapeHtml((w.name || w.wallet || "?")[0].toUpperCase());
+  return `<a class="smw-row${top}" data-wallet="${escapeAttr(w.wallet)}">
+    <div class="smw-rank">${w.rank}</div>
+    <div class="smw-av">${av}</div>
+    <div class="smw-n">${escapeHtml(w.name || short(w.wallet, 8))}</div>
+    <div class="smw-pnl">${smPnl(w.pnl_usd)}</div>
+  </a>`;
+}
+
+// ── EAGLE EYE strip — off-Polymarket on-chain moves ───────────────────
+async function loadEagleStrip() {
+  try {
+    const r = await fetch("/api/whales/eagle-eye?window=30d");
+    const d = await r.json();
+    if (!r.ok) throw new Error(d?.detail || `HTTP ${r.status}`);
+    const track = $("#smdEagle"); if (!track) return;
+    const events = (d.events || []).slice(0, 24);
+    const meta = $("#smdEagleMeta");
+    if (meta) meta.textContent = (d.etherscan ? `${events.length} moves · multichain` : "armed") + " →";
+    if (!events.length) {
+      track.innerHTML = `<div class="empty-strip">No off-Polymarket moves in window.${d.etherscan ? "" : " Add an Etherscan key for full coverage."}</div>`;
+      return;
+    }
+    track.innerHTML = events.map(eeChip).join("");
+  } catch (err) {
+    const meta = $("#smdEagleMeta"); if (meta) meta.textContent = "scan unavailable";
+  }
+}
+function eeChip(e) {
+  const dir = e.direction === "in" ? "in" : "out";
+  const amt = (e.amount || 0) >= 1000 ? fmtUsd(e.amount) : (e.amount || 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+  return `<a class="ee-chip" data-wallet="${escapeAttr(e.wallet)}">
+    <div class="top"><span class="chain c-${escapeAttr(e.chain || "polygon")}">${escapeHtml(e.chain_sym || "POL")}</span><span class="nm">${escapeHtml(e.name || short(e.wallet, 6))}</span></div>
+    <div class="mv"><b class="${dir}">${dir.toUpperCase()}</b> ${amt} ${escapeHtml(e.token || "")}</div>
+    <div class="vn">${escapeHtml(e.venue_label || e.venue || "transfer")}${e.counterparty ? " → " + short(e.counterparty, 5) : ""}</div>
+  </a>`;
+}
+
+// ── pop-up toasts (in-page; new sharp bet ≥ $1K) ──────────────────────
+function ensureToastWrap() {
+  let w = document.getElementById("toastWrap");
+  if (!w) { w = document.createElement("div"); w.id = "toastWrap"; w.className = "toast-wrap"; document.body.appendChild(w); }
+  return w;
+}
+function fireToast(t) {
+  const wrap = ensureToastWrap();
+  const av = t.image ? `<img src="${escapeAttr(t.image)}" alt="">` : escapeHtml((t.name || t.wallet || "?")[0].toUpperCase());
+  const dir = t.side === "BUY" ? "buy" : "sell";
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<div class="toast-av">${av}</div>
+    <div class="toast-body">
+      <div class="toast-top"><span class="toast-name">${escapeHtml(t.name || short(t.wallet, 6))}</span><span class="toast-cred">#${t.cred_rank} ${SMD_WIN[t.cred_window] || ""}</span></div>
+      <div class="toast-act"><b class="${dir}">${t.side} ${escapeHtml(t.outcome || "")}</b> · ${fmtUsd(t.usd)}</div>
+      <div class="toast-mkt">${escapeHtml((t.market_title || "").slice(0, 60))}</div>
+    </div>
+    <button class="toast-x" type="button" aria-label="dismiss">×</button>`;
+  const dismiss = () => { el.classList.add("out"); setTimeout(() => el.remove(), 320); };
+  el.querySelector(".toast-x").addEventListener("click", (e) => { e.stopPropagation(); dismiss(); });
+  el.addEventListener("click", () => { location.href = `/whales.html?wallet=${t.wallet}`; });
+  wrap.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("in"));
+  setTimeout(dismiss, 9000);
+  while (wrap.children.length > 5) wrap.firstElementChild.remove();
+}
+
 // ── boot + schedule ───────────────────────────────────────────────────
 // Live loops — poll on cadence, pause while the tab is hidden, refresh on return.
+liveLoop(loadSmartMoney, 4_000);
+liveLoop(loadEagleStrip, 30_000);
 liveLoop(loadMarkets, INTERVALS.markets);
 liveLoop(loadWhales, INTERVALS.whales);
 liveLoop(loadBuzz, INTERVALS.buzz);
