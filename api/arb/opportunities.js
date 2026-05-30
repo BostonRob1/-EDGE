@@ -1,35 +1,26 @@
 import { matchPairs } from "../../lib/arb/match.js";
 import { computeArb } from "../../lib/arb/compute.js";
 
-// Cross-platform Polymarket ↔ Kalshi arbitrage scanner.
+// Cross-platform Polymarket ↔ Kalshi radar.
 //
-// Flow:
-//   1. Same-origin fetch /api/markets (already aggregates both platforms)
-//   2. Split by source
-//   3. Match Poly ↔ Kalshi pairs via token overlap + date alignment
-//   4. For each pair, compute fee-adjusted edge
-//   5. Surface pairs where edge survives fees
+// Reality check baked into this endpoint: clean risk-free arbs between the two
+// platforms are rare because they rarely list identically-settling contracts.
+// So we surface TWO tiers, honestly labelled:
+//   • DIVERGENCE — the same underlying question priced differently on each
+//     platform. A research edge, not free money. Always the bulk of signal.
+//   • ARB        — a divergence where the contracts genuinely align (same
+//     threshold, comparable window) AND the gap survives fees. Rare; flagged.
 //
-// Edge cache 30s (vercel.json) — arbs evaporate in minutes during news
-// events, so we don't want stale-but-cached data. 30s is a sane compromise
-// between freshness and not hammering upstream.
+// The matcher (lib/arb/match.js) is precision-first: it would rather return
+// nothing than pair a Polymarket barrier bet to a Kalshi point-in-time strike.
 export default async function handler(req, res) {
   const url = new URL(req.url, "http://localhost");
-  const minEdgeParam = url.searchParams.get("min_edge");
-  const minEdge =
-    minEdgeParam != null && Number.isFinite(Number(minEdgeParam))
-      ? Math.max(0, Number(minEdgeParam))
-      : 0.5;
-  const feeBufferParam = url.searchParams.get("fee_buffer");
-  const feeBuffer =
-    feeBufferParam != null && Number.isFinite(Number(feeBufferParam))
-      ? Math.max(0, Math.min(0.1, Number(feeBufferParam)))
-      : 0.02;
-  const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 20));
+  const feeBuffer = clampNum(url.searchParams.get("fee_buffer"), 0.02, 0, 0.1);
+  const minDivergence = clampNum(url.searchParams.get("min_divergence"), 0, 0, 1); // pp/100
+  const limit = Math.min(50, Math.max(1, Number(url.searchParams.get("limit")) || 24));
 
   const proto =
-    req.headers["x-forwarded-proto"] ||
-    (req.connection?.encrypted ? "https" : "http");
+    req.headers["x-forwarded-proto"] || (req.connection?.encrypted ? "https" : "http");
   const host = req.headers["x-forwarded-host"] || req.headers.host;
   const base = `${proto}://${host}`;
 
@@ -44,60 +35,101 @@ export default async function handler(req, res) {
 
     const pairs = matchPairs(poly, kalshi);
 
-    const opportunities = pairs
+    const signals = pairs
       .map((p) => {
-        const arb = computeArb(p.poly, p.kalshi, { feeBuffer });
-        if (!arb) return null;
-        // Don't surface arbs that are barely above the user's threshold
-        if (arb.fee_adj_edge_pp < minEdge) return null;
+        const P = Number(p.poly.yes_price);
+        const K = Number(p.kalshi.yes_price);
+        if (!Number.isFinite(P) || !Number.isFinite(K)) return null;
+        const divergencePp = round(Math.abs(P - K) * 100);
+        if (divergencePp < minDivergence * 100) return null;
+
+        // Is this a genuine executable arb, not just a price gap?
+        const arb =
+          p.same_threshold && (p.window === "same" || p.window === "near")
+            ? computeArb(p.poly, p.kalshi, { feeBuffer })
+            : null;
+
         return {
+          type: arb ? "ARB" : "DIVERGENCE",
+          divergence_pp: divergencePp,
           match_score: p.match_score,
-          ...arb,
-          poly_market: {
-            title: p.poly.title,
-            link: p.poly.link,
-            yes_price: p.poly.yes_price,
-            no_price: p.poly.no_price,
-            volume_24h: p.poly.volume_24h,
-            category: p.poly.category,
-            end_date: p.poly.end_date,
-          },
-          kalshi_market: {
-            title: p.kalshi.title,
-            link: p.kalshi.link,
-            yes_price: p.kalshi.yes_price,
-            no_price: p.kalshi.no_price,
-            volume_24h: p.kalshi.volume_24h,
-            category: p.kalshi.category,
-            end_date: p.kalshi.end_date,
-          },
+          window: p.window, // same | near | unknown
+          same_threshold: p.same_threshold,
+          poly: side(p.poly, P),
+          kalshi: side(p.kalshi, K),
+          arb: arb
+            ? {
+                fee_adj_edge_pp: arb.fee_adj_edge_pp,
+                roi_pct_after_fees: arb.roi_pct_after_fees,
+                confidence: arb.confidence,
+                leg_poly: arb.leg_poly,
+                leg_kalshi: arb.leg_kalshi,
+              }
+            : null,
         };
       })
       .filter(Boolean)
-      .sort((a, b) => b.fee_adj_edge_pp - a.fee_adj_edge_pp)
+      .sort((a, b) => {
+        // Arbs first, then by divergence size.
+        if ((a.type === "ARB") !== (b.type === "ARB")) return a.type === "ARB" ? -1 : 1;
+        return b.divergence_pp - a.divergence_pp;
+      })
       .slice(0, limit);
 
+    const arbs = signals.filter((s) => s.type === "ARB");
     const stats = {
       poly_markets: poly.length,
       kalshi_markets: kalshi.length,
       pairs_matched: pairs.length,
-      opportunities_found: opportunities.length,
-      biggest_edge_pp: opportunities[0]?.fee_adj_edge_pp || 0,
-      fee_buffer_pp: Math.round(feeBuffer * 1000) / 10, // for display
-      min_edge_pp: minEdge,
+      divergences_found: signals.length,
+      arbs_found: arbs.length,
+      biggest_divergence_pp: signals[0]?.divergence_pp || 0,
+      biggest_arb_edge_pp: arbs[0]?.arb?.fee_adj_edge_pp || 0,
+      fee_buffer_pp: round(feeBuffer * 100),
+      categories: categoryBreakdown(kalshi),
     };
 
+    res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=120");
     res.status(200).json({
-      opportunities,
+      signals,
       stats,
       disclaimer:
-        "Implied edge based on quoted prices. Slippage on $500+ stakes is real; actual fills may differ. Kalshi requires US KYC; not all users can execute both legs.",
+        "DIVERGENCE = same question, different price across platforms — a research edge, not risk-free money. ARB = contracts genuinely align and the gap clears fees; verify settlement terms before executing. Kalshi requires US KYC.",
       fetched_at: new Date().toISOString(),
     });
   } catch (err) {
-    res.status(502).json({
-      error: "arb_scan_failed",
-      detail: String(err?.message || err),
-    });
+    res.status(502).json({ error: "arb_scan_failed", detail: String(err?.message || err) });
   }
+}
+
+function side(m, yes) {
+  return {
+    title: m.title,
+    link: m.link,
+    yes_price: round(yes),
+    no_price: round(1 - yes),
+    volume_24h: m.volume_24h,
+    category: m.category,
+    end_date: m.end_date,
+  };
+}
+
+function categoryBreakdown(markets) {
+  const c = {};
+  for (const m of markets) {
+    const k = (m.category || "Other").toString();
+    c[k] = (c[k] || 0) + 1;
+  }
+  return Object.entries(c)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name, n]) => ({ name, n }));
+}
+
+function clampNum(v, dflt, lo, hi) {
+  const n = Number(v);
+  return v != null && Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : dflt;
+}
+function round(n) {
+  return Math.round(n * 100) / 100;
 }

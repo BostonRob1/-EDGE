@@ -1,6 +1,10 @@
-// $EDGE Arbitrage Radar frontend.
-// Fetches /api/arb/opportunities, renders ranked arb cards.
-import { fmtUsd, fmtNum, escapeHtml, escapeAttr } from "/lib/client/format.js";
+// $EDGE Cross-Platform Radar frontend.
+// Renders the two-tier signal model from /api/arb/opportunities:
+//   ARB        — contracts align + gap clears fees (rare, flagged green).
+//   DIVERGENCE — same question, different price (the everyday research edge).
+// Empty is a valid, honest state: it means the platforms aren't listing
+// comparable contracts right now — shown transparently, not apologetically.
+import { fmtUsd, escapeHtml, escapeAttr } from "/lib/client/format.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -10,14 +14,14 @@ async function load() {
     const data = await r.json();
     if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
     renderStats(data.stats);
-    renderOpps(data.opportunities || []);
+    renderSignals(data.signals || [], data.stats || {});
+    const arbs = (data.signals || []).filter((s) => s.type === "ARB").length;
     $("#oppsMeta").textContent =
-      (data.opportunities || []).length +
-      " arbs · last scan " +
+      `${(data.signals || []).length} signals · ${arbs} arb${arbs === 1 ? "" : "s"} · ` +
       new Date(data.fetched_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   } catch (err) {
     $("#oppsMeta").textContent = "error";
-    $("#arbGrid").innerHTML = `<div class="empty">${escapeHtml(err.message || "scan failed")}</div>`;
+    $("#arbGrid").innerHTML = `<div class="empty"><strong>Scanner offline.</strong><br>${escapeHtml(err.message || "scan failed")}</div>`;
   }
 }
 
@@ -26,83 +30,84 @@ function renderStats(s) {
   $("#statScanned").textContent = (s.poly_markets || 0) + (s.kalshi_markets || 0);
   $("#statScannedSub").textContent = `${s.poly_markets} poly · ${s.kalshi_markets} kalshi`;
   $("#statPairs").textContent = s.pairs_matched ?? "—";
-  $("#statOpps").textContent = s.opportunities_found ?? "—";
-  $("#statBiggest").textContent =
-    s.biggest_edge_pp > 0 ? `${s.biggest_edge_pp.toFixed(1)}pp` : "—";
-  $("#statBuffer").textContent = s.fee_buffer_pp ? `${s.fee_buffer_pp.toFixed(1)}pp` : "—";
+  $("#statOpps").textContent = s.divergences_found ?? "—";
+  $("#statBiggest").textContent = s.biggest_divergence_pp > 0 ? `${s.biggest_divergence_pp.toFixed(1)}pp` : "—";
+  $("#statBuffer").textContent = s.arbs_found ?? "0";
 }
 
-function renderOpps(opps) {
+function renderSignals(signals, stats) {
   const el = $("#arbGrid");
-  if (!opps.length) {
-    el.innerHTML = `
-      <div class="empty">
-        <span class="pulse"></span><strong>No arbitrage opportunities right now.</strong><br><br>
-        Cross-platform arbs are rare — Polymarket and Kalshi often cover different events,
-        and tight markets equilibrate within minutes. The scanner re-runs every 30 seconds.
-        <br><br>
-        Honest take: a quiet scanner is the <strong>default state</strong> in healthy markets.
-        Edges appear during news events, market opens/closes, or when one platform's
-        liquidity thins.
-      </div>`;
+  if (!signals.length) {
+    el.innerHTML = renderEmpty(stats);
     return;
   }
-
-  el.innerHTML = opps.map(renderArb).join("");
+  el.innerHTML = signals.map(renderSignal).join("");
 }
 
-function renderArb(a) {
-  const conf = a.confidence || "MEDIUM";
-  const stake100 = Math.round(a.profit_per_100_capital * 10) / 10; // already a percentage
-  const profitOn1000 = Math.round(stake100 * 10);
+// Confident, transparent empty state — shows the scanner IS working hard.
+function renderEmpty(stats) {
+  const cats = (stats.categories || [])
+    .map((c) => `<span class="cat-chip">${escapeHtml(c.name)} <b>${c.n}</b></span>`)
+    .join("");
+  return `
+    <div class="empty radar-empty">
+      <div class="radar-ping"><span></span><span></span><span></span></div>
+      <strong>No comparable contracts live right now.</strong>
+      <p>
+        Scanning <b>${stats.poly_markets || 0}</b> Polymarket × <b>${stats.kalshi_markets || 0}</b> Kalshi
+        markets every 30s. Zero matched pairs means the two platforms simply aren't listing the
+        <em>same, identically-settling</em> question at this moment — Polymarket is heavy on sports
+        and monthly "reach&nbsp;$X" bets; Kalshi is heavy on politics and point-in-time strikes.
+      </p>
+      <p class="radar-note">
+        This is the honest default in healthy markets. The instant the same event prices differently
+        on both — election day, a Fed print, a crypto level both list — it surfaces here.
+        We'd rather show nothing than fake an arb.
+      </p>
+      <div class="cat-row"><span class="cat-lbl">Kalshi coverage now:</span>${cats}</div>
+    </div>`;
+}
+
+function renderSignal(s) {
+  const isArb = s.type === "ARB";
+  const gap = s.divergence_pp.toFixed(1);
+  const winNote =
+    s.window === "same" ? "same settlement window"
+    : s.window === "near" ? "windows ~aligned"
+    : "verify settlement window";
+
+  // Center metric: for arbs show the fee-adjusted edge + ROI; for divergences
+  // show the raw price gap (honestly labelled as a research signal).
+  const center = isArb
+    ? `
+      <div class="pp">${s.arb.fee_adj_edge_pp.toFixed(1)}pp</div>
+      <div class="pp-lbl">fee-adj edge</div>
+      <div class="conf-pill">EXECUTABLE ARB</div>
+      <div class="stake-row"><strong>${s.arb.roi_pct_after_fees.toFixed(1)}% ROI</strong><br>${escapeHtml(s.arb.confidence)} confidence</div>`
+    : `
+      <div class="pp">${gap}pp</div>
+      <div class="pp-lbl">price gap</div>
+      <div class="conf-pill div">DIVERGENCE</div>
+      <div class="stake-row">${winNote}<br><span style="opacity:.7">match ${(s.match_score * 100).toFixed(0)}%</span></div>`;
 
   return `
-    <div class="arb conf-${conf}">
-      <!-- LEFT LEG: POLYMARKET -->
+    <div class="arb ${isArb ? "conf-HIGH" : "is-divergence"}">
       <div class="leg">
         <div class="leg-platform poly"><span class="dot"></span>Polymarket</div>
-        <div class="leg-action">
-          <span class="side ${a.leg_poly.side}">BUY ${escapeHtml(a.leg_poly.side)}</span>
-          <span class="price">${(a.leg_poly.price * 100).toFixed(0)}¢</span>
-        </div>
-        <div class="leg-title">${escapeHtml(a.poly_market.title)}</div>
-        <div class="leg-meta">
-          <span>vol 24h ${fmtUsd(a.poly_market.volume_24h)}</span>
-          <span>·</span>
-          <span>${escapeHtml(a.poly_market.category || "")}</span>
-        </div>
-        ${a.leg_poly.market_link ? `<a href="${escapeAttr(a.leg_poly.market_link)}" target="_blank" rel="noopener" class="leg-link">Open on Polymarket ↗</a>` : ""}
+        <div class="leg-action"><span class="price">${(s.poly.yes_price * 100).toFixed(0)}¢</span><span class="side-lbl">YES</span></div>
+        <div class="leg-title">${escapeHtml(s.poly.title)}</div>
+        <div class="leg-meta"><span>vol 24h ${fmtUsd(s.poly.volume_24h)}</span><span>·</span><span>${escapeHtml(s.poly.category || "")}</span></div>
+        ${s.poly.link ? `<a href="${escapeAttr(s.poly.link)}" target="_blank" rel="noopener" class="leg-link">Open on Polymarket ↗</a>` : ""}
       </div>
-
-      <!-- CENTER: EDGE METRICS -->
-      <div class="arb-edge">
-        <div class="pp">${a.fee_adj_edge_pp.toFixed(1)}pp</div>
-        <div class="pp-lbl">fee-adj edge</div>
-        <div class="conf-pill">${escapeHtml(conf)}</div>
-        <div class="stake-row">
-          <strong>${a.roi_pct_after_fees.toFixed(2)}% ROI</strong><br>
-          $${profitOn1000} profit per $1k<br>
-          <span style="opacity:0.7">match score ${(a.match_score * 100).toFixed(0)}%</span>
-        </div>
-      </div>
-
-      <!-- RIGHT LEG: KALSHI -->
+      <div class="arb-edge">${center}</div>
       <div class="leg">
         <div class="leg-platform kalshi"><span class="dot"></span>Kalshi</div>
-        <div class="leg-action">
-          <span class="side ${a.leg_kalshi.side}">BUY ${escapeHtml(a.leg_kalshi.side)}</span>
-          <span class="price">${(a.leg_kalshi.price * 100).toFixed(0)}¢</span>
-        </div>
-        <div class="leg-title">${escapeHtml(a.kalshi_market.title)}</div>
-        <div class="leg-meta">
-          <span>vol 24h ${fmtUsd(a.kalshi_market.volume_24h)}</span>
-          <span>·</span>
-          <span>${escapeHtml(a.kalshi_market.category || "")}</span>
-        </div>
-        ${a.leg_kalshi.market_link ? `<a href="${escapeAttr(a.leg_kalshi.market_link)}" target="_blank" rel="noopener" class="leg-link">Open on Kalshi ↗</a>` : ""}
+        <div class="leg-action"><span class="price">${(s.kalshi.yes_price * 100).toFixed(0)}¢</span><span class="side-lbl">YES</span></div>
+        <div class="leg-title">${escapeHtml(s.kalshi.title)}</div>
+        <div class="leg-meta"><span>vol 24h ${fmtUsd(s.kalshi.volume_24h)}</span><span>·</span><span>${escapeHtml(s.kalshi.category || "")}</span></div>
+        ${s.kalshi.link ? `<a href="${escapeAttr(s.kalshi.link)}" target="_blank" rel="noopener" class="leg-link">Open on Kalshi ↗</a>` : ""}
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 load();

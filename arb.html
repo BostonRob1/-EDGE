@@ -319,6 +319,25 @@ footer a { color: var(--lime); text-decoration: none; }
   }
   .how { grid-template-columns: 1fr; gap: 20px; }
 }
+
+/* ── Cross-platform radar: alive empty state + divergence cards ──────── */
+.radar-empty { padding: 44px 26px; max-width: 720px; margin: 0 auto; text-align: center; }
+.radar-empty > strong { color: var(--white); font-size: 15px; }
+.radar-empty p { margin-top: 12px; font-size: 13px; line-height: 1.6; color: var(--muted); text-align: left; }
+.radar-empty em { color: var(--white); font-style: normal; }
+.radar-note { border-left: 2px solid var(--lime); padding-left: 14px; }
+.radar-ping { position: relative; width: 56px; height: 56px; margin: 0 auto 22px; }
+.radar-ping span { position: absolute; inset: 0; margin: auto; width: 10px; height: 10px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 14px var(--lime); }
+.radar-ping span:nth-child(2), .radar-ping span:nth-child(3) { width: 56px; height: 56px; background: transparent; border: 1px solid var(--lime); box-shadow: none; opacity: 0; animation: radar-pulse 2.6s ease-out infinite; }
+.radar-ping span:nth-child(3) { animation-delay: 1.3s; }
+@keyframes radar-pulse { 0% { transform: scale(0.25); opacity: 0.7; } 100% { transform: scale(1); opacity: 0; } }
+.cat-row { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+.cat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.cat-chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; }
+.cat-chip b { color: var(--lime); }
+.arb.is-divergence { border-color: rgba(255, 0, 110, 0.28); }
+.conf-pill.div { background: rgba(255, 0, 110, 0.12); color: var(--magenta); border-color: var(--magenta); }
+.side-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-left: 6px; }
 </style>
 </head>
 
@@ -350,27 +369,28 @@ footer a { color: var(--lime); text-decoration: none; }
     <div class="thesis">Same event. Different prices. The edge is in the spread.</div>
     <h1>ARBITRAGE <span class="accent">RADAR</span></h1>
     <p class="tagline">
-      Live cross-platform scanner. When
+      Live scanner across
       <strong style="color:var(--magenta)">Polymarket</strong> and
-      <strong style="color:var(--lime)">Kalshi</strong> price the same event differently,
-      the gap surfaces — fee-adjusted, ranked, executable.
+      <strong style="color:var(--lime)">Kalshi</strong>. When both price the same question
+      differently, the <strong>divergence</strong> surfaces — and the rare moments the contracts
+      truly align, it's flagged a fee-clearing <strong style="color:var(--lime)">arb</strong>.
     </p>
 
     <div class="stat-strip">
       <div class="stat-cell"><div class="lbl">Markets Scanned</div><div class="val" id="statScanned">—</div><div class="sub" id="statScannedSub">poly + kalshi</div></div>
       <div class="stat-cell amber"><div class="lbl">Pairs Matched</div><div class="val" id="statPairs">—</div><div class="sub">same-event candidates</div></div>
-      <div class="stat-cell"><div class="lbl">Opportunities</div><div class="val" id="statOpps">—</div><div class="sub">after fees + filters</div></div>
-      <div class="stat-cell white"><div class="lbl">Biggest Edge</div><div class="val" id="statBiggest">—</div><div class="sub">today's top spread</div></div>
-      <div class="stat-cell"><div class="lbl">Fee Buffer</div><div class="val" id="statBuffer">—</div><div class="sub">applied to every leg</div></div>
+      <div class="stat-cell"><div class="lbl">Divergences</div><div class="val" id="statOpps">—</div><div class="sub">price gaps found</div></div>
+      <div class="stat-cell white"><div class="lbl">Top Gap</div><div class="val" id="statBiggest">—</div><div class="sub">biggest spread</div></div>
+      <div class="stat-cell"><div class="lbl">Exec Arbs</div><div class="val" id="statBuffer">—</div><div class="sub">clears fees</div></div>
     </div>
 
     <div class="warn-banner">
-      <strong>v0 Honest Notice</strong> · Match scoring is token-overlap. Some pairs may
-      look similar but cover different events (e.g. "Will Trump pardon Tiger Woods?" vs
-      "Who will Trump pardon?"). Always verify titles match BEFORE executing. Real arbs
-      in liquid markets are typically <strong style="color:var(--white)">1-5%</strong>;
-      higher edges are flagged <strong style="color:var(--amber)">VERIFY</strong> for a
-      reason. Slippage on $500+ stakes is real.
+      <strong>How to read this</strong> · <strong style="color:var(--white)">DIVERGENCE</strong> =
+      the same question priced differently on each platform — a research edge, not free money.
+      <strong style="color:var(--lime)">ARB</strong> = the contracts genuinely align and the gap
+      clears fees; rare, and flagged. The matcher is precision-first — it rejects look-alikes
+      (a Polymarket "reach $X by May" is <em>not</em> a Kalshi "price on Jun 5"). Verify settlement
+      before executing; slippage on $500+ stakes is real; Kalshi needs US KYC.
     </div>
   </section>
 
