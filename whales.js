@@ -237,9 +237,9 @@ function renderSmartTab() {
       </div>
       <div class="sm-alertbar">
         <div class="sm-ctls">
-          <button class="sm-ctl" id="ctlBell" type="button">🔔 Pop-ups <b id="bellState">On</b></button>
-          <button class="sm-ctl" id="ctlDesktop" type="button">🖥️ Desktop <b id="deskState">Off</b></button>
-          <button class="sm-ctl" id="ctlSound" type="button">🔊 Sound <b id="soundState">Off</b></button>
+          <button class="sm-ctl" id="ctlBell" type="button"><span class="tgl"></span>Pop-ups</button>
+          <button class="sm-ctl" id="ctlDesktop" type="button"><span class="tgl"></span>Desktop</button>
+          <button class="sm-ctl" id="ctlSound" type="button"><span class="tgl"></span>Sound</button>
         </div>
         <div class="sm-thresh">
           <span class="sm-ctl-lbl">Pop when ≥</span>
@@ -450,10 +450,6 @@ function syncControlUI() {
   $("#ctlBell")?.classList.toggle("on", p.enabled);
   $("#ctlDesktop")?.classList.toggle("on", p.desktop);
   $("#ctlSound")?.classList.toggle("on", p.sound);
-  const t = (id, v) => { const el = $("#" + id); if (el) el.textContent = v; };
-  t("bellState", p.enabled ? "On" : "Off");
-  t("deskState", p.desktop ? "On" : "Off");
-  t("soundState", p.sound ? "On" : "Off");
   document.querySelectorAll("#smPopToggle button").forEach((b) => b.classList.toggle("active", Number(b.dataset.min) === p.popMin));
 }
 

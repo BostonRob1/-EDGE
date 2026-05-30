@@ -223,25 +223,30 @@ section.panel {
   color: var(--muted);
   text-transform: uppercase;
 }
-.section-head .threshold-toggle {
-  display: flex;
-  gap: 4px;
-}
-.section-head .threshold-toggle button {
-  background: var(--void-2);
-  border: 1px solid var(--border);
+/* Elite segmented filter — borderless ghost pills, soft-lit active. No boxes. */
+.threshold-toggle { display: inline-flex; flex-wrap: wrap; gap: 3px; }
+.threshold-toggle button {
+  background: transparent;
+  border: none;
   color: var(--muted);
-  padding: 4px 10px;
+  padding: 6px 12px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  line-height: 1;
   cursor: pointer;
-  border-radius: 2px;
-  transition: border-color 0.15s, color 0.15s;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
-.section-head .threshold-toggle button:hover { border-color: var(--lime); color: var(--lime); }
-.section-head .threshold-toggle button.active { background: var(--lime); color: var(--void); border-color: var(--lime); }
+.threshold-toggle button:hover:not(.active) { color: var(--white); background: rgba(245,245,240,0.05); }
+.threshold-toggle button.active {
+  color: var(--lime);
+  background: rgba(196,255,0,0.10);
+  box-shadow: inset 0 0 0 1px rgba(196,255,0,0.30);
+  font-weight: 700;
+}
 
 /* ── FIREHOSE ───────────────────────────────────────────────────────── */
 .firehose-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
@@ -670,28 +675,35 @@ footer a { color: var(--lime); text-decoration: none; }
 
 /* ══ SHARP ALERTS — controls + pop-up toasts ════════════════════════════ */
 .sm-alertbar { display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; flex-wrap: wrap; margin-bottom: 10px; }
-.sm-ctls { display: flex; gap: 8px; flex-wrap: wrap; }
+.sm-ctls { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
 .sm-ctl {
-  background: var(--void-2); border: 1px solid var(--border); color: var(--muted);
-  padding: 7px 12px; border-radius: 3px; cursor: pointer;
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .03em;
-  display: inline-flex; align-items: center; gap: 6px; transition: border-color .15s, color .15s, background .15s;
+  background: transparent; border: none; padding: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted); transition: color .16s;
 }
-.sm-ctl b { color: var(--muted); font-weight: 700; }
-.sm-ctl:hover { border-color: var(--border-bright); color: var(--white); }
-.sm-ctl.on { border-color: var(--lime); color: var(--lime); background: rgba(196,255,0,.06); }
-.sm-ctl.on b { color: var(--lime); }
+.sm-ctl .tgl {
+  position: relative; width: 30px; height: 17px; border-radius: 9px; flex: 0 0 auto;
+  background: rgba(245,245,240,.05); border: 1px solid rgba(245,245,240,.14);
+  transition: background .2s, border-color .2s;
+}
+.sm-ctl .tgl::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px;
+  border-radius: 50%; background: var(--muted); transition: transform .2s ease, background .2s, box-shadow .2s;
+}
+.sm-ctl:hover { color: var(--white); }
+.sm-ctl.on { color: var(--white); }
+.sm-ctl.on .tgl { background: rgba(196,255,0,.16); border-color: var(--lime); }
+.sm-ctl.on .tgl::after { transform: translateX(13px); background: var(--lime); box-shadow: 0 0 8px rgba(196,255,0,.55); }
 .sm-thresh, .sm-windowbar { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
 .sm-windowbar { margin-bottom: 12px; }
 .sm-ctl-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-#smFeedWindow { flex-wrap: wrap; gap: 5px; }
-#smFeedWindow button { min-width: 46px; justify-content: center; text-align: center; padding: 6px 11px; transition: border-color .15s, color .15s, background .15s; }
+#smFeedWindow button { min-width: 40px; justify-content: center; text-align: center; }
 #smFeedWindow button[data-w="live"] { color: var(--green); }
-#smFeedWindow button[data-w="live"]:hover { border-color: var(--green); }
-#smFeedWindow button[data-w="live"].active { background: var(--green); border-color: var(--green); color: var(--void); }
-/* subtle group separator: a touch more space where real-time (minutes) meets history */
-#smFeedWindow button[data-w="6h"] { margin-left: 9px; position: relative; }
-#smFeedWindow button[data-w="6h"]::before { content: ""; position: absolute; left: -7px; top: 18%; height: 64%; width: 1px; background: var(--border); }
+#smFeedWindow button[data-w="live"]:hover:not(.active) { color: var(--green); background: rgba(0,255,133,.06); }
+#smFeedWindow button[data-w="live"].active { color: var(--green); background: rgba(0,255,133,.10); box-shadow: inset 0 0 0 1px rgba(0,255,133,.32); }
+/* breathe between the real-time minutes and the history windows */
+#smFeedWindow button[data-w="6h"] { margin-left: 11px; }
 
 .toast-wrap {
   position: fixed; top: 78px; right: 18px; z-index: 9999;
