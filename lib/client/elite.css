@@ -235,6 +235,19 @@ html, body {
   overflow-x: hidden;
 }
 
+/* ── Branded slim scrollbars ──────────────────────────────────────────────
+   Windows renders chunky gray scrollbars by default (Mac uses thin overlays).
+   Give every scroll surface a thin, dark, on-theme bar instead. ─────────── */
+* { scrollbar-width: thin; scrollbar-color: var(--void-4, #1c1c22) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--void-4, #1c1c22);
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--lime-dim, #8aa800); }
+
 /* ── Smoother scroll for inner scrollable regions ────────────────────── */
 
 .panel-body,
@@ -407,10 +420,14 @@ html, body {
   .elite-ticker-track {
     animation: none !important;
   }
+  /* Keep the tape scrollable (still readable without motion) but NEVER show a
+     visible scrollbar — on Windows that bar is always-on and ugly. */
   .elite-ticker-viewport {
     overflow-x: auto;
     mask-image: none;
+    scrollbar-width: none;
   }
+  .elite-ticker-viewport::-webkit-scrollbar { display: none; }
 }
 
 /* On the dashboard specifically, the page uses a fixed viewport-fit layout.
